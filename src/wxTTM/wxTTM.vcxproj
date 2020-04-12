@@ -1,0 +1,921 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Noopt|Win32">
+      <Configuration>Noopt</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Noopt|x64">
+      <Configuration>Noopt</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D119C568-598E-4251-9386-7FB93BBBF046}</ProjectGuid>
+    <RootNamespace>wxTTM</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TTM32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TTM32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TTM32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">TTM32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TTM32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">TTM32</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">
+    <OutDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ManifestFile>$(IntDir)$(TargetFileName).intermediate.manifest</ManifestFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Post Build Event</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_x64_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ManifestFile>$(IntDir)$(TargetFileName).intermediate.manifest</ManifestFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Parse XRC File</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./Crypt;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31u_aui.lib;wxmsw31u_xrc.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Post Build Event</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+rem echo Sign TTM32.exe
+rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./Crypt;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31u_aui.lib;wxmsw31u_xrc.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Post Build Event</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+rem echo Sign TTM32.exe
+rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./Crypt;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_x64_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31u_aui.lib;wxmsw31u_xrc.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Post Build Event</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+rem echo Sign TTM32.exe
+rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">
+    <ClCompile>
+      <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./Crypt;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_x64_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31u_aui.lib;wxmsw31u_xrc.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TTM32.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Message>Post Build Event</Message>
+      <Command>echo Parse FBP file
+"$(WXFORMBUILDER)\output\wxFormBuilder.exe" -g -l XRC $(SolutionDir)\src\Resources\TT32.fbp
+
+echo Parse XRC file
+"$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
+
+echo Convert en\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+
+echo Convert de\ttm.po
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+
+rem echo Sign TTM32.exe
+rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Database\LtListStore.cpp" />
+    <ClCompile Include="Database\PoStore.cpp" />
+    <ClCompile Include="Database\RpListStore.cpp" />
+    <ClCompile Include="Database\RpStore.cpp" />
+    <ClCompile Include="Database\TbEntryStore.cpp" />
+    <ClCompile Include="Database\UpListStore.cpp" />
+    <ClCompile Include="Database\UpStore.cpp" />
+    <ClCompile Include="Dialogs\DatabaseLogin.cpp" />
+    <ClCompile Include="Dialogs\GrFinished.cpp" />
+    <ClCompile Include="Dialogs\GrOptionsList.cpp" />
+    <ClCompile Include="Dialogs\GrPrintBase.cpp" />
+    <ClCompile Include="Dialogs\ImportOnlineEntries.cpp" />
+    <ClCompile Include="Dialogs\MtUnscheduled.cpp" />
+    <ClCompile Include="Dialogs\NmEditETS.cpp" />
+    <ClCompile Include="Dialogs\NmEditOTS.cpp" />
+    <ClCompile Include="Dialogs\OvListBook.cpp" />
+    <ClCompile Include="Dialogs\PlHistEvents.cpp" />
+    <ClCompile Include="Dialogs\PlHistView.cpp" />
+    <ClCompile Include="Dialogs\RpEdit.cpp" />
+    <ClCompile Include="Dialogs\SQLEditorBook.cpp" />
+    <ClCompile Include="Dialogs\UpEdit.cpp" />
+    <ClCompile Include="Dialogs\UpItem.cpp" />
+    <ClCompile Include="Dialogs\UpListView.cpp" />
+    <ClCompile Include="Dialogs\Validators.cpp" />
+    <ClCompile Include="Draw\DrawLP.cpp" />
+    <ClCompile Include="Tools\ReportManViewer.cpp" />
+    <ClCompile Include="Tools\StrUtils.cpp" />
+    <ClCompile Include="wx\ChildFrm.cpp" />
+    <ClCompile Include="wx\MainFrm.cpp" />
+    <ClCompile Include="wx\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Database\Connection.cpp" />
+    <ClCompile Include="Database\DriverManager.cpp" />
+    <ClCompile Include="Database\ResultSet.cpp" />
+    <ClCompile Include="Database\SQLException.cpp" />
+    <ClCompile Include="Database\Statement.cpp" />
+    <ClCompile Include="Database\StoreObj.cpp" />
+    <ClCompile Include="Database\TTDbse.cpp" />
+    <ClCompile Include="Database\CpStore.cpp" />
+    <ClCompile Include="Database\GrStore.cpp" />
+    <ClCompile Include="Database\IdStore.cpp" />
+    <ClCompile Include="Database\LtStore.cpp" />
+    <ClCompile Include="Database\MdStore.cpp" />
+    <ClCompile Include="Database\MtStore.cpp" />
+    <ClCompile Include="Database\NaStore.cpp" />
+    <ClCompile Include="Database\NmStore.cpp" />
+    <ClCompile Include="Database\NtStore.cpp" />
+    <ClCompile Include="Database\PlStore.cpp" />
+    <ClCompile Include="Database\PsStore.cpp" />
+    <ClCompile Include="Database\RkStore.cpp" />
+    <ClCompile Include="Database\StStore.cpp" />
+    <ClCompile Include="Database\SyStore.cpp" />
+    <ClCompile Include="Database\TmStore.cpp" />
+    <ClCompile Include="Database\XxStore.cpp" />
+    <ClCompile Include="Database\CpListStore.cpp" />
+    <ClCompile Include="Database\GrListStore.cpp" />
+    <ClCompile Include="Database\LtEntryStore.cpp" />
+    <ClCompile Include="Database\MdListStore.cpp" />
+    <ClCompile Include="Database\MtEntryStore.cpp" />
+    <ClCompile Include="Database\MtListStore.cpp" />
+    <ClCompile Include="Database\NaListStore.cpp" />
+    <ClCompile Include="Database\NmEntryStore.cpp" />
+    <ClCompile Include="Database\NtEntryStore.cpp" />
+    <ClCompile Include="Database\NtListStore.cpp" />
+    <ClCompile Include="Database\PlListStore.cpp" />
+    <ClCompile Include="Database\ReportStore.cpp" />
+    <ClCompile Include="Database\RkEntryStore.cpp" />
+    <ClCompile Include="Database\RkListStore.cpp" />
+    <ClCompile Include="Database\StEntryStore.cpp" />
+    <ClCompile Include="Database\StListStore.cpp" />
+    <ClCompile Include="Database\SyListStore.cpp" />
+    <ClCompile Include="Database\TmEntryStore.cpp" />
+    <ClCompile Include="Database\TmListStore.cpp" />
+    <ClCompile Include="Database\XxListStore.cpp" />
+    <ClCompile Include="Tools\InfoSystem.cpp" />
+    <ClCompile Include="Tools\Profile.cpp" />
+    <ClCompile Include="Tools\Request.cpp" />
+    <ClCompile Include="Tools\TbSort.cpp" />
+    <ClCompile Include="Tools\ComboBoxEx.cpp" />
+    <ClCompile Include="Tools\DateTimeCtrl.cpp" />
+    <ClCompile Include="Tools\FormViewEx.cpp" />
+    <ClCompile Include="Tools\ItemCtrl.cpp" />
+    <ClCompile Include="Tools\ListCtrlEx.cpp" />
+    <ClCompile Include="Tools\ListItem.cpp" />
+    <ClCompile Include="Tools\Select.cpp" />
+    <ClCompile Include="Dialogs\CpEntries.cpp" />
+    <ClCompile Include="Dialogs\CpListView.cpp" />
+    <ClCompile Include="Dialogs\GrListView.cpp" />
+    <ClCompile Include="Dialogs\MdListView.cpp" />
+    <ClCompile Include="Dialogs\MtListView.cpp" />
+    <ClCompile Include="Dialogs\NaListView.cpp" />
+    <ClCompile Include="Dialogs\OvList.cpp" />
+    <ClCompile Include="Dialogs\PlEvents.cpp" />
+    <ClCompile Include="Dialogs\PlListView.cpp" />
+    <ClCompile Include="Dialogs\ReportListView.cpp" />
+    <ClCompile Include="Dialogs\RkListView.cpp" />
+    <ClCompile Include="Dialogs\StListView.cpp" />
+    <ClCompile Include="Dialogs\SyListView.cpp" />
+    <ClCompile Include="Dialogs\TmListView.cpp" />
+    <ClCompile Include="Dialogs\CpItem.cpp" />
+    <ClCompile Include="Dialogs\GrItem.cpp" />
+    <ClCompile Include="Dialogs\LtItem.cpp" />
+    <ClCompile Include="Dialogs\MdItem.cpp" />
+    <ClCompile Include="Dialogs\MtItem.cpp" />
+    <ClCompile Include="Dialogs\NaItem.cpp" />
+    <ClCompile Include="Dialogs\NmItem.cpp" />
+    <ClCompile Include="Dialogs\OvItem.cpp" />
+    <ClCompile Include="Dialogs\PlItem.cpp" />
+    <ClCompile Include="Dialogs\RkItem.cpp" />
+    <ClCompile Include="Dialogs\SQLItem.cpp" />
+    <ClCompile Include="Dialogs\StItem.cpp" />
+    <ClCompile Include="Dialogs\SyItem.cpp" />
+    <ClCompile Include="Dialogs\TbItem.cpp" />
+    <ClCompile Include="Dialogs\TdItem.cpp" />
+    <ClCompile Include="Dialogs\TmItem.cpp" />
+    <ClCompile Include="Dialogs\DrawChampionship.cpp" />
+    <ClCompile Include="Dialogs\DrawQualification.cpp" />
+    <ClCompile Include="Dialogs\GrExport.cpp" />
+    <ClCompile Include="Dialogs\GrOptions.cpp" />
+    <ClCompile Include="Dialogs\GrPrint.cpp" />
+    <ClCompile Include="Dialogs\MtSelect.cpp" />
+    <ClCompile Include="Dialogs\Score.cpp" />
+    <ClCompile Include="Dialogs\Settings.cpp" />
+    <ClCompile Include="Dialogs\SQLEditor.cpp" />
+    <ClCompile Include="Dialogs\TTDetachDlg.cpp" />
+    <ClCompile Include="Dialogs\TTNewDlg.cpp" />
+    <ClCompile Include="Dialogs\TTOpenDlg.cpp" />
+    <ClCompile Include="Dialogs\CpEdit.cpp" />
+    <ClCompile Include="Dialogs\GrEdit.cpp" />
+    <ClCompile Include="Dialogs\GrTemplate.cpp" />
+    <ClCompile Include="Dialogs\LtDouble.cpp" />
+    <ClCompile Include="Dialogs\MdEdit.cpp" />
+    <ClCompile Include="Dialogs\MtRes.cpp" />
+    <ClCompile Include="Dialogs\MtTeam.cpp" />
+    <ClCompile Include="Dialogs\MtTime.cpp" />
+    <ClCompile Include="Dialogs\NaEdit.cpp" />
+    <ClCompile Include="Dialogs\NmEdit.cpp" />
+    <ClCompile Include="Dialogs\PlEdit.cpp" />
+    <ClCompile Include="Dialogs\RkEdit.cpp" />
+    <ClCompile Include="Dialogs\StEdit.cpp" />
+    <ClCompile Include="Dialogs\SyEdit.cpp" />
+    <ClCompile Include="Dialogs\TmEdit.cpp" />
+    <ClCompile Include="Print\Preview.cpp" />
+    <ClCompile Include="Print\PreviewWnd.cpp" />
+    <ClCompile Include="Print\Printer.cpp" />
+    <ClCompile Include="Print\Raster.cpp" />
+    <ClCompile Include="Print\RasterKO.cpp" />
+    <ClCompile Include="Print\RasterRR.cpp" />
+    <ClCompile Include="Print\RasterSC.cpp" />
+    <ClCompile Include="Draw\DrawCP.cpp" />
+    <ClCompile Include="Draw\DrawCSD.cpp" />
+    <ClCompile Include="Draw\DrawInf.cpp" />
+    <ClCompile Include="Draw\DrawRR.cpp" />
+    <ClCompile Include="wx\TT32App.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Database\LtListStore.h" />
+    <ClInclude Include="Database\PoStore.h" />
+    <ClInclude Include="Database\RpListStore.h" />
+    <ClInclude Include="Database\RpStore.h" />
+    <ClInclude Include="Database\TbEntryStore.h" />
+    <ClInclude Include="Database\UpListStore.h" />
+    <ClInclude Include="Database\UpStore.h" />
+    <ClInclude Include="Dialogs\CpEntries.h" />
+    <ClInclude Include="Dialogs\CpListView.h" />
+    <ClInclude Include="Dialogs\DatabaseLogin.h" />
+    <ClInclude Include="Dialogs\DrawChampionship.h" />
+    <ClInclude Include="Dialogs\GrEdit.h" />
+    <ClInclude Include="Dialogs\GrFinished.h" />
+    <ClInclude Include="Dialogs\GrListView.h" />
+    <ClInclude Include="Dialogs\GrOptionsList.h" />
+    <ClInclude Include="Dialogs\GrPrintBase.h" />
+    <ClInclude Include="Dialogs\ImportOnlineEntries.h" />
+    <ClInclude Include="Dialogs\MtUnscheduled.h" />
+    <ClInclude Include="Dialogs\NmEditETS.h" />
+    <ClInclude Include="Dialogs\NmEditOTS.h" />
+    <ClInclude Include="Dialogs\OvListBook.h" />
+    <ClInclude Include="Dialogs\PlHistEvents.h" />
+    <ClInclude Include="Dialogs\PlHistView.h" />
+    <ClInclude Include="Dialogs\RpEdit.h" />
+    <ClInclude Include="Dialogs\SQLEditorBook.h" />
+    <ClInclude Include="Dialogs\UpEdit.h" />
+    <ClInclude Include="Dialogs\UpItem.h" />
+    <ClInclude Include="Dialogs\UpListView.h" />
+    <ClInclude Include="Dialogs\Validators.h" />
+    <ClInclude Include="Draw\DrawLP.h" />
+    <ClInclude Include="Tools\ReportManViewer.h" />
+    <ClInclude Include="Tools\StrUtils.h" />
+    <ClInclude Include="Tools\wxStringTokenizerEx.h" />
+    <ClInclude Include="wx\ChildFrm.h" />
+    <ClInclude Include="wx\MainFrm.h" />
+    <ClInclude Include="wx\stdafx.h" />
+    <ClInclude Include="Database\Connection.h" />
+    <ClInclude Include="Database\DriverManager.h" />
+    <ClInclude Include="Database\ResultSet.h" />
+    <ClInclude Include="Database\SQLException.h" />
+    <ClInclude Include="Database\SqlInclude.h" />
+    <ClInclude Include="Database\Statement.h" />
+    <ClInclude Include="Database\StoreObj.h" />
+    <ClInclude Include="Database\TTDbse.h" />
+    <ClInclude Include="Database\CpStore.h" />
+    <ClInclude Include="Database\GrStore.h" />
+    <ClInclude Include="Database\IdStore.h" />
+    <ClInclude Include="Database\LtStore.h" />
+    <ClInclude Include="Database\MdStore.h" />
+    <ClInclude Include="Database\MtStore.h" />
+    <ClInclude Include="Database\NaStore.h" />
+    <ClInclude Include="Database\NmStore.h" />
+    <ClInclude Include="Database\NtStore.h" />
+    <ClInclude Include="Database\PlStore.h" />
+    <ClInclude Include="Database\PsStore.h" />
+    <ClInclude Include="Database\RkStore.h" />
+    <ClInclude Include="Database\StStore.h" />
+    <ClInclude Include="Database\SyStore.h" />
+    <ClInclude Include="Database\TmStore.h" />
+    <ClInclude Include="Database\XxStore.h" />
+    <ClInclude Include="Database\CpListStore.h" />
+    <ClInclude Include="Database\GrListStore.h" />
+    <ClInclude Include="Database\LtEntryStore.h" />
+    <ClInclude Include="Database\MdListStore.h" />
+    <ClInclude Include="Database\MtEntryStore.h" />
+    <ClInclude Include="Database\MtListStore.h" />
+    <ClInclude Include="Database\NaListStore.h" />
+    <ClInclude Include="Database\NmEntryStore.h" />
+    <ClInclude Include="Database\NtEntryStore.h" />
+    <ClInclude Include="Database\NtListStore.h" />
+    <ClInclude Include="Database\PlListStore.h" />
+    <ClInclude Include="Database\ReportStore.h" />
+    <ClInclude Include="Database\RkEntryStore.h" />
+    <ClInclude Include="Database\RkListStore.h" />
+    <ClInclude Include="Database\StEntryStore.h" />
+    <ClInclude Include="Database\StListStore.h" />
+    <ClInclude Include="Database\SyListStore.h" />
+    <ClInclude Include="Database\TmEntryStore.h" />
+    <ClInclude Include="Database\TmListStore.h" />
+    <ClInclude Include="Database\XxListStore.h" />
+    <ClInclude Include="Tools\InfoSystem.h" />
+    <ClInclude Include="Tools\Profile.h" />
+    <ClInclude Include="Tools\Rec.h" />
+    <ClInclude Include="Tools\Request.h" />
+    <ClInclude Include="Tools\Res.h" />
+    <ClInclude Include="Tools\TbSort.h" />
+    <ClInclude Include="Tools\ComboBoxEx.h" />
+    <ClInclude Include="Tools\DateTimeCtrl.h" />
+    <ClInclude Include="Tools\FormViewEx.h" />
+    <ClInclude Include="Tools\ItemCtrl.h" />
+    <ClInclude Include="Tools\ListCtrlEx.h" />
+    <ClInclude Include="Tools\ListItem.h" />
+    <ClInclude Include="Tools\Select.h" />
+    <ClInclude Include="wx\TT32App.h" />
+    <CustomBuildStep Include="Dialogs\CpEntries.h" />
+    <CustomBuildStep Include="Dialogs\CpListView.h" />
+    <CustomBuildStep Include="Dialogs\GrListView.h" />
+    <CustomBuildStep Include="Dialogs\MdListView.h" />
+    <CustomBuildStep Include="Dialogs\MtListView.h" />
+    <CustomBuildStep Include="Dialogs\NaListView.h" />
+    <CustomBuildStep Include="Dialogs\OvList.h" />
+    <CustomBuildStep Include="Dialogs\PlEvents.h" />
+    <CustomBuildStep Include="Dialogs\PlListView.h" />
+    <CustomBuildStep Include="Dialogs\ReportListView.h" />
+    <CustomBuildStep Include="Dialogs\RkListView.h" />
+    <CustomBuildStep Include="Dialogs\StListView.h" />
+    <CustomBuildStep Include="Dialogs\SyListView.h" />
+    <CustomBuildStep Include="Dialogs\TmListView.h" />
+    <ClInclude Include="Dialogs\CpItem.h" />
+    <ClInclude Include="Dialogs\GrItem.h" />
+    <ClInclude Include="Dialogs\LtItem.h" />
+    <ClInclude Include="Dialogs\MdItem.h" />
+    <ClInclude Include="Dialogs\MtItem.h" />
+    <ClInclude Include="Dialogs\NaItem.h" />
+    <ClInclude Include="Dialogs\NmItem.h" />
+    <ClInclude Include="Dialogs\OvItem.h" />
+    <ClInclude Include="Dialogs\PlItem.h" />
+    <ClInclude Include="Dialogs\RkItem.h" />
+    <ClInclude Include="Dialogs\SQLItem.h" />
+    <ClInclude Include="Dialogs\StItem.h" />
+    <ClInclude Include="Dialogs\SyItem.h" />
+    <ClInclude Include="Dialogs\TbItem.h" />
+    <ClInclude Include="Dialogs\TdItem.h" />
+    <ClInclude Include="Dialogs\TmItem.h" />
+    <CustomBuildStep Include="Dialogs\DrawChampionship.h" />
+    <CustomBuildStep Include="Dialogs\DrawQualification.h" />
+    <ClInclude Include="Dialogs\GrExport.h" />
+    <CustomBuildStep Include="Dialogs\GrOptions.h" />
+    <CustomBuildStep Include="Dialogs\GrPrint.h" />
+    <CustomBuildStep Include="Dialogs\MtSelect.h" />
+    <CustomBuildStep Include="Dialogs\Score.h" />
+    <CustomBuildStep Include="Dialogs\Settings.h" />
+    <CustomBuildStep Include="Dialogs\SQLEditor.h" />
+    <CustomBuildStep Include="Dialogs\TTDetachDlg.h" />
+    <CustomBuildStep Include="Dialogs\TTNewDlg.h" />
+    <CustomBuildStep Include="Dialogs\TTOpenDlg.h" />
+    <CustomBuildStep Include="Dialogs\CpEdit.h" />
+    <CustomBuildStep Include="Dialogs\GrEdit.h" />
+    <CustomBuildStep Include="Dialogs\GrTemplate.h" />
+    <CustomBuildStep Include="Dialogs\LtDouble.h" />
+    <CustomBuildStep Include="Dialogs\MdEdit.h" />
+    <CustomBuildStep Include="Dialogs\MtRes.h" />
+    <CustomBuildStep Include="Dialogs\MtTeam.h" />
+    <CustomBuildStep Include="Dialogs\MtTime.h" />
+    <CustomBuildStep Include="Dialogs\NaEdit.h" />
+    <CustomBuildStep Include="Dialogs\NmEdit.h" />
+    <CustomBuildStep Include="Dialogs\PlEdit.h" />
+    <CustomBuildStep Include="Dialogs\RkEdit.h" />
+    <CustomBuildStep Include="Dialogs\StEdit.h" />
+    <CustomBuildStep Include="Dialogs\SyEdit.h" />
+    <CustomBuildStep Include="Dialogs\TmEdit.h" />
+    <ClInclude Include="Print\Preview.h" />
+    <ClInclude Include="Print\PreviewWnd.h" />
+    <ClInclude Include="Print\Printer.h" />
+    <ClInclude Include="Print\Raster.h" />
+    <ClInclude Include="Print\RasterKO.h" />
+    <ClInclude Include="Print\RasterRR.h" />
+    <ClInclude Include="Print\RasterSC.h" />
+    <ClInclude Include="Draw\DrawCP.h" />
+    <ClInclude Include="Draw\DrawCSD.h" />
+    <ClInclude Include="Draw\DrawInf.h" />
+    <ClInclude Include="Draw\DrawRR.h" />
+    <ClInclude Include="Crypt\crypt.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="Database\DttbSort.sql">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\IttfSort.sql">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\MtStore.sql">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\TbSort.sql">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Resources\checked.xpm">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Resources\unchecked.xpm">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\Resources\_wxTTM.pot">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <None Include="..\changes.html">
+      <SubType>Designer</SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\current.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\ChampionshipEntries.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\ConsolationEntries.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\Entries.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\FinalStandings.rep" />
+    <None Include="..\Reports\GroupMatches.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\GroupMatchesDoubles.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\GroupMatchesSingles.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\GroupResults.rep" />
+    <None Include="..\Reports\Hallensprecher.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\list_c.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\MatchList.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\Participants.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\PartnerMissing.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\PlayerControl.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\Playerlist.rep" />
+    <None Include="..\Reports\QualificationMatchesSingles.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\Ranking.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\RankingDoubles.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\RankingSingles.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\RankingTeam.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\Registration.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\ReportMan.ocx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\ScoreTeam.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\score_d.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\TeamEntries.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\template.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\test.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Reports\WorldRanking.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Resources\3rdparty.html" />
+    <None Include="..\Resources\shortcuts.html">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\Resources\TT32.fbp">
+      <SubType>Designer</SubType>
+    </None>
+    <CustomBuildStep Include="..\Resources\de\ttm.po">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\Resources\en\ttm.po">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <None Include="..\Resources\_wxTTM.pot" />
+    <None Include="..\wxTTM.iss">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Resources\checked.xpm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\wxTTM.rc">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_UNICODE;UNICODE;wxUSE_NO_MANIFEST=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_UNICODE;UNICODE;wxUSE_NO_MANIFEST=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Noopt|x64'">$(IntDir);$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

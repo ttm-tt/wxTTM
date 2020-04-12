@@ -1,0 +1,3283 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wxTTM\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-09 11:47+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Christoph Theis <theis@gmx.at>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-Basepath: F:/user/ChT/wxTTM/src/wxTTM\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-SearchPath-0: wx\n"
+"X-Poedit-SearchPath-1: Dialogs\n"
+"X-Poedit-SearchPath-2: Database\n"
+"X-Poedit-SearchPath-3: Print\n"
+"X-Poedit-SearchPath-4: Tools\n"
+"X-Poedit-SearchPath-5: ../Resources\n"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4
+msgid "NOMenuBar"
+msgstr "NOMenuBar"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:54
+msgid "&Tournament"
+msgstr "&Tournament"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:56
+msgid "&New...\tCtrl+N"
+msgstr "&New...\tCtrl+N"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:60
+msgid "&Open...\tCtrl+O"
+msgstr "&Open...\tCtrl+O"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:16
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:68
+msgid "&Detach"
+msgstr "&Detach"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:21
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:188
+msgid "E&xit"
+msgstr "E&xit"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:26
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:325
+msgid "&Help"
+msgstr "&Help"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:28
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:327
+msgid "&Install License"
+msgstr "&Install License"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:33
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:332
+msgid "&Check for Update"
+msgstr "&Check for Update"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:38
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:337
+msgid "Shortcuts"
+msgstr "Shortcuts"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:42
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:341
+msgid "Third-Party Software"
+msgstr "Third-Party Software"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:46
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:345
+msgid "&About"
+msgstr "&About"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:52
+msgid "ITTFMenuBar"
+msgstr "ITTFMenuBar"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:64
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12755
+msgid "&Close"
+msgstr "&Close"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:72
+msgid "&Settings..."
+msgstr "&Settings..."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:77
+msgid "&Backup"
+msgstr "&Backup"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:81
+msgid "&Restore"
+msgstr "&Restore"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:86
+msgid "&Import"
+msgstr "&Import"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:88
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:132
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10009
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10391
+msgid "&Events"
+msgstr "&Events"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:92
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:136
+msgid "&Associations"
+msgstr "&Associations"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:96
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:140
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:226
+msgid "Umpires"
+msgstr "Umpires"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:100
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:144
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:222
+msgid "&Players"
+msgstr "&Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:104
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:148
+msgid "Ranking Poin&ts"
+msgstr "Ranking Poin&ts"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:108
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:152
+msgid "E&ntries"
+msgstr "E&ntries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:112
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:156
+msgid "&Positions"
+msgstr "&Positions"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:116
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:160
+msgid "&Schedules"
+msgstr "&Schedules"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:120
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:164
+msgid "&Results"
+msgstr "&Results"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:125
+msgid "&Online Entries"
+msgstr "&Online Entries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:130
+msgid "&Export"
+msgstr "&Export"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:168
+msgid "&For Ranking"
+msgstr "&For Ranking"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:172
+msgid "&For ITTF"
+msgstr "&For ITTF"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:178
+msgid "S&QL Editor"
+msgstr "S&QL Editor"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:183
+msgid "Cancel Double"
+msgstr "Cancel Double"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:193
+msgid "&Competition"
+msgstr "&Competition"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:195
+msgid "Team &System"
+msgstr "Team &System"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:199
+msgid "Group &Modus"
+msgstr "Group &Modus"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:203
+msgid "&Event"
+msgstr "&Event"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:207
+msgid "&Group"
+msgstr "&Group"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:212
+msgid "&Registration"
+msgstr "&Registration"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:214
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4929
+msgid "Associations"
+msgstr "Associations"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:218
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5053 Print/RasterRR.cpp:639
+msgid "Teams"
+msgstr "Teams"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:231
+msgid "&Draw"
+msgstr "&Draw"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:233
+msgid "Seeding"
+msgstr "Seeding"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:237
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2248
+msgid "Ranking"
+msgstr "Ranking"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:242
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1441
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2524 Dialogs/DrawChampionship.cpp:102
+#: Print/RasterKO.cpp:1157
+msgid "Qualification"
+msgstr "Qualification"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:246
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2525 Dialogs/DrawChampionship.cpp:103
+msgid "Championship"
+msgstr "Championship"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:250
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2526
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5638
+msgid "Consolation"
+msgstr "Consolation"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:254
+msgid "From Qualification"
+msgstr "From Qualification"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:258
+msgid "Groups from Qualification"
+msgstr "Groups from Qualification"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:262
+msgid "Consolation of Knock-Out"
+msgstr "Consolation of Knock-Out"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:266 wx/MainFrm.cpp:280
+msgid "CSD"
+msgstr "CSD"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:271
+msgid "&Match"
+msgstr "&Match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:273
+msgid "&Time"
+msgstr "&Time"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:277
+msgid "&Result"
+msgstr "&Result"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:281
+msgid "&Match Result"
+msgstr "&Match Result"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:286
+msgid "&Overview"
+msgstr "&Overview"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:290
+msgid "&Unscheduled"
+msgstr "&Unscheduled"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:295
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12689
+msgid "&Print"
+msgstr "&Print"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:297
+msgid "&Preview"
+msgstr "&Preview"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:302
+msgid "&Create PDF"
+msgstr "&Create PDF"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:308
+msgid "&Reports"
+msgstr "&Reports"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:312
+msgid "Results &Forms"
+msgstr "Results &Forms"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:316
+#| msgid "Printed"
+msgid "Print Played"
+msgstr "Print Played"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:320
+msgid "&Manage Options"
+msgstr "&Manage Options"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:353
+msgid "TTM32"
+msgstr "TTM32"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:377
+msgid "Database Login"
+msgstr "Database Login"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:406
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:685
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11686
+msgid "Server"
+msgstr "Server"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:430
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:705
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11706
+msgid "Database"
+msgstr "Database"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:463
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11734
+msgid "Windows Authentication"
+msgstr "Windows Authentication"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:475
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4785
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11763
+msgid "Username"
+msgstr "Username"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:498
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4808
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11782
+msgid "Password"
+msgstr "Password"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:534
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:617
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:801
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:867
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1071
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1166
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1526
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2908
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4729
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5390
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6393
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6811
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7437
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8167
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8460
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8729
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10730
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11016
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12559
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13499
+msgid "&OK"
+msgstr "&OK"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:541
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:624
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:808
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:874
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1078
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1173
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1533
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2915
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4736
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5397
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6400
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6818
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7444
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8174
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8467
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8736
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10737
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11023
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12566
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13506
+msgid "&Cancel"
+msgstr "&Cancel"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:552
+msgid "Detach Tournament"
+msgstr "Detach Tournament"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:567
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:664
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:834
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4840
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11517
+msgid "Tournament"
+msgstr "Tournament"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:596
+msgid "Delete Directory"
+msgstr "Delete Directory"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:635
+msgid "Create Tournament"
+msgstr "Create Tournament"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:744
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1379
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3123
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11634 Dialogs/CpListView.cpp:91
+#: Dialogs/RkEdit.cpp:125
+msgid "Type"
+msgstr "Type"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:747
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11637
+msgid "Youth"
+msgstr "Youth"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:748
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11638
+msgid "Regular"
+msgstr "Regular"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:749
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11639
+msgid "Veterans"
+msgstr "Veterans"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:769
+msgid "Group Modus"
+msgstr "Group Modus"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:772
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11657
+msgid "ITTF"
+msgstr "ITTF"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:773
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11658
+msgid "DTTB"
+msgstr "DTTB"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:819
+msgid "Open Tournament"
+msgstr "Open Tournament"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:884
+msgid "Preview"
+msgstr "Preview"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:901
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5670
+msgid "|<"
+msgstr "|<"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:916
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5683
+msgid "<"
+msgstr "<"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:931
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5696
+msgid ">"
+msgstr ">"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:946
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5709
+msgid ">|"
+msgstr ">|"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:997
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3237
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4574
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8915
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10485
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11476
+msgid "Print"
+msgstr "Print"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1011
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1232
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1886
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2033
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2317
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2452
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3089
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3275
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3493
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4423
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4593
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5530
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5806
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6508
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7623
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7896
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9003
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10062
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10338
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10428
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10497
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10962
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13266
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13639
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14158
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14297 Dialogs/OvListBook.cpp:255
+#: Dialogs/SQLEditorBook.cpp:256
+msgid "Close"
+msgstr "Close"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1133
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1264
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2571
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5271
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7672
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12120
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12140
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13310
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13688 Dialogs/CpEntries.cpp:44
+#: Dialogs/CpListView.cpp:80 Dialogs/GrListView.cpp:158
+#: Dialogs/GrOptionsList.cpp:101 Dialogs/GrOptionsList.cpp:154
+#: Dialogs/GrOptionsList.cpp:215 Dialogs/GrPrint.cpp:107
+#: Dialogs/GrPrintBase.cpp:382 Dialogs/MdListView.cpp:56
+#: Dialogs/NaListView.cpp:82 Dialogs/PlHistView.cpp:23
+#: Dialogs/PlListView.cpp:38 Dialogs/RkListView.cpp:108
+#: Dialogs/SyListView.cpp:55 Dialogs/TmListView.cpp:132
+#: Dialogs/UpListView.cpp:27
+msgid "Name"
+msgstr "Name"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1183
+msgid "Update Available"
+msgstr "Update Available"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1193
+msgid "An update is available."
+msgstr "An update is available."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1203 wx/TT32App.cpp:547
+msgid "View changes"
+msgstr "View changes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1214
+msgid "Download and install"
+msgstr "Download and install"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1288
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2595
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5291
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7692
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12121
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12141
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13330
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13715 Dialogs/CpListView.cpp:83
+#: Dialogs/GrListView.cpp:161 Dialogs/GrPrint.cpp:110 Dialogs/MdListView.cpp:59
+#: Dialogs/NaListView.cpp:85 Dialogs/RkListView.cpp:111
+#: Dialogs/SyListView.cpp:58 Dialogs/TmListView.cpp:133
+msgid "Description"
+msgstr "Description"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1321
+msgid "Default Team System"
+msgstr "Default Team System"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1346
+msgid "Default Best of"
+msgstr "Default Best of"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1387
+msgid "Single"
+msgstr "Single"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1397
+msgid "Double"
+msgstr "Double"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1407
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5032
+msgid "Mixed"
+msgstr "Mixed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1417
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8006
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8275
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8568 Print/RasterSC.cpp:918
+msgid "Team"
+msgstr "Team"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1449
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9437
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14482
+msgid "Male"
+msgstr "Male"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1459
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9458
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14503
+msgid "Female"
+msgstr "Female"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1476
+msgid "Born on"
+msgstr "Born on"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1497 Dialogs/CpEdit.cpp:131
+msgid "or after"
+msgstr "or after"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1565
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2075
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2353
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2488
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2957
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3138
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3318
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4465
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5572
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5847
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6542
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6858
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7493
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7938
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8207
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8500
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10144
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10536
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10775
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13086
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14036 Dialogs/MtUnscheduled.cpp:149
+msgid "Event"
+msgstr "Event"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1590
+msgid "Entries / Pairs"
+msgstr "Entries / Pairs"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1609
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1691
+msgid "Complete"
+msgstr "Complete"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1638
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1775
+msgid "Open"
+msgstr "Open"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1732
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1816
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1950
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3378
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4339
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5465
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7831
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9923
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13195
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13574
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14094
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14232
+msgid "Add"
+msgstr "Add"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1744
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1828
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1962
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3390
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4351
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5477
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5599
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6788
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7583
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7843
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9935
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10684
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10835
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13207
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13586
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14106
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14244
+msgid "Edit"
+msgstr "Edit"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1756
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1840
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1974
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3402
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4363
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5489
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7855
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9947
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13219
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13598
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14118
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14256
+msgid "Delete"
+msgstr "Delete"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1993
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4959
+msgid "Entries"
+msgstr "Entries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2088
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12846
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13753
+msgid "Combo!"
+msgstr "Combo!"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2100
+msgid "From stage"
+msgstr "From stage"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2125
+msgid "To stage"
+msgstr "To stage"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2150
+msgid "To group"
+msgstr "To group"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2175
+msgid "From pos."
+msgstr "From pos."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2200
+msgid "To pos."
+msgstr "To pos."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2225
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2403
+msgid "Seed"
+msgstr "Seed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2264
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12119
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12139 Dialogs/NmEditETS.cpp:171
+msgid "None"
+msgstr "None"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2265
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2985
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4490
+msgid "Groups"
+msgstr "Groups"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2266
+msgid "World"
+msgstr "World"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2279
+msgid "Use lpsolve"
+msgstr "Use lpsolve"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2298
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2433
+msgid "Draw"
+msgstr "Draw"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2378
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2509
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3139 Dialogs/GrListView.cpp:164
+#: Dialogs/GrPrint.cpp:113
+msgid "Stage"
+msgstr "Stage"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2538
+msgid "Sort Order"
+msgstr "Sort Order"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2628
+msgid "Group System"
+msgstr "Group System"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2653
+msgid "TeamSystem"
+msgstr "TeamSystem"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2699
+msgid "No. of Entries"
+msgstr "No. of Entries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2733
+msgid "No. of Rounds"
+msgstr "No. of Rounds"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2758
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6137
+msgid "Best of"
+msgstr "Best of"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2792
+msgid "No. of Qual. Rounds"
+msgstr "No. of Qual. Rounds"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2818
+msgid "Winner is"
+msgstr "Winner is"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2843
+msgid "No Match for 3rd Place"
+msgstr "No Match for 3rd Place"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2855
+msgid "Only Match for 3rd Place"
+msgstr "Only Match for 3rd Place"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2885
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4686
+msgid "Template"
+msgstr "Template"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3011
+msgid "File"
+msgstr "File"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3032
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3214
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4551
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4889
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9297
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11949
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12260
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12335
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12388
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12427
+msgid "..."
+msgstr "..."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3077
+msgid "Export"
+msgstr "Export"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3136
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3141
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6935
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7183 Dialogs/MtUnscheduled.cpp:151
+#: Print/Raster.cpp:1183 Print/RasterKO.cpp:1162 Print/RasterKO.cpp:1490
+#: Print/RasterKO.cpp:1523 Print/RasterKO.cpp:1874 Print/RasterKO.cpp:1879
+msgid "Round"
+msgstr "Round"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3140
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4694
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4704
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5613
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5868
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6563
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6879
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7233
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7522
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7959
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8228
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8521
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13111 Dialogs/MtUnscheduled.cpp:150
+msgid "Group"
+msgstr "Group"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3153
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9098 Dialogs/OvList.cpp:1448
+msgid "Finished"
+msgstr "Finished"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3176
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4513
+msgid "Options"
+msgstr "Options"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3256
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8903
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10319
+msgid "Refresh"
+msgstr "Refresh"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3421
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9978 Dialogs/GrListView.cpp:167
+#: Dialogs/PlListView.cpp:45
+msgid "Notes"
+msgstr "Notes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3440
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4382
+msgid "Publish"
+msgstr "Publish"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3452
+msgid "Unpublish"
+msgstr "Unpublish"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3515
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11372
+msgid "Print Options"
+msgstr "Print Options"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3532
+msgid "Round Robin"
+msgstr "Round Robin"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3565
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3904
+msgid "Treat byes like players"
+msgstr "Treat byes like players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3575
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3914
+msgid "Start new page"
+msgstr "Start new page"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3585
+msgid "Print schedule in raster"
+msgstr "Print schedule in raster"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3595
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3934
+msgid "Print Notes"
+msgstr "Print Notes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3640
+msgid "Include match details"
+msgstr "Include match details"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3661
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4000
+msgid "Result from last played round"
+msgstr "Result from last played round"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3673
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3979
+msgid "Print individual matches"
+msgstr "Print individual matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3720
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4047
+msgid "Print selected rounds"
+msgstr "Print selected rounds"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3741
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8864
+msgid "From"
+msgstr "From"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3766
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8952
+msgid "To"
+msgstr "To"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3826
+msgid "Combined scoresheet"
+msgstr "Combined scoresheet"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3847
+msgid "Print participate consolation"
+msgstr "Print participate consolation"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3871 Dialogs/MdItem.cpp:24
+msgid "Knock Out"
+msgstr "Knock Out"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3924
+msgid "Print position numbers"
+msgstr "Print position numbers"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4068
+msgid "No Qualification"
+msgstr "No Qualification"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4080
+msgid "Rounds"
+msgstr "Rounds"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4105
+msgid "Last rounds"
+msgstr "Last rounds"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4152
+msgid "Print selected matches"
+msgstr "Print selected matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4173 Print/RasterRR.cpp:277
+#: Print/RasterRR.cpp:838
+msgid "Matches"
+msgstr "Matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4198
+msgid "Last Matches"
+msgstr "Last Matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4236
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5222
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7752
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9524
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9844
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13032
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13983
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14644
+msgid "OK"
+msgstr "OK"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4255
+msgid "Save As ..."
+msgstr "Save As ..."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4274
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5234
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7764
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9536
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9856
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11488
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13044
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13995
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14656
+msgid "Cancel"
+msgstr "Cancel"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4635
+msgid "Start with Number"
+msgstr "Start with Number"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4660
+msgid "Number of Groups"
+msgstr "Number of Groups"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4746
+msgid "Import from Online Entries"
+msgstr "Import from Online Entries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4762
+msgid "Url"
+msgstr "Url"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4774
+msgid "https://www.ttm.co.at/onlineentries/rpc2"
+msgstr "https://www.ttm.co.at/onlineentries/rpc2"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4865
+msgid "Directory for import files"
+msgstr "Directory for import files"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4912
+msgid "Import"
+msgstr "Import"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4919
+msgid "Competitions"
+msgstr "Competitions"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4939 Dialogs/MtTeam.cpp:279
+#: Print/RasterRR.cpp:641 Print/RasterSC.cpp:350 Print/RasterSC.cpp:1289
+msgid "Players"
+msgstr "Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4949
+msgid "Ranking Points"
+msgstr "Ranking Points"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4990
+msgid "Singles"
+msgstr "Singles"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5011
+msgid "Doubles"
+msgstr "Doubles"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5069
+msgid "Clear tournament before import"
+msgstr "Clear tournament before import"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5107
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9590
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10123
+msgid "Player"
+msgstr "Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5147
+msgid "Partner"
+msgstr "Partner"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5168
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9470
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10557
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13742
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14524
+msgid "Association"
+msgstr "Association"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5311
+msgid "Group Size"
+msgstr "Group Size"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5367
+msgid "Automatic"
+msgstr "Automatic"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5728
+msgid "Group View"
+msgstr "Group View"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5749
+msgid "Match / Time"
+msgstr "Match / Time"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5768
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6489
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6775
+msgid "Score Sheet"
+msgstr "Score Sheet"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5787
+msgid "Group Table"
+msgstr "Group Table"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5889
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6438
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6584
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6900
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7980
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8249
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8542 Print/RasterSC.cpp:245
+msgid "Match No."
+msgstr "Match No."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5924
+msgid "Team Match"
+msgstr "Team Match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6002
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6064
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6685
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6697
+msgid "Lost by w.o."
+msgstr "Lost by w.o."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6019
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6081 Print/Raster.cpp:1694
+#: Print/RasterKO.cpp:99
+msgid "Injured"
+msgstr "Injured"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6036
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6098
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12901 Print/Raster.cpp:1700
+#: Print/RasterKO.cpp:101
+msgid "Disqualified"
+msgstr "Disqualified"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6172
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6182
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6192
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6202
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6212
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6222
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6232
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6242
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6252
+#, c-format
+msgid "Game %i"
+msgstr "Game %i"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6377
+msgid "Swap Result"
+msgstr "Swap Result"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6470 Dialogs/MtListView.cpp:494
+#: Dialogs/MtTeam.cpp:282 Dialogs/StListView.cpp:529 Print/Raster.cpp:1390
+#: Print/RasterSC.cpp:436
+msgid "Result"
+msgstr "Result"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6619
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6631
+msgid "Double click to enter nomination"
+msgstr "Double click to enter nomination"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6653
+msgid "<->"
+msgstr "<->"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6718 Print/Raster.cpp:1811
+#: Print/RasterSC.cpp:538 Print/RasterSC.cpp:1536
+msgid "Winner"
+msgstr "Winner"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:6970 Dialogs/MtUnscheduled.cpp:152
+#: Dialogs/OvList.cpp:1137 Print/Raster.cpp:1350
+msgid "Match"
+msgstr "Match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7018
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7037
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8783
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11182 Dialogs/MtListView.cpp:474
+#: Dialogs/MtUnscheduled.cpp:154 Print/RasterRR.cpp:479 Print/RasterSC.cpp:118
+msgid "Date"
+msgstr "Date"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7061
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8800
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11243 Dialogs/MtListView.cpp:477
+#: Dialogs/MtUnscheduled.cpp:155 Print/RasterRR.cpp:480 Print/RasterSC.cpp:119
+msgid "Time"
+msgstr "Time"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7085
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8810
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11304
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11654 Dialogs/MtListView.cpp:480
+#: Print/RasterRR.cpp:481 Print/RasterSC.cpp:120
+msgid "Table"
+msgstr "Table"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7119
+msgid "Sequ."
+msgstr "Sequ."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7165
+msgid "Apply To"
+msgstr "Apply To"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7173
+msgid "This Match"
+msgstr "This Match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7193
+msgid "Round Exclude Byes"
+msgstr "Round Exclude Byes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7203
+msgid "Match in Groups"
+msgstr "Match in Groups"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7213
+msgid "Round in Groups"
+msgstr "Round in Groups"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7223
+msgid "Round in Groups Exclude Byes"
+msgstr "Round in Groups Exclude Byes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7281
+msgid "Tables"
+msgstr "Tables"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7300
+msgid "Avail. Tables"
+msgstr "Avail. Tables"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7325
+msgid "Decrement No"
+msgstr "Decrement No"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7347
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7366
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8991 Dialogs/MtListView.cpp:483
+#: Dialogs/OvList.cpp:1137 Print/Raster.cpp:1778
+msgid "Umpire"
+msgstr "Umpire"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7391
+msgid "Assistant"
+msgstr "Assistant"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7415
+msgid "Assign Player"
+msgstr "Assign Player"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:7712
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12122
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12142 Dialogs/NaListView.cpp:88
+#: Dialogs/PlListView.cpp:44
+msgid "Region"
+msgstr "Region"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8036
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8305
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8598
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13787
+msgid "Available Players"
+msgstr "Available Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8057
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8326
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8619
+msgid "Nominated Players"
+msgstr "Nominated Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8069
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8338
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8631 Print/RasterSC.cpp:997
+#: Print/RasterSC.cpp:1018
+msgid "Nomination"
+msgstr "Nomination"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8107
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8376
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8669
+msgid ">>"
+msgstr ">>"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8120
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8389
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8682
+msgid "<<"
+msgstr "<<"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8432
+msgid "Player 4 replaces"
+msgstr "Player 4 replaces"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8842
+msgid "Overview for"
+msgstr "Overview for"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8927
+msgid "Grid size"
+msgstr "Grid size"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8938
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8941
+msgid "Medium"
+msgstr "Medium"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8940
+msgid "Small"
+msgstr "Small"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8942
+msgid "Large"
+msgstr "Large"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9046 Dialogs/OvList.cpp:1444
+#: Tools/InfoSystem.cpp:99
+msgid "Error"
+msgstr "Error"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9059 Dialogs/OvList.cpp:1445
+msgid "Incomplete"
+msgstr "Incomplete"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9072 Dialogs/OvList.cpp:1446
+msgid "Not Printed"
+msgstr "Not Printed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9085 Dialogs/GrListView.cpp:172
+#: Dialogs/GrPrint.cpp:116 Dialogs/OvList.cpp:1447
+msgid "Printed"
+msgstr "Printed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9111 Dialogs/OvList.cpp:1449
+msgid "Checked"
+msgstr "Checked"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9209
+msgid "Player Number"
+msgstr "Player Number"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9245
+msgid "Ext. ID"
+msgstr "Ext. ID"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9270 Dialogs/RkEdit.cpp:128
+msgid "Rank. Pts."
+msgstr "Rank. Pts."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9311
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14391
+msgid "Family Name"
+msgstr "Family Name"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9345
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14425
+msgid "Given Name"
+msgstr "Given Name"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9379
+msgid "Year of Birth"
+msgstr "Year of Birth"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9414
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14459 Dialogs/CpEntries.cpp:46
+#: Dialogs/CpListView.cpp:96 Dialogs/PlHistView.cpp:25
+#: Dialogs/PlListView.cpp:40 Dialogs/UpListView.cpp:29
+msgid "Sex"
+msgstr "Sex"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9625
+msgid "Available Events"
+msgstr "Available Events"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9642
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10200
+msgid "Entered Events"
+msgstr "Entered Events"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9676
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13844
+msgid "Add>>>"
+msgstr "Add>>>"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9688
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13856
+msgid "Remove<<<"
+msgstr "Remove<<<"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9733
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10254
+msgid "Entered Groups"
+msgstr "Entered Groups"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9781
+msgid "Schedules"
+msgstr "Schedules"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9959
+msgid "History"
+msgstr "History"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:9990
+msgid "Clone"
+msgstr "Clone"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10021
+#| msgid "Events"
+msgid "Event Hist"
+msgstr "Event Hist"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10183
+#| msgid "Events"
+msgid "Events Updated"
+msgstr "Events Updated"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10237
+#| msgid "Group Template"
+msgid "Groups Updated"
+msgstr "Groups Updated"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10578
+msgid "Direct Entries"
+msgstr "Direct Entries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10615
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10900
+msgid "Qualifiers"
+msgstr "Qualifiers"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10672
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13900
+msgid "Up"
+msgstr "Up"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10696
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13912
+msgid "Down"
+msgstr "Down"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10871
+msgid "DirectEntries"
+msgstr "DirectEntries"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:10929
+msgid "Change"
+msgstr "Change"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11055
+msgid "Print Score Sheet of"
+msgstr "Print Score Sheet of"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11076
+msgid "This individual match"
+msgstr "This individual match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11097
+msgid "This match"
+msgstr "This match"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11109
+msgid "This round"
+msgstr "This round"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11130
+msgid "This Group"
+msgstr "This Group"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11151
+msgid "Scheduled matches"
+msgstr "Scheduled matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11209
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11270
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11331
+msgid "until"
+msgstr "until"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11379
+msgid "Not yet printed"
+msgstr "Not yet printed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11408
+msgid "Combined Scoresheet"
+msgstr "Combined Scoresheet"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11429
+msgid "Print Participate Consolation"
+msgstr "Print Participate Consolation"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11457
+msgid "Reset Printed"
+msgstr "Reset Printed"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11541
+msgid "Title"
+msgstr "Title"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11574
+msgid "Subtitle"
+msgstr "Subtitle"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11598
+msgid "Language"
+msgstr "Language"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11669
+msgid "Connection"
+msgstr "Connection"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11818
+msgid "Backup Time"
+msgstr "Backup Time"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11852
+msgid "minutes"
+msgstr "minutes"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11883
+msgid "Keep Last"
+msgstr "Keep Last"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11905
+msgid "Append Timestamp"
+msgstr "Append Timestamp"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11917
+msgid "Backup Path"
+msgstr "Backup Path"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11961
+msgid "Print Settings"
+msgstr "Print Settings"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:11990
+msgid "Assoc. Abbrev. Width"
+msgstr "Assoc. Abbrev. Width"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12015
+msgid "Assoc Desc. Width"
+msgstr "Assoc Desc. Width"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12040
+msgid "Assoc. Region Width"
+msgstr "Assoc. Region Width"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12065
+msgid "Team Abbrev. Width"
+msgstr "Team Abbrev. Width"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12090
+msgid "Players Number Width"
+msgstr "Players Number Width"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12116
+msgid "Print Association"
+msgstr "Print Association"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12136
+msgid "Print Association in Teams"
+msgstr "Print Association in Teams"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12174
+msgid "KO Caption Margin"
+msgstr "KO Caption Margin"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12198
+msgid "%"
+msgstr "%"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12210
+msgid "Scale to Paper Size"
+msgstr "Scale to Paper Size"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12222
+msgid "Fonts"
+msgstr "Fonts"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12272
+msgid "Print Content"
+msgstr "Print Content"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12296
+msgid "Print Banner"
+msgstr "Print Banner"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12320
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12373
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12441
+msgid "Remove"
+msgstr "Remove"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12349
+msgid "Print Logo"
+msgstr "Print Logo"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12402
+msgid "Print Sponsor"
+msgstr "Print Sponsor"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12455
+msgid "Print Language"
+msgstr "Print Language"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12478
+msgid "Scoresheet"
+msgstr "Scoresheet"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12490
+msgid "Print Service And Timeout"
+msgstr "Print Service And Timeout"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12500
+msgid "Print Players Signature"
+msgstr "Print Players Signature"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12510
+msgid "Print Coaches"
+msgstr "Print Coaches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12520
+msgid "Print Umpires"
+msgstr "Print Umpires"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12530
+msgid "Print Call Area"
+msgstr "Print Call Area"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12540
+msgid "Print Remarks"
+msgstr "Print Remarks"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12676
+msgid "&Execute"
+msgstr "&Execute"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12702
+msgid "&Save"
+msgstr "&Save"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12722
+msgid "Open Query"
+msgstr "Open Query"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12735
+msgid "Save Query"
+msgstr "Save Query"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12835 Dialogs/StListView.cpp:525
+msgid "Player(s) / Team"
+msgstr "Player(s) / Team"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12891
+msgid "Seeded"
+msgstr "Seeded"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12918
+msgid "No Consolation"
+msgstr "No Consolation"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12928
+msgid "Gave Up"
+msgstr "Gave Up"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12978
+msgid "Final Position"
+msgstr "Final Position"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13137
+msgid "Seed. Pos."
+msgstr "Seed. Pos."
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13350
+msgid "No of Matches"
+msgstr "No of Matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13385
+msgid "No of Singles"
+msgstr "No of Singles"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13413
+msgid "No of Doubles"
+msgstr "No of Doubles"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13464
+msgid "Play all Matches"
+msgstr "Play all Matches"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13804
+msgid "Entered Players"
+msgstr "Entered Players"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13933
+msgid "Show All"
+msgstr "Show All"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14346
+msgid "Upmpire Number"
+msgstr "Upmpire Number"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14559
+msgid "Email"
+msgstr "Email"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14592
+msgid "Phone"
+msgstr "Phone"
+
+#: Database/CpStore.cpp:602 Database/LtStore.cpp:521 Database/LtStore.cpp:1116
+#: Database/MtStore.cpp:2785 Database/MtStore.cpp:3597 Database/NaStore.cpp:521
+#: Database/PlStore.cpp:870 Database/PsStore.cpp:694 Database/RpStore.cpp:274
+#: Database/StStore.cpp:907 Database/UpStore.cpp:639
+#, c-format
+msgid "First comment is not %s but \"%s\". Continue anyway?"
+msgstr "First comment is not %s but \"%s\". Continue anyway?"
+
+#: Database/LtStore.cpp:564
+#, c-format
+msgid "Event %s does not exist"
+msgstr "Event %s does not exist"
+
+#: Database/LtStore.cpp:923
+#, c-format
+msgid ""
+"The following player names were not found, are not unique, or are not "
+"allowed to play in that event:\n"
+"%s"
+msgstr ""
+"The following player names were not found, are not unique, or are not "
+"allowed to play in that event:\n"
+"%s"
+
+#: Database/StStore.cpp:952
+#, c-format
+msgid "Event %s does not exist. Continue anyway?"
+msgstr "Event %s does not exist. Continue anyway?"
+
+#: Database/StStore.cpp:972
+#, c-format
+msgid "Group %s of event %s does not exist. Continue anyway?"
+msgstr "Group %s of event %s does not exist. Continue anyway?"
+
+#: Database/StStore.cpp:987
+#, c-format
+msgid "Group %s of event %s has already started!"
+msgstr "Group %s of event %s has already started!"
+
+#: Database/StStore.cpp:995
+#, c-format
+msgid "A draw has been performed and scheduled for group %s of event %s!"
+msgstr "A draw has been performed and scheduled for group %s of event %s!"
+
+#: Database/StStore.cpp:999
+#, c-format
+msgid "A draw has been performed for group %s of event %s. Continue anyway?"
+msgstr "A draw has been performed for group %s of event %s. Continue anyway?"
+
+#: Database/StStore.cpp:1011
+#, c-format
+msgid "Pos %d exceeds size of group %s of event %s. Continue anyway?"
+msgstr "Pos %d exceeds size of group %s of event %s. Continue anyway?"
+
+#: Database/StoreObj.cpp:18
+msgid "Tournament not opend"
+msgstr "Tournament not opend"
+
+#: Dialogs/CpEdit.cpp:129
+msgid "or before"
+msgstr "or before"
+
+#: Dialogs/CpEntries.cpp:43 Dialogs/PlHistView.cpp:22 Dialogs/PlListView.cpp:37
+msgid "Pl.Nr."
+msgstr "Pl.Nr."
+
+#: Dialogs/CpEntries.cpp:45 Dialogs/PlHistView.cpp:24 Dialogs/PlListView.cpp:39
+#: Dialogs/TmListView.cpp:134 Dialogs/UpListView.cpp:28
+msgid "Assoc."
+msgstr "Assoc."
+
+#: Dialogs/CpEntries.cpp:47 Dialogs/PlHistView.cpp:26 Dialogs/PlListView.cpp:41
+msgid "Born in"
+msgstr "Born in"
+
+#: Dialogs/CpEntries.cpp:48 Dialogs/PlHistView.cpp:27 Dialogs/PlListView.cpp:42
+msgid "Extern ID"
+msgstr "Extern ID"
+
+#: Dialogs/CpEntries.cpp:49 Dialogs/PlListView.cpp:43
+msgid "Rk.Pts."
+msgstr "Rk.Pts."
+
+#: Dialogs/CpEntries.cpp:395 Dialogs/CpEntries.cpp:469
+#: Dialogs/TmListView.cpp:73 Dialogs/TmListView.cpp:88
+msgid "Edit Team"
+msgstr "Edit Team"
+
+#: Dialogs/CpEntries.cpp:412 Dialogs/CpEntries.cpp:439
+msgid "Edit Double"
+msgstr "Edit Double"
+
+#: Dialogs/CpEntries.cpp:475
+msgid "Select Player"
+msgstr "Select Player"
+
+#: Dialogs/CpEntries.cpp:552 Dialogs/TmListView.cpp:97
+msgid "Are you sure to delete selected team(s)?"
+msgstr "Are you sure to delete selected team(s)?"
+
+#: Dialogs/CpEntries.cpp:585
+msgid "Are you sure to delete selected entry?"
+msgstr "Are you sure to delete selected entry?"
+
+#: Dialogs/CpListView.cpp:86
+msgid "Year"
+msgstr "Year"
+
+#: Dialogs/CpListView.cpp:106 Dialogs/CpListView.cpp:116
+msgid "Edit Event"
+msgstr "Edit Event"
+
+#: Dialogs/CpListView.cpp:125
+msgid "Are you sure to delete selected event(s)?"
+msgstr "Are you sure to delete selected event(s)?"
+
+#: Dialogs/CpListView.cpp:153
+msgid "Edit Entries"
+msgstr "Edit Entries"
+
+#: Dialogs/DrawChampionship.cpp:126
+msgid "From round"
+msgstr "From round"
+
+#: Dialogs/DrawChampionship.cpp:127
+msgid "To round"
+msgstr "To round"
+
+#: Dialogs/GrExport.cpp:59
+msgid "Select Export File"
+msgstr "Select Export File"
+
+#: Dialogs/GrExport.cpp:60 wx/MainFrm.cpp:348 wx/MainFrm.cpp:389
+msgid "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"
+msgstr "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"
+
+#: Dialogs/GrExport.cpp:173 Dialogs/GrPrint.cpp:128
+#: Dialogs/MtUnscheduled.cpp:192
+msgid "All Groups"
+msgstr "All Groups"
+
+#: Dialogs/GrListView.cpp:155 Dialogs/GrOptionsList.cpp:214
+msgid "Pbl"
+msgstr "Pbl"
+
+#: Dialogs/GrListView.cpp:194 Dialogs/GrListView.cpp:212
+msgid "Edit Group"
+msgstr "Edit Group"
+
+#: Dialogs/GrListView.cpp:221
+msgid "Are you sure to delete selected group(s)?"
+msgstr "Are you sure to delete selected group(s)?"
+
+#: Dialogs/GrListView.cpp:282 Dialogs/PlListView.cpp:288
+msgid "Add Note"
+msgstr "Add Note"
+
+#: Dialogs/GrOptionsList.cpp:101 Dialogs/GrOptionsList.cpp:154
+#: Dialogs/GrPrintBase.cpp:382 Dialogs/GrPrintBase.cpp:391
+msgid "Enter Print Option Name"
+msgstr "Enter Print Option Name"
+
+#: Dialogs/GrOptionsList.cpp:111 Dialogs/GrOptionsList.cpp:164
+#: Dialogs/GrPrintBase.cpp:414
+#, c-format
+msgid "Print option %s already exists. Overwrite?"
+msgstr "Print option %s already exists. Overwrite?"
+
+#: Dialogs/GrOptionsList.cpp:186
+msgid "Are you sure to delete selected print options?"
+msgstr "Are you sure to delete selected print options?"
+
+#: Dialogs/GrPrint.cpp:241 Dialogs/GrPrintBase.cpp:113
+msgid "Result Forms"
+msgstr "Result Forms"
+
+#: Dialogs/GrPrint.cpp:297
+#, c-format
+msgid "Print %d Result Form(s)"
+msgstr "Print %d Result Form(s)"
+
+#: Dialogs/GrTemplate.cpp:28
+msgid "Group Template"
+msgstr "Group Template"
+
+#: Dialogs/ImportOnlineEntries.cpp:265
+#, c-format
+msgid ""
+"Could not read list of tournaments: \n"
+"%s"
+msgstr ""
+"Could not read list of tournaments: \n"
+"%s"
+
+#: Dialogs/ImportOnlineEntries.cpp:271
+msgid "Could not read list of tournaments"
+msgstr "Could not read list of tournaments"
+
+#: Dialogs/ImportOnlineEntries.cpp:292
+msgid "No tournaments found"
+msgstr "No tournaments found"
+
+#: Dialogs/ImportOnlineEntries.cpp:329
+msgid "Reading List of Tournaments"
+msgstr "Reading List of Tournaments"
+
+#: Dialogs/ImportOnlineEntries.cpp:348
+msgid "Overwrite exsting import files?"
+msgstr "Overwrite exsting import files?"
+
+#: Dialogs/ImportOnlineEntries.cpp:413
+msgid "Reading Tournament"
+msgstr "Reading Tournament"
+
+#: Dialogs/ImportOnlineEntries.cpp:439
+#, c-format
+msgid ""
+"Could not read tournament:\n"
+"%s"
+msgstr ""
+"Could not read tournament:\n"
+"%s"
+
+#: Dialogs/ImportOnlineEntries.cpp:979
+msgid "Clear Tournament"
+msgstr "Clear Tournament"
+
+#: Dialogs/ImportOnlineEntries.cpp:1023
+msgid "Import Competitions"
+msgstr "Import Competitions"
+
+#: Dialogs/ImportOnlineEntries.cpp:1031 wx/MainFrm.cpp:199
+msgid "Import Associations"
+msgstr "Import Associations"
+
+#: Dialogs/ImportOnlineEntries.cpp:1039 wx/MainFrm.cpp:203
+msgid "Import Players"
+msgstr "Import Players"
+
+#: Dialogs/ImportOnlineEntries.cpp:1047
+msgid "Import Rankikng"
+msgstr "Import Rankikng"
+
+#: Dialogs/ImportOnlineEntries.cpp:1058
+msgid "Import Singles"
+msgstr "Import Singles"
+
+#: Dialogs/ImportOnlineEntries.cpp:1066
+msgid "Import Doubles"
+msgstr "Import Doubles"
+
+#: Dialogs/ImportOnlineEntries.cpp:1074
+msgid "Import Mixed"
+msgstr "Import Mixed"
+
+#: Dialogs/ImportOnlineEntries.cpp:1082
+msgid "Import Teams"
+msgstr "Import Teams"
+
+#: Dialogs/ImportOnlineEntries.cpp:1109
+msgid "Import Tournament"
+msgstr "Import Tournament"
+
+#: Dialogs/ImportOnlineEntries.cpp:1144
+msgid "Select Directory for Import Files"
+msgstr "Select Directory for Import Files"
+
+#: Dialogs/MdEdit.cpp:112
+#, c-format
+msgid "Wrong players at round %d, match %d"
+msgstr "Wrong players at round %d, match %d"
+
+#: Dialogs/MdEdit.cpp:123 Dialogs/MdEdit.cpp:128
+#, c-format
+msgid "Same match at round %d match %d and round %d match %d"
+msgstr "Same match at round %d match %d and round %d match %d"
+
+#: Dialogs/MdEdit.cpp:139 Dialogs/MdEdit.cpp:144
+#, c-format
+msgid "Same match at round %d match %d and match %d"
+msgstr "Same match at round %d match %d and match %d"
+
+#: Dialogs/MdEdit.cpp:253 Dialogs/MtListView.cpp:384 Dialogs/MtListView.cpp:463
+#, c-format
+msgid "Round %d"
+msgstr "Round %d"
+
+#: Dialogs/MdEdit.cpp:254 Dialogs/SyEdit.cpp:69 Dialogs/SyEdit.cpp:174
+#, c-format
+msgid "Match %d"
+msgstr "Match %d"
+
+#: Dialogs/MdItem.cpp:28
+msgid "Double Knock Out"
+msgstr "Double Knock Out"
+
+#: Dialogs/MdItem.cpp:32
+msgid "Modified Double Knock Out"
+msgstr "Modified Double Knock Out"
+
+#: Dialogs/MdItem.cpp:36
+msgid "Play Off"
+msgstr "Play Off"
+
+#: Dialogs/MdListView.cpp:67 Dialogs/MdListView.cpp:77
+msgid "Edit Group Modus"
+msgstr "Edit Group Modus"
+
+#: Dialogs/MdListView.cpp:87
+msgid "Are you sure to delete selected group modi?"
+msgstr "Are you sure to delete selected group modi?"
+
+#: Dialogs/MtListView.cpp:382
+msgid "Qualification Round"
+msgstr "Qualification Round"
+
+#: Dialogs/MtListView.cpp:433 Dialogs/MtUnscheduled.cpp:269
+#: Dialogs/OvList.cpp:1505 Dialogs/OvList.cpp:1528 Dialogs/OvList.cpp:1649
+msgid "Edit Schedule"
+msgstr "Edit Schedule"
+
+#: Dialogs/MtListView.cpp:437 Dialogs/MtSelect.cpp:54 Dialogs/OvList.cpp:1509
+#: Dialogs/OvList.cpp:1639
+msgid "Edit Team Result"
+msgstr "Edit Team Result"
+
+#: Dialogs/MtListView.cpp:439 Dialogs/MtSelect.cpp:52 Dialogs/MtTeam.cpp:429
+#: Dialogs/OvList.cpp:1511 Dialogs/OvList.cpp:1527 Dialogs/OvList.cpp:1641
+msgid "Edit Result"
+msgstr "Edit Result"
+
+#: Dialogs/MtListView.cpp:468 Dialogs/MtListView.cpp:488 Dialogs/MtTeam.cpp:276
+#: Dialogs/MtUnscheduled.cpp:148
+msgid "Mt.Nr"
+msgstr "Mt.Nr"
+
+#: Dialogs/MtListView.cpp:517 Dialogs/MtTeam.cpp:541 Dialogs/Score.cpp:561
+#: Dialogs/Score.cpp:609
+msgid "Print Scoresheets"
+msgstr "Print Scoresheets"
+
+#: Dialogs/MtListView.cpp:526 wx/MainFrm.cpp:264
+msgid "Group Positioning"
+msgstr "Group Positioning"
+
+#: Dialogs/MtRes.cpp:78
+msgid "Wrong result"
+msgstr "Wrong result"
+
+#: Dialogs/MtRes.cpp:306
+msgid "Players are unknown or byes"
+msgstr "Players are unknown or byes"
+
+#: Dialogs/MtRes.cpp:385
+msgid "Match not finished. Store anyway?"
+msgstr "Match not finished. Store anyway?"
+
+#: Dialogs/MtRes.cpp:395 Dialogs/MtRes.cpp:404
+msgid "Result contradicts w/o, injured, or disqualified"
+msgstr "Result contradicts w/o, injured, or disqualified"
+
+#: Dialogs/MtSelect.cpp:50 Dialogs/OvList.cpp:1507 Dialogs/OvList.cpp:1637
+msgid "Edit Group Results"
+msgstr "Edit Group Results"
+
+#: Dialogs/MtSelect.cpp:73 Dialogs/OvList.cpp:1519 Dialogs/OvList.cpp:1525
+#: Dialogs/OvList.cpp:1601 Dialogs/OvList.cpp:1627 Dialogs/Score.cpp:328
+#: Dialogs/Score.cpp:345
+msgid "Print Scoresheet"
+msgstr "Print Scoresheet"
+
+#: Dialogs/MtTeam.cpp:118 Dialogs/MtTeam.cpp:329 Dialogs/MtTeam.cpp:512
+#: Print/RasterSC.cpp:1557
+msgid "Tie"
+msgstr "Tie"
+
+#: Dialogs/MtTeam.cpp:234 Dialogs/MtTeam.cpp:240
+msgid "Result contradicts w/o"
+msgstr "Result contradicts w/o"
+
+#: Dialogs/MtTeam.cpp:364 Dialogs/MtTeam.cpp:366 Dialogs/MtTeam.cpp:368
+msgid "Edit Nomination"
+msgstr "Edit Nomination"
+
+#: Dialogs/MtTeam.cpp:409
+msgid "Team match is already finished."
+msgstr "Team match is already finished."
+
+#: Dialogs/MtTeam.cpp:418
+msgid "Previous team match is not finished"
+msgstr "Previous team match is not finished"
+
+#: Dialogs/MtTime.cpp:79 Dialogs/MtTime.cpp:81 Dialogs/MtUnscheduled.cpp:102
+#: Dialogs/MtUnscheduled.cpp:104 Dialogs/OvItem.cpp:221 Dialogs/OvItem.cpp:355
+#: Print/RasterSC.cpp:224
+msgid "Qu."
+msgstr "Qu."
+
+#: Dialogs/MtTime.cpp:216
+msgid "Matches are already scheduled on selected tables"
+msgstr "Matches are already scheduled on selected tables"
+
+#: Dialogs/MtTime.cpp:261
+msgid "Match is played after next round"
+msgstr "Match is played after next round"
+
+#: Dialogs/MtTime.cpp:271
+msgid "Previous round has no time"
+msgstr "Previous round has no time"
+
+#: Dialogs/MtTime.cpp:276
+msgid "Match is played before previous round"
+msgstr "Match is played before previous round"
+
+#: Dialogs/MtUnscheduled.cpp:153
+msgid "Players / Teams"
+msgstr "Players / Teams"
+
+#: Dialogs/MtUnscheduled.cpp:164 Dialogs/PlHistEvents.cpp:193
+msgid "All Events"
+msgstr "All Events"
+
+#: Dialogs/NaListView.cpp:100 Dialogs/NaListView.cpp:110
+msgid "Edit Association"
+msgstr "Edit Association"
+
+#: Dialogs/NaListView.cpp:119
+msgid "Are you sure to delete selected association(s)?"
+msgstr "Are you sure to delete selected association(s)?"
+
+#: Dialogs/NmEditETS.cpp:172
+msgid "Player 1"
+msgstr "Player 1"
+
+#: Dialogs/NmEditETS.cpp:173
+msgid "Player 2"
+msgstr "Player 2"
+
+#: Dialogs/OvItem.cpp:218 Dialogs/OvItem.cpp:352 Print/RasterSC.cpp:221
+msgid "Rd."
+msgstr "Rd."
+
+#: Dialogs/OvItem.cpp:219 Dialogs/OvItem.cpp:353 Print/RasterSC.cpp:222
+msgid "SF"
+msgstr "SF"
+
+#: Dialogs/OvItem.cpp:220 Dialogs/OvItem.cpp:354 Print/RasterSC.cpp:223
+msgid "QF"
+msgstr "QF"
+
+#: Dialogs/OvItem.cpp:591 Tools/ListItem.cpp:214
+msgid "T.B.D."
+msgstr "T.B.D."
+
+#: Dialogs/OvList.cpp:43 Dialogs/OvList.cpp:52 Dialogs/OvList.cpp:76
+#: Dialogs/OvList.cpp:902
+msgid "No Time"
+msgstr "No Time"
+
+#: Dialogs/OvList.cpp:897
+msgid "Next"
+msgstr "Next"
+
+#: Dialogs/OvList.cpp:981
+#, c-format
+msgid "T %d"
+msgstr "T %d"
+
+#: Dialogs/OvList.cpp:983 Dialogs/OvList.cpp:1201
+msgid "No Table"
+msgstr ""
+"No\n"
+"Table"
+
+#: Dialogs/OvList.cpp:1026
+#, c-format
+msgid ""
+" \n"
+"%d\n"
+"Mts.\n"
+" "
+msgstr ""
+" \n"
+"%d\n"
+"Mts.\n"
+" "
+
+#: Dialogs/OvList.cpp:1158 Dialogs/OvList.cpp:1178
+msgid "Overview"
+msgstr "Overview"
+
+#: Dialogs/OvList.cpp:1520
+msgid "Print Match List"
+msgstr "Print Match List"
+
+#: Dialogs/OvList.cpp:1526
+msgid "Find Match"
+msgstr "Find Match"
+
+#: Dialogs/OvList.cpp:1529 Dialogs/OvList.cpp:1659
+msgid "Swap Table"
+msgstr "Swap Table"
+
+#: Dialogs/OvList.cpp:1647
+msgid "Edit Group Schedule"
+msgstr "Edit Group Schedule"
+
+#: Dialogs/OvList.cpp:1659
+msgid "Enter new table no."
+msgstr "Enter new table no."
+
+#: Dialogs/OvList.cpp:1741
+msgid "Select Foreground"
+msgstr "Select Foreground"
+
+#: Dialogs/OvList.cpp:1742
+msgid "Select Background"
+msgstr "Select Background"
+
+#: Dialogs/OvListBook.cpp:241 Dialogs/OvListBook.cpp:305 wx/MainFrm.cpp:289
+msgid "Match Overview"
+msgstr "Match Overview"
+
+#: Dialogs/OvListBook.cpp:256 Dialogs/SQLEditorBook.cpp:257
+msgid "Close Others"
+msgstr "Close Others"
+
+#: Dialogs/OvListBook.cpp:257 Dialogs/SQLEditorBook.cpp:258
+msgid "Rename"
+msgstr "Rename"
+
+#: Dialogs/OvListBook.cpp:298 Dialogs/SQLEditorBook.cpp:299
+msgid "New title"
+msgstr "New title"
+
+#: Dialogs/OvListBook.cpp:298 Dialogs/SQLEditorBook.cpp:299
+msgid "New Title"
+msgstr "New Title"
+
+#: Dialogs/PlEdit.cpp:146
+msgid "Edit Ranking Points"
+msgstr "Edit Ranking Points"
+
+#: Dialogs/PlEvents.cpp:122 Print/Raster.cpp:1688 Print/RasterKO.cpp:97
+#: Print/RasterRR.cpp:799 Print/RasterRR.cpp:813
+msgid "w/o"
+msgstr "w/o"
+
+#: Dialogs/PlEvents.cpp:124 Print/RasterRR.cpp:803 Print/RasterRR.cpp:818
+msgid "Disqu."
+msgstr "Disqu."
+
+#: Dialogs/PlEvents.cpp:126 Print/RasterRR.cpp:801 Print/RasterRR.cpp:815
+msgid "Inj."
+msgstr "Inj."
+
+#: Dialogs/PlEvents.cpp:398 Dialogs/PlListView.cpp:173
+msgid "Player is member of a group that has already started"
+msgstr "Player is member of a group that has already started"
+
+#: Dialogs/PlEvents.cpp:405 Dialogs/PlListView.cpp:189
+#, c-format
+msgid "Team %s will then be empty"
+msgstr "Team %s will then be empty"
+
+#: Dialogs/PlHistEvents.cpp:65 Dialogs/PlHistView.cpp:74
+msgid "Current"
+msgstr "Current"
+
+#: Dialogs/PlHistView.cpp:28
+msgid "Updated"
+msgstr "Updated"
+
+#: Dialogs/PlListView.cpp:105
+msgid "Add Player"
+msgstr "Add Player"
+
+#: Dialogs/PlListView.cpp:115
+msgid "Edit Player"
+msgstr "Edit Player"
+
+#: Dialogs/PlListView.cpp:126
+msgid "Are you sure to delete selected players?"
+msgstr "Are you sure to delete selected players?"
+
+#: Dialogs/PlListView.cpp:334
+#| msgid "Players"
+msgid "Players History"
+msgstr "Players History"
+
+#: Dialogs/RkEdit.cpp:51
+msgid "Team ranking requires a default team system set for the event"
+msgstr "Team ranking requires a default team system set for the event"
+
+#: Dialogs/RkEdit.cpp:124
+msgid "Players / Team"
+msgstr "Players / Team"
+
+#: Dialogs/RkEdit.cpp:126
+msgid "Rank."
+msgstr "Rank."
+
+#: Dialogs/RkEdit.cpp:127
+msgid "Int'l"
+msgstr "Int'l"
+
+#: Dialogs/RkEdit.cpp:282
+msgid "Enter new international ranking"
+msgstr "Enter new international ranking"
+
+#: Dialogs/RkEdit.cpp:282
+msgid "Int'l rank."
+msgstr "Int'l rank."
+
+#: Dialogs/RkEdit.cpp:282
+msgid "Edit International Ranking"
+msgstr "Edit International Ranking"
+
+#: Dialogs/RkListView.cpp:182 Dialogs/RkListView.cpp:194
+msgid "Edit Ranking"
+msgstr "Edit Ranking"
+
+#: Dialogs/SQLEditor.cpp:202
+msgid "Save File"
+msgstr "Save File"
+
+#: Dialogs/SQLEditor.cpp:391
+msgid "Save SQL Query"
+msgstr "Save SQL Query"
+
+#: Dialogs/SQLEditor.cpp:423
+msgid "Open SQL Query File"
+msgstr "Open SQL Query File"
+
+#: Dialogs/SQLEditorBook.cpp:241 Dialogs/SQLEditorBook.cpp:306
+#: wx/MainFrm.cpp:190
+msgid "SQL Editor"
+msgstr "SQL Editor"
+
+#: Dialogs/Settings.cpp:409
+msgid "Select Banner Image"
+msgstr "Select Banner Image"
+
+#: Dialogs/Settings.cpp:410 Dialogs/Settings.cpp:432 Dialogs/Settings.cpp:454
+msgid ""
+"Image Files (*.bmp, *.jpg, *.png, *.gif)|*.bmp;*.jpg;*.png;*.gif|All Files "
+"(*.*)|*.*"
+msgstr ""
+"Image Files (*.bmp, *.jpg, *.png, *.gif)|*.bmp;*.jpg;*.png;*.gif|All Files "
+"(*.*)|*.*"
+
+#: Dialogs/Settings.cpp:431
+msgid "Select Logo Image"
+msgstr "Select Logo Image"
+
+#: Dialogs/Settings.cpp:453
+msgid "Select Sponsor Image"
+msgstr "Select Sponsor Image"
+
+#: Dialogs/Settings.cpp:501
+msgid "Select Backup Path"
+msgstr "Select Backup Path"
+
+#: Dialogs/StListView.cpp:131
+msgid "Group is finished."
+msgstr "Group is finished."
+
+#: Dialogs/StListView.cpp:152 Dialogs/StListView.cpp:163
+#: Dialogs/StListView.cpp:464 Dialogs/StListView.cpp:477
+#: Dialogs/StListView.cpp:488
+msgid "First match already played."
+msgstr "First match already played."
+
+#: Dialogs/StListView.cpp:169
+msgid "Select Participant"
+msgstr "Select Participant"
+
+#: Dialogs/StListView.cpp:394
+msgid "Edit Seeding"
+msgstr "Edit Seeding"
+
+#: Dialogs/StListView.cpp:407
+msgid "Are you sure to delete selected entries?"
+msgstr "Are you sure to delete selected entries?"
+
+#: Dialogs/StListView.cpp:519 Print/Raster.cpp:1189 Print/RasterKO.cpp:1134
+#: Print/RasterKO.cpp:1147 Print/RasterKO.cpp:1504 Print/RasterKO.cpp:1517
+msgid "Pos."
+msgstr "Pos."
+
+#: Dialogs/StListView.cpp:528 Print/RasterRR.cpp:269
+msgid "Mt.Pts."
+msgstr "Mt.Pts."
+
+#: Dialogs/StListView.cpp:530 Print/Raster.cpp:1370 Print/RasterRR.cpp:279
+#: Print/RasterRR.cpp:840 Print/RasterSC.cpp:430 Print/RasterSC.cpp:1310
+#: Print/RasterSC.cpp:1323
+msgid "Games"
+msgstr "Games"
+
+#: Dialogs/StListView.cpp:531
+msgid "Points"
+msgstr "Points"
+
+#: Dialogs/StListView.cpp:532
+msgid "Stndg."
+msgstr "Stndg."
+
+#: Dialogs/SyEdit.cpp:67 Dialogs/SyEdit.cpp:201
+#, c-format
+msgid "Single %d"
+msgstr "Single %d"
+
+#: Dialogs/SyEdit.cpp:68 Dialogs/SyEdit.cpp:133 Dialogs/SyEdit.cpp:202
+#, c-format
+msgid "Double %d"
+msgstr "Double %d"
+
+#: Dialogs/SyEdit.cpp:70
+#, c-format
+msgid "Team %c"
+msgstr "Team %c"
+
+#: Dialogs/SyListView.cpp:66 Dialogs/SyListView.cpp:76
+msgid "Edit Team System"
+msgstr "Edit Team System"
+
+#: Dialogs/SyListView.cpp:86
+msgid "Are you sure to delete selected team system(s)?"
+msgstr "Are you sure to delete selected team system(s)?"
+
+#: Dialogs/TmEdit.cpp:161
+msgid "A team with this name already exists for this event"
+msgstr "A team with this name already exists for this event"
+
+#: Dialogs/UpListView.cpp:26
+msgid "Ump. Nr."
+msgstr "Ump. Nr."
+
+#: Dialogs/UpListView.cpp:89
+msgid "Add Umpire"
+msgstr "Add Umpire"
+
+#: Dialogs/UpListView.cpp:99
+msgid "Edit Umpire"
+msgstr "Edit Umpire"
+
+#: Dialogs/UpListView.cpp:110
+msgid "Are you sure to delete selected umpires?"
+msgstr "Are you sure to delete selected umpires?"
+
+#: Draw/DrawCP.cpp:1923 Draw/DrawLP.cpp:118 Draw/DrawRR.cpp:201
+#, c-format
+msgid "Group %s has not finished"
+msgstr "Group %s has not finished"
+
+#: Draw/DrawCP.cpp:1969 Draw/DrawLP.cpp:152 Draw/DrawRR.cpp:235
+#, c-format
+msgid "Group %s has invalid final standings"
+msgstr "Group %s has invalid final standings"
+
+#: Draw/DrawCP.cpp:1975 Draw/DrawLP.cpp:158 Draw/DrawRR.cpp:241
+#, c-format
+msgid "The group positions of group %s have been modified. Continue anyway?"
+msgstr "The group positions of group %s have been modified. Continue anyway?"
+
+#: Draw/DrawCP.cpp:2116 Draw/DrawLP.cpp:590
+#, c-format
+msgid ""
+"Second of group %s is seeded into the same half as first. Continue anyway?"
+msgstr ""
+"Second of group %s is seeded into the same half as first. Continue anyway?"
+
+#: Draw/DrawCP.cpp:2420
+#, c-format
+msgid ""
+"Error in stage %d section %d: Wrong number of players found (found %d, "
+"expected %d)!"
+msgstr ""
+"Error in stage %d section %d: Wrong number of players found (found %d, "
+"expected %d)!"
+
+#: Draw/DrawCP.cpp:2434
+#, c-format
+msgid "More than 1 pack in last stage at pos %d - %d"
+msgstr "More than 1 pack in last stage at pos %d - %d"
+
+#: Draw/DrawCP.cpp:2444 Draw/DrawLP.cpp:1579
+#, c-format
+msgid "Two first playing in first round at pos %d - %d"
+msgstr "Two first playing in first round at pos %d - %d"
+
+#: Draw/DrawCP.cpp:2454 Draw/DrawLP.cpp:1586
+#, c-format
+msgid "Second got an unexpected bye in first round at pos %d - %d"
+msgstr "Second got an unexpected bye in first round at pos %d - %d"
+
+#: Draw/DrawCP.cpp:2465 Draw/DrawLP.cpp:1593
+#, c-format
+msgid "First did not get an expected bye in first round at pos %d - %d"
+msgstr "First did not get an expected bye in first round at pos %d - %d"
+
+#: Draw/DrawCP.cpp:2884 Draw/DrawCP.cpp:2949 Draw/DrawCSD.cpp:147
+#: Draw/DrawCSD.cpp:173
+msgid "No group or group to small!"
+msgstr "No group or group to small!"
+
+#: Draw/DrawCP.cpp:2890 Draw/DrawCSD.cpp:1147 Draw/DrawCSD.cpp:1186
+#: Draw/DrawLP.cpp:1669 Draw/DrawRR.cpp:135
+#, c-format
+msgid "Group %s has already started!"
+msgstr "Group %s has already started!"
+
+#: Draw/DrawCP.cpp:2898 Draw/DrawLP.cpp:1677 Draw/DrawRR.cpp:129
+#, c-format
+msgid "A draw has been performed and scheduled for group %s!"
+msgstr "A draw has been performed and scheduled for group %s!"
+
+#: Draw/DrawCP.cpp:2902 Draw/DrawLP.cpp:1681 Draw/DrawRR.cpp:141
+#, c-format
+msgid "A draw has been performed for group %s. Continue anyway?"
+msgstr "A draw has been performed for group %s. Continue anyway?"
+
+#: Draw/DrawCSD.cpp:137 Draw/DrawCSD.cpp:1172
+msgid "To few groups for the draw"
+msgstr "To few groups for the draw"
+
+#: Draw/DrawCSD.cpp:379
+#, c-format
+msgid "Seeded entry on pos. %d is not a direct entry. Continue anyway?"
+msgstr "Seeded entry on pos. %d is not a direct entry. Continue anyway?"
+
+#: Draw/DrawCSD.cpp:507
+#, c-format
+msgid "No solution exists at stage %d, section %d"
+msgstr "No solution exists at stage %d, section %d"
+
+#: Draw/DrawCSD.cpp:1137 Draw/DrawCSD.cpp:1180
+msgid "A draw has been performed and scheduled!"
+msgstr "A draw has been performed and scheduled!"
+
+#: Draw/DrawCSD.cpp:1141 Draw/DrawCSD.cpp:1192
+msgid "A draw has been performed. Continue anyway?"
+msgstr "A draw has been performed. Continue anyway?"
+
+#: Draw/DrawLP.cpp:184
+#, c-format
+msgid ""
+"Entry on pos. %d in group %s is qualified but has No Consolation flag set"
+msgstr ""
+"Entry on pos. %d in group %s is qualified but has No Consolation flag set"
+
+#: Draw/DrawLP.cpp:226
+#, c-format
+msgid "No groups found for stage %s!"
+msgstr "No groups found for stage %s!"
+
+#: Draw/DrawLP.cpp:232
+#, c-format
+msgid "Group %s has not yet started!"
+msgstr "Group %s has not yet started!"
+
+#: Draw/DrawLP.cpp:264
+#, c-format
+msgid "Not all required matches of group %s have been played"
+msgstr "Not all required matches of group %s have been played"
+
+#: Draw/DrawLP.cpp:333 Draw/DrawRR.cpp:286
+msgid "Ranked players ignored because players have already been seeded"
+msgstr "Ranked players ignored because players have already been seeded"
+
+#: Draw/DrawLP.cpp:441 Draw/DrawRR.cpp:392
+#, c-format
+msgid "The ranked entry of group %s finished %d, trying winner instead"
+msgstr "The ranked entry of group %s finished %d, trying winner instead"
+
+#: Draw/DrawLP.cpp:1498
+#, c-format
+msgid "Error solving the draw in stg %d sec %d: res = %d"
+msgstr "Error solving the draw in stg %d sec %d: res = %d"
+
+#: Draw/DrawLP.cpp:1559
+#, c-format
+msgid "Team seeded to pos %d was drawn to different pos %d in std %d sec %d"
+msgstr "Team seeded to pos %d was drawn to different pos %d in std %d sec %d"
+
+#: Draw/DrawLP.cpp:1607
+#, c-format
+msgid "No solution exists in stg %d sec %d"
+msgstr "No solution exists in stg %d sec %d"
+
+#: Draw/DrawLP.cpp:1663
+msgid "No group!"
+msgstr "No group!"
+
+#: Draw/DrawLP.cpp:1774
+#, c-format
+msgid "Group too small for %d entries!"
+msgstr "Group too small for %d entries!"
+
+#: Draw/DrawLP.cpp:1783
+#, c-format
+msgid "Group too large for %d entries!"
+msgstr "Group too large for %d entries!"
+
+#: Draw/DrawRR.cpp:151
+msgid "Too few groups for the draw!"
+msgstr "Too few groups for the draw!"
+
+#: Draw/DrawRR.cpp:899
+msgid "Could not find solution to draw ranked entries"
+msgstr "Could not find solution to draw ranked entries"
+
+#: Print/Raster.cpp:295
+msgid "Page"
+msgstr "Page"
+
+#: Print/Raster.cpp:316
+msgid "Bye"
+msgstr "Bye"
+
+#: Print/Raster.cpp:1269 Print/RasterRR.cpp:286 Print/RasterRR.cpp:841
+msgid "Place"
+msgstr "Place"
+
+#: Print/Raster.cpp:1295
+msgid "YES, I want to play Consolation"
+msgstr "YES, I want to play Consolation"
+
+#: Print/Raster.cpp:1301
+msgid "NO, I don't want to play Consolation"
+msgstr "NO, I don't want to play Consolation"
+
+#: Print/Raster.cpp:1367
+msgid "Schedule"
+msgstr "Schedule"
+
+#: Print/Raster.cpp:1377
+msgid "Game"
+msgstr "Game"
+
+#: Print/RasterKO.cpp:273
+#, c-format
+msgid "Mt %d"
+msgstr "Mt %d"
+
+#: Print/RasterKO.cpp:1128 Print/RasterKO.cpp:1498 Print/RasterKO.cpp:1846
+msgid "Final"
+msgstr "Final"
+
+#: Print/RasterKO.cpp:1142 Print/RasterKO.cpp:1512 Print/RasterKO.cpp:1861
+msgid "Semifinal"
+msgstr "Semifinal"
+
+#: Print/RasterKO.cpp:1838 Print/RasterKO.cpp:1851 Print/RasterKO.cpp:1866
+#: Print/RasterKO.cpp:1884
+msgid "Pos"
+msgstr "Pos"
+
+#: Print/RasterRR.cpp:836
+msgid "Mt. Pts."
+msgstr "Mt. Pts."
+
+#: Print/RasterSC.cpp:362
+msgid "S"
+msgstr "S"
+
+#: Print/RasterSC.cpp:368
+msgid "T"
+msgstr "T"
+
+#: Print/RasterSC.cpp:375 Print/RasterSC.cpp:657 Print/RasterSC.cpp:672
+#: Print/RasterSC.cpp:930 Print/RasterSC.cpp:946 Print/RasterSC.cpp:1003
+#: Print/RasterSC.cpp:1024
+msgid "Y"
+msgstr "Y"
+
+#: Print/RasterSC.cpp:380 Print/RasterSC.cpp:1008 Print/RasterSC.cpp:1029
+msgid "1P"
+msgstr "1P"
+
+#: Print/RasterSC.cpp:385 Print/RasterSC.cpp:1013 Print/RasterSC.cpp:1034
+msgid "2P"
+msgstr "2P"
+
+#: Print/RasterSC.cpp:574
+msgid "Signature of Player(s)"
+msgstr "Signature of Player(s)"
+
+#: Print/RasterSC.cpp:576
+msgid "Signature of Player(s) / Coach(es)"
+msgstr "Signature of Player(s) / Coach(es)"
+
+#: Print/RasterSC.cpp:642 Print/RasterSC.cpp:646 Print/RasterSC.cpp:918
+msgid "Coach(es)"
+msgstr "Coach(es)"
+
+#: Print/RasterSC.cpp:652 Print/RasterSC.cpp:667
+msgid "Sd"
+msgstr "Sd"
+
+#: Print/RasterSC.cpp:661 Print/RasterSC.cpp:676 Print/RasterSC.cpp:935
+#: Print/RasterSC.cpp:951
+msgid "R"
+msgstr "R"
+
+#: Print/RasterSC.cpp:706 Print/RasterSC.cpp:1699
+msgid "Umpire(s)"
+msgstr "Umpire(s)"
+
+#: Print/RasterSC.cpp:748 Print/RasterSC.cpp:1704
+msgid "Signature of Umpire(s)"
+msgstr "Signature of Umpire(s)"
+
+#: Print/RasterSC.cpp:1324
+msgid "Score"
+msgstr "Score"
+
+#: Print/RasterSC.cpp:1592
+msgid "Signature of Team Captains"
+msgstr "Signature of Team Captains"
+
+#: Print/RasterSC.cpp:1767
+msgid "Color of Shirt"
+msgstr "Color of Shirt"
+
+#: Print/RasterSC.cpp:1768
+msgid "Back N."
+msgstr "Back N."
+
+#: Print/RasterSC.cpp:1769
+msgid "Racket Control"
+msgstr "Racket Control"
+
+#: Print/RasterSC.cpp:1770
+msgid "Ball Selection"
+msgstr "Ball Selection"
+
+#: Print/RasterSC.cpp:1788
+msgid "Before"
+msgstr "Before"
+
+#: Print/RasterSC.cpp:1789
+msgid "After"
+msgstr "After"
+
+#: Print/RasterSC.cpp:1796
+msgid "Yes"
+msgstr "Yes"
+
+#: Print/RasterSC.cpp:1797
+msgid "No"
+msgstr "No"
+
+#: Print/RasterSC.cpp:1843
+msgid "Start at:"
+msgstr "Start at:"
+
+#: Print/RasterSC.cpp:1844
+msgid "End at:"
+msgstr "End at:"
+
+#: Print/RasterSC.cpp:1847
+msgid "Remarks:"
+msgstr "Remarks:"
+
+#: Tools/InfoSystem.cpp:39
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: Tools/InfoSystem.cpp:54
+msgid "Question"
+msgstr "Question"
+
+#: Tools/InfoSystem.cpp:69
+msgid "Information"
+msgstr "Information"
+
+#: Tools/InfoSystem.cpp:84
+msgid "Warning"
+msgstr "Warning"
+
+#: Tools/InfoSystem.cpp:114
+msgid "Fatal Error"
+msgstr "Fatal Error"
+
+#: Tools/ListCtrlEx.cpp:299
+msgid "Select Columns"
+msgstr "Select Columns"
+
+#: Tools/ListItem.h:147
+msgid "BYE"
+msgstr "BYE"
+
+#: Tools/ReportManViewer.cpp:48
+#, c-format
+msgid "Cannot find report %s"
+msgstr "Cannot find report %s"
+
+#: wx/MainFrm.cpp:125
+msgid "Search text:"
+msgstr "Search text:"
+
+#: wx/MainFrm.cpp:127 wx/MainFrm.cpp:148
+msgid "Ready"
+msgstr "Ready"
+
+#: wx/MainFrm.cpp:188
+msgid "Remove From Doubles"
+msgstr "Remove From Doubles"
+
+#: wx/MainFrm.cpp:192
+msgid "Tournament Settings"
+msgstr "Tournament Settings"
+
+#: wx/MainFrm.cpp:197
+msgid "Import Events"
+msgstr "Import Events"
+
+#: wx/MainFrm.cpp:201
+msgid "Import Umpires"
+msgstr "Import Umpires"
+
+#: wx/MainFrm.cpp:205
+msgid "Import Ranking Points"
+msgstr "Import Ranking Points"
+
+#: wx/MainFrm.cpp:207
+msgid "Import Entries"
+msgstr "Import Entries"
+
+#: wx/MainFrm.cpp:209
+msgid "Import Positions"
+msgstr "Import Positions"
+
+#: wx/MainFrm.cpp:211
+msgid "Import Schedules"
+msgstr "Import Schedules"
+
+#: wx/MainFrm.cpp:213
+msgid "Import Results"
+msgstr "Import Results"
+
+#: wx/MainFrm.cpp:218
+msgid "Export Events"
+msgstr "Export Events"
+
+#: wx/MainFrm.cpp:220
+msgid "Export Associations"
+msgstr "Export Associations"
+
+#: wx/MainFrm.cpp:222
+msgid "Export Umpires"
+msgstr "Export Umpires"
+
+#: wx/MainFrm.cpp:224
+msgid "Export Players"
+msgstr "Export Players"
+
+#: wx/MainFrm.cpp:226
+msgid "Export Ranking Points"
+msgstr "Export Ranking Points"
+
+#: wx/MainFrm.cpp:228
+msgid "Export Entries"
+msgstr "Export Entries"
+
+#: wx/MainFrm.cpp:230
+msgid "Export Positions"
+msgstr "Export Positions"
+
+#: wx/MainFrm.cpp:232
+msgid "Export Schedules"
+msgstr "Export Schedules"
+
+#: wx/MainFrm.cpp:234
+msgid "Export Results"
+msgstr "Export Results"
+
+#: wx/MainFrm.cpp:236
+msgid "Export for Ranking"
+msgstr "Export for Ranking"
+
+#: wx/MainFrm.cpp:238
+msgid "Export for Ranking ITTF"
+msgstr "Export for Ranking ITTF"
+
+#: wx/MainFrm.cpp:244
+msgid "List of Team Systems"
+msgstr "List of Team Systems"
+
+#: wx/MainFrm.cpp:246
+msgid "List of Group Modi"
+msgstr "List of Group Modi"
+
+#: wx/MainFrm.cpp:248 wx/MainFrm.cpp:250
+msgid "List of Events"
+msgstr "List of Events"
+
+#: wx/MainFrm.cpp:252
+msgid "List of Groups"
+msgstr "List of Groups"
+
+#: wx/MainFrm.cpp:255
+msgid "List of Associations"
+msgstr "List of Associations"
+
+#: wx/MainFrm.cpp:257
+msgid "List of Teams"
+msgstr "List of Teams"
+
+#: wx/MainFrm.cpp:259
+msgid "List of Players"
+msgstr "List of Players Sorted by Name"
+
+#: wx/MainFrm.cpp:261
+msgid "List of Umpires"
+msgstr "List of Umpires"
+
+#: wx/MainFrm.cpp:266
+msgid "Ranking List"
+msgstr "Ranking List"
+
+#: wx/MainFrm.cpp:268
+msgid "DrawQualification"
+msgstr "Draw Qualification"
+
+#: wx/MainFrm.cpp:270
+msgid "Draw Championship"
+msgstr "Draw Championship"
+
+#: wx/MainFrm.cpp:272
+msgid "Draw Consolation"
+msgstr "Draw Consolation"
+
+#: wx/MainFrm.cpp:274
+msgid "Draw From Qualification"
+msgstr "Draw From Qualification"
+
+#: wx/MainFrm.cpp:276
+msgid "Draw Consolation From Knock-Out"
+msgstr "Draw Consolation From Knock-Out"
+
+#: wx/MainFrm.cpp:278
+msgid "Draw Groups From Qualification"
+msgstr "Draw Groups From Qualification"
+
+#: wx/MainFrm.cpp:283
+msgid "Match Time"
+msgstr "Match Time"
+
+#: wx/MainFrm.cpp:285
+msgid "Match Result"
+msgstr "Match Result"
+
+#: wx/MainFrm.cpp:287
+msgid "Select Match"
+msgstr "Select Match"
+
+#: wx/MainFrm.cpp:291
+msgid "Unscheduled Matches"
+msgstr "Unscheduled Matches"
+
+#: wx/MainFrm.cpp:306
+msgid "Print Reports"
+msgstr "Print Reports"
+
+#: wx/MainFrm.cpp:308
+msgid "Print Result Forms"
+msgstr "Print Result Forms"
+
+#: wx/MainFrm.cpp:310
+#| msgid "Print selected rounds"
+msgid "Print Played Groups"
+msgstr "Print Played Groups"
+
+#: wx/MainFrm.cpp:312
+msgid "Manage Options"
+msgstr "Manage Options"
+
+#: wx/TT32App.cpp:129
+msgid ""
+"The license is not valid! You are allowed to use existing tournaments but "
+"you cannot create new ones."
+msgstr ""
+"The license is not valid! You are allowed to use existing tournaments but "
+"you cannot create new ones."
+
+#: wx/TT32App.cpp:134
+msgid ""
+"Your license has expired! You are allowed to use existing tournaments but "
+"you cannot create new ones."
+msgstr ""
+"Your license has expired! You are allowed to use existing tournaments but "
+"you cannot create new ones."
+
+#: wx/TT32App.cpp:169
+msgid "Registration"
+msgstr "Registrierung"
+
+#: wx/TT32App.cpp:171
+msgid "List of Players Sorted by Name"
+msgstr "List of Players Sorted by Name"
+
+#: wx/TT32App.cpp:172
+msgid "List of Players Sorted by Number"
+msgstr "List of Players Sorted by Number"
+
+#: wx/TT32App.cpp:173
+msgid "List of Players with their Events"
+msgstr "List of Players with their Events"
+
+#: wx/TT32App.cpp:174
+msgid "Participants per Event"
+msgstr "Participants per Event"
+
+#: wx/TT32App.cpp:175
+msgid "Participants in Championship"
+msgstr "Participants in Championship"
+
+#: wx/TT32App.cpp:176
+msgid "Participants in Consolation"
+msgstr "Participants in Consolation"
+
+#: wx/TT32App.cpp:177
+msgid "Players with Partner Missing"
+msgstr "Players with Partner Missing"
+
+#: wx/TT32App.cpp:186
+msgid "Ranking by Association"
+msgstr "Ranking by Association"
+
+#: wx/TT32App.cpp:190
+msgid "International Ranking"
+msgstr "International Ranking"
+
+#: wx/TT32App.cpp:193
+msgid "List of Matches"
+msgstr "List of Matches"
+
+#: wx/TT32App.cpp:196
+msgid "Final Standings"
+msgstr "Final Standings"
+
+#: wx/TT32App.cpp:563
+#, c-format
+msgid "Licensed by %s. License expires %s"
+msgstr "Licensed by %s. License expires %s"
+
+#: wx/TT32App.cpp:567
+msgid "Unlicensed copy"
+msgstr "Unlicensed copy"
+
+#: wx/TT32App.cpp:1286
+msgid "No valid license found"
+msgstr "No valid license found"
+
+#: wx/TT32App.cpp:1293
+msgid "Illegal tournament name"
+msgstr "Illegal tournament name"
+
+#: wx/TT32App.cpp:1299 wx/TT32App.cpp:1309
+msgid "Illegal database name"
+msgstr "Illegal database name"
+
+#: wx/TT32App.cpp:1574 wx/TT32App.cpp:1632
+msgid "Backup Database"
+msgstr "Backup Database"
+
+#: wx/TT32App.cpp:1621
+msgid "Backup successful"
+msgstr "Backup successful"
+
+#: wx/TT32App.cpp:1657
+msgid "Restore successful"
+msgstr "Restore successful"
+
+#: wx/TT32App.cpp:1866
+msgid "You are using the latest version of TTM"
+msgstr "You are using the latest version of TTM"
+
+#: wx/TT32App.cpp:1874
+msgid "Could not determine the current version of TTM"
+msgstr "Could not determine the current version of TTM"
+
+#: wx/TT32App.cpp:1884
+msgid "Install License"
+msgstr "Install License"
+
+#: wx/TT32App.cpp:1894
+msgid "The license is not valid"
+msgstr "The license is not valid"
+
+#: wx/TT32App.cpp:1898
+msgid "The license has expired"
+msgstr "The license has expired"
+
+#: wx/TT32App.cpp:1902
+msgid "Could not copy license file"
+msgstr "Could not copy license file"
+
+#: wx/TT32App.cpp:1906
+msgid "License file was copied"
+msgstr "License file was copied"
+
+#~ msgid "Association Name"
+#~ msgstr "Association Name"
+
+#~| msgid "Associatoin Description"
+#~ msgid "Association Description"
+#~ msgstr "Association Description"
+
+#~ msgid "Mt.Pts"
+#~ msgstr "Mt.Pts"
+
+#~ msgid "From KO"
+#~ msgstr "From KO"
+
+#~ msgid "To rd."
+#~ msgstr "To rd."
+
+#~ msgid "Draw From KO"
+#~ msgstr "Draw From KO"
+
+#~ msgid "Player ranked %d is not best of his group, ignored"
+#~ msgstr "Player ranked %d is not best of his group, ignored"
+
+#~ msgid "First comment is not %s but %s"
+#~ msgstr "First comment is not %s but %s"
+
+#~| msgid "Print Result Forms"
+#~ msgid "Manage Result Form Options"
+#~ msgstr "Manage Result Form Options"
+
+#~ msgid "Printing"
+#~ msgstr "Printing"
+
+#~ msgid "Find in Group"
+#~ msgstr "Find in Group"
+
+#~ msgid "View Changes"
+#~ msgstr "View Changes"
+
+#~ msgid "Open Pairs"
+#~ msgstr "Open Pairs"
+
+#~ msgid "Complete Pairs"
+#~ msgstr "Complete Pairs"
+
+#~ msgid "Partner Wanted"
+#~ msgstr "Partner Wanted"
+
+#~ msgid "Remove From &Doubles"
+#~ msgstr "Remove From &Doubles"
+
+#, fuzzy
+#~ msgid "Disqua."
+#~ msgstr "Disqualified"
+
+#~ msgid "Inbox"
+#~ msgstr "Inbox"
+
+#~ msgid "SCIMenuBar"
+#~ msgstr "SCIMenuBar"
+
+#~ msgid "Quailfication"
+#~ msgstr "Quailfication"
+
+#~ msgid "&Match Number"
+#~ msgstr "&Match Number"
+
+#~ msgid "Team %s will be then by empty"
+#~ msgstr "Team %s will be then by empty"
+
+#~ msgid "No group or group to small"
+#~ msgstr "No group or group to small"
+
+#~ msgid "Group %s has already started"
+#~ msgstr "Group %s has already started"
+
+#~ msgid "A draw has been performed and scheduled"
+#~ msgstr "A draw has been performed and scheduled"
+
+#~ msgid "Logo File"
+#~ msgstr "Logo File"
+
+#~ msgid "Sponsor File"
+#~ msgstr "Sponsor File"
+
+#~ msgid "Res."
+#~ msgstr "Res."
+
+#~ msgid "No. of Matches"
+#~ msgstr "No. of Matches"
+
+#~ msgid "(local)"
+#~ msgstr "(local)"
+
+#~ msgid "&Close..."
+#~ msgstr "&Close..."
+
+#~ msgid ""
+#~ "\n"
+#~ " Error"
+#~ msgstr ""
+#~ "\n"
+#~ " Error"
+
+#~ msgid "Search stopped."
+#~ msgstr "Search stopped."
+
+#, fuzzy
+#~ msgid "Text found:"
+#~ msgstr "Text found:"
+
+#~ msgid "&SQL Editor"
+#~ msgstr "SQL Editor"
+
+#~ msgid "First round is qualification"
+#~ msgstr "First round is qualification"
+
+#~ msgid "Flags"
+#~ msgstr "Flags"
+
+#, fuzzy
+#~ msgid "label"
+#~ msgstr "Table"
+
+#, fuzzy
+#~ msgid "CSV Files (*.csv)|*.csv|AllFiles (*.*)|*.*)"
+#~ msgstr "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"
+
+#, fuzzy
+#~ msgid "Round %i"
+#~ msgstr "Round %d"
+
+#~ msgid "Cannot locate tt32.ini file"
+#~ msgstr "Cannot locate tt32.ini file"
+
+#, fuzzy
+#~ msgid "Frist match already played."
+#~ msgstr "First match already played."
+
+#~ msgid "en&US"
+#~ msgstr "en&US"
+
+#~ msgid "de&DE"
+#~ msgstr "de&DE"
+
+#, fuzzy
+#~ msgid "Player(s)/Team"
+#~ msgstr "Player(s) / Team"

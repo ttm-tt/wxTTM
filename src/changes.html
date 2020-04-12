@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>What's New</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      ul {
+        list-style-type: none;
+      }
+    </style>
+	</head>
+    <body>
+        <h2>What's new</h2>
+        <br>
+        <strong>4.0.58</strong>
+        <ul>
+            <li>Deleting players will first mark them as deleted before they are actually deleted</li>
+        </ul>
+        <strong>4.0.57</strong>
+        <ul>
+            <li>A list of events, group stages, groups, and rounds which finished today</li>
+            <li>Persist the time when a group was printed last time</li>
+        </ul>
+        <strong>4.0.56</strong>
+        <ul>
+            <li>Optional filter of "Unscheduled Matches" by group</li>
+            <li>Keep last n backups</li>
+            <li>Make it configurable, if code, full name, region, or nothing is printed in place of association in draws</li>
+        </ul>
+        <strong>4.0.55</strong>
+        <ul>
+            <li>Optional filter of "Unscheduled Matches" by event</li>
+            <li>Fixed bug that prevented "Edit Time" that the Time / Table field have the initial focus</li>
+            <li>Optimize for high latency database connections, e.g. a database connected via a VPN connection</li>
+            <li>Menu item to remove playes from doubles via a .csv file with their extern IDs</li>
+            <li>Swap result per button click</li>
+        </ul>
+        <strong>4.0.54</strong>
+        <ul>
+            <li>SQL Server 2017 for Win 10 64 bit</li>
+        </ul>
+        <strong>4.0.53</strong>
+        <ul>
+            <li>When printing links to other groups use the available space better</li>
+        </ul>
+        <strong>4.0.52</strong>
+        <ul>
+            <li>Import entries allows backnumbers, names, and extern id to identify a player</li>
+            <li>Explicit sort order for groups</li>
+        </ul>
+        <strong>4.0.51</strong>
+        <ul>
+            <li>Draw from groups into KO allows selection of the destination group if there are more than one</li>
+        </ul>
+        <strong>4.0.50</strong>
+        <ul>
+            <li>In import schedule it is now possible to reference a match as &quot;nth in round exclude byes&quot;</li>
+            <li>Draw Qualification considers players with int'l ranking and uses a snake system to draw them</li>
+            <li>Added a draw for "Losers of first rounds in KO continue in a consolation group"</li>
+            <li>Added a draw from qualification groups to 2nd stage groups</li>
+            <li>Lines starting with a '*' sign inside group notes are printed bold</li>
+            <li>In the exports it is now possible to select a number of events of which all groups will be exported</li>
+            <li>In print results it is now possible to select a number of events of which all groups will be printed</li>
+            <li>Option to print the region instead of the name of a nation</li>
+        </ul>
+        <strong>4.0.49</strong>
+        <ul>
+            <li>Translations were shown in the wrong language</li>
+        </ul>
+        <strong>4.0.48</strong>
+        <ul>
+            <li>Lines starting with a '#' sign inside group notes are considered private and not published</li>
+            <li>If the first comment in an import file is not the expected one ask for confirmation instead of aborting the import</li>
+            <li>Shortcuts Ctrl+N, Ctrl+O for New / Open Tournament</li>
+            <li>When entering results test if both players are known, even in individual team matches</li>
+            <li>Draw CSD calculated the required group size for direct entries wrong</li>
+            <li>Export Schedule now includes the umpires</li>
+            <li>Warning when a w/o flag contradicts the result</li>
+            <li>It is now possible to save different print options</li>
+            <li>Report Match List includes score by game in addition to the result</li>
+            <li>Option to include match details of team matches in the report Match List</li>
+            <li>Option to include team players in the report Final Standings</li>
+        </ul>
+        <strong>4.0.47</strong>
+        <ul>
+            <li>Ability to print a banner on top of page</li>
+            <li>Fixed some crashes when the progress bar is shown</li>
+        </ul>
+        <strong>4.0.46</strong>
+        <ul>
+            <li>Draws from Qualification to Championship consider international ranking and within a national ranking unless there is a seeding</li>
+            <li>Assing tables round in groups but exclude byes</li>
+            <li>Possibility to print notes under a group, e.g. "Winner and runner-up continue to next stage"</li>
+            <li>When adding or editing a group already existing stages are listed as well</li>
+        </ul>
+        <strong>4.0.45</strong>
+        <ul>
+            <li>Report "World Ranking" now uses ranking points of age category</li>
+            <li>When printing groups add page break when the stage changes, regardles of "New Page" settings</li>
+            <li>Change fonts for printing in Settings dialog</li>
+        </ul>
+        <strong>4.0.44</strong>
+        <ul>
+            <li>It is now configurable which parts of a score sheet shall be printed</li>
+            <li>Ask for username if database on remote server is searched</li>
+            <li>Consider international ranking in draws from Qualification stage</li>
+        </ul>
+        <strong>4.0.43</strong>
+        <ul>
+            <li>SQL Editor in tabbed window</li>
+            <li>It is now possible to add notes to a player</li>
+            <li>Age category specific ranking points</li>
+            <li>It is now possible to define default values for team system and best-of at competition level</li>
+            <li>Matches can be marked as "followed by", i.e. it is possible to construct a series of matches played immedately after each other on one table</li>
+        </ul>
+        <strong>4.0.42</strong>
+        <ul>
+            <li>Add space for service and timeout on score sheet</li>
+            <li>Print umpires on score sheet</li>
+            <li>Manage umpires in TTM</li>
+            <li>Mark within TTM the groups to be published on internet</li>
+            <li>Delete multiple seeded players</li>
+            <li>Year born was not imported from the online entries</li>
+        </ul>
+        <strong>4.0.41</strong>
+        <ul>
+            <li>Ability to rename tabs of Match Overview, e.g. "Main Hall", "2nd Hall"</li>
+            <li>Right click on Match Overview Tab opens a popup menu</li>
+            <li>Deleting a player did not update the timestamp of his matches and thus other tools did not recognize something had changed</li>
+            <li>Added method to clone a player</li>
+        </ul>
+        <strong>4.0.40</strong>
+        <ul>
+            <li>Selecting the group in Player Events did not show the players in that group</li>
+            <li>Editing a result now returns focus again to "Match Select". As a consequence to make this possible windows cannot be maximized any more</li>
+            <li>Backup interval is now configurable</li>
+        </ul>
+        <strong>4.0.39</strong>
+        <ul>
+            <li>Print Preview and PDF show a page setup dialog to allow printing in landscape</li>
+            <li>It is now possible to change the connection settings for a tournament</li>
+            <li>All exports now in UTF-8 with Byte-Order-Mark</li>
+            <li>Some fixes with layouts</li>
+            <li>File with shortcuts was not found</li>
+        </ul>
+        <strong>4.0.38</strong>
+        <ul>
+            <li>It is now possible to specify the number of seeding positions in List Seeding</li>
+            <li>Help for shortcuts</li>
+            <li>Match Overview in tabbed window</li>
+            <li>Shortcut from Match Overview to print List Matches for given day and time</li>
+            <li>Fix a problem with high resolution screens</li>
+            <li>Bugfixes in Unscheduled Matches</li>
+            <li>Error importing players when their name contained non-westeuropean characters</li>
+        </ul>
+        <strong>4.0.37</strong>
+        <ul>
+            <li>Warning if matches are being scheduled on tables for which other matches are already scheduled</li>
+            <li>Shortcut from Match Overview to match in group</li>
+            <li>Configure extra paths for automatic backups of the database</li>
+            <li>Non west-european characters were not stored in the database</li>
+            <li>Delete multiple group modi and team systems</li>
+        </ul>
+        <strong>4.0.36</strong>
+        <ul>
+            <li>Backup to folders other than the tournament folder didn't work anymore</li>
+            <li>Possibility to export all events at once</li>
+        </ul>
+        <strong>4.0.35</strong>
+        <ul>
+            <li>Draw CSD failed to make a draw with Q-Groups</li>
+            <li>When changing the result of an individual match in a finished team match and some the following matches should not have been played they will be marked red</li>
+            <li>List of matches without schedule / table</li>
+            <li>Clients don't need a license to access tournaments on a remote server</li>
+        </ul>
+        <strong>4.0.34</strong>
+        <ul>
+            <li>Builtin PDF creation</li>
+            <li>Printing Play-Off draws now observes setting for number of matches</li>
+            <li>Connection settings to database editable</li>
+            <li>Selecting a file for export with the file browser closed the window instead of putting the selected file into the text field</li>
+            <li>Automatic reconnect to database when an error occured</li>
+            <li>In Match Overview only show how many matches have no table yet instead of every match individually</li>
+            <li>In Edit Schedule press when no table is assigned yet press '#' to calculate the next free table</li>
+            <li>Fixed bug in calculation of final standing in knock-out groups</li>
+        </ul>
+        <strong>4.0.32</strong>
+        <ul>
+            <li>Reworked draw for championship and consolation</li>
+        </ul>
+        <strong>4.0.31</strong>
+        <br>
+        <ul>
+            <li>Scale printed pages to paper size</li>
+        </ul>
+        <strong>4.0.30</strong>
+        <br>
+        <ul>
+            <li>Fixed bugs in export</li>
+        </ul>
+        <strong>4.0.29</strong>
+        <br>
+        <ul>
+            <li>Show matches in player's events</li>
+        </ul>
+        <strong>4.0.28</strong>
+        <br>
+        <ul>
+            <li>Print schedule in KO draw in 2 lines if necessary</li>
+        </ul>
+        <strong>4.0.26</strong>
+        <br>
+        <ul>
+            <li>Print short date in score sheets so it will not be cut off</li>
+        </ul>
+        <strong>4.0.25</strong>
+        <br>
+        <ul>
+            <li>Install license: Check if license is valid before copying the license file</li>
+            <li>Remove players from doubles and mixed according to a list with their extern id</li>
+        </ul>
+        <strong>4.0.25</strong>
+        <br>
+        <ul>
+            <li>No of matches is editable for play-off groups, too</li>
+            <li>When assigning a table to a match the next free table is the default</li>
+            <li>Distinguish between walk over, injured, disqualified</li>
+            <li>Fix problem with setup on Windows XP</li>
+        </ul>
+        <strong>4.0.24</strong>
+        <br>
+        <ul>
+            <li>Update to MS SQL Server 2012 SP1</li>
+        </ul>
+        <strong>4.0.23</strong>
+        <br>
+        <ul>
+            <li>Changing focus with TAB key did not always work</li>
+        </ul>
+        <strong>4.0.22</strong>
+        <br>
+        <ul>
+            <li>Group matches where both players lost w/o were not recognized as finished</li>
+            <li>Fixed SQL error &ldquo;Connection busy with another statement&rdquo;</li>
+            <li>In Draw Championship not all first of qualification got a bye in first round even if it were possible</li>
+        </ul>
+        <strong>4.0.21</strong>
+        <br>
+        <ul>
+            <li>Draw Qualification distributed the entries unevenly</li>
+        </ul>
+        <strong>4.0.20</strong>
+        <br>
+        <ul>
+            <li>Draw CSD used to many byes</li>
+            <li>After the progress dialog disappears the wrong window may get the focus</li>
+        </ul>
+        <strong>4.0.19</strong>
+        <br>
+        <ul>
+            <li>Calculate the standings of groups where several entries have the same number of match points could lead to a SQL exception</li>
+        </ul>
+        <strong>4.0.18</strong>
+        <br>
+        <ul>
+            <li>Only one type of menu bar for all tournament types</li>
+        </ul>
+        <strong>4.0.17</strong>
+        <br>
+        <ul>
+            <li>Fixed crash when editing a schedule</li>
+        </ul>
+    </body>
+</html>
+

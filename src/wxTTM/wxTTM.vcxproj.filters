@@ -1,0 +1,1151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\wx">
+      <UniqueIdentifier>{679ad5bd-2d21-4a45-9e0f-fe6b71b8f804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database">
+      <UniqueIdentifier>{5da9c006-9d0b-49a6-aad2-6f522f84603e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\Engine">
+      <UniqueIdentifier>{a479fd28-9cbe-47d7-b51b-cbf85b2b62e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\Tables">
+      <UniqueIdentifier>{2d0a7ad9-2232-455e-9247-d00267a14b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\Views">
+      <UniqueIdentifier>{e34d8aa8-c71d-4cba-b346-d87f335795cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{d2d864cf-8c9b-4abd-ae99-b116953cde10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Utils">
+      <UniqueIdentifier>{5002393a-eb62-4b14-8145-4a91ff71a177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Extension">
+      <UniqueIdentifier>{2caf5dd8-bb27-4384-a552-7439e9c114dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialogs">
+      <UniqueIdentifier>{ae9c8274-1b10-4065-bbda-90ea002829f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialogs\View">
+      <UniqueIdentifier>{f0cb0335-966d-4b27-a118-a609cc54b8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialogs\Items">
+      <UniqueIdentifier>{663988a6-a5e0-4cb0-b69c-35ec4a4e96c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialogs\Tournament">
+      <UniqueIdentifier>{4d2ef058-a0f6-40b2-8b33-674fbf9a20fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialogs\Table">
+      <UniqueIdentifier>{f17173ad-a0a6-47f5-9ba0-c5c31a6dea88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Print">
+      <UniqueIdentifier>{6200caf4-d905-461a-a88d-dcead01d9b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{7b1e83dd-9917-497c-8ef6-3abf62bdd51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Draw">
+      <UniqueIdentifier>{7b6b8226-4932-42cb-a774-3b847054c392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Crypt">
+      <UniqueIdentifier>{bf75adc7-11d4-4560-96ed-166f20ec8987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\de">
+      <UniqueIdentifier>{671e1c43-ccb4-4395-b000-67f40a53f7c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\en">
+      <UniqueIdentifier>{9aab65e1-7bed-4136-a9d9-17ddfa6ca9f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\Scripts">
+      <UniqueIdentifier>{1c1799c7-2028-49f8-8ec7-6f36f1359be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Reports">
+      <UniqueIdentifier>{cb30fbcd-cddf-4cfe-833e-5e01d04a36bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="wx\ChildFrm.cpp">
+      <Filter>Source Files\wx</Filter>
+    </ClCompile>
+    <ClCompile Include="wx\MainFrm.cpp">
+      <Filter>Source Files\wx</Filter>
+    </ClCompile>
+    <ClCompile Include="wx\stdafx.cpp">
+      <Filter>Source Files\wx</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\Connection.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\DriverManager.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\ResultSet.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\SQLException.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\Statement.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\StoreObj.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TTDbse.cpp">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\CpStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\GrStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\IdStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\LtStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MdStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MtStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NaStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NmStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NtStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\PlStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\PsStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\RkStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\StStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\SyStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TmStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\XxStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\CpListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\GrListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\LtEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MdListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MtEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MtListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NaListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NmEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NtEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\NtListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\PlListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\ReportStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\RkEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\RkListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\StEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\StListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\SyListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TmEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TmListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\XxListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\InfoSystem.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Profile.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Request.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\TbSort.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ComboBoxEx.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\DateTimeCtrl.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\FormViewEx.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ItemCtrl.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ListCtrlEx.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ListItem.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\CpEntries.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\CpListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MdListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NaListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlEvents.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\RkListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\StListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SyListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TmListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\CpItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\LtItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MdItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NaItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NmItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\OvItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\RkItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SQLItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\StItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SyItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TbItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TdItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TmItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\DrawChampionship.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\DrawQualification.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrExport.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrOptions.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrPrint.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtSelect.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Score.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Settings.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SQLEditor.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TTDetachDlg.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TTNewDlg.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TTOpenDlg.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\CpEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrTemplate.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\LtDouble.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MdEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtRes.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtTeam.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtTime.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NaEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NmEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\RkEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\StEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SyEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TmEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\Preview.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\PreviewWnd.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\Printer.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\Raster.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\RasterKO.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\RasterRR.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Print\RasterSC.cpp">
+      <Filter>Source Files\Print</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw\DrawCP.cpp">
+      <Filter>Source Files\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw\DrawCSD.cpp">
+      <Filter>Source Files\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw\DrawInf.cpp">
+      <Filter>Source Files\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw\DrawRR.cpp">
+      <Filter>Source Files\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\ReportListView.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\OvList.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Select.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\LtListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\StrUtils.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Validators.cpp">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NmEditETS.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NmEditOTS.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\ImportOnlineEntries.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw\DrawLP.cpp">
+      <Filter>Source Files\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MtUnscheduled.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ReportManViewer.cpp">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\OvListBook.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\UpStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\UpListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\UpListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\UpItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\UpEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\RpStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\RpListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\SQLEditorBook.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\DatabaseLogin.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="wx\TT32App.cpp">
+      <Filter>Source Files\wx</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\PoStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrOptionsList.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TbEntryStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrPrintBase.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlHistView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\PlHistEvents.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\GrFinished.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\RpEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="wx\ChildFrm.h">
+      <Filter>Source Files\wx</Filter>
+    </ClInclude>
+    <ClInclude Include="wx\MainFrm.h">
+      <Filter>Source Files\wx</Filter>
+    </ClInclude>
+    <ClInclude Include="wx\stdafx.h">
+      <Filter>Source Files\wx</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\Connection.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\DriverManager.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\ResultSet.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\SQLException.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\SqlInclude.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\Statement.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\StoreObj.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TTDbse.h">
+      <Filter>Source Files\Database\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\CpStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\GrStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\IdStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\LtStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MdStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MtStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NaStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NmStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NtStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\PlStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\PsStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\RkStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\StStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\SyStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TmStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\XxStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\CpListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\GrListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\LtEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MdListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MtEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MtListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NaListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NmEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NtEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\NtListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\PlListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\ReportStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\RkEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\RkListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\StEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\StListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\SyListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TmEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TmListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\XxListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\InfoSystem.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Profile.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Rec.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Request.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Res.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\TbSort.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\ComboBoxEx.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\DateTimeCtrl.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\FormViewEx.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\ItemCtrl.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\ListCtrlEx.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\ListItem.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\CpItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\LtItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MdItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MtItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NaItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NmItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\OvItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\PlItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\RkItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SQLItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\StItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SyItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\TbItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\TdItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\TmItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrExport.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\Preview.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\PreviewWnd.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\Printer.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\Raster.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\RasterKO.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\RasterRR.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Print\RasterSC.h">
+      <Filter>Source Files\Print</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw\DrawCP.h">
+      <Filter>Source Files\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw\DrawCSD.h">
+      <Filter>Source Files\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw\DrawInf.h">
+      <Filter>Source Files\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw\DrawRR.h">
+      <Filter>Source Files\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypt\crypt.h">
+      <Filter>Source Files\Crypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Select.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\LtListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\wxStringTokenizerEx.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\StrUtils.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\DrawChampionship.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\CpEntries.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\CpListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Validators.h">
+      <Filter>Source Files\Tools\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NmEditETS.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NmEditOTS.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ImportOnlineEntries.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw\DrawLP.h">
+      <Filter>Source Files\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MtUnscheduled.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\ReportManViewer.h">
+      <Filter>Source Files\Tools\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\OvListBook.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\UpStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\UpListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\UpListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\UpItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\UpEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\RpStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\RpListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SQLEditorBook.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\DatabaseLogin.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="wx\TT32App.h">
+      <Filter>Source Files\wx</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\PoStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrOptionsList.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TbEntryStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrPrintBase.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\PlHistView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\PlHistEvents.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GrFinished.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\RpEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\TT32.fbp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\_wxTTM.pot">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\checked.xpm">
+      <Filter>Source Files\Resources</Filter>
+    </None>
+    <None Include="..\wxTTM.iss">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\changes.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\current.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Reports\ChampionshipEntries.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\ConsolationEntries.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Entries.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\GroupMatches.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\GroupMatchesDoubles.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\GroupMatchesSingles.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Hallensprecher.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\list_c.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\MatchList.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Participants.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\PartnerMissing.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\PlayerControl.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\QualificationMatchesSingles.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Ranking.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\RankingDoubles.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\RankingSingles.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\RankingTeam.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Registration.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\ReportMan.ocx">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\score_d.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\ScoreTeam.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\TeamEntries.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\template.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\test.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\WorldRanking.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Resources\shortcuts.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Reports\GroupResults.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\Playerlist.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\FinalStandings.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Resources\3rdparty.html">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\wxTTM.rc">
+      <Filter>Source Files\Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="Dialogs\MdListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MtListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\NaListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\PlEvents.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\PlListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\RkListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\StListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\SyListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\TmListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\DrawQualification.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\GrOptions.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\GrPrint.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MtSelect.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\Score.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\Settings.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\SQLEditor.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\TTDetachDlg.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\TTNewDlg.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\TTOpenDlg.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\CpEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\GrTemplate.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\LtDouble.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MdEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MtRes.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MtTeam.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\MtTime.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\NaEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\NmEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\PlEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\RkEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\StEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\SyEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\TmEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Resources\unchecked.xpm">
+      <Filter>Source Files\Resources</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\Resources\de\ttm.po">
+      <Filter>Resource Files\de</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\Resources\en\ttm.po">
+      <Filter>Resource Files\en</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\ReportListView.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Dialogs\OvList.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\DttbSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\IttfSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\MtStore.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="Database\TbSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+</Project>

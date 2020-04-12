@@ -1,0 +1,5 @@
+// Explorer laedt das alphabetisch erste Icon
+aaaaa    ICON  "main.ico"
+main     ICON  "main.ico"
+child    ICON  "child.ico"
+#include "wx/msw/wx.rc"
