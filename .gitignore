@@ -1,0 +1,94 @@
+
+# /
+/UpgradeLog.XML
+/wxTTM.ncb
+/wxTTM.sdf
+/wxTTM.suo
+/ipch
+/_UpgradeReport_Files
+/_SYNCAPP
+/wxTTM.opensdf
+/*.suo
+/.vs
+/x64
+/Debug
+/Output
+
+# /src/Crypt/
+/src/Crypt/Crypt.vcproj.Sauron.chtheis.user
+/src/Crypt/Crypt.vcproj.SMEAGOL.chtheis.user
+/src/Crypt/Crypt.vcxproj
+/src/Crypt/Crypt.vcxproj.user
+/src/Crypt/Debug
+/src/Crypt/Release
+/src/Crypt/license.ini
+/src/Crypt/License.ini
+/src/Crypt/x64
+/src/Crypt/x86
+/src/Crypt/licensekey.h
+/src/Crypt/crypt.h
+
+# /src/Resources/
+/src/Resources/*.mo
+/src/Resources/*.bak
+/src/Resources/ttm.cpp
+/src/Resources/ttm.xrc
+/src/Resources/TTM.cpp
+
+# /src/Resources/de/
+/src/Resources/de/ttm.mo
+
+# /src/Resources/en/
+/src/Resources/en/ttm.mo
+
+# /src/XmlRpc4Win/
+/src/XmlRpc4Win/XmlRpc4Win.vcxproj.user
+/src/XmlRpc4Win/x86
+/src/XmlRpc4Win/x64
+
+# /src/lp_solve/lpsolve55/
+/src/lp_solve/lpsolve55/Win32
+/src/lp_solve/lpsolve55/lib.vcxproj.user
+/src/lp_solve/lpsolve55/x64
+/src/lp_solve/lpsolve55/x86
+
+# /src/wxTTM/
+/src/wxTTM/wxTTM.vcproj.kankra.chtheis.user
+/src/wxTTM/wxTTM.vcproj.SAURON.Administrator.user
+/src/wxTTM/wxTTM.vcproj.Sauron.chtheis.user
+/src/wxTTM/wxTTM.vcproj.SMEAGOL.chtheis.user
+/src/wxTTM/wxTTM.vcxproj
+/src/wxTTM/wxTTM.vcxproj.filters
+/src/wxTTM/wxTTM.vcxproj.user
+/src/wxTTM/Release
+/src/wxTTM/Debug
+/src/wxTTM/x64
+/src/wxTTM/x86
+
+# /src/wxTTM/Database/
+/src/wxTTM/Database/*.cpp.bak
+/src/wxTTM/Database/*.h.bak
+
+# /src/wxjson/
+/src/wxjson/[Bb]in
+/src/wxjson/obj
+/src/wxjson/[Dd]ebug
+/src/wxjson/[Rr]elease
+/src/wxjson/*.user
+/src/wxjson/*.aps
+/src/wxjson/*.eto
+/src/wxjson/ClientBin
+/src/wxjson/GeneratedArtifacts
+/src/wxjson/_Pvt_Extensions
+/src/wxjson/project.lock.json
+/src/wxjson/*.nuget.props
+/src/wxjson/*.nuget.targets
+/src/wxjson/x86
+/src/wxjson/x64
+
+# /src/wxpdfdoc/
+/src/wxpdfdoc/Win32
+/src/wxpdfdoc/wxpdfdoc-0.9.4.vcxproj.user
+/src/wxpdfdoc/x64
+/src/wxpdfdoc/x86
+/src/wxpdfdoc/.vs
