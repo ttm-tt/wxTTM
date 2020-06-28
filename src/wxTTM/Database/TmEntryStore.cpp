@@ -458,7 +458,7 @@ wxString  TmEntryStore::SelectString(const timestamp *when) const
       break;
 
     case CP_TEAM :
-      str += "SELECT tmName, tmDesc, naID, naName, naDesc, tmID, cpID, tmnaID "
+      str += "tmName, tmDesc, naID, naName, naDesc, tmID, cpID, tmnaID "
              "FROM TmTeamList " + ts + " ";
       break;
 
