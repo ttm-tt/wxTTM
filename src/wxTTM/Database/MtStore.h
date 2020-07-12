@@ -224,6 +224,7 @@ class  MtStore : public StoreObj, public MtRec
     static  bool  ExportResults(const wxString &name, short cpType, const std::vector<long> &, bool append);
     static  bool  ExportForRanking(const wxString &name, short cpType, const std::vector<long> &, bool append);
     static  bool  ExportForRankingITTF(const wxString &name, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportForRankingETTU(const wxString &name, short cpType, const std::vector<long> &, bool append);
 
     // Import / Export Schedule
     static  bool  ImportSchedule(const wxString &name);

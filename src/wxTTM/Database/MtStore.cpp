@@ -3580,6 +3580,183 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 }
 
 
+bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+{
+  /*
+    Format Individual
+    ID	date_time	event	rnd	match	player_id_a	assoc_a	player_id_b	assoc_b	player_id_x	assoc_x	player_id_y	assoc_y	
+    g1_a	g1_x	g2_a	g2_x	g3_a	g3_x	g4_a	g4_x	g5_a	g5_x	g6_a	g6_x	g7_a	g7_x	
+    res_a	res_x	wo_a	wo_x	yr	type
+ 
+    Format Team
+    ID	date_time	event	group_	stage	rnd	match_no	match_	player_id_a	assoc_a	player_id_b	assoc_b	player_id_x	assoc_x	player_id_y	assoc_y	
+    g1_a	g1_x	g2_a	g2_x	g3_a	g3_x	g4_a	g4_x	g5_a	g5_x	g6_a	g6_x	g7_a	g7_x	
+    res_a	res_x	wo_a	wo_x	res_team_a	res_team_x	yr	type
+  */
+
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
+
+  if (!append)
+  {
+    const wxString bom(wxChar(0xFEFF));
+    os << bom.ToUTF8();
+
+    if (cpType == CP_TEAM)
+      os << 
+          "ID;date_time;event;group_;stage;rnd;match_no;match_;"
+          "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
+          "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
+          "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type"         
+      ;
+    else
+      os << 
+          "ID;date_time;event;rnd;match;"
+          "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
+          "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
+          "res_a;res_x;wo_a;wo_x;yr;type"   
+      ;
+
+    os << std::endl;
+  }
+
+  for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
+  {
+    long grID = (*it);
+
+    wxString type;
+    if (TTDbse::instance()->GetDatabase().StartsWith("EC"))
+      type = "1";
+    else if (TTDbse::instance()->GetDatabase().StartsWith("EYC"))
+      type = "2";
+    else if (TTDbse::instance()->GetDatabase().StartsWith("EU21C"))
+      type = "3";
+    else if (TTDbse::instance()->GetDatabase().StartsWith("EYTT"))
+      type = "4";
+
+    wxString sql;
+    if (cpType == CP_TEAM)
+    {
+      sql = 
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, grName, grStage, "
+          "       IIF((grModus <> 2) OR (grWinner <> 1), mtRound, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
+          "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
+          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, mt.mttmResA, mt.mttmResX, YEAR(mtDateTime), '" + type + "' "
+          "  FROM MtIndividualList mt "
+          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtMS = mt.mtMS AND mtSet1.mtSet = 1 "
+          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtMS = mt.mtMS AND mtSet2.mtSet = 2 "
+          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtMS = mt.mtMS AND mtSet3.mtSet = 3 "
+          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtMS = mt.mtMS AND mtSet4.mtSet = 4 "
+          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtMS = mt.mtMS AND mtSet5.mtSet = 5 "
+          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
+          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
+          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+          " ORDER BY cpName, mtDateTime, mt.mtNr "
+      ;
+    }
+    else if (cpType == CP_SINGLE)
+    {
+      sql = 
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, "
+          "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "       mtMatch, "
+          "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
+          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "' "
+          "  FROM MtSingleList mt "
+          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+          " ORDER BY cpName, mtDateTime, mt.mtNr "
+      ;
+    }
+    else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
+    {
+      sql = 
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, "
+          "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "       mtMatch, "
+          "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
+          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "' "
+          "  FROM MtDoubleList mt "
+          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3) "
+          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+          " ORDER BY cpName, mtDateTime, mt.mtNr "
+      ;
+    }
+    else
+      continue;
+
+    Statement  *stmtPtr = connPtr->CreateStatement();
+    ResultSet  *resPtr = 0;
+
+    try
+    {
+      if (stmtPtr->Execute(sql))
+        resPtr = stmtPtr->GetResultSet(false);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(sql, e);
+      return false;
+    }
+
+    while (resPtr->Next())
+    {
+      wxString ofs;
+
+      wxChar str[128];
+
+      int col = 1;
+      int colCount = resPtr->GetColumnCount();
+
+      // First an ID column
+      ofs << ";";
+
+      for (; col <= colCount; col++)
+      {
+        if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
+          ofs << str;
+        ofs << ";";
+      }
+
+      os << ofs.ToUTF8() << std::endl;
+    }
+
+    delete resPtr;
+    delete stmtPtr;
+  }
+
+  return true;
+}
+
 // -----------------------------------------------------------------------
 // Import / Export Schedule
 bool  MtStore::ImportSchedule(const wxString &name)

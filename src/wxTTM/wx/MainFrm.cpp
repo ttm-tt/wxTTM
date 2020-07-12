@@ -63,6 +63,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentExportResultsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForRankingMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForITTFMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentExportForETTUMenuItem"), CMainFrame::OnMenuCommand)
 
   // EVT_MENU(XRCID("TournamentRemoveDoublesMenuItem"), CMainFrame::OnMenuCommand)
 
@@ -238,6 +239,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     CTT32App::instance()->OpenView(_("Export for Ranking"), wxT("GrExport"), &MtStore::ExportForRanking);
   else if (evt.GetId() == XRCID("TournamentExportForITTFMenuItem"))
     CTT32App::instance()->OpenView(_("Export for Ranking ITTF"), wxT("GrExport"), &MtStore::ExportForRankingITTF);
+  else if (evt.GetId() == XRCID("TournamentExportForETTUMenuItem"))
+    CTT32App::instance()->OpenView(_("Export for Ranking ETTU"), wxT("GrExport"), &MtStore::ExportForRankingETTU);
 
   // else if (evt.GetId() == XRCID("TournamentRemoveDoublesMenuItem"))
   //   Import(_("Remove From Doubles"), "", &LtStore::RemoveFromDoubles);
