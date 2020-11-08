@@ -30,6 +30,10 @@ struct CpRec
   long      cpYear;      // Age of participants
   long      syID;        // Default team system
   short     cpBestOf;    // Default best-of
+  short     cpPtsToWin;  // Points to win
+  short     cpPtsAhead;  // Points ahead of opponent to win
+  short     cpPtsToWinLast;  // Points to win last game
+  short     cpPtsAheadLast;  // Points ahead to win last game
 
   CpRec() {Init();}
 

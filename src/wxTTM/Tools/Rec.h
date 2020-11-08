@@ -26,8 +26,6 @@
 #define  MOD_PLO     (4)
 #define  MOD_MDK     (5)
 
-#define  MIN_POINTS  (11)
-
 // Turniertypen
 enum
 {

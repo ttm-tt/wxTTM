@@ -35,24 +35,24 @@ static int  SkipNonDigit(std::istringstream &istr)
 // Parm:   Array aus zwei int
 // return: immer 0 (bislang)
 // verwendet #define MINUS_NULL
-static void  CalcOther(short &resA, short &resX)
+static void  CalcOther(short &resA, short &resX, short win, short ahd)
 {
   const short MINUS_NULL = (short) 0x8000;
 
   if (resA == MINUS_NULL)      // Spieler A hat zu 0 verloren
   {
     resA = 0;
-	  resX = MIN_POINTS;
+	  resX = win;
   }  
   else if (resA < 0)           // Player A hat verloren
   {
     resA = -resA;
-    resX = (resA + 2 < MIN_POINTS ? MIN_POINTS : resA + 2);
+    resX = (resA + ahd < win ? win : resA + ahd);
   }
   else                         // Player A hat gewonnen
   {
 	  resX = resA;
-    resA = (resX + 2 < MIN_POINTS ? MIN_POINTS : resX + 2);
+    resA = (resX + ahd < win ? win : resX + ahd);
   }
 }
 
@@ -65,7 +65,7 @@ static void  CalcOther(short &resA, short &resX)
 //                                  -0: Spieler A hat zu 0 verloren
 //                   leerer String:     Ergebnis ist 0 : 0
 // Im Fehlerfall bleibt das alte Ergebnis bestehen (?)
-static bool  ConvertFromText(const char *text, short &resA, short &resX)
+static bool  ConvertFromText(const char *text, short &resA, short &resX, short win, short ahd)
 {
   const short MINUS_NULL = (short) 0x8000;
 
@@ -106,7 +106,7 @@ static bool  ConvertFromText(const char *text, short &resA, short &resX)
   SkipNonDigit(istr);
 
   if (!istr.good())          // Kein weiteres Ergebnis
-    CalcOther(set[0], set[1]);   // Zweites Ergebnis berechnen 
+    CalcOther(set[0], set[1], win, ahd);   // Zweites Ergebnis berechnen 
   else if ( !minus && isdigit(istr.peek()) )
     istr >> std::dec >> set[1];   // gab weiteres Ergebnis
   else

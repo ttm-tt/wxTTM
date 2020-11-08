@@ -165,14 +165,18 @@ bool  CpStore::CreateTable()
 
   wxString  sql = 
     "CREATE TABLE CpRec (         "
-    "cpID        "+INTEGER+"      NOT NULL,  "
-    "cpName      "+WVARCHAR+"(8)  NOT NULL,  "
-	  "cpDesc      "+WVARCHAR+"(64),           "
-	  "cpType      "+SMALLINT+"     NOT NULL,  "
-	  "cpSex       "+SMALLINT+"     NOT NULL,  "
-	  "cpYear      "+INTEGER+",     "
-    "syID        "+INTEGER+",     "
-    "cpBestOf    "+SMALLINT+"     DEFAULT 0, "
+    "cpID           "+INTEGER+"      NOT NULL,  "
+    "cpName         "+WVARCHAR+"(8)  NOT NULL,  "
+	  "cpDesc         "+WVARCHAR+"(64),           "
+	  "cpType         "+SMALLINT+"     NOT NULL,  "
+	  "cpSex          "+SMALLINT+"     NOT NULL,  "
+	  "cpYear         "+INTEGER+",     "
+    "syID           "+INTEGER+",     "
+    "cpBestOf       "+SMALLINT+"     NOT NULL DEFAULT 0, "
+    "cpPtsToWin     "+SMALLINT+"     NOT NULL DEFAULT 11, "
+    "cpPtsAhead     "+SMALLINT+"     NOT NULL DEFAULT 2,  "
+    "cpPtsToWinLast "+SMALLINT+"     NOT NULL DEFAULT 11, "
+    "cpPtsAheadLast "+SMALLINT+"     NOT NULL DEFAULT 2,  "
     "CONSTRAINT cpIdKey PRIMARY KEY (cpID),  "
     "cpCreatedBy " + WVARCHAR + "(64) NOT NULL DEFAULT (SUSER_SNAME()), "
     "cpModifiedBy AS (SUSER_SNAME()), "
@@ -214,10 +218,13 @@ bool  CpStore::UpdateTable(long version)
   if (version == 0)
     return CreateTable();
       
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
+  wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+
   if (version <= 124)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
-
     wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
     wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
@@ -280,6 +287,37 @@ bool  CpStore::UpdateTable(long version)
     delete stmtPtr;
   }
 
+  if (version < 153)
+  {
+    // History
+    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Statement *stmtPtr = connPtr->CreateStatement();
+
+    wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
+    wxString str;
+
+    try
+    {
+      str = "ALTER TABLE CpRec ADD "
+          "cpPtsToWin     "+SMALLINT+" NOT NULL DEFAULT 11, "
+          "cpPtsAhead     "+SMALLINT+" NOT NULL DEFAULT 2,  "
+          "cpPtsToWinLast "+SMALLINT+" NOT NULL DEFAULT 11, "
+          "cpPtsAheadLast "+SMALLINT+" NOT NULL DEFAULT 2  "
+        ;
+      stmtPtr->ExecuteUpdate(str);
+
+      str = "ALTER TABLE CpRec SET (SYSTEM_VERSIONING = ON(HISTORY_TABLE = dbo.CpHist))";
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(str, e);
+      delete stmtPtr;
+      return false;
+    }
+
+    delete stmtPtr;
+  }
   return true;
 }
 
@@ -1042,7 +1080,8 @@ bool  CpStore::CreateTeam(TmStore &tm, const NaRec &na, short natlRank, short in
 wxString  CpStore::SelectString() const
 {
   return   
-    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf FROM CpRec ";
+    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+    "       cpBestOf, cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast FROM CpRec ";
 }
 
 
@@ -1056,6 +1095,10 @@ void  CpStore::BindRec()
   BindCol(6, &cpYear);
   BindCol(7, &syID);
   BindCol(8, &cpBestOf);
+  BindCol(9, &cpPtsToWin);
+  BindCol(10, &cpPtsToWinLast);
+  BindCol(11, &cpPtsAhead);
+  BindCol(12, &cpPtsAheadLast);
 }
 
 

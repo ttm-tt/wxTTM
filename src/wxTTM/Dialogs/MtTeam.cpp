@@ -188,10 +188,12 @@ void  CMtTeam::OnOK()
     int i;
     for (i = 0; i <= mt.mtBestOf / 2; i++)
     {
+      short win = cp.cpPtsToWin;  // We are always less than bestOf
+
       mtSetList[i].mtID = mt.mtID;
       mtSetList[i].mtSet = i+1;
-      mtSetList[i].mtResA = (mt.mtWalkOverX ? MIN_POINTS : 0);
-      mtSetList[i].mtResX = (mt.mtWalkOverA ? MIN_POINTS : 0);
+      mtSetList[i].mtResA = (mt.mtWalkOverX ? win : 0);
+      mtSetList[i].mtResX = (mt.mtWalkOverA ? win : 0);
     }
     
     for (; i < mt.mtBestOf; i++)

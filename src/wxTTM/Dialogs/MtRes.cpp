@@ -51,9 +51,9 @@ class ResultListItem : public ListItem
 class CSetValidator : public wxValidator
 {
   public:
-    CSetValidator() : wxValidator(), m_mtResA(NULL), m_mtResX(NULL) {}
-    CSetValidator(short *mtResA, short *mtResX) : wxValidator(), m_mtResA(mtResA), m_mtResX(mtResX) {}
-    CSetValidator(const CSetValidator &val) : wxValidator(), m_mtResA(val.m_mtResA), m_mtResX(val.m_mtResX) {}
+    CSetValidator() : wxValidator(), m_mtResA(NULL), m_mtResX(NULL), m_ptsToWin(11), m_ptsAhead(2) {}
+    CSetValidator(short *mtResA, short *mtResX, short win, short ahead) : wxValidator(), m_mtResA(mtResA), m_mtResX(mtResX), m_ptsToWin(win), m_ptsAhead(ahead) {}
+    CSetValidator(const CSetValidator &val) : wxValidator(), m_mtResA(val.m_mtResA), m_mtResX(val.m_mtResX), m_ptsToWin(val.m_ptsToWin), m_ptsAhead(val.m_ptsAhead) {}
     
   public:
     wxObject *Clone() const {return new CSetValidator(*this);}
@@ -68,10 +68,10 @@ class CSetValidator : public wxValidator
       wxString text;
       text = ((wxTextCtrl *) m_validatorWindow)->GetValue();
         
-      if ( !ConvertFromText(text, *m_mtResA, *m_mtResX) ||
-           (std::max(*m_mtResA, *m_mtResX) < MIN_POINTS)    ||  
-           (abs(*m_mtResA - *m_mtResX) < 2)            ||
-           (std::max(*m_mtResA, *m_mtResX) > MIN_POINTS) && (abs(*m_mtResA - *m_mtResX) > 2)
+      if ( !ConvertFromText(text, *m_mtResA, *m_mtResX, m_ptsToWin, m_ptsAhead) ||
+           (std::max(*m_mtResA, *m_mtResX) < m_ptsToWin)    ||  
+           (abs(*m_mtResA - *m_mtResX) < m_ptsAhead)            ||
+           (std::max(*m_mtResA, *m_mtResX) > m_ptsToWin) && (abs(*m_mtResA - *m_mtResX) > m_ptsAhead)
          )
       { 
         if (*m_mtResA || *m_mtResX)
@@ -113,7 +113,8 @@ class CSetValidator : public wxValidator
   private:
     short *m_mtResA;
     short *m_mtResX;
-    
+    short  m_ptsToWin;  // Points needed to win
+    short  m_ptsAhead;  // Points ahead of opponent to win
     
   private:
   // ---------------------------------------------------------------------------------------
@@ -143,25 +144,24 @@ class CSetValidator : public wxValidator
   // Parm:   Array aus zwei int
   // return: immer 0 (bislang)
   // verwendet #define MINUS_NULL
-  static void  CalcOther(short &resA, short &resX)
+  static void  CalcOther(short &resA, short &resX, short win, short ahead)
   {
     const short MINUS_NULL = (short) 0x8000;
-    const short MAX_BALL   = MIN_POINTS;
 
     if (resA == MINUS_NULL)      // Spieler A hat zu 0 verloren
     {
       resA = 0;
-	    resX = MAX_BALL;
+	    resX = win;
     }  
     else if (resA < 0)           // Player A hat verloren
     {
       resA = -resA;
-      resX = std::max((short) (resA + 2), MAX_BALL);
+      resX = std::max((short) (resA + ahead), win);
     }
     else                         // Player A hat gewonnen
     {
 	    resX = resA;
-      resA = std::max((short) (resX + 2), MAX_BALL);
+      resA = std::max((short) (resX + ahead), win);
     }
   }
 
@@ -174,7 +174,7 @@ class CSetValidator : public wxValidator
   //                                  -0: Spieler A hat zu 0 verloren
   //                   leerer String:     Ergebnis ist 0 : 0
   // Im Fehlerfall bleibt das alte Ergebnis bestehen (?)
-  static bool  ConvertFromText(const wxString &text, short &resA, short &resX)
+  static bool  ConvertFromText(const wxString &text, short &resA, short &resX, short win, short ahead)
   {
     const short MINUS_NULL = (short) 0x8000;
 
@@ -216,8 +216,8 @@ class CSetValidator : public wxValidator
     // d.h. Keine Fehlerprüfung auf dem Rest
     SkipNonDigit(istr);
 
-    if (!istr.good())          // Kein weiteres Ergebnis
-      CalcOther(set[0], set[1]);   // Zweites Ergebnis berechnen 
+    if (!istr.good())              // Kein weiteres Ergebnis
+      CalcOther(set[0], set[1], win, ahead);   // Zweites Ergebnis berechnen 
     else if ( !minus && isdigit(istr.peek()) )
       istr >> std::dec >> set[1];   // gab weiteres Ergebnis
     else
@@ -338,16 +338,19 @@ bool  CMtRes::Edit(va_list vaList)
   // Validator haengt von mt.mtReverse ab
   for (int i = 0; i < MAX_SET; i++)
   {
+    short win = i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin;
+    short ahd = i == mt.mtBestOf - 1 ? cp.cpPtsAheadLast : cp.cpPtsAhead;
+
     if (mt.mtReverse)
-      FindWindow(idcList[i])->SetValidator(CSetValidator(&mtSetList[i].mtResX, &mtSetList[i].mtResA));
+      FindWindow(idcList[i])->SetValidator(CSetValidator(&mtSetList[i].mtResX, &mtSetList[i].mtResA, win, ahd));
     else
-      FindWindow(idcList[i])->SetValidator(CSetValidator(&mtSetList[i].mtResA, &mtSetList[i].mtResX));
+      FindWindow(idcList[i])->SetValidator(CSetValidator(&mtSetList[i].mtResA, &mtSetList[i].mtResX, win, ahd));
   }
   
   if (mt.mtReverse)  
-    FindWindow("Result")->SetValidator(CSetValidator(&mtMatch.mtResX, &mtMatch.mtResA));
+    FindWindow("Result")->SetValidator(CSetValidator(&mtMatch.mtResX, &mtMatch.mtResA, 0, 0));
   else
-    FindWindow("Result")->SetValidator(CSetValidator(&mtMatch.mtResA, &mtMatch.mtResX));
+    FindWindow("Result")->SetValidator(CSetValidator(&mtMatch.mtResA, &mtMatch.mtResX, 0, 0));
   
   FindWindow("WalkOverA")->SetValidator(CEnumValidator(mt.mtReverse ? &mtMatch.mtWalkOverX : &mtMatch.mtWalkOverA, 1));
   FindWindow("WalkOverX")->SetValidator(CEnumValidator(mt.mtReverse ? &mtMatch.mtWalkOverA : &mtMatch.mtWalkOverX, 1));
@@ -505,23 +508,26 @@ void CMtRes::OnKillFocusSet(wxFocusEvent &evt)
 
   short oldResA = mtSetList[idx].mtResA;
   short oldResX = mtSetList[idx].mtResX;
+
+  short win = idx == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin;
+  short ahd = idx == mt.mtBestOf - 1 ? cp.cpPtsAheadLast : cp.cpPtsAhead;
     
   TransferDataFromWindow();
 
   // Test, ob sich was am Satzergebnis geaendert hat.
   // Es passiert, dass man ein Ergebnis vom Liveticker aendern muss, aber das betrifft oft nur Punkte des Verlierers
-  if (oldResA >= MIN_POINTS && oldResA > oldResX + 1)
+  if (oldResA >= win && oldResA > oldResX + 1)
   {
-    if (mtSetList[idx].mtResA >= MIN_POINTS && mtSetList[idx].mtResA > mtSetList[idx].mtResX + 1)
+    if (mtSetList[idx].mtResA >= win && mtSetList[idx].mtResA >= mtSetList[idx].mtResX + ahd)
     {
       TransferDataToWindow();
       return;
     }
   }
 
-  if (oldResX >= MIN_POINTS && oldResX > oldResA + 1)
+  if (oldResX >= win && oldResX > oldResA + 1)
   {
-    if (mtSetList[idx].mtResX >= MIN_POINTS && mtSetList[idx].mtResX > mtSetList[idx].mtResA + 1)
+    if (mtSetList[idx].mtResX >= win && mtSetList[idx].mtResX >= mtSetList[idx].mtResA + ahd)
     {
       TransferDataToWindow();
       return;
@@ -539,9 +545,9 @@ void CMtRes::OnKillFocusSet(wxFocusEvent &evt)
   int i;
   for (i = 0; i < mt.mtBestOf; i++)
   {
-    if (mtSetList[i].mtResA >= MIN_POINTS && mtSetList[i].mtResA > mtSetList[i].mtResX + 1)
+    if (mtSetList[i].mtResA >= win && mtSetList[i].mtResA >= mtSetList[i].mtResX + ahd)
       mtMatch.mtResA++;
-    else if (mtSetList[i].mtResX >= MIN_POINTS && mtSetList[i].mtResX > mtSetList[i].mtResA + 1)
+    else if (mtSetList[i].mtResX >= win && mtSetList[i].mtResX > mtSetList[i].mtResA + ahd)
       mtMatch.mtResX++;
     else
       break;
@@ -552,9 +558,9 @@ void CMtRes::OnKillFocusSet(wxFocusEvent &evt)
     mtSetList[i].mtResA = mtSetList[i].mtResX = 0;
 
   // Siegereintrag setzen
-  if (mtMatch.mtResA > mt.mtBestOf / 2)
+  if (2 * mtMatch.mtResA > mt.mtBestOf)
     tmWinnerItem->SetListItem(new TmItem(mt.mtReverse ? tmX : tmA));
-  else if (mtMatch.mtResX > mt.mtBestOf / 2)
+  else if (2 * mtMatch.mtResX > mt.mtBestOf)
     tmWinnerItem->SetListItem(new TmItem(mt.mtReverse ? tmA : tmX));
   else
     tmWinnerItem->SetListItem(new TmItem());
@@ -562,8 +568,8 @@ void CMtRes::OnKillFocusSet(wxFocusEvent &evt)
   TransferDataToWindow();
   
   // Enable / Disable Window
-  if (mtMatch.mtResA > mt.mtBestOf / 2 ||
-      mtMatch.mtResX > mt.mtBestOf / 2)
+  if (2 * mtMatch.mtResA > mt.mtBestOf ||
+      2 * mtMatch.mtResX > mt.mtBestOf)
   {
     for (idx = lastIdx + 1; idx < mt.mtBestOf; idx++)
       FindWindow(idcList[idx])->Enable(false);
@@ -682,8 +688,6 @@ void CMtRes::OnWalkOver()
   else if (mtMatch.mtResX > mt.mtBestOf / 2)
     winnerAX = -1;
 
-  int  ballsA = (mtMatch.mtWalkOverX && !mtMatch.mtWalkOverA ? MIN_POINTS : 0);
-  int  ballsX = (mtMatch.mtWalkOverA && !mtMatch.mtWalkOverX ? MIN_POINTS : 0);
   int  flag   = mtMatch.mtWalkOverA || mtMatch.mtWalkOverX;
 
 	if ( flag && 
@@ -700,6 +704,11 @@ void CMtRes::OnWalkOver()
 	int i;
 	for (i = 0; i < mt.mtBestOf; i++)
 	{
+    short win = (i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin);
+
+    int  ballsA = (mtMatch.mtWalkOverX && !mtMatch.mtWalkOverA ? win : 0);
+    int  ballsX = (mtMatch.mtWalkOverA && !mtMatch.mtWalkOverX ? win : 0);
+
 		// Eindhoven: Auch abgebrochene Spiele zaehlen als WalkOver
 		// Wenn der Sieger schliesslich feststeht, abbrechen.
 		if (!mtSetList[i].mtResA && !mtSetList[i].mtResX)
@@ -750,8 +759,6 @@ void CMtRes::OnInjured()
   else if (mtMatch.mtResX > mt.mtBestOf / 2)
     winnerAX = -1;
 
-  int  ballsA = (mtMatch.mtInjuredX && !mtMatch.mtInjuredA ? MIN_POINTS : 0);
-  int  ballsX = (mtMatch.mtInjuredA && !mtMatch.mtInjuredX ? MIN_POINTS : 0);
   int  flag   = mtMatch.mtInjuredA || mtMatch.mtInjuredX;
 
 	if ( flag && 
@@ -768,6 +775,11 @@ void CMtRes::OnInjured()
 	int i;
 	for (i = 0; i < mt.mtBestOf; i++)
 	{
+    short win = (i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin);
+
+    int  ballsA = (mtMatch.mtInjuredX && !mtMatch.mtInjuredA ? win : 0);
+    int  ballsX = (mtMatch.mtInjuredA && !mtMatch.mtInjuredX ? win : 0);
+
 		// Eindhoven: Auch abgebrochene Spiele zaehlen als WalkOver
 		// Wenn der Sieger schliesslich feststeht, abbrechen.
 		if (!mtSetList[i].mtResA && !mtSetList[i].mtResX)
@@ -783,8 +795,8 @@ void CMtRes::OnInjured()
 		else if (mtSetList[i].mtResX > mtSetList[i].mtResA)
 			mtMatch.mtResX++;
 
-		if ( (mtMatch.mtResA > mt.mtBestOf / 2) ||
-				 (mtMatch.mtResX > mt.mtBestOf / 2) )
+		if ( (2 * mtMatch.mtResA > mt.mtBestOf) ||
+				 (2 * mtMatch.mtResX > mt.mtBestOf) )
 			break;
 	}
 
@@ -795,9 +807,9 @@ void CMtRes::OnInjured()
 	  // fdSet[i]->FdSetNonSelectable(flag);
 	}
 
-  if (mtMatch.mtResA > mt.mtBestOf / 2)
+  if (2 * mtMatch.mtResA > mt.mtBestOf)
     tmWinnerItem->SetListItem(new TmItem(mt.mtReverse ? tmX : tmA));
-  else if (mtMatch.mtResX > mt.mtBestOf / 2)
+  else if (2 * mtMatch.mtResX > mt.mtBestOf)
     tmWinnerItem->SetListItem(new TmItem(mt.mtReverse ? tmA : tmX));
   else
     tmWinnerItem->SetListItem(new TmItem());
@@ -847,8 +859,10 @@ void CMtRes::OnDisqualified()
   {
     for (int i = 0; i < (mt.mtBestOf + 1) / 2; i++)
     {
-      mtSetList[i].mtResA = mtMatch.mtDisqualifiedA ? 0 : MIN_POINTS;
-      mtSetList[i].mtResX = mtMatch.mtDisqualifiedX ? 0 : MIN_POINTS;
+      short win = (i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin);
+
+      mtSetList[i].mtResA = mtMatch.mtDisqualifiedA ? 0 : win;
+      mtSetList[i].mtResX = mtMatch.mtDisqualifiedX ? 0 : win;
     }
 
     mtMatch.mtResA = mtMatch.mtDisqualifiedA ? 0 : (mt.mtBestOf + 1) / 2;

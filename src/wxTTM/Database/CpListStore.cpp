@@ -36,7 +36,8 @@ bool  CpListStore::CreateView()
   Statement *tmp = connPtr->CreateStatement();
 
   wxString  str = "CREATE VIEW CpList AS "
-                     "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf "
+                     "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+                     "       cpBestOf, cpPtsToWin, cpPtsAhead, cpPtsToWinLast, cpPtsAheadLast "
                      "FROM cpRec";
 
   try
@@ -194,7 +195,8 @@ bool  CpListStore::SelectByName(const wxString &name)
 wxString  CpListStore::SelectString() const
 {
   wxString  str = 
-    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf FROM CpList ";
+    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+    "       cpBestOf, cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast FROM CpList ";
 
   return str;
 }
@@ -210,6 +212,10 @@ bool  CpListStore::BindRec()
   BindCol(6, &cpYear);
   BindCol(7, &syID);
   BindCol(8, &cpBestOf);
+  BindCol(9, &cpPtsToWin);
+  BindCol(10, &cpPtsToWinLast);
+  BindCol(11, &cpPtsAhead);
+  BindCol(12, &cpPtsAheadLast);
 
   return true;
 }

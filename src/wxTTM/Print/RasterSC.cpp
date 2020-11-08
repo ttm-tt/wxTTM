@@ -469,10 +469,12 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	      
 	    if (!mtSet.mtResA && !mtSet.mtResX)
 	      continue;
+
+      short win = (mtSet.mtSet == mt.mt.mtBestOf ? cp.cpPtsToWinLast : cp.cpPtsToWin);
 	      
-	    if ( (mtSet.mtResA > mtSet.mtResX) && (mtSet.mtResA >= MIN_POINTS) )
+	    if ( (mtSet.mtResA > mtSet.mtResX) && (mtSet.mtResA >= win) )
 	      res[0]++;
-	    else if ( (mtSet.mtResX > mtSet.mtResA) && (mtSet.mtResX >= MIN_POINTS) )
+	    else if ( (mtSet.mtResX > mtSet.mtResA) && (mtSet.mtResX >= win) )
 	      res[1]++;
 	      
 	    wxChar tmp[10];
@@ -1461,10 +1463,12 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		  {
 		    if (mtSet.mtSet > 0)
 		    {
+          short win = (mtSet.mtSet == mt.mt.mtBestOf ? cp.cpPtsToWinLast : cp.cpPtsToWin);
+
 		      // Der Einfachheit mitzaehlen und nicht mtMatch abfragen
-		      if ( (mtSet.mtResA > mtSet.mtResX) && (mtSet.mtResA >= MIN_POINTS) )
+		      if ( (mtSet.mtResA > mtSet.mtResX) && (mtSet.mtResA >= win) )
 		        res[0]++;
-		      else if ( (mtSet.mtResX > mtSet.mtResA) && (mtSet.mtResX >= MIN_POINTS) )
+		      else if ( (mtSet.mtResX > mtSet.mtResA) && (mtSet.mtResX >= win) )
 		        res[1]++;
 		      
           PrintGame(mtSet, regSet[mtSet.mtSet-1], mt.mt.mtReverse ? true : false);
