@@ -545,9 +545,12 @@ void CMtRes::OnKillFocusSet(wxFocusEvent &evt)
   int i;
   for (i = 0; i < mt.mtBestOf; i++)
   {
-    if (mtSetList[i].mtResA >= win && mtSetList[i].mtResA >= mtSetList[i].mtResX + ahd)
+    short cw = i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin;
+    short ca = i == mt.mtBestOf - 1 ? cp.cpPtsAheadLast : cp.cpPtsAhead;
+    
+    if (mtSetList[i].mtResA >= cw && mtSetList[i].mtResA >= mtSetList[i].mtResX + ca)
       mtMatch.mtResA++;
-    else if (mtSetList[i].mtResX >= win && mtSetList[i].mtResX > mtSetList[i].mtResA + ahd)
+    else if (mtSetList[i].mtResX >= cw && mtSetList[i].mtResX >= mtSetList[i].mtResA + ca)
       mtMatch.mtResX++;
     else
       break;
