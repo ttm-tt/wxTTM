@@ -132,6 +132,10 @@ void CCpEdit::OnInitialUpdate()
 	else
 	  XRCCTRL(*this, "OrAfter", wxStaticText)->SetLabel(_("or after"));
 
+  FindWindow("PtsToWin")->SetValidator(CShortValidator(&cp.cpPtsToWin));
+  FindWindow("PtsToWinLast")->SetValidator(CShortValidator(&cp.cpPtsToWinLast));
+  FindWindow("PtsAhead")->SetValidator(CShortValidator(&cp.cpPtsAhead));
+  FindWindow("PtsAheadLast")->SetValidator(CShortValidator(&cp.cpPtsAheadLast));
 }
 
 

@@ -451,8 +451,9 @@ bool  CpStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
 
-  wxString str = "INSERT INTO CpRec (cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf) "
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+  wxString str = "INSERT INTO CpRec (cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf, "
+                    "cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast) "
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   try
   {
@@ -470,6 +471,10 @@ bool  CpStore::Insert()
     stmtPtr->SetData(6, &cpYear);
     stmtPtr->SetData(7, syID ? &syID : NULL);
     stmtPtr->SetData(8, &cpBestOf);
+    stmtPtr->SetData(9, &cpPtsToWin);
+    stmtPtr->SetData(10, &cpPtsToWinLast);
+    stmtPtr->SetData(11, &cpPtsAhead);
+    stmtPtr->SetData(12, &cpPtsAhead);
 
     stmtPtr->Execute();
   }
@@ -499,7 +504,9 @@ bool  CpStore::Update()
   wxString str = "UPDATE CpRec "
                     "SET cpName = ?, cpDesc = ?, cpType = ?, "
                      "   cpSex = ?, cpYear = ?, "
-                     "   syID = ?, cpBestOf = ? "
+                     "   syID = ?, cpBestOf = ?, "
+                     "   cpPtsToWin = ?, cpPtsToWinLast = ?, "
+                     "   cpPtsAhead = ?, cpPtsAheadLast = ? "
                     "WHERE cpID = ?";
 
   try
@@ -515,7 +522,11 @@ bool  CpStore::Update()
     stmtPtr->SetData(5, &cpYear);
     stmtPtr->SetData(6, syID ? &syID : NULL);
     stmtPtr->SetData(7, &cpBestOf);
-    stmtPtr->SetData(8, &cpID);
+    stmtPtr->SetData(8, &cpPtsToWin);
+    stmtPtr->SetData(9, &cpPtsToWinLast);
+    stmtPtr->SetData(10, &cpPtsAhead);
+    stmtPtr->SetData(11, &cpPtsAheadLast);
+    stmtPtr->SetData(12, &cpID);
 
     stmtPtr->Execute();
   }
