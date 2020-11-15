@@ -113,7 +113,7 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
   }
 
   ret = SQLDriverConnect(
-    hDbc, (SQLHWND) wxTheApp->GetTopWindow()->GetHWND(),
+    hDbc, (SQLHWND) (wxTheApp ? wxTheApp->GetTopWindow()->GetHWND() : NULL),
     (SQLTCHAR *) tmp.wx_str(), SQL_NTS, (SQLTCHAR *) connStrOut, 1023, &connStrOutLen, SQL_DRIVER_COMPLETE_REQUIRED);
 
   // Cancel beim Loginfenster

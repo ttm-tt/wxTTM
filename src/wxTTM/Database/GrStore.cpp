@@ -48,7 +48,7 @@ short GrRec::QryToRoundWinner(const MtRec &mt)
   }
   else
   {
-    // Trosrunde
+    // Trostrunde
     if (mt.mtEvent.mtRound == NofRounds(true))
       return NofRounds(false);           // Sieger der Trostrunde ins Finale
     else

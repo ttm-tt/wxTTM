@@ -19,6 +19,9 @@
     <Filter Include="Test Cases\Database">
       <UniqueIdentifier>{cc6830bf-e2f3-42c2-bb70-626b5f277105}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test Resources">
+      <UniqueIdentifier>{adcb11be-5fe8-4724-a4a5-983674eab1ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -27,10 +30,18 @@
     <ClCompile Include="Database\TestGrStore.cpp">
       <Filter>Test Cases\Database</Filter>
     </ClCompile>
+    <ClCompile Include="TestTTDbse.cpp">
+      <Filter>Test Cases\Database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TTM_UTEST-v153.zip">
+      <Filter>Test Resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

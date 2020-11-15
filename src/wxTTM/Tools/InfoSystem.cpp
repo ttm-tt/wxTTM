@@ -143,6 +143,12 @@ bool  InfoSystem::Exception(const wxString &sql, const SQLException &e)
 // Messagebox ausgeben
 bool  InfoSystem::DisplayMessageBox(const wxString &title, const wxString &text, int type)
 {
+  if (wxTheApp == nullptr)
+  {
+    OutputDebugString(text.wc_str());
+    return false;
+  }
+
   wxWindow *parent = wxTheApp->GetTopWindow();
 
   switch (wxMessageBox(text, title, type, parent))
