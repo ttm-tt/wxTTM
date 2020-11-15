@@ -1616,7 +1616,7 @@ bool DrawLP::DrawStage(int stg)
 
 bool DrawLP::DrawThem(GrStore &gr)
 {
-  warnings.empty();
+  warnings.clear();
 
   // Freilose einfuegen
   for (int i = totalNA + listBY.size(); i < gr.grSize; i++)

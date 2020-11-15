@@ -1014,6 +1014,18 @@
     <None Include="..\Resources\3rdparty.html">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Database\DttbSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </None>
+    <None Include="Database\IttfSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </None>
+    <None Include="Database\MtStore.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </None>
+    <None Include="Database\TbSort.sql">
+      <Filter>Source Files\Database\Scripts</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources\wxTTM.rc">
@@ -1134,18 +1146,6 @@
     </CustomBuildStep>
     <CustomBuildStep Include="Dialogs\OvList.h">
       <Filter>Source Files\Dialogs\Tournament</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="Database\DttbSort.sql">
-      <Filter>Source Files\Database\Scripts</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="Database\IttfSort.sql">
-      <Filter>Source Files\Database\Scripts</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="Database\MtStore.sql">
-      <Filter>Source Files\Database\Scripts</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="Database\TbSort.sql">
-      <Filter>Source Files\Database\Scripts</Filter>
     </CustomBuildStep>
   </ItemGroup>
 </Project>

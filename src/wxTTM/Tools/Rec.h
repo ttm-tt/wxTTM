@@ -4,8 +4,6 @@
 #ifndef  REC_H
 #define  REC_H
 
-#include "stdafx.h"
-
 #define  SEX_MALE    (1)
 #define  SEX_FEMALE  (2)
 #define  SEX_MIXED   (3)
