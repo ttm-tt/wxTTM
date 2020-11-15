@@ -11,9 +11,9 @@ namespace wxTestTTM
   TEST_MODULE_INITIALIZE(SetUpTestTTM)
   {
     // TODO: Somehow configurable
-    wxSetWorkingDirectory("F:\\User\\ChT\\TTM");
+    wxSetWorkingDirectory("..\\..\\..\\..\\..\\TTM");
 
-    wxString connStr = "DRIVER=SQL Server;SERVER=localhost;UID=chtheis;Trusted_Connection=Yes;WSID=SAURON;DATABASE=TTM_UTEST;AnsiNPW=No;";
+    wxString connStr = "DRIVER=SQL Server;SERVER=localhost;Trusted_Connection=Yes;DATABASE=TTM_UTEST;AnsiNPW=No;";
     bool ret = TTDbse::instance()->OpenDatabase(connStr, false);
     Assert::IsTrue(ret);
   }
