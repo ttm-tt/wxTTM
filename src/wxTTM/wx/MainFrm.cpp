@@ -17,6 +17,7 @@
 
 // Import / Export
 #include "CpStore.h"
+#include "GrStore.h"
 #include "NaStore.h"
 #include "PlStore.h"
 #include "RpStore.h"
@@ -42,6 +43,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(wxID_EXIT, CMainFrame::OnMenuCommand)
 
   EVT_MENU(XRCID("TournamentImportEventsMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentImportGroupsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportAssocMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportUmpiresMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportPlayersMenuItem"), CMainFrame::OnMenuCommand)
@@ -53,6 +55,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentImportOnlineEntriesMenuItem"), CMainFrame::OnMenuCommand)
   
   EVT_MENU(XRCID("TournamentExportEventsMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentExportGroupsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportAssocMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportUmpiresMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportPlayersMenuItem"), CMainFrame::OnMenuCommand)
@@ -198,6 +201,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
 
   else if (evt.GetId() == XRCID("TournamentImportEventsMenuItem"))
     Import(_("Import Events"), "cp.csv", &CpStore::Import);
+  else if (evt.GetId() == XRCID("TournamentImportGroupsMenuItem"))
+    Import(_("Import Groups"), "gr.csv", &GrStore::Import);
   else if (evt.GetId() == XRCID("TournamentImportAssocMenuItem"))
     Import(_("Import Associations"), "na.csv", &NaStore::Import);
   else if (evt.GetId() == XRCID("TournamentImportUmpiresMenuItem"))
@@ -219,6 +224,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
 
   else if (evt.GetId() == XRCID("TournamentExportEventsMenuItem"))
     Export(_("Export Events"), "cp.csv", &CpStore::Export);
+  else if (evt.GetId() == XRCID("TournamentExportGroupsMenuItem"))
+    CTT32App::instance()->OpenView(_("Export Groups"), wxT("GrExport"), &GrStore::Export);
   else if (evt.GetId() == XRCID("TournamentExportAssocMenuItem"))
     Export(_("Export Associations"), "na.csv", &NaStore::Export);
   else if (evt.GetId() == XRCID("TournamentExportUmpiresMenuItem"))

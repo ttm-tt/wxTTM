@@ -430,6 +430,40 @@ bool  SyStore::SelectById(long id)
 }
 
 
+bool  SyStore::SelectByName(const wxString &name)
+{
+  wxString str = 
+    "SELECT syID, syName, syDesc, syComplete, "
+    "             sySingles, syDoubles, syMatches "
+    " WHERE syName = '";
+  str += name;
+  str += "'";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindCol(1, &syID);
+    BindCol(2, syName, sizeof(syName));
+    BindCol(3, syDesc, sizeof(syDesc));
+    BindCol(4, &syComplete);
+    BindCol(5, &sySingles);
+    BindCol(6, &syDoubles);
+    BindCol(7, &syMatches);
+
+    return true;
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
 bool  SyStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
@@ -593,15 +627,28 @@ bool  SyStore::Next()
   delete syList;
   syList = new SyList[syMatches];
 
-  // System einlesen
-  SyMatchStore  syMatch;
-  syMatch.Select(syID);
-  while (syMatch.Next())
+  Connection *connPtr = TTDbse::instance()->GetNewConnection();
+
+  try
   {
-    syList[syMatch.syNr-1].syType    = syMatch.syType;
-    syList[syMatch.syNr-1].syPlayerA = syMatch.syPlayerA;
-    syList[syMatch.syNr-1].syPlayerX = syMatch.syPlayerX;
+    // System einlesen
+    SyMatchStore  syMatch(connPtr);
+    syMatch.Select(syID);
+    while (syMatch.Next())
+    {
+      syList[syMatch.syNr-1].syType    = syMatch.syType;
+      syList[syMatch.syNr-1].syPlayerA = syMatch.syPlayerA;
+      syList[syMatch.syNr-1].syPlayerX = syMatch.syPlayerX;
+    }
   }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception("SELECT ... FROM SyMatch WHERE ...", e);
+    delete connPtr;
+    return false;
+  }
+
+  delete connPtr;
 
   return true;
 }

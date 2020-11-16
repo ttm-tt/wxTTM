@@ -69,7 +69,7 @@ bool  Connection::IsValid()
     delete res;
     delete stmnt;
   }
-  catch (SQLException &)
+  catch (SQLException &ex)
   {
     return false;
   }

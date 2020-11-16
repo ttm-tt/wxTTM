@@ -30,6 +30,11 @@
 #include  "TBSort.h"
 #include  "TbItem.h"
 
+#include  "wxStringTokenizerEx.h"
+
+#include  <stdio.h>
+#include  <fstream>
+#include  <stdlib.h>
 
 // -----------------------------------------------------------------------
 long  GrRec::QryToGroupWinner(const MtRec &mt)
@@ -829,6 +834,39 @@ bool  GrStore::UpdateConstraints(long version)
 
 
 // -----------------------------------------------------------------------
+bool  GrStore::InsertOrUpdate()
+{
+  Statement *stmtPtr;
+  ResultSet *resPtr;
+
+  long  id;
+  
+  wxString  sql = "SELECT grID FROM GrRec WHERE cpID = " + ltostr(cpID) + " AND grName = '" + grName + "'";
+  stmtPtr = GetConnectionPtr()->CreateStatement();
+  if (!stmtPtr)
+    return false;
+
+  resPtr = stmtPtr->ExecuteQuery(sql);
+  resPtr->BindCol(1, &id);
+  bool  exist = (resPtr->Next() && !resPtr->WasNull(1));
+
+  delete resPtr;
+  delete stmtPtr;
+
+  if (exist)
+  {
+    grID = id;
+    return Update();
+  }
+  else
+  {
+    CpRec cp;
+    cp.cpID = cpID;
+    return Insert(cp);
+  }
+}
+
+
 bool  GrStore::Insert(const CpRec &cp)
 {
   PreparedStatement *stmtPtr = 0;
@@ -1179,8 +1217,6 @@ void  GrStore::Init()
 }
 
 // -----------------------------------------------------------------------
-
-
 bool  GrStore::SetWinner(const MtRec &rec)
 {
   // Macht keinen Sinn in Round Robin
@@ -2583,4 +2619,271 @@ bool GrStore::SetPrinted(timestamp &ts)
 
   return true;
 }
+
+// -----------------------------------------------------------------------
+// Import / Export
+// Siehe PlStore zur Verwendung von std::ifstream
+bool  GrStore::Import(const wxString &name)
+{
+  wxTextFile ifs(name);
+  if (!ifs.Open())
+    return false;
+
+  wxString line = ifs.GetFirstLine();
+
+  // Skip leading whitespacae
+  if (line.GetChar(0) == '#')
+  {
+    if (wxStrcmp(line, "#GROUPS"))
+    {
+      ifs.Close();
+      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.wx_str()))
+        return false;
+    }
+  }
+
+  // Read all CP, SY, and MD: there are not so many
+  std::map<wxString, long> cpMap;
+  std::map<wxString, long> syMap;
+  std::map<wxString, long> mdMap;
+
+  Connection *connPtr = TTDbse::instance()->GetNewConnection();
+
+  // HACK: Die Variablen duerfen nicht laenger leben als connPtr [
+  {
+  CpStore cp(connPtr);
+  SyStore sy(connPtr);
+  MdStore md(connPtr);
+
+  cp.SelectAll();
+  while (cp.Next())
+    cpMap[cp.cpName] = cp.cpID;
+
+  cpMap[wxEmptyString] = 0;
+
+  sy.SelectAll();
+  while (sy.Next())
+    syMap[sy.syName] = sy.syID;
+
+  syMap[wxEmptyString] = 0;
+
+  md.SelectAll();
+  while (md.Next())
+    mdMap[md.mdName] = md.mdID;
+  
+  mdMap[wxEmptyString];
+
+  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  {
+    CTT32App::ProgressBarStep();
+
+    if (line.GetChar(0) == '#')
+      continue;
+
+    wxStringTokenizerEx tokens(line, wxT(",;\t"));
+
+    wxString strCpName = tokens.GetNextToken();
+    wxString strGrName = tokens.GetNextToken();
+    wxString strGrDesc = tokens.GetNextToken();
+    wxString strGrStage = tokens.GetNextToken();
+    wxString strGrModus = tokens.GetNextToken();
+    wxString strGrSize = tokens.GetNextToken();
+    wxString strGrBestOf = tokens.GetNextToken();
+    wxString strGrWinner = tokens.GetNextToken();
+    wxString strMdName = tokens.GetNextToken();
+    wxString strSyName = tokens.GetNextToken();
+    wxString strGrNofRounds = tokens.GetNextToken();
+    wxString strGrNofMatches = tokens.GetNextToken();
+    wxString strGrThirdPlace = tokens.GetNextToken(); // Empy or Yes / No / Only
+
+    if (strCpName.IsEmpty() || cpMap.find(strCpName) == cpMap.end())
+      continue;
+    if (strGrName.IsEmpty())
+      continue;
+    if (strGrDesc.IsEmpty())
+      continue;
+    if (strGrStage.IsEmpty())
+      continue;
+    if (strGrBestOf.IsEmpty())
+      continue;
+    if (strGrWinner.IsEmpty())
+      continue;
+    if (!strSyName.IsEmpty() && syMap.find(strSyName) == syMap.end())
+    {
+      infoSystem.Error(_("Unkown team system %s"), _strtos(strSyName));
+      continue;
+    }
+    if (!strMdName.IsEmpty() && mdMap.find(strSyName) == mdMap.end())
+    { 
+      infoSystem.Error(_("Unkown group mdous %s"), _strtos(strMdName));
+      continue;
+    }
+
+    // TODO: Don't change modus, system, size of existing groups
+
+    GrStore gr(connPtr);
+
+    wxStrncpy((wxChar *) gr.grName, strGrName.t_str(), sizeof(grName) / sizeof(wxChar) -1);
+    wxStrncpy((wxChar *) gr.grDesc, strGrDesc.t_str(), sizeof(grDesc) / sizeof(wxChar) -1);
+    wxStrncpy((wxChar *) gr.grStage, strGrStage.t_str(), sizeof(grStage) / sizeof(wxChar) -1);
+
+    gr.cpID = cpMap[strCpName];
+    gr.syID = syMap[strSyName];
+    gr.mdID = mdMap[strMdName];
+
+    if (strGrModus == "RR")
+      gr.grModus = MOD_RR;
+    else if (strGrModus == "KO" || strGrModus == "SKO")
+      gr.grModus = MOD_SKO;
+    else if (strGrModus == "PO" || strGrModus == "PLO")
+      gr.grModus = MOD_PLO;
+    else if (strGrModus == "DK" || strGrModus == "DKO")
+      gr.grModus = MOD_DKO;
+    else if (strGrModus == "MK" || strGrModus == "MDK")
+      gr.grModus = MOD_MDK;
+    else
+    {
+      infoSystem.Error(_("Unkown group type %s"), _strtos(strGrModus));
+      continue;
+    }
+
+    gr.grSize = _strtos(strGrSize);
+    gr.grBestOf = _strtos(strGrBestOf);
+    gr.grWinner = _strtos(strGrWinner);
+
+    if (!strGrNofRounds.IsEmpty())
+      gr.grNofRounds = _strtos(strGrNofRounds);
+    if (!strGrNofMatches.IsEmpty())
+      gr.grNofMatches = _strtos(strGrNofMatches);
+
+    switch (*strGrThirdPlace.t_str())
+    {
+      case '\0' :
+      case 'Y'  :
+        break;
+      case 'N' : 
+        gr.grNoThirdPlace = 1;
+        break;
+      case 'O' :
+        gr.grOnlyThirdPlace = 1;
+        break;
+
+      default :
+        continue;
+    }
+
+    connPtr->StartTransaction();
+
+    if (gr.InsertOrUpdate())
+      connPtr->Commit();
+    else
+      connPtr->Rollback();
+  }
+  }  // HACK ]
+
+  delete connPtr;
+
+  ifs.Close();
+  
+  return true;
+}
+
+
+bool  GrStore::Export(const wxString &name, short cpType, const std::vector<long> & idList, bool append)
+{
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  
+  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
+
+  if (!append)
+  {
+    const wxString bom(wxChar(0xFEFF));
+    os << bom.ToUTF8();
+
+    os << "#GROUPS" << std::endl;
+    os << "# CP; Name; Description; Stage; Modus; Size; Best of; Winner; Group Modus; Team System; Nof Rounds; Nof Matches; 3d Place; " << std::endl;
+  }
+
+  // Read all CP, SY, and MD: there are not so many
+  std::map<long, wxString> cpMap;
+  std::map<long, wxString> syMap;
+  std::map<long, wxString> mdMap;
+
+  CpStore cp(connPtr);
+  SyStore sy(connPtr);
+  MdStore md(connPtr);
+
+  cp.SelectAll();
+  while (cp.Next())
+    cpMap[cp.cpID] = cp.cpName;
+
+  cpMap[0] = wxEmptyString;
+
+  sy.SelectAll();
+  while (sy.Next())
+    syMap[sy.syID] = sy.syName;
+
+  syMap[0] = wxEmptyString;
+
+  md.SelectAll();
+  while (md.Next())
+    mdMap[md.mdID] = md.mdName;
+  
+  mdMap[0] = wxEmptyString;
+
+  for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
+  {
+    static wxString modus[] = {"", "RR", "KO", "DK", "PO", "MK"};
+
+    wxString line;
+    long grID = (*it);
+
+    GrStore  gr;
+    if (!gr.SelectById(grID) || !gr.Next())
+      continue;
+    gr.Close();
+
+    line << cpMap[gr.cpID] << ";"
+         << gr.grName << ";"
+         << gr.grDesc << ";"
+         << gr.grStage << ";"
+         << modus[gr.grModus] << ";"
+         << gr.grSize << ";"
+         << gr.grBestOf << ";"
+         << gr.grWinner << ";"
+         << mdMap[gr.mdID] << ";"
+         << syMap[gr.syID] << ";"
+         << gr.grNofRounds << ";"
+         << gr.grNofMatches << ";"
+    ;
+
+    switch (gr.grModus)
+    {
+      case MOD_RR :
+        break;
+      case MOD_SKO :
+        if (gr.grOnlyThirdPlace)
+          line << "O;";
+        else
+          line << "N;";
+        break;
+      case MOD_PLO :
+        if (gr.grNoThirdPlace)
+          line << "N;";
+        else
+          line << "Y;";
+        break;
+      default :
+        line << ";";
+        break;
+    }
+
+    os << line.ToUTF8() << std::endl;
+  }
+
+  os.close();
+
+  return true;
+}
+
 

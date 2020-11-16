@@ -221,17 +221,24 @@ class  GrStore : public StoreObj, public GrRec
     static  bool  CreateConstraints();
     static  bool  UpdateConstraints(long version);
 
+    // Import / Export
+    static  bool  Import(const wxString &name);
+    static  bool  Export(const wxString &name, short cpType, const std::vector<long> &, bool append);
+
   public:
     GrStore(Connection *ptr = 0) : StoreObj(ptr) {};
     GrStore(const GrRec &rec, Connection *ptr = 0) : StoreObj(ptr), GrRec(rec) {}
     GrStore & operator=(const GrRec &rec);
 
     virtual void Init();
-
+  
   public:
     bool  Insert(const CpRec &);
     bool  Update();
     bool  Remove(long id = 0);
+
+    // Check auf cpID + grName, ob WB existiert
+    bool  InsertOrUpdate();
 
     bool  SelectAll(const CpRec &);
     bool  SelectAll(const CpRec &, const wxString &stage);

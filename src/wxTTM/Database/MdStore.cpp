@@ -376,6 +376,37 @@ bool  MdStore::SelectById(long id)
 }
 
 
+bool  MdStore::SelectByName(const wxString &name)
+{
+  wxString str = 
+    "SELECT mdID, mdName, mdDesc, mdSize "
+    "  FROM MdRec "
+    " WHERE mdName = '";
+  str += name;
+  str += "'";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindCol(1, &mdID);
+    BindCol(2, mdName, sizeof(mdName));
+    BindCol(3, mdDesc, sizeof(mdDesc));
+    BindCol(4, &mdSize);
+
+    return true;
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
 bool  MdStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
@@ -534,9 +565,10 @@ bool  MdStore::Next()
   // Spiele auslesen
   ChangeSize(mdSize);
 
+  Connection *connPtr = TTDbse::instance()->GetNewConnection();
   try
   {
-    MdMatchStore  mdMatch(GetConnectionPtr());
+    MdMatchStore  mdMatch(connPtr);
     mdMatch.Select(mdID);
     while (mdMatch.Next())
     {
@@ -547,8 +579,11 @@ bool  MdStore::Next()
   catch (SQLException &e)
   {
     infoSystem.Exception("SELECT ... FROM MdMatch WHERE ...", e);
+    delete connPtr;
     return false;
   }
+
+  delete connPtr;
 
   return true;
 }
