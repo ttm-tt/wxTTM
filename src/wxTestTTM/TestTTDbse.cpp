@@ -34,7 +34,10 @@ namespace wxTestTTM
     resPtr = stmtPtr->ExecuteQuery(sql);
   
     wxChar  tmp[100];
-    Assert::IsTrue(resPtr != NULL && resPtr->Next() && resPtr->GetData(1, tmp, 100), L"Could not find tournament / database \"TTM_UTEST\", please create it before running the tests");
+    Assert::IsTrue(
+        resPtr != NULL && resPtr->Next() && resPtr->GetData(1, tmp, 100), 
+        wxT("Could not find tournament / database \"TTM_UTEST\", please create it before running the tests")
+    );
     
     delete resPtr;
     delete stmtPtr;
