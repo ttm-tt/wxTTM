@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 4.0.58
+AppVerName=TTM 20.11
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={pf}\TTM
@@ -14,6 +14,8 @@ OutputDir=Output
 OutputBaseFilename=setup
 ; SourceDir=F:\user\ChT\wxTTM
 SourceDir=..
+; Logging
+; SetupLogging=yes
 
 ; Man braucht admin-Rechte, um ReportMan.ocx registrieren zu koennen
 ; PrivilegesRequired=none
@@ -94,7 +96,7 @@ de.SelectLicenseFile=Lizenzdatei Auswählen
 
 
 [Types]
-Name: full; Description: {cm:ProgramandDatabase}; Check: isAdminLoggedOn
+Name: full; Description: {cm:ProgramandDatabase}; Check: isAdminLoggedOn And IsWin64()
 Name: client; Description: {cm:ProgramOnly}
 
 [Components]
@@ -180,24 +182,22 @@ Filename: {sys}\cmd.exe; Parameters: /c del {app}\de_DE.dll; Check: FileExists(E
 Filename: {sys}\cmd.exe; Parameters: /c del {app}\en_US.dll; Check: FileExists(ExpandConstant('{app}\en_US.dll')); Components: client
 
 ; Supportprogramme installieren
-; Redistributable fuer VS 2017, wir brauchen nur x86 fuer 32 Bit TTM
-Filename: {tmp}\x86\vcredist_x86_2017.exe; Parameters: "/install /quiet"; Check: not Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2017 redistributables; Components: client
-Filename: {tmp}\x64\vcredist_x64_2017.exe; Parameters: "/install /quiet"; Check: Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2017 redistributables; Components: client
+; Redistributable fuer VS 2019, wir brauchen nur x86 fuer 32 Bit TTM
+Filename: {tmp}\x86\vcredist_x86_2019.exe; Parameters: "/install /quiet"; Check: not Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
+Filename: {tmp}\x64\vcredist_x64_2019.exe; Parameters: "/install /quiet"; Check: Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
 
 ; .NET 4.0
 Filename: {tmp}\dotNetFx40_Full_x86_x64.exe; Parameters: /q /norestart; StatusMsg: Install .NET 4.0; Check: not CheckDotNET; Components: database
 
 ; SQL Server Native Client
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_17.4.1.1_x86.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_17.4.1.1_x64.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_17.4.1.1_x86.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_17.4.1.1_x64.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
 
-; SQL Server 2008 R2 32 / 64 Bit
-Filename: {tmp}\xp\SQLEXPR32_x86_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: hidewizard; Check: IsWinXP() and not IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2008 R2; Components: database
-Filename: {tmp}\x86\SQLEXPR_x86_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: hidewizard; Check: not IsWinXP() and not IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2008 R2; Components: database
-Filename: {tmp}\x64\SQLEXPR_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: hidewizard; Check: not IsWinXP() and IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2008 R2; Components: database
+; SQL Server 2017 64 Bit
+Filename: {tmp}\x64\SQLEXPR_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2008 R2; Components: database
 
 ; Berechtigungen setzen
-Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername}\SQLServerMSSQLUser${computername}$MSSQLSERVER:C"; Flags: hidewizard skipifdoesntexist; StatusMsg: Set access rights; Components: database
+Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername}\SQLServerMSSQLUser${computername}$MSSQLSERVER:C"; Flags: runascurrentuser hidewizard skipifdoesntexist; StatusMsg: Set access rights; Components: database
 ; Geht leider nicht, weil es z.B. im deutschen "Benutzer" heisst.
 ;Filename: "{sys}\cacls.exe"; Parameters: """{code:GetIniDir}\TT32.ini"" /E /G ""Users"":C"; Flags: hidewizard skipifdoesntexist; Components: client; Check: isAdminLoggedOn
 
@@ -315,21 +315,8 @@ begin
     idx := Pos('.', tmp);
     tmpBuild := StrToInt(Copy(tmp, 1, idx - 1));
 
-    if ( IsWinXP() ) then
-    begin
-      {Soll: 10.50.4000.0}
-      Result := (tmpMajor > 10) or ((tmpMajor = 10) and ((tmpMinor > 50) or ((tmpMinor = 50) and ((tmpBuild > 4000) or ((tmpBuild = 4000))))));
-    end
-    else if (not IsWin64) then
-    begin
-      {Soll: 11.0.7001.0 (2012 SP4)}
-      Result := (tmpMajor > 11) or ((tmpMajor = 11) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 7001) or ((tmpBuild = 7001))))));
-    end
-    else
-      {Soll: 14.0.3223.x (2012 SP4)}
-      Result := (tmpMajor > 14) or ((tmpMajor = 14) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 3223) or ((tmpBuild = 3223))))));
-    begin
-    end;
+    {Soll: 14.0.1000.x (2017)}
+    Result := (tmpMajor > 14) or ((tmpMajor = 14) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 1000) or ((tmpBuild = 1000))))));
   end;    
 end;
 
@@ -550,18 +537,7 @@ begin
         GetFile('dotNetFx40_Full_x86_x64.exe');
       end;
 
-      if (IsWinXP()) then
-      begin
-        GetFile('xp\SQLEXPR32_x86_ENU.exe');
-      end
-      else if (IsWin64()) then
-      begin
-        GetFile('x64\SQLEXPR_x64_ENU.exe');
-      end
-      else
-      begin
-        GetFile('x86\SQLEXPR_x86_ENU.exe');
-      end;
+      GetFile('x64\SQLEXPR_x64_ENU.exe');
     end;
 
     {Bei Bedarf den Windows Installer installieren}
@@ -571,29 +547,18 @@ begin
       {RunOnce kann keine Files vom Internet oder von Shared ausfuehren}
       ITD_ClearFiles();
 
-      if ( IsWinXP() ) then
-      begin
-        GetFile('xp\WindowsXP-KB942288-v3-x86.exe');
-      end
-      else if (IsWin64()) then
-      begin
-        GetFile('x64\Windows6.0-KB942288-v2-x64.msu');
-      end
-      else
-      begin
-        GetFile('x86\Windows6.0-KB942288-v2-x86.msu');
-      end;
+      GetFile('x64\Windows6.0-KB942288-v2-x64.msu');
     end;
 
     if ( not CheckVCRedistributables() ) then
     begin
       if (Is64BitInstallMode()) then
       begin
-        GetFile('x64\vcredist_x64_2017.exe')
+        GetFile('x64\vcredist_x64_2019.exe')
       end
       else
       begin
-        GetFile('x86\vcredist_x86_2017.exe')
+        GetFile('x86\vcredist_x86_2019.exe')
       end;
     end;
   
