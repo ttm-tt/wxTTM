@@ -247,17 +247,10 @@ void CPlListView::OnPlEditEvents(wxCommandEvent &)
   if (itemPtr->IsDeleted())
     return;
 
-  CTT32App::instance()->OpenView(_T("Add to Events"), wxT("PlEvents"), itemPtr->GetID());
+  wxPanel *panel = CTT32App::instance()->OpenView(_T("Add to Events"), wxT("PlEvents"), itemPtr->GetID());
 
-  long idx = m_listCtrl->GetCurrentIndex();
-  while (idx < m_listCtrl->GetItemCount() - 1)
-  {
-    if (m_listCtrl->GetListItem(++idx) && !m_listCtrl->GetListItem(idx)->IsDeleted())
-      break;
-  }
-
-  if (idx < m_listCtrl->GetItemCount())
-    m_listCtrl->SetCurrentIndex(idx);
+  if (panel)
+    panel->GetParent()->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(CPlListView::OnChildClose), NULL, this);
 }
 
 
@@ -484,5 +477,22 @@ void CPlListView::OnUpdate(CRequest *reqPtr)
     default :
       break;
   }
+}
+
+
+// -----------------------------------------------------------------------
+void CPlListView::OnChildClose(wxCloseEvent& evt)
+{
+  evt.Skip();
+
+  long idx = m_listCtrl->GetCurrentIndex();
+  while (idx < m_listCtrl->GetItemCount() - 1)
+  {
+    if (m_listCtrl->GetListItem(++idx) && !m_listCtrl->GetListItem(idx)->IsDeleted())
+      break;
+  }
+
+  if (idx < m_listCtrl->GetItemCount())
+    m_listCtrl->SetCurrentIndex(idx);
 }
 

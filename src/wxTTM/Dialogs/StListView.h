@@ -41,6 +41,8 @@ class CStListView : public CFormViewEx
 
     void OnMouseLeftDown(wxMouseEvent &);
 
+    void OnChildClose(wxCloseEvent &);
+
   private:
     void DoDelete(StItem *);
 

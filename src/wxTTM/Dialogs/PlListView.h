@@ -42,6 +42,7 @@ class CPlListView : public CFormViewEx
     void OnClone(wxCommandEvent &);
     void OnHistory(wxCommandEvent &);
     void OnEventHistory(wxCommandEvent &);
+    void OnChildClose(wxCloseEvent &);
 
   private:
     static const char *  headers[];

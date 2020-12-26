@@ -393,11 +393,10 @@ void  CStListView::OnEdit()
   if (!itemPtr)
     return;
 
-  CTT32App::instance()->OpenView(_("Edit Seeding"), wxT("StEdit"), itemPtr->GetID());
+  wxPanel *panel = CTT32App::instance()->OpenView(_("Edit Seeding"), wxT("StEdit"), itemPtr->GetID());
 
-  long idx = m_listCtrl->GetCurrentIndex();
-  if (idx < m_listCtrl->GetItemCount() - 1)
-    m_listCtrl->SetCurrentIndex(++idx);
+  if (panel)
+    panel->GetParent()->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(CStListView::OnChildClose), NULL, this);
 }
 
 
@@ -773,5 +772,16 @@ void CStListView::OnUpdate(CRequest *reqPtr)
     default :
       break;
   }
+}
+
+
+// -----------------------------------------------------------------------
+void CStListView::OnChildClose(wxCloseEvent& evt)
+{
+  evt.Skip();
+
+  long idx = m_listCtrl->GetCurrentIndex();
+  if (idx < m_listCtrl->GetItemCount() - 1)
+    m_listCtrl->SetCurrentIndex(++idx);
 }
 

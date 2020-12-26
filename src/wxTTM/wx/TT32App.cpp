@@ -430,34 +430,34 @@ void CTT32App::OnProgressBarExit(wxThreadEvent &)
 }
 
 
-void CTT32App::OpenView(const wxString &title, const wxChar *xrcName, ...)
+wxPanel * CTT32App::OpenView(const wxString &title, const wxChar *xrcName, ...)
 {
   va_list vaList;
   va_start(vaList, xrcName);
 
-  OpenViewChildFrame("ChildFrame", title, xrcName, vaList);
+  return OpenViewChildFrame("ChildFrame", title, xrcName, vaList);
 }
 
 
-void CTT32App::OpenViewNoResize(const wxString &title, const wxChar *xrcName, ...)
+wxPanel * CTT32App::OpenViewNoResize(const wxString &title, const wxChar *xrcName, ...)
 {
   va_list vaList;
   va_start(vaList, xrcName);
 
-  OpenViewChildFrame("ChildFrameNoResize", title, xrcName, vaList);
+  return OpenViewChildFrame("ChildFrameNoResize", title, xrcName, vaList);
 }
 
 
-void CTT32App::OpenViewChildFrame(const wxString &childFrame, const wxString &title, const wxChar *xrcName, va_list vaList)
+wxPanel * CTT32App::OpenViewChildFrame(const wxString &childFrame, const wxString &title, const wxChar *xrcName, va_list vaList)
 {
   CChildFrame *child = (CChildFrame *) wxXmlResource::Get()->LoadObject(m_pMainWnd, childFrame, "wxMDIChildFrame");
       
-  CFormViewEx *panel = NULL;
-  
-  if ( !(panel = (CFormViewEx *) wxXmlResource::Get()->LoadPanel(child, xrcName)) )
+  CFormViewEx *panel = (CFormViewEx *) wxXmlResource::Get()->LoadPanel(child, xrcName);
+
+  if (!panel)
   {
     delete child;
-    return;
+    return NULL;
   }
   
   child->SetTitle(title);
@@ -475,10 +475,12 @@ void CTT32App::OpenViewChildFrame(const wxString &childFrame, const wxString &ti
   va_end(vaList);
   
   child->Show();
+
+  return panel;
 }
 
 
-void CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *xrcName, ...)
+wxPanel * CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *xrcName, ...)
 {
   va_list vaList;
   va_start(vaList, xrcName);
@@ -490,7 +492,7 @@ void CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *xrcNa
   if ( !(panel = (CFormViewEx *) wxXmlResource::Get()->LoadPanel(child, xrcName)) )
   {
     delete child;
-    return;
+    return NULL;
   }
   
   child->SetIcon(wxIcon("child"));
@@ -507,6 +509,8 @@ void CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *xrcNa
     child->ShowModal();
   else
     child->Show();
+
+  return panel;
 }
 
 

@@ -48,10 +48,10 @@ class CTT32App : public wxApp
 
   public:
     // xrcName muss "wxChar *" bleiben, weil sonst va_list nicht funktioniert
-    void  OpenView(const wxString &title, const wxChar *xrcName, ...);
-    void  OpenViewNoResize(const wxString &title, const wxChar *xrcName, ...);
+    wxPanel *  OpenView(const wxString &title, const wxChar *xrcName, ...);
+    wxPanel *  OpenViewNoResize(const wxString &title, const wxChar *xrcName, ...);
 
-    void  OpenDialog(bool modal, const wxString &title, const wxChar *xrcName, ...);
+    wxPanel *  OpenDialog(bool modal, const wxString &title, const wxChar *xrcName, ...);
 
     void  ShowHtmlDialog(const wxString &);
 
@@ -213,7 +213,7 @@ class CTT32App : public wxApp
 
     void SetMenuBar(const wxString &menBar);
 
-    void  OpenViewChildFrame(const wxString &childFrame, const wxString &title, const wxChar *xrcName, va_list vaList);
+    wxPanel *  OpenViewChildFrame(const wxString &childFrame, const wxString &title, const wxChar *xrcName, va_list vaList);
 
 	private:		  
 	  // wxMenuBar *m_noMenuBar;
