@@ -263,19 +263,25 @@ bool RpStore::BindRec()
 // -----------------------------------------------------------------------
 bool RpStore::Import(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#RANKINGPOINTS", version))
   {
-    if (wxStrcmp(line, "#RANKINGPOINTS"))
-    {
-      ifs.Close();
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RANKINGPOINTS"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RANKINGPOINTS"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -348,6 +354,8 @@ bool RpStore::Import(const wxString &name)
 
 bool RpStore::Export(const wxString &name)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   PlStore  pl(connPtr);
@@ -372,7 +380,7 @@ bool RpStore::Export(const wxString &name)
   const wxString bom(wxChar(0xFEFF));
   ofs << bom.ToUTF8();
 
-  ofs << "#RANKINGPOINTS" << std::endl;
+  ofs << "#RANKINGPOINTS " << version << std::endl;
   
   ofs << "# Pl. No.; Born; Ranking Pts; ..." << std::endl;
   

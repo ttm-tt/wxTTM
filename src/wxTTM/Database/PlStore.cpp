@@ -860,18 +860,23 @@ void  PlStore::BindRec()
 // Siehe oben wg. std::ifstream
 bool  PlStore::Import(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
-  if (line.GetChar(0) == '#')
+  if (!CheckImportHeader(line, "#PLAYERS", version))
   {
-    if (wxStrcmp(line, "#PLAYERS"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#PLAYERS"), line.wx_str()))
-        return false;
-    }
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#PLAYERS"), line.wx_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -921,6 +926,8 @@ bool  PlStore::Import(const wxString &name)
 
 bool PlStore::Export(const wxString &name)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   PlListStore  pl(connPtr);
@@ -938,7 +945,7 @@ bool PlStore::Export(const wxString &name)
   const wxString bom(wxChar(0xFEFF));
   ofs << bom.ToUTF8();
 
-  ofs << "#PLAYERS" << std::endl;
+  ofs << "#PLAYERS " << version << std::endl;
   
   ofs << "# Pl. No.; Last Name; Given Name; Sex; Year Born; Association; Ext. ID; Ranking Pts." << std::endl;
   

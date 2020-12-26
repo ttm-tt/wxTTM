@@ -2625,21 +2625,25 @@ bool GrStore::SetPrinted(timestamp &ts)
 // Siehe PlStore zur Verwendung von std::ifstream
 bool  GrStore::Import(const wxString &name)
 {
+  long version = 1;
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#GROUPS", version))
   {
-    if (wxStrcmp(line, "#GROUPS"))
-    {
-      ifs.Close();
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   // Read all CP, SY, and MD: there are not so many
@@ -2791,6 +2795,8 @@ bool  GrStore::Import(const wxString &name)
 
 bool  GrStore::Export(const wxString &name, short cpType, const std::vector<long> & idList, bool append)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
@@ -2800,7 +2806,7 @@ bool  GrStore::Export(const wxString &name, short cpType, const std::vector<long
     const wxString bom(wxChar(0xFEFF));
     os << bom.ToUTF8();
 
-    os << "#GROUPS" << std::endl;
+    os << "#GROUPS " << version << std::endl;
     os << "# CP; Name; Description; Stage; Modus; Size; Best of; Winner; Group Modus; Team System; Nof Rounds; Nof Matches; 3d Place; " << std::endl;
   }
 

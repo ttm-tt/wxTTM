@@ -895,20 +895,26 @@ bool  StStore::BindRec()
 // Siehe PlStore zur Verwendung von std::istream
 bool  StStore::Import(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#POSITIONS", version))
   {
-    if (wxStrcmp(line, "#POSITIONS"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#POSITIONS"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -1054,6 +1060,8 @@ bool  StStore::Import(const wxString &name)
 
 bool  StStore::Export(const wxString &name, short cpType, const std::vector<long> & idList, bool append)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   wxChar cpName[9], grName[9];
@@ -1069,7 +1077,7 @@ bool  StStore::Export(const wxString &name, short cpType, const std::vector<long
     const wxString bom(wxChar(0xFEFF));
     os << bom.ToUTF8();
 
-    os << "#POSITIONS" << std::endl;
+    os << "#POSITIONS " << version << std::endl;
   }
   
   short lastCpType = 0;

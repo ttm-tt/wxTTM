@@ -2773,20 +2773,26 @@ bool  MtStore::BindRec()
 // Siehe PlStore zur Verwendung von std::ifstream
 bool MtStore::ImportResults(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#RESULTS", version))
   {
-    if (wxStrcmp(line, "#RESULTS"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RESULTS"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RESULTS"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -2985,6 +2991,8 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
   
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
@@ -2994,7 +3002,7 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
     const wxString bom(wxChar(0xFEFF));
     os << bom.ToUTF8();
 
-    os << "#RESULTS" << std::endl;
+    os << "#RESULTS " << version << std::endl;
 
     os << "# Event; Group; Round; Match; Team Match; Result A; Result X; Games A; Games X; ";
   
@@ -3761,6 +3769,8 @@ bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const st
 // Import / Export Schedule
 bool  MtStore::ImportSchedule(const wxString &name)
 {
+  long version = 1;
+
   // Format: CP;GR;RD;MT;MS;Date;Time;Table
   wxTextFile ifs(name);
   if (!ifs.Open())
@@ -3768,14 +3778,18 @@ bool  MtStore::ImportSchedule(const wxString &name)
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
-  {    
-    if (wxStrcmp(line, "#SCHEDULE"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#SCHEDULE"), line.wx_str()))
-        return false;
-    }
+  // Check header
+  if (!CheckImportHeader(line, "#SCHEDULES", version))
+  {
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#SCHEDULES"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -3949,6 +3963,8 @@ bool  MtStore::ImportSchedule(const wxString &name)
 
 bool  MtStore::ExportSchedule(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
 {
+  long version = 1;
+
   // Format: CP;GR;RD;MT;MS;Date;Time;Table
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
@@ -3960,7 +3976,7 @@ bool  MtStore::ExportSchedule(const wxString &name, short cpType, const std::vec
     const wxString bom(wxChar(0xFEFF));
     os << bom.ToUTF8();
 
-    os << "#SCHEDULE" << std::endl;
+    os << "#SCHEDULE " << version << std::endl;
 
     os << "# Event; Group; Round; Match; Chance; Date; Time; Table; Umpire; Assistant Umpire" << std::endl;
   }

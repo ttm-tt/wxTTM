@@ -508,21 +508,26 @@ long  NaStore::GetMaxRegionLength()
 // Import / Export
 bool  NaStore::Import(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#NATIONS", version))
   {
-    if (wxStrcmp(line, "#NATIONS"))
-    {
-      ifs.Close();
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#NATIONS"), line.c_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#NATIONS"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -558,6 +563,8 @@ bool  NaStore::Import(const wxString &name)
 
 bool  NaStore::Export(const wxString &name)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   NaStore  na(connPtr);
@@ -570,7 +577,7 @@ bool  NaStore::Export(const wxString &name)
   const wxString bom(wxChar(0xFEFF));
   ofs << bom.ToUTF8();
 
-  ofs << "#NATIONS" << std::endl;
+  ofs << "#NATIONS " << version << std::endl;
   ofs << "# Name; Description; Region" << std::endl;
 
   while (na.Next())

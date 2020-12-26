@@ -24,6 +24,8 @@ class  StoreObj
     
     static wxString  TransformString(const wxString &str);
 
+    static bool CheckImportHeader(const wxString &line, const wxString &what, long &version);
+
   public:
     // Naechsten Record lesen
     virtual bool  Next();
@@ -250,6 +252,30 @@ inline  wxString StoreObj::tstostr(const std::vector<timestamp> &list)
   ret += ",'9999-12-31T23:59:59.999'";
 
   return ret;
+}
+
+
+// Check if a line starts with the magic and get the optional version
+inline bool StoreObj::CheckImportHeader(const wxString& line, const wxString& magic, long& version)
+{
+  version = 1;
+
+  if (!line.StartsWith("#"))
+    return true;
+
+  if (!line.StartsWith(magic))
+    return false;
+
+  if (line == magic)
+    return true;
+
+  if (!wxIsspace(line.GetChar(magic.Length())))
+    return false;
+
+  if (!line.Mid(magic.Length() + 1).IsNumber())
+    return false;
+
+  return line.Mid(magic.Length() + 1).ToLong(&version);
 }
 
 

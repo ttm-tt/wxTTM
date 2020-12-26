@@ -505,6 +505,8 @@ bool  LtStore::BindRec()
 // Siehe PlStore zur Verwendung von std::ifstream
 bool LtStore::Import(const wxString &name)
 {
+  long version = 1;
+
   bool warnChangedDoubles = true;
 
   wxTextFile ifs(name);
@@ -515,14 +517,18 @@ bool LtStore::Import(const wxString &name)
 
   wxString line = ifs.GetFirstLine();
 
-  // Skip leading whitespacae
-  if (line.GetChar(0) == '#')
+  // Check header
+  if (!CheckImportHeader(line, "#ENTRIES", version))
   {
-    if (wxStrcmp(line, "#ENTRIES"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#ENTRIES"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#ENTRIES"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -931,6 +937,8 @@ bool LtStore::Import(const wxString &name)
 
 bool  LtStore::Export(const wxString &name)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   std::ofstream  os(name.t_str(), std::ios::out);
@@ -938,7 +946,7 @@ bool  LtStore::Export(const wxString &name)
   const wxString bom(wxChar(0xFEFF));
   os << bom.ToUTF8();
 
-  os << "#ENTRIES" << std::endl;
+  os << "#ENTRIES " << version << std::endl;
 
   wxChar   cpName[9];
   short    cpType;

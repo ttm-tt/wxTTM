@@ -629,18 +629,26 @@ void  UpStore::BindRec()
 // Siehe oben wg. std::ifstream
 bool  UpStore::Import(const wxString &name)
 {
+  long version = 1;
+
   wxTextFile ifs(name);
   if (!ifs.Open())
     return false;
 
   wxString line = ifs.GetFirstLine();
-  if (line.GetChar(0) == '#')
+
+  // Check header
+  if (!CheckImportHeader(line, "#UMPIRES", version))
   {
-    if (wxStrcmp(line, "#UMPIRES"))
-    {
-      if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#UMPIRES"), line.wx_str()))
-        return false;
-    }
+    ifs.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#UMPIRES"), line.c_str()))
+      return false;
+  }
+
+  if (version > 1)
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
   }
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
@@ -682,6 +690,8 @@ bool  UpStore::Import(const wxString &name)
 
 bool UpStore::Export(const wxString &name)
 {
+  long version = 1;
+
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   UpStore  up(connPtr);
@@ -699,7 +709,7 @@ bool UpStore::Export(const wxString &name)
   const wxString bom(wxChar(0xFEFF));
   ofs << bom.ToUTF8();
 
-  ofs << "#UMPIRES" << std::endl;
+  ofs << "#UMPIRES " << version << std::endl;
   
   ofs << "# Up. No.; Last Name; Given Name; Sex; Association; Email; Phone" << std::endl;
   
