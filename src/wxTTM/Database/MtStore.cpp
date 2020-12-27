@@ -2985,7 +2985,7 @@ bool MtStore::ImportResults(const wxString &name)
 }
 
 
-bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
@@ -2995,26 +2995,24 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
   {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
+    os.AddLine(wxString::Format("#RESULTS %d", version));
 
-    os << "#RESULTS " << version << std::endl;
-
-    os << "# Event; Group; Round; Match; Team Match; Result A; Result X; Games A; Games X; ";
+    wxString line;
+    line << "# Event; Group; Round; Match; Team Match; Result A; Result X; Games A; Games X; ";
   
     for (int i = 0; i < 9; i++)
-      os << " Game " << i << " Points A; Game " << i << " Points X;";
+      line << " Game " << i << " Points A; Game " << i << " Points X;";
     
-    os << " Reverse Flag; Walk over A/X" << std::endl;
+    line << " Reverse Flag; Walk over A/X";
+
+    os.AddLine(line);
   }
         
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
-    wxString ofs;
+    wxString line;
     long grID = (*it);
 
     Statement  *stmtPtr = connPtr->CreateStatement();
@@ -3089,19 +3087,20 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
         if (lastMtNr)
         {
           while (set++ < 9)
-            ofs << "0;0;";
+            line << "0;0;";
             
-          ofs << mtReverse << ";";
+          line << mtReverse << ";";
           if (lastMtWalkOverA)
-            ofs << "A;";
+            line << "A;";
           else if (lastMtWalkOverX)
-            ofs << "X;";          
+            line << "X;";          
         }
         
         set = 0;
         
-        ofs << '\n';
-        ofs << cpName << ";" << grName << ";" 
+        os.AddLine(line);
+        
+        line << cpName << ";" << grName << ";" 
             << mtRound << ";" << mtMatch << ";" << mtMS << ";" 
             << mtResA << ";" << mtResX << ";" << mtSetsA << ";" << mtSetsX << ";" ;
       }
@@ -3113,22 +3112,20 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
       lastMtWalkOverX = mtWalkOverX;
 
       ++set;
-      ofs << mtBallsA << ";" << mtBallsX << ";";
+      line << mtBallsA << ";" << mtBallsX << ";";
     }
     
     while (set++ < 9)
-      ofs << "0;0;";
+      line << "0;0;";
             
-    ofs << mtReverse << ";";
+    line << mtReverse << ";";
     
     if (lastMtWalkOverA)
-      ofs << "A;";
+      line << "A;";
     else if (lastMtWalkOverX)
-      ofs << "X;";          
+      line << "X;";          
 
-    ofs << '\n';
-
-    os << ofs.ToUTF8();
+    os.AddLine(line);
     
     delete resPtr;
     delete stmtPtr;
@@ -3138,7 +3135,7 @@ bool  MtStore::ExportResults(const wxString &name, short cpType, const std::vect
 }
 
 
-bool  MtStore::ExportForRanking(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
@@ -3146,14 +3143,10 @@ bool  MtStore::ExportForRanking(const wxString &name, short cpType, const std::v
   
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
-  {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
-
-    os << "# Scheduled;Match No;Event;Group;Stage;Round;Match;Indiv. Match;"
+  {    
+    os.AddLine(
+          "# Scheduled;Match No;Event;Group;Stage;Round;Match;Indiv. Match;"
           "Pl. A ID;Pl. A Family Name;Pl. A Given Name;Pl. A Association;Pl. A Region;"
           "Pl. B ID;Pl. B Family Name;Pl. B Given Name;Pl. B Association;Pl. B Region;"
           "Pl. X ID;Pl. X Family Name;Pl. X Given Name;Pl. X Association;Pl. X Region;"
@@ -3169,9 +3162,8 @@ bool  MtStore::ExportForRanking(const wxString &name, short cpType, const std::v
           "Result A;Result X;"
           "Lost by w/o A;Lost by w/o X;"
           "InjuredA;InjuredX;"
-          "DisqualifiedA;DisqualifiedX";
-
-    os << std::endl;
+          "DisqualifiedA;DisqualifiedX"
+    );
   }
   
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
@@ -3268,16 +3260,16 @@ bool  MtStore::ExportForRanking(const wxString &name, short cpType, const std::v
         continue;
 
       wxChar str[128];
-      wxString ofs;
+      wxString line;
 
       for (int col = 1, numCol = resPtr->GetColumnCount(); col <= numCol; col++)
       {
         if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
-          ofs << str;
-        ofs << ";";
+          line << str;
+        line << ";";
       }
 
-      os << ofs.ToUTF8() << std::endl;
+      os.AddLine(line);
     }
     
     
@@ -3289,7 +3281,7 @@ bool  MtStore::ExportForRanking(const wxString &name, short cpType, const std::v
 }
 
 
-bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
@@ -3297,14 +3289,9 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
   {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
-
-    os << 
+    os.AddLine(
       "TourID; Level; IDA; IRGA; IDB; ORGB; IDX; ORGX; IDY; ORGY; "
       "Event; Stage; Group; Group No; Round; Seq; Format; Desc; "
       "Game 1 Points A;Game 1 Points X;"
@@ -3318,9 +3305,7 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
       "Winner; Winner Doubles; IRM; Kind; "
       "Year; Date; Time; Table; "
       "Group Rank A; GroupRank X; Final Rank A; Final Rank X; Seeded A; Seeded X;"
-    ;
-
-    os << std::endl;
+    );
   }
 
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
@@ -3511,11 +3496,11 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 
       while (resPtr->Next())
       {
-        wxString ofs;
+        wxString line;
         long   mtID;
         wxChar str[128];
 
-        ofs.Clear();
+        line.Clear();
 
         int col = 1;
         int colCount = resPtr->GetColumnCount();
@@ -3525,11 +3510,11 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
         for (; col <= colCount; col++)
         {
           if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
-            ofs << str;
-          ofs << ";";
+            line << str;
+          line << ";";
         }
 
-        teamMatchMap[mtID] = ofs;
+        teamMatchMap[mtID] = line;
       }
 
       delete resPtr;
@@ -3554,7 +3539,7 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 
     while (resPtr->Next())
     {
-      wxString ofs;
+      wxString line;
 
       long   mtID;
       wxChar str[128];
@@ -3566,18 +3551,18 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 
       if (cpType == CP_TEAM && mtID != lastMtID)
       {
-        os << teamMatchMap[mtID].ToUTF8() << std::endl;
+        os.AddLine(teamMatchMap[mtID]);
         lastMtID = mtID;
       }
 
       for (; col <= colCount; col++)
       {
         if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
-          ofs << str;
-        ofs << ";";
+          line << str;
+        line << ";";
       }
 
-      os << ofs.ToUTF8() << std::endl;
+      os.AddLine(line);
     }
 
     delete resPtr;
@@ -3588,7 +3573,7 @@ bool  MtStore::ExportForRankingITTF(const wxString &name, short cpType, const st
 }
 
 
-bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
 {
   /*
     Format Individual
@@ -3604,29 +3589,22 @@ bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const st
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
   {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
-
     if (cpType == CP_TEAM)
-      os << 
+      os.AddLine(
           "ID;date_time;event;group_;stage;rnd;match_no;match_;"
           "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
           "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
           "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type"         
-      ;
+      );
     else
-      os << 
+      os.AddLine(
           "ID;date_time;event;rnd;match;"
           "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
           "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
           "res_a;res_x;wo_a;wo_x;yr;type"   
-      ;
-
-    os << std::endl;
+      );
   }
 
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
@@ -3738,7 +3716,7 @@ bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const st
 
     while (resPtr->Next())
     {
-      wxString ofs;
+      wxString line;
 
       wxChar str[128];
 
@@ -3746,16 +3724,16 @@ bool  MtStore::ExportForRankingETTU(const wxString &name, short cpType, const st
       int colCount = resPtr->GetColumnCount();
 
       // First an ID column
-      ofs << ";";
+      line << ";";
 
       for (; col <= colCount; col++)
       {
         if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
-          ofs << str;
-        ofs << ";";
+          line << str;
+        line << ";";
       }
 
-      os << ofs.ToUTF8() << std::endl;
+      os.AddLine(line);
     }
 
     delete resPtr;
@@ -3961,7 +3939,7 @@ bool  MtStore::ImportSchedule(const wxString &name)
 }
 
 
-bool  MtStore::ExportSchedule(const wxString &name, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
 {
   long version = 1;
 
@@ -3969,21 +3947,15 @@ bool  MtStore::ExportSchedule(const wxString &name, short cpType, const std::vec
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
   {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
+    os.AddLine(wxString::Format("#SCHEDULE %d", version));
 
-    os << "#SCHEDULE " << version << std::endl;
-
-    os << "# Event; Group; Round; Match; Chance; Date; Time; Table; Umpire; Assistant Umpire" << std::endl;
+    os.AddLine("# Event; Group; Round; Match; Chance; Date; Time; Table; Umpire; Assistant Umpire");
   }
 
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {  
-    wxString ofs;
     long grID = (*it);
 
     Statement  *stmtPtr = connPtr->CreateStatement();
@@ -4032,16 +4004,18 @@ bool  MtStore::ExportSchedule(const wxString &name, short cpType, const std::vec
     
     while (resPtr->Next())
     {
-      ofs << cpName << ";" << grName << ";" << mtRound << ";" << mtMatch << ";0;";      
-      ofs << mtDateTime.day + 100 * mtDateTime.month + 10000 * mtDateTime.year << ";";
-      ofs << mtDateTime.minute + 100 * mtDateTime.hour << ";" << mtTable << ";" << mtUmpire << ";" << mtUmpire2 << ";" << '\n';
+      wxString line;
+
+      line << cpName << ";" << grName << ";" << mtRound << ";" << mtMatch << ";0;";      
+      line << mtDateTime.day + 100 * mtDateTime.month + 10000 * mtDateTime.year << ";";
+      line << mtDateTime.minute + 100 * mtDateTime.hour << ";" << mtTable << ";" << mtUmpire << ";" << mtUmpire2 << ";";
+
+      os.AddLine(line);
 
       mtTable = 0;
       memset(&mtDateTime, 0, sizeof(mtDateTime));    
     }
     
-    os << ofs.ToUTF8();
-
     delete resPtr;
     delete stmtPtr;
   }

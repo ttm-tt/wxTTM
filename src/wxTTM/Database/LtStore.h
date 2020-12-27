@@ -38,7 +38,7 @@ class  LtStore : public StoreObj, public LtRec
 
     // Import / Export
     static  bool Import(const wxString &name);
-    static  bool Export(const wxString &name);
+    static  bool Export(wxTextBuffer &os);
     static  bool RemoveFromDoubles(const wxString &name);
 
   public:

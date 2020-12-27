@@ -2793,21 +2793,16 @@ bool  GrStore::Import(const wxString &name)
 }
 
 
-bool  GrStore::Export(const wxString &name, short cpType, const std::vector<long> & idList, bool append)
+bool  GrStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append)
 {
   long version = 1;
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
   {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
-
-    os << "#GROUPS " << version << std::endl;
-    os << "# CP; Name; Description; Stage; Modus; Size; Best of; Winner; Group Modus; Team System; Nof Rounds; Nof Matches; 3d Place; " << std::endl;
+    os.AddLine(wxString::Format("#GROUPS %d", version));
+    os.AddLine("# CP; Name; Description; Stage; Modus; Size; Best of; Winner; Group Modus; Team System; Nof Rounds; Nof Matches; 3d Place; ");
   }
 
   // Read all CP, SY, and MD: there are not so many
@@ -2884,10 +2879,8 @@ bool  GrStore::Export(const wxString &name, short cpType, const std::vector<long
         break;
     }
 
-    os << line.ToUTF8() << std::endl;
+    os.AddLine(line);
   }
-
-  os.close();
 
   return true;
 }

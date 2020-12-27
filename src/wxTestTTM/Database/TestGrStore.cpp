@@ -44,5 +44,15 @@ namespace wxTestTTM
 				Assert::AreEqual((short) 2, gr.NofRounds(false));
 		  }
 		}
+
+		TEST_METHOD(Export)
+		{
+		  wxMemoryText os;
+			std::vector<long> ids;
+			GrStore::Export(os, CP_SINGLE, ids, false);
+
+			wxString line = os.GetFirstLine();
+			Assert::AreEqual(line.c_str(), "#GROUPS 1");
+		}
 	};
 }

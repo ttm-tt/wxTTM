@@ -33,6 +33,9 @@
     <ClCompile Include="TestTTDbse.cpp">
       <Filter>Test Cases\Database</Filter>
     </ClCompile>
+    <ClCompile Include="TestCpStore.cpp">
+      <Filter>Test Cases\Database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

@@ -223,7 +223,7 @@ class  GrStore : public StoreObj, public GrRec
 
     // Import / Export
     static  bool  Import(const wxString &name);
-    static  bool  Export(const wxString &name, short cpType, const std::vector<long> &, bool append);
+    static  bool  Export(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
 
   public:
     GrStore(Connection *ptr = 0) : StoreObj(ptr) {};

@@ -692,7 +692,7 @@ bool  CpStore::Import(const wxString &name)
 }
 
 
-bool  CpStore::Export(const wxString &name)
+bool  CpStore::Export(wxTextBuffer &os)
 {
   long version = 1;
 
@@ -700,22 +700,15 @@ bool  CpStore::Export(const wxString &name)
   if (!cp.SelectAll())
     return false;
 
-  std::ofstream  ofs(name.mb_str(), std::ios::out);
-
-  const wxString bom(wxChar(0xFEFF));
-  ofs << bom.ToUTF8();
-
-  ofs << "#EVENTS " << version << std::endl;
-  ofs << "# Name; Description; Type; Sex; Year" << std::endl;
+  os.AddLine(wxString::Format("#EVENTS %d", version));
+  os.AddLine("# Name; Description; Type; Sex; Year");
 
   while (cp.Next())
   {
     wxString line;
     if (cp.Write(line))
-      ofs << line.ToUTF8() << std::endl;
+      os.AddLine(line);
   }
-
-  ofs.close();
 
   return true;
 }

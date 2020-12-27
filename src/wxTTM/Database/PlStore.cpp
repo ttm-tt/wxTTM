@@ -924,7 +924,7 @@ bool  PlStore::Import(const wxString &name)
 }
 
 
-bool PlStore::Export(const wxString &name)
+bool PlStore::Export(wxTextBuffer &os)
 {
   long version = 1;
 
@@ -934,20 +934,12 @@ bool PlStore::Export(const wxString &name)
   if (!pl.SelectAll())
     return false;
     
+  // Because rank pts are float
   const char *oldLocale = setlocale(LC_NUMERIC, "C");
 
-  // Wirklich <char> undnicht <wchar_t>, weil std::stream nicht mit UTF-16 
-  // zurecht kommt. Warum auch immer kann man solche Files nicht vernuenftig lesen.
-  // Darum sind die Import-/Export-Files UTF-8. ISO-8859-1 Zeichen stimmen dann 
-  // halt nicht.
-  std::ofstream  ofs(name.t_str(), std::ios::out);
-
-  const wxString bom(wxChar(0xFEFF));
-  ofs << bom.ToUTF8();
-
-  ofs << "#PLAYERS " << version << std::endl;
+  os.AddLine(wxString::Format("#PLAYERS %d", version));
   
-  ofs << "# Pl. No.; Last Name; Given Name; Sex; Year Born; Association; Ext. ID; Ranking Pts." << std::endl;
+  os.AddLine("# Pl. No.; Last Name; Given Name; Sex; Year Born; Association; Ext. ID; Ranking Pts.");
   
   while (pl.Next())
   {
@@ -956,11 +948,9 @@ bool PlStore::Export(const wxString &name)
 
     wxString line;
     if (plRec.Write(line))
-      ofs << line.ToUTF8() << std::endl;
+      os.AddLine(line);
   }
 
-  ofs.close();
-  
   setlocale(LC_NUMERIC, oldLocale);
 
   return true;

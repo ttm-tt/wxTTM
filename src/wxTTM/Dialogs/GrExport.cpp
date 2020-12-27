@@ -18,6 +18,8 @@
 
 #include <wx/progdlg.h>
 
+#include <fstream>
+
 // CGrExport
 
 IMPLEMENT_DYNAMIC_CLASS(CGrExport, CFormViewEx)
@@ -45,7 +47,7 @@ bool CGrExport::Edit(va_list vaList)
 {
   void *ptr = va_arg(vaList, void *);
 
-  func = ( unsigned (*) (const wxString &, short, std::vector<long> &, bool) ) (ptr);
+  func = ( unsigned (*) (wxTextBuffer &, short, std::vector<long> &, bool) ) (ptr);
 
   return true;
 }
@@ -79,6 +81,8 @@ void CGrExport::OnExport(wxCommandEvent &evt)
   if (wxFileName(fileName).GetPath().IsEmpty())
     fileName = CTT32App::instance()->GetPath() + wxFileName::GetPathSeparator() + fileName;
   
+  wxMemoryText buf;
+
   if (cp.cpID == 0)
   {
     std::vector<CpRec> cpList;
@@ -103,10 +107,11 @@ void CGrExport::OnExport(wxCommandEvent &evt)
         idList.push_back(grList.grID);
 
       dlg.Update(++i, (*it).cpDesc);
-      (*func)(fileName, (*it).cpType, idList, it != cpList.begin());
+      if (!(*func)(buf, (*it).cpType, idList, it != cpList.begin()))
+        return;
 
       if (dlg.WasCancelled())
-        break;
+        return;
     }
   }
   else 
@@ -119,9 +124,19 @@ void CGrExport::OnExport(wxCommandEvent &evt)
         idList.push_back(lbGR->GetListItem(idx)->GetID());
     }
 
-
-    (*func)(fileName, cp.cpType, idList, false);
+    if (!(*func)(buf, cp.cpType, idList, false))
+      return;
   }
+
+  std::ofstream  ofs(fileName.mb_str(), std::ios::out);
+
+  const wxString bom(wxChar(0xFEFF));
+  ofs << bom.ToUTF8();
+
+  for (wxString str = buf.GetFirstLine(); !buf.Eof(); str = buf.GetNextLine())
+    ofs << str.ToUTF8() << std::endl;
+
+  ofs.close();
 }
 
 

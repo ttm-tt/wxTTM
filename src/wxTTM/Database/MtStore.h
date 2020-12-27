@@ -221,14 +221,14 @@ class  MtStore : public StoreObj, public MtRec
 
     // Import / Export Results
     static  bool  ImportResults(const wxString &name);
-    static  bool  ExportResults(const wxString &name, short cpType, const std::vector<long> &, bool append);
-    static  bool  ExportForRanking(const wxString &name, short cpType, const std::vector<long> &, bool append);
-    static  bool  ExportForRankingITTF(const wxString &name, short cpType, const std::vector<long> &, bool append);
-    static  bool  ExportForRankingETTU(const wxString &name, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
 
     // Import / Export Schedule
     static  bool  ImportSchedule(const wxString &name);
-    static  bool  ExportSchedule(const wxString &name, short cpType, const std::vector<long> &, bool append);
+    static  bool  ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
     
   private:
     static  bool UpdateStoredProcedure(long version);

@@ -61,7 +61,7 @@ class  CpStore : public StoreObj, public CpRec
 
     // Import / Export
     static  bool  Import(const wxString &name);
-    static  bool  Export(const wxString &name);
+    static  bool  Export(wxTextBuffer &);
 
   public:
     CpStore(Connection * = 0);  // Defaultkonstruktor

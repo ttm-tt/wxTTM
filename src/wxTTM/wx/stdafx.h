@@ -19,6 +19,9 @@
 #include <wx/hyperlink.h>
 #include <wx/listctrl.h>
 #include <wx/mdi.h>
+// textbuf must come before memtext
+#include <wx/textbuf.h>
+#include <wx/memtext.h>
 #include <wx/metafile.h>
 #include <wx/mstream.h>
 #include <wx/notebook.h>

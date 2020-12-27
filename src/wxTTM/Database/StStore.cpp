@@ -1058,7 +1058,7 @@ bool  StStore::Import(const wxString &name)
 }
 
 
-bool  StStore::Export(const wxString &name, short cpType, const std::vector<long> & idList, bool append)
+bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append)
 {
   long version = 1;
 
@@ -1070,21 +1070,13 @@ bool  StStore::Export(const wxString &name, short cpType, const std::vector<long
   wxChar tmName[9];
   short  stSeeded, stGaveup, stDisqu, stNocons;
 
-  std::ofstream  os(name.t_str(), std::ios::out | (append ? std::ios::app : 0));
-
   if (!append)
-  {
-    const wxString bom(wxChar(0xFEFF));
-    os << bom.ToUTF8();
-
-    os << "#POSITIONS " << version << std::endl;
-  }
+    os.AddLine(wxString::Format("#POSITIONS %d", version));
   
   short lastCpType = 0;
 
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
-    wxString ofs;
     long grID = (*it);
 
     Statement  *stmtPtr = connPtr->CreateStatement();
@@ -1189,28 +1181,30 @@ bool  StStore::Export(const wxString &name, short cpType, const std::vector<long
         
     while (resPtr->Next())
     {
+      wxString line;
+
       switch (cpType)
       {
         case CP_SINGLE :
           if (lastCpType != cpType)
-            ofs << "# Event; Group; Group Pos.; Pl. No; Seeded; Final Position" << '\n';
+            os.AddLine("# Event; Group; Group Pos.; Pl. No; Seeded; Final Position");
             
-          ofs << cpName << ";" << grName << ";" << stNr << ";" << plNr << ";";
+          line << cpName << ";" << grName << ";" << stNr << ";" << plNr << ";";
           break;
           
         case CP_DOUBLE :
         case CP_MIXED :
           if (lastCpType != cpType)
-            ofs << "# Event; Group; Group Pos.; Pl. No; Seeded; Final Position" << '\n';
+            os.AddLine("# Event; Group; Group Pos.; Pl. No; Seeded; Final Position");
             
-          ofs << cpName << ";" << grName << ";" << stNr << ";" << plNr << ";";
+          line << cpName << ";" << grName << ";" << stNr << ";" << plNr << ";";
           break;
           
         case CP_TEAM :
           if (lastCpType != cpType)
-            ofs << "# Event; Group; Group Pos.; Team Name; Seeded; Final Position" << '\n';
+            os.AddLine("# Event; Group; Group Pos.; Team Name; Seeded; Final Position");
             
-          ofs << cpName << ";" << grName << ";" << stNr << ";" << tmName << ";";
+          line << cpName << ";" << grName << ";" << stNr << ";" << tmName << ";";
           break;
           
         default :
@@ -1227,18 +1221,15 @@ bool  StStore::Export(const wxString &name, short cpType, const std::vector<long
       if (stNocons)
         seeded |= StStore::ST_NOCONS;
          
-      ofs << seeded << ";" << stPos << '\n';
-      
+      line << seeded << ";" << stPos;
       lastCpType = cpType;
+
+      os.AddLine(line);  
     }   
 
-    os << ofs.ToUTF8();
-    
     delete resPtr;
     delete stmtPtr;
   }
   
-  os.close();
-
   return true;
 }

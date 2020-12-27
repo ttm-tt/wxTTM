@@ -40,7 +40,7 @@ class  NaStore : public StoreObj, public NaRec
 
     // Import / Export
     static  bool  Import(const wxString &name);
-    static  bool  Export(const wxString &name);
+    static  bool  Export(wxTextBuffer &os);
 
   public:
     NaStore(Connection * = 0);                  // Defaultkonstruktor

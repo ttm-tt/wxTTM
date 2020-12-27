@@ -26,6 +26,8 @@
 #include "MtStore.h"
 #include "UpStore.h"
 
+#include <fstream>
+
 
 IMPLEMENT_DYNAMIC_CLASS(CMainFrame, wxMDIParentFrame)
 
@@ -393,7 +395,7 @@ void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool
 
 
 
-void CMainFrame::Export(const wxString &title, const wxString &defaultName, bool (*func)(const wxString &))
+void CMainFrame::Export(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &))
 {
   wxString fileName;
 
@@ -405,7 +407,19 @@ void CMainFrame::Export(const wxString &title, const wxString &defaultName, bool
 
   fileName = dlg.GetPath();
 
-  (*func)(fileName);
+  wxMemoryText buf;
+  if (!(*func)(buf))
+    return;
+
+  std::ofstream  ofs(fileName.mb_str(), std::ios::out);
+
+  const wxString bom(wxChar(0xFEFF));
+  ofs << bom.ToUTF8();
+
+  for (wxString str = buf.GetFirstLine(); !buf.Eof(); str = buf.GetNextLine())
+    ofs << str.ToUTF8() << std::endl;
+
+  ofs.close();
 }
 
 

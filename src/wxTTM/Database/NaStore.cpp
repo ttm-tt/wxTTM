@@ -561,7 +561,7 @@ bool  NaStore::Import(const wxString &name)
 }
 
 
-bool  NaStore::Export(const wxString &name)
+bool  NaStore::Export(wxTextBuffer &os)
 {
   long version = 1;
 
@@ -571,23 +571,15 @@ bool  NaStore::Export(const wxString &name)
   if (!na.SelectAll())
     return false;
 
-  // Siehe PlStore
-  std::ofstream  ofs(name.t_str(), std::ios::out);
-
-  const wxString bom(wxChar(0xFEFF));
-  ofs << bom.ToUTF8();
-
-  ofs << "#NATIONS " << version << std::endl;
-  ofs << "# Name; Description; Region" << std::endl;
+  os.AddLine(wxString::Format("#NATIONS %d", version));
+  os.AddLine("# Name; Description; Region");
 
   while (na.Next())
   {
     wxString line;
     if (na.Write(line))
-      ofs << line.ToUTF8() << std::endl;
+      os.AddLine(line);
   }
-
-  ofs.close();
 
   return true;
 }

@@ -935,18 +935,13 @@ bool LtStore::Import(const wxString &name)
 }
 
 
-bool  LtStore::Export(const wxString &name)
+bool  LtStore::Export(wxTextBuffer &os)
 {
   long version = 1;
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
-  std::ofstream  os(name.t_str(), std::ios::out);
-
-  const wxString bom(wxChar(0xFEFF));
-  os << bom.ToUTF8();
-
-  os << "#ENTRIES " << version << std::endl;
+  os.AddLine(wxString::Format("#ENTRIES %d", version));
 
   wxChar   cpName[9];
   short    cpType;
@@ -991,17 +986,16 @@ bool  LtStore::Export(const wxString &name)
   tmDesc[0] = naName[0] = 0;
   rkNatlRank = rkIntlRank = 0;
   
-  os << "# Team Name; Event; Team Description; "
-     << "Association; Natl. Ranking; Int'l. Ranking" << std::endl;
+  os.AddLine("# Team Name; Event; Team Description; Association; Natl. Ranking; Int'l. Ranking");
   
   while (resTmPtr->Next())
   {
-    wxString ofs;
+    wxString line;
 
-    ofs << tmName << ";" << cpName << ";" << tmDesc << ";" 
-        << naName << ";" << rkNatlRank << ";" << rkIntlRank;
+    line << tmName << ";" << cpName << ";" << tmDesc << ";" 
+         << naName << ";" << rkNatlRank << ";" << rkIntlRank;
 
-    os << ofs.ToUTF8() << std::endl;
+    os.AddLine(line);
     
     tmDesc[0] = naName[0] = 0;
     rkNatlRank = rkIntlRank = 0;
@@ -1066,38 +1060,40 @@ bool  LtStore::Export(const wxString &name)
     
   while (resPtr->Next())
   {
-    wxString ofs;
+    wxString line;
 
     switch (cpType)
     {
       case CP_SINGLE :
         if (cpType != lastCpType)
-          ofs << "# Pl. No.; Event; Partner No.; "
-                 "Association; Natl. Ranking; Int'l Ranking" << '\n';
+          os.AddLine("# Pl. No.; Event; Partner No.; Association; Natl. Ranking; Int'l Ranking");
           
-        ofs << plNr << ";" << cpName << ";;" 
-            << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+        line << plNr << ";" << cpName << ";;" 
+             << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+        os.AddLine(line);
+
         break;
         
       case CP_DOUBLE :
       case CP_MIXED :
         if (cpType != lastCpType)
-          ofs << "# Pl. No.; Event; Partner No.; "
-                 "Association; Natl. Ranking; Int'l Ranking" << '\n';
+          os.AddLine("# Pl. No.; Event; Partner No.; Association; Natl. Ranking; Int'l Ranking");
               
-        ofs << plNr << ";" << cpName << ";" << bdNr << ";" 
-            << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+        line << plNr << ";" << cpName << ";" << bdNr << ";" 
+             << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+        os.AddLine(line);
+
         break;
         
       case CP_TEAM :
         if (cpType != lastCpType)
-          ofs << "# Pl. No.; Event; Team; Team Pos." << '\n';
+          os.AddLine("# Pl. No.; Event; Team; Team Pos.");
           
-        ofs << plNr << ";" << cpName << ";" << tmName << ";" << ntNr << '\n';
+        line << plNr << ";" << cpName << ";" << tmName << ";" << ntNr << '\n';
+        os.AddLine(line);
+
         break;
     }
-
-    os << ofs.ToUTF8();
 
     lastCpType = cpType;
     

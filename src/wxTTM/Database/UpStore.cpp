@@ -688,7 +688,7 @@ bool  UpStore::Import(const wxString &name)
 }
 
 
-bool UpStore::Export(const wxString &name)
+bool UpStore::Export(wxTextBuffer &os)
 {
   long version = 1;
 
@@ -698,31 +698,16 @@ bool UpStore::Export(const wxString &name)
   if (!up.SelectAll())
     return false;
     
-  const char *oldLocale = setlocale(LC_NUMERIC, "C");
-
-  // Wirklich <char> undnicht <wchar_t>, weil std::stream nicht mit UTF-16 
-  // zurecht kommt. Warum auch immer kann man solche Files nicht vernuenftig lesen.
-  // Darum sind die Import-/Export-Files UTF-8. ISO-8859-1 Zeichen stimmen dann 
-  // halt nicht.
-  std::ofstream  ofs(name.t_str(), std::ios::out);
-
-  const wxString bom(wxChar(0xFEFF));
-  ofs << bom.ToUTF8();
-
-  ofs << "#UMPIRES " << version << std::endl;
+  os.AddLine(wxString::Format("#UMPIRES %d", version));
   
-  ofs << "# Up. No.; Last Name; Given Name; Sex; Association; Email; Phone" << std::endl;
+  os.AddLine("# Up. No.; Last Name; Given Name; Sex; Association; Email; Phone");
   
   while (up.Next())
   {
     wxString line;
     if (up.Write(line))
-      ofs << line.ToUTF8() << std::endl;
+      os.AddLine(line);
   }
-
-  ofs.close();
   
-  setlocale(LC_NUMERIC, oldLocale);
-
   return true;
 }
