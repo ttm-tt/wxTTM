@@ -51,7 +51,7 @@ class  StStore : public StoreObj, public StRec
     static  bool UpdateConstraints(long version);
 
     // Import / Export
-    static  bool  Import(const wxString &name);
+    static  bool  Import(wxTextBuffer &is);
     static  bool  Export(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append);
 
   public:

@@ -627,20 +627,15 @@ void  UpStore::BindRec()
 // -----------------------------------------------------------------------
 // Import / Export
 // Siehe oben wg. std::ifstream
-bool  UpStore::Import(const wxString &name)
+bool  UpStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#UMPIRES", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#UMPIRES"), line.c_str()))
       return false;
   }
@@ -655,7 +650,7 @@ bool  UpStore::Import(const wxString &name)
 
   const char *oldLocale = setlocale(LC_NUMERIC, "C");
   
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -682,8 +677,6 @@ bool  UpStore::Import(const wxString &name)
 
   delete connPtr;
 
-  ifs.Close();
-    
   return true;
 }
 

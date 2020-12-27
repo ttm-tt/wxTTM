@@ -48,7 +48,7 @@ class  UpStore : public StoreObj, public UpRec
     static  bool  UpdateConstraints(long version);
 
     // Import / Export
-    static  bool Import(const wxString &);
+    static  bool Import(wxTextBuffer &);
     static  bool Export(wxTextBuffer &);
 
   public:

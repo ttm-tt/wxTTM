@@ -248,6 +248,9 @@ class CUpdateViewEvent : public wxCommandEvent
 
 void  CTT32App::NotifyChange(CRequest &req)
 {
+  if (wxTheApp == nullptr)
+    return;
+
   wxTheApp->QueueEvent(new CUpdateViewEvent(req));
 }
 
@@ -385,12 +388,16 @@ class MyThreadEvent : public wxThreadEvent
 // Step progress bar
 void  CTT32App::ProgressBarStep()
 {
+  if (wxTheApp == nullptr)
+    return;
   wxGetApp().AddPendingEvent(MyThreadEvent(IDC_PROGRESSBAR_STEP));
 }
 
 
 void CTT32App::ProgressBarExit(int retCode)
 {
+  if (wxTheApp == nullptr)
+    return;
   wxGetApp().AddPendingEvent(MyThreadEvent(IDC_PROGRESSBAR_EXIT));
 }
 

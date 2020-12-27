@@ -355,7 +355,7 @@ void CMainFrame::OnUpdateUI(wxUpdateUIEvent &evt)
 
 
 // -----------------------------------------------------------------------
-void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool (*func)(const wxString &))
+void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &))
 {
   wxString fileName;
   wxFileDialog dlg(this, title, CTT32App::instance()->GetPath(), defaultName, 
@@ -369,12 +369,14 @@ void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool
   struct ImportHelper
   {
     wxString fileName;
-    bool (*func)(const wxString &);
+    bool (*func)(wxTextBuffer &);
 
     static unsigned Run(void *arg)
     {
       ImportHelper *ih = (ImportHelper *) arg;
-      bool ret = (*ih->func)(ih->fileName);
+      wxTextFile is(ih->fileName);
+      bool ret = (*ih->func)(is);
+      is.Close();
 
       delete ih;
       return 0;

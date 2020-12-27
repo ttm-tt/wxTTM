@@ -893,20 +893,15 @@ bool  StStore::BindRec()
 // cpName;grName;stNr;{plNr | plNR;bdNr | tmName};
 
 // Siehe PlStore zur Verwendung von std::istream
-bool  StStore::Import(const wxString &name)
+bool  StStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#POSITIONS", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
       return false;
   }
@@ -929,7 +924,7 @@ bool  StStore::Import(const wxString &name)
   
   bool skipGroup = false;
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {   
     CTT32App::ProgressBarStep();
 

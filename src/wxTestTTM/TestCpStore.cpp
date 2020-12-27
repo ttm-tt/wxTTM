@@ -24,6 +24,23 @@ namespace wxTestTTM
 			Assert::IsTrue(ret);		
 		}
 
+		TEST_METHOD(Import)
+		{
+			wxMemoryText is;
+			is.AddLine("#EVENTS 1");
+      is.AddLine("# Name; Description; Type; Sex; Year");
+			is.AddLine("MS;Men's Singles;S;M;0");
+			bool ret = CpStore::Import(is);
+			Assert::IsTrue(ret);
+
+			CpStore cp;
+			cp.SelectAll();
+			cp.Next();
+			cp.Close();
+
+			Assert::AreNotEqual(0L, cp.cpID);
+		}
+
 		TEST_METHOD(Export)
 		{
 		  wxMemoryText os;

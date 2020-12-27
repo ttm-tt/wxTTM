@@ -28,7 +28,7 @@ public:
     void  OnUpdateUI(wxUpdateUIEvent &);
 
   private:
-    void Import(const wxString &title, const wxString &defaultName, bool (*func)(const wxString &));
+    void Import(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &));
     void Export(const wxString &ttile, const wxString &defaultName, bool (*func)(wxTextBuffer &));
     
 

@@ -60,7 +60,7 @@ class  CpStore : public StoreObj, public CpRec
     static  bool  UpdateConstraints(long version);
 
     // Import / Export
-    static  bool  Import(const wxString &name);
+    static  bool  Import(wxTextBuffer &);
     static  bool  Export(wxTextBuffer &);
 
   public:

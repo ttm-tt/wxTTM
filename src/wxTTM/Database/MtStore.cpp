@@ -2771,20 +2771,15 @@ bool  MtStore::BindRec()
 //         mtBallsA[0], mtBallsX[0], ...
 
 // Siehe PlStore zur Verwendung von std::ifstream
-bool MtStore::ImportResults(const wxString &name)
+bool MtStore::ImportResults(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#RESULTS", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RESULTS"), line.c_str()))
       return false;
   }
@@ -2805,7 +2800,7 @@ bool MtStore::ImportResults(const wxString &name)
   GrStore  gr(connPtr);
   MtStore  mt(connPtr);
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {   
     CTT32App::ProgressBarStep();
 
@@ -3745,21 +3740,16 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
 
 // -----------------------------------------------------------------------
 // Import / Export Schedule
-bool  MtStore::ImportSchedule(const wxString &name)
+bool  MtStore::ImportSchedule(wxTextBuffer &is)
 {
   long version = 1;
 
   // Format: CP;GR;RD;MT;MS;Date;Time;Table
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#SCHEDULES", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#SCHEDULES"), line.c_str()))
       return false;
   }
@@ -3780,7 +3770,7 @@ bool  MtStore::ImportSchedule(const wxString &name)
   GrStore  gr(connPtr);
   MtStore  mt(connPtr);
 
-  for(; !ifs.Eof(); line = ifs.GetNextLine())
+  for(; !is.Eof(); line = is.GetNextLine())
   {   
     CTT32App::ProgressBarStep();
 

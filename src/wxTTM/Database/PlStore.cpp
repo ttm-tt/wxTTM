@@ -858,15 +858,11 @@ void  PlStore::BindRec()
 // -----------------------------------------------------------------------
 // Import / Export
 // Siehe oben wg. std::ifstream
-bool  PlStore::Import(const wxString &name)
+bool  PlStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
   if (!CheckImportHeader(line, "#PLAYERS", version))
   {
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#PLAYERS"), line.wx_str()))
@@ -883,7 +879,7 @@ bool  PlStore::Import(const wxString &name)
 
   const char *oldLocale = setlocale(LC_NUMERIC, "C");
   
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -918,8 +914,6 @@ bool  PlStore::Import(const wxString &name)
 
   delete connPtr;
 
-  ifs.Close();
-    
   return true;
 }
 

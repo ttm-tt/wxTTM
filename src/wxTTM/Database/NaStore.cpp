@@ -506,20 +506,15 @@ long  NaStore::GetMaxRegionLength()
 
 // -----------------------------------------------------------------------
 // Import / Export
-bool  NaStore::Import(const wxString &name)
+bool  NaStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#NATIONS", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#NATIONS"), line.c_str()))
       return false;
   }
@@ -532,7 +527,7 @@ bool  NaStore::Import(const wxString &name)
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -554,8 +549,6 @@ bool  NaStore::Import(const wxString &name)
   }
     
   delete connPtr;
-
-  ifs.Close();
 
   return true;
 }

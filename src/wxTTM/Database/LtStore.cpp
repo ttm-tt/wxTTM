@@ -503,24 +503,19 @@ bool  LtStore::BindRec()
 // -----------------------------------------------------------------------
 // Import / Export
 // Siehe PlStore zur Verwendung von std::ifstream
-bool LtStore::Import(const wxString &name)
+bool LtStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
   bool warnChangedDoubles = true;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
   std::list<wxString> unknownPlayerList;
 
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#ENTRIES", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#ENTRIES"), line.c_str()))
       return false;
   }
@@ -538,7 +533,7 @@ bool LtStore::Import(const wxString &name)
   CpStore  cp(connPtr);
   NaStore  na(connPtr);
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -915,8 +910,6 @@ bool LtStore::Import(const wxString &name)
     infoSystem.Exception("<none>", e);
   }
 
-  ifs.Close();
-
   if (unknownPlayerList.size())
   {
     std::list<wxString>::const_iterator it = unknownPlayerList.begin();
@@ -1109,13 +1102,9 @@ bool  LtStore::Export(wxTextBuffer &os)
 
 
 // -----------------------------------------------------------------------
-bool LtStore::RemoveFromDoubles(const wxString &name)
+bool LtStore::RemoveFromDoubles(wxTextBuffer &is)
 {
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   if (wxStrcmp(line, "#REMOVE DOUBLES"))
   {
@@ -1129,7 +1118,7 @@ bool LtStore::RemoveFromDoubles(const wxString &name)
 
   // HACK: Die Variablen duerfen nicht laenger leben als connPtr [
   {
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 

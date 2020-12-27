@@ -261,19 +261,14 @@ bool RpStore::BindRec()
 
 
 // -----------------------------------------------------------------------
-bool RpStore::Import(const wxString &name)
+bool RpStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
   // Check header
   if (!CheckImportHeader(line, "#RANKINGPOINTS", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RANKINGPOINTS"), line.c_str()))
       return false;
   }
@@ -288,7 +283,7 @@ bool RpStore::Import(const wxString &name)
 
   const char *oldLocale = setlocale(LC_NUMERIC, "C");
   
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -346,8 +341,6 @@ bool RpStore::Import(const wxString &name)
 
   delete connPtr;
 
-  ifs.Close();
-    
   return true;
 }
 

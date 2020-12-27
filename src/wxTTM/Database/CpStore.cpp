@@ -636,20 +636,15 @@ bool  CpStore::InsertOrUpdate()
 // -----------------------------------------------------------------------
 // Import / Export
 // Siehe PlStore zur Verwendung von std::ifstream
-bool  CpStore::Import(const wxString &name)
+bool  CpStore::Import(wxTextBuffer &is)
 {
   long version = 1;
 
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
-
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#EVENTS", version))
   {
-    ifs.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#EVENTS"), line.c_str()))
       return false;
   }
@@ -662,7 +657,7 @@ bool  CpStore::Import(const wxString &name)
 
   Connection *connPtr = TTDbse::instance()->GetNewConnection();
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -686,8 +681,6 @@ bool  CpStore::Import(const wxString &name)
 
   delete connPtr;
 
-  ifs.Close();
-  
   return true;
 }
 

@@ -28,7 +28,7 @@ class RpStore : public StoreObj, public RpRec
     static  bool  UpdateConstraints(long version);
 
     // Import / Export
-    static  bool Import(const wxString &);
+    static  bool Import(wxTextBuffer &is);
     static  bool Export(wxTextBuffer &os);
 
   public:

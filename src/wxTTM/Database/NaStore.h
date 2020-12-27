@@ -39,7 +39,7 @@ class  NaStore : public StoreObj, public NaRec
     static  bool  UpdateTable(long version);
 
     // Import / Export
-    static  bool  Import(const wxString &name);
+    static  bool  Import(wxTextBuffer &is);
     static  bool  Export(wxTextBuffer &os);
 
   public:

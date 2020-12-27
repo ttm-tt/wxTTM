@@ -2623,19 +2623,16 @@ bool GrStore::SetPrinted(timestamp &ts)
 // -----------------------------------------------------------------------
 // Import / Export
 // Siehe PlStore zur Verwendung von std::ifstream
-bool  GrStore::Import(const wxString &name)
+bool  GrStore::Import(wxTextBuffer &is)
 {
   long version = 1;
-  wxTextFile ifs(name);
-  if (!ifs.Open())
-    return false;
 
-  wxString line = ifs.GetFirstLine();
+  wxString line = is.GetFirstLine();
 
   // Check header
   if (!CheckImportHeader(line, "#GROUPS", version))
   {
-    ifs.Close();
+    is.Close();
     if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
       return false;
   }
@@ -2677,7 +2674,7 @@ bool  GrStore::Import(const wxString &name)
   
   mdMap[wxEmptyString];
 
-  for (; !ifs.Eof(); line = ifs.GetNextLine())
+  for (; !is.Eof(); line = is.GetNextLine())
   {
     CTT32App::ProgressBarStep();
 
@@ -2787,8 +2784,6 @@ bool  GrStore::Import(const wxString &name)
 
   delete connPtr;
 
-  ifs.Close();
-  
   return true;
 }
 

@@ -1025,7 +1025,8 @@ void CImportOnlineEntries::ImportCP()
   CTT32App::SetProgressBarText(_("Import Competitions"));
 
   // Import CP
-  CpStore::Import(cpFileName.GetFullPath());
+  wxTextFile is(cpFileName.GetFullPath());
+  CpStore::Import(is);
 }
 
 void CImportOnlineEntries::ImportNA()
@@ -1033,7 +1034,8 @@ void CImportOnlineEntries::ImportNA()
   CTT32App::SetProgressBarText(_("Import Associations"));
 
   // Import NA
-  NaStore::Import(naFileName.GetFullPath());
+  wxTextFile is(naFileName.GetFullPath());
+  NaStore::Import(is);
 }
 
 void CImportOnlineEntries::ImportPL()
@@ -1041,7 +1043,8 @@ void CImportOnlineEntries::ImportPL()
   CTT32App::SetProgressBarText(_("Import Players"));
 
   // Import PL
-  PlStore::Import(plFileName.GetFullPath());
+  wxTextFile is(plFileName.GetFullPath());
+  PlStore::Import(is);
 }
 
 void CImportOnlineEntries::ImportRP()
@@ -1049,7 +1052,8 @@ void CImportOnlineEntries::ImportRP()
   CTT32App::SetProgressBarText(_("Import Rankikng"));
 
   // Import RP
-  RpStore::Import(rpFileName.GetFullPath());
+  wxTextFile is(rpFileName.GetFullPath());
+  RpStore::Import(is);
 }
 
 void CImportOnlineEntries::ImportLT()
@@ -1059,31 +1063,35 @@ void CImportOnlineEntries::ImportLT()
     // Import LTS
     CTT32App::SetProgressBarText(_("Import Singles"));
 
-    LtStore::Import(ltsFileName.GetFullPath());
+    wxTextFile is(ltsFileName.GetFullPath());
+    LtStore::Import(is);
   }
 
   if (XRCCTRL(*this, "ImportEntriesDoubles", wxCheckBox)->GetValue())
   {
-    // Import LTS
+    // Import LTD
     CTT32App::SetProgressBarText(_("Import Doubles"));
 
-    LtStore::Import(ltdFileName.GetFullPath());
+    wxTextFile is(ltdFileName.GetFullPath());
+    LtStore::Import(is);
   }
 
   if (XRCCTRL(*this, "ImportEntriesMixed", wxCheckBox)->GetValue())
   {
-    // Import LTS
+    // Import LTX
     CTT32App::SetProgressBarText(_("Import Mixed"));
 
-    LtStore::Import(ltxFileName.GetFullPath());
+    wxTextFile is(ltxFileName.GetFullPath());
+    LtStore::Import(is);
   }
 
   if (XRCCTRL(*this, "ImportEntriesTeams", wxCheckBox)->GetValue())
   {
-    // Import LTS
+    // Import LTT
     CTT32App::SetProgressBarText(_("Import Teams"));
 
-    LtStore::Import(lttFileName.GetFullPath());
+    wxTextFile is(lttFileName.GetFullPath());
+    LtStore::Import(is);
   }
 }
 
