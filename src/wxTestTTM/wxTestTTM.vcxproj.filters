@@ -27,13 +27,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Database\TestCpStore.cpp">
+      <Filter>Test Cases\Database</Filter>
+    </ClCompile>
     <ClCompile Include="Database\TestGrStore.cpp">
       <Filter>Test Cases\Database</Filter>
     </ClCompile>
-    <ClCompile Include="TestTTDbse.cpp">
-      <Filter>Test Cases\Database</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCpStore.cpp">
+    <ClCompile Include="Database\TestTTDbse.cpp">
       <Filter>Test Cases\Database</Filter>
     </ClCompile>
   </ItemGroup>

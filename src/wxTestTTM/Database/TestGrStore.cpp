@@ -9,6 +9,8 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace wxTestTTM
 {
+  extern wxString cwd;
+
 	TEST_CLASS(TestGrStore)
 	{
 		public:
@@ -16,6 +18,8 @@ namespace wxTestTTM
 			// Run once before all methods in this class
 			TEST_CLASS_INITIALIZE(SetUpClassGrStore)
 			{
+		    wxSetWorkingDirectory(cwd);
+	
 				// Reset DB to known state
 				wxFileName tmpName("TTM_UTEST", "TTM_UTEST-v153.bak");
 				tmpName.Normalize();
@@ -24,7 +28,7 @@ namespace wxTestTTM
 				Assert::IsTrue(ret);				
 			}
 		
-		TEST_METHOD(TestNofRounds)
+		TEST_METHOD(O_010_TestNofRounds)
 		{
 		  // RR group of 4
 			{
@@ -45,7 +49,12 @@ namespace wxTestTTM
 		  }
 		}
 
-		TEST_METHOD(Export)
+		TEST_METHOD(O_020_Import)
+		{
+
+		}
+
+		TEST_METHOD(O_030_Export)
 		{
 		  wxMemoryText os;
 			std::vector<long> ids;
