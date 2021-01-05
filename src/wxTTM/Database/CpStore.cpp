@@ -32,12 +32,13 @@
 #include  <stdlib.h>
 
 
-bool CpRec::Read(const wxString &line)
+bool CpRec::Read(const wxString &line, int version)
 {
   wxStringTokenizerEx tokens(line, wxT(",;\t"));
 
   wxString strName = tokens.GetNextToken();
   wxString strDesc = tokens.GetNextToken();
+  wxString strCat  = (version < 2 ? wxEmptyString : tokens.GetNextToken());
   wxString strType = tokens.GetNextToken();
   wxString strSex  = tokens.GetNextToken();
   wxString strYear = tokens.GetNextToken();
@@ -49,6 +50,7 @@ bool CpRec::Read(const wxString &line)
 
     wxStrncpy((wxChar *) cpName, strName.t_str(), sizeof(cpName) / sizeof(wxChar) -1);
     wxStrncpy((wxChar *) cpDesc, strDesc.t_str(), sizeof(cpDesc) / sizeof(wxChar) -1);
+    wxStrncpy((wxChar *) cpCategory, strCat.t_str(), sizeof(cpCategory) / sizeof(wxChar) -1);
     
     cpYear = _strtol(strYear);
 
@@ -111,13 +113,19 @@ bool CpRec::Read(const wxString &line)
 }
 
 
-bool CpRec::Write(wxString &str) const
+bool CpRec::Write(wxString &str, int version) const
 {
   static wxChar types[] = {wxT(' '), wxT('s'), wxT('d'), wxT('x'), wxT('t')};
   static wxChar sexes[] = {wxT(' '), wxT('m'), wxT('w'), wxT('x')};
   
   str << cpName << ";" 
       << cpDesc << ";"
+  ;
+
+  if (version > 1)
+    str << cpCategory << ";";
+
+  str
       // << types[cp.cpType] << ";"
       // << sexes[cp.cpSex] << ";"
       << cpType << ";"
@@ -168,6 +176,7 @@ bool  CpStore::CreateTable()
     "cpID           "+INTEGER+"      NOT NULL,  "
     "cpName         "+WVARCHAR+"(8)  NOT NULL,  "
 	  "cpDesc         "+WVARCHAR+"(64),           "
+	  "cpCategory     "+WVARCHAR+"(64) DEFAULT NULL, "
 	  "cpType         "+SMALLINT+"     NOT NULL,  "
 	  "cpSex          "+SMALLINT+"     NOT NULL,  "
 	  "cpYear         "+INTEGER+",     "
@@ -222,12 +231,10 @@ bool  CpStore::UpdateTable(long version)
 
   wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
   wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+  wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
 
   if (version <= 124)
   {
-    wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
-    wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
-
     wxString str;
     
     str = "ALTER TABLE CpRec ADD "
@@ -260,7 +267,6 @@ bool  CpStore::UpdateTable(long version)
     Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
     Statement *stmtPtr = connPtr->CreateStatement();
 
-    wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
     wxString str;
 
     try
@@ -289,11 +295,10 @@ bool  CpStore::UpdateTable(long version)
 
   if (version < 153)
   {
-    // History
+    // Setting of how to play (pts to win, etc)
     Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
     Statement *stmtPtr = connPtr->CreateStatement();
 
-    wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
     wxString str;
 
     try
@@ -305,8 +310,30 @@ bool  CpStore::UpdateTable(long version)
           "cpPtsAheadLast "+SMALLINT+" NOT NULL DEFAULT 2  "
         ;
       stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(str, e);
+      delete stmtPtr;
+      return false;
+    }
 
-      str = "ALTER TABLE CpRec SET (SYSTEM_VERSIONING = ON(HISTORY_TABLE = dbo.CpHist))";
+    delete stmtPtr;
+  }
+
+  if (version < 154)
+  {
+    // Setting of how to play (pts to win, etc)
+    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Statement *stmtPtr = connPtr->CreateStatement();
+
+    wxString str;
+
+    try
+    {
+      str = "ALTER TABLE CpRec ADD "
+    	  "cpCategory     "+WVARCHAR+"(64) DEFAULT NULL "
+        ;
       stmtPtr->ExecuteUpdate(str);
     }
     catch (SQLException &e)
@@ -317,6 +344,7 @@ bool  CpStore::UpdateTable(long version)
     }
 
     delete stmtPtr;
+
   }
   return true;
 }
@@ -451,9 +479,9 @@ bool  CpStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
 
-  wxString str = "INSERT INTO CpRec (cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, cpBestOf, "
+  wxString str = "INSERT INTO CpRec (cpID, cpName, cpDesc, cpCategory, cpType, cpSex, cpYear, syID, cpBestOf, "
                     "cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast) "
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   try
   {
@@ -463,18 +491,21 @@ bool  CpStore::Insert()
     if (!stmtPtr)
       return false;
 
-    stmtPtr->SetData(1, &cpID);
-    stmtPtr->SetData(2, cpName);
-    stmtPtr->SetData(3, cpDesc);
-    stmtPtr->SetData(4, &cpType);
-    stmtPtr->SetData(5, &cpSex);
-    stmtPtr->SetData(6, &cpYear);
-    stmtPtr->SetData(7, syID ? &syID : NULL);
-    stmtPtr->SetData(8, &cpBestOf);
-    stmtPtr->SetData(9, &cpPtsToWin);
-    stmtPtr->SetData(10, &cpPtsToWinLast);
-    stmtPtr->SetData(11, &cpPtsAhead);
-    stmtPtr->SetData(12, &cpPtsAhead);
+    int idx = 0;
+
+    stmtPtr->SetData(++idx, &cpID);
+    stmtPtr->SetData(++idx, cpName);
+    stmtPtr->SetData(++idx, cpDesc);
+    stmtPtr->SetData(++idx, *cpCategory ? cpCategory : NULL);
+    stmtPtr->SetData(++idx, &cpType);
+    stmtPtr->SetData(++idx, &cpSex);
+    stmtPtr->SetData(++idx, &cpYear);
+    stmtPtr->SetData(++idx, syID ? &syID : NULL);
+    stmtPtr->SetData(++idx, &cpBestOf);
+    stmtPtr->SetData(++idx, &cpPtsToWin);
+    stmtPtr->SetData(++idx, &cpPtsToWinLast);
+    stmtPtr->SetData(++idx, &cpPtsAhead);
+    stmtPtr->SetData(++idx, &cpPtsAhead);
 
     stmtPtr->Execute();
   }
@@ -502,8 +533,8 @@ bool  CpStore::Update()
   PreparedStatement *stmtPtr = 0;
 
   wxString str = "UPDATE CpRec "
-                    "SET cpName = ?, cpDesc = ?, cpType = ?, "
-                     "   cpSex = ?, cpYear = ?, "
+                    "SET cpName = ?, cpDesc = ?, cpCategory = ?, "
+                     "   cpType = ?, cpSex = ?, cpYear = ?, "
                      "   syID = ?, cpBestOf = ?, "
                      "   cpPtsToWin = ?, cpPtsToWinLast = ?, "
                      "   cpPtsAhead = ?, cpPtsAheadLast = ? "
@@ -515,18 +546,21 @@ bool  CpStore::Update()
     if (!stmtPtr)
       return false;
 
-    stmtPtr->SetData(1, cpName);
-    stmtPtr->SetData(2, cpDesc);
-    stmtPtr->SetData(3, &cpType);
-    stmtPtr->SetData(4, &cpSex);
-    stmtPtr->SetData(5, &cpYear);
-    stmtPtr->SetData(6, syID ? &syID : NULL);
-    stmtPtr->SetData(7, &cpBestOf);
-    stmtPtr->SetData(8, &cpPtsToWin);
-    stmtPtr->SetData(9, &cpPtsToWinLast);
-    stmtPtr->SetData(10, &cpPtsAhead);
-    stmtPtr->SetData(11, &cpPtsAheadLast);
-    stmtPtr->SetData(12, &cpID);
+    int idx = 0;
+
+    stmtPtr->SetData(++idx, cpName);
+    stmtPtr->SetData(++idx, cpDesc);
+    stmtPtr->SetData(++idx, *cpCategory ? cpCategory : NULL);
+    stmtPtr->SetData(++idx, &cpType);
+    stmtPtr->SetData(++idx, &cpSex);
+    stmtPtr->SetData(++idx, &cpYear);
+    stmtPtr->SetData(++idx, syID ? &syID : NULL);
+    stmtPtr->SetData(++idx, &cpBestOf);
+    stmtPtr->SetData(++idx, &cpPtsToWin);
+    stmtPtr->SetData(++idx, &cpPtsToWinLast);
+    stmtPtr->SetData(++idx, &cpPtsAhead);
+    stmtPtr->SetData(++idx, &cpPtsAheadLast);
+    stmtPtr->SetData(++idx, &cpID);
 
     stmtPtr->Execute();
   }
@@ -649,7 +683,7 @@ bool  CpStore::Import(wxTextBuffer &is)
       return false;
   }
 
-  if (version > 1)
+  if (version > 2)
   {
     infoSystem.Error(_("Version %d of import file is not supported"), version);
     return false;
@@ -666,7 +700,7 @@ bool  CpStore::Import(wxTextBuffer &is)
 
     CpStore  cp(connPtr);
 
-    if (cp.Read(line))
+    if (cp.Read(line, version))
     {
       connPtr->StartTransaction();
 
@@ -687,19 +721,36 @@ bool  CpStore::Import(wxTextBuffer &is)
 
 bool  CpStore::Export(wxTextBuffer &os)
 {
-  long version = 1;
+  long version = 2;
 
   CpStore  cp;
   if (!cp.SelectAll())
     return false;
 
   os.AddLine(wxString::Format("#EVENTS %d", version));
-  os.AddLine("# Name; Description; Type; Sex; Year");
+
+  // Encapsulate local vars
+  {
+    wxString line;
+    line << "# "
+         << "Name;"
+         << "Description;"
+    ;
+    if (version > 1)
+      line << "Category;";
+    line 
+        << "Type;"
+        << "Sex;"
+        << "Year;"
+    ;
+
+    os.AddLine(line);
+  }
 
   while (cp.Next())
   {
     wxString line;
-    if (cp.Write(line))
+    if (cp.Write(line, version))
       os.AddLine(line);
   }
 
@@ -1084,25 +1135,28 @@ bool  CpStore::CreateTeam(TmStore &tm, const NaRec &na, short natlRank, short in
 wxString  CpStore::SelectString() const
 {
   return   
-    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+    "SELECT cpID, cpName, cpDesc, cpCategory, cpType, cpSex, cpYear, syID, "
     "       cpBestOf, cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast FROM CpRec ";
 }
 
 
 void  CpStore::BindRec()
 {
-  BindCol(1, &cpID);
-  BindCol(2, cpName, sizeof(cpName));
-  BindCol(3, cpDesc, sizeof(cpDesc));
-  BindCol(4, &cpType);
-  BindCol(5, &cpSex);
-  BindCol(6, &cpYear);
-  BindCol(7, &syID);
-  BindCol(8, &cpBestOf);
-  BindCol(9, &cpPtsToWin);
-  BindCol(10, &cpPtsToWinLast);
-  BindCol(11, &cpPtsAhead);
-  BindCol(12, &cpPtsAheadLast);
+  int idx = 0;
+
+  BindCol(++idx, &cpID);
+  BindCol(++idx, cpName, sizeof(cpName));
+  BindCol(++idx, cpDesc, sizeof(cpDesc));
+  BindCol(++idx, cpCategory, sizeof(cpCategory));
+  BindCol(++idx, &cpType);
+  BindCol(++idx, &cpSex);
+  BindCol(++idx, &cpYear);
+  BindCol(++idx, &syID);
+  BindCol(++idx, &cpBestOf);
+  BindCol(++idx, &cpPtsToWin);
+  BindCol(++idx, &cpPtsToWinLast);
+  BindCol(++idx, &cpPtsAhead);
+  BindCol(++idx, &cpPtsAheadLast);
 }
 
 

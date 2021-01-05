@@ -36,7 +36,7 @@ bool  CpListStore::CreateView()
   Statement *tmp = connPtr->CreateStatement();
 
   wxString  str = "CREATE VIEW CpList AS "
-                     "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+                     "SELECT cpID, cpName, cpDesc, cpCategory, cpType, cpSex, cpYear, syID, "
                      "       cpBestOf, cpPtsToWin, cpPtsAhead, cpPtsToWinLast, cpPtsAheadLast "
                      "FROM cpRec";
 
@@ -195,7 +195,7 @@ bool  CpListStore::SelectByName(const wxString &name)
 wxString  CpListStore::SelectString() const
 {
   wxString  str = 
-    "SELECT cpID, cpName, cpDesc, cpType, cpSex, cpYear, syID, "
+    "SELECT cpID, cpName, cpDesc, cpCategory, cpType, cpSex, cpYear, syID, "
     "       cpBestOf, cpPtsToWin, cpPtsToWinLast, cpPtsAhead, cpPtsAheadLast FROM CpList ";
 
   return str;
@@ -204,18 +204,21 @@ wxString  CpListStore::SelectString() const
 
 bool  CpListStore::BindRec()
 {
-  BindCol(1, &cpID);
-  BindCol(2, cpName, sizeof(cpName));
-  BindCol(3, cpDesc, sizeof(cpDesc));
-  BindCol(4, &cpType);
-  BindCol(5, &cpSex);
-  BindCol(6, &cpYear);
-  BindCol(7, &syID);
-  BindCol(8, &cpBestOf);
-  BindCol(9, &cpPtsToWin);
-  BindCol(10, &cpPtsToWinLast);
-  BindCol(11, &cpPtsAhead);
-  BindCol(12, &cpPtsAheadLast);
+  int idx = 0;
+
+  BindCol(++idx, &cpID);
+  BindCol(++idx, cpName, sizeof(cpName));
+  BindCol(++idx, cpDesc, sizeof(cpDesc));
+  BindCol(++idx, cpCategory, sizeof(cpCategory));
+  BindCol(++idx, &cpType);
+  BindCol(++idx, &cpSex);
+  BindCol(++idx, &cpYear);
+  BindCol(++idx, &syID);
+  BindCol(++idx, &cpBestOf);
+  BindCol(++idx, &cpPtsToWin);
+  BindCol(++idx, &cpPtsToWinLast);
+  BindCol(++idx, &cpPtsAhead);
+  BindCol(++idx, &cpPtsAheadLast);
 
   return true;
 }

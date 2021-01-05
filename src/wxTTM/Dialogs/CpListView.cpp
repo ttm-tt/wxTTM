@@ -23,7 +23,7 @@ END_EVENT_TABLE()
 
 // -----------------------------------------------------------------------
 // CCpListView
-CCpListView::CCpListView() : CFormViewEx()
+CCpListView::CCpListView() : CFormViewEx(), m_listCtrl(0)
 {
 }
 
@@ -94,10 +94,15 @@ void CCpListView::OnInitialUpdate()
   m_listCtrl->HideColumn(3);
   m_listCtrl->AllowHideColumn(3, true);
 
-  // Ssex
+  // Sex
   m_listCtrl->InsertColumn(4, _("Sex"), wxALIGN_LEFT);
   m_listCtrl->HideColumn(4);
   m_listCtrl->AllowHideColumn(4, true);
+
+  // Category
+  m_listCtrl->InsertColumn(5, _("Category"), wxALIGN_LEFT);
+  m_listCtrl->HideColumn(5);
+  m_listCtrl->AllowHideColumn(5, true);
 
   m_listCtrl->SetResizeColumn(1);
 }

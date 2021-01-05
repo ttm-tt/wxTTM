@@ -112,6 +112,7 @@ void CCpEdit::OnInitialUpdate()
 	
 	FindWindow("Name")->SetValidator(CCharArrayValidator(cp.cpName, sizeof(cp.cpName) / sizeof(wxChar)));
 	FindWindow("Description")->SetValidator(CCharArrayValidator(cp.cpDesc, sizeof(cp.cpDesc) / sizeof(wxChar)));
+	FindWindow("Category")->SetValidator(CCharArrayValidator(cp.cpCategory, sizeof(cp.cpCategory) / sizeof(wxChar)));
 
   FindWindow("BestOf")->SetValidator(CShortValidator(&cp.cpBestOf));
 	

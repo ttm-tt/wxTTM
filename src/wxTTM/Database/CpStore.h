@@ -25,6 +25,7 @@ struct CpRec
   long      cpID;        // Unique ID
   wxChar    cpName[9];   // Short name ("MS")
   wxChar    cpDesc[65];  // Full description ("Mens Singles")
+  wxChar    cpCategory[63]; // A general category like "Cadet Boys" for all "Male U15"
   short     cpType;      // Type of event (Singles, Doubles, ...)
   short     cpSex;       // Sex of Playes (Men, Women, Mixed)
   long      cpYear;      // Age of participants
@@ -43,8 +44,8 @@ struct CpRec
   bool  IsAllowed(const PlRec &pl) const; 
   
   // Import / Export als CSV-Datei
-  bool Read(const wxString &);
-  bool Write(wxString &) const;
+  bool Read(const wxString &, int version);
+  bool Write(wxString &, int version) const;
 };
 
 

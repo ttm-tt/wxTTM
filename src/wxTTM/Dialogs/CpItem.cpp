@@ -32,6 +32,8 @@ int  CpItem::Compare(const ListItem *itemPtr, int col) const
       return (cp.cpType - cpItem->cp.cpType);
     case 4 :
       return cp.cpSex - cpItem->cp.cpSex;
+    case 5 :
+      return wxStrcoll(cp.cpCategory, cpItem->cp.cpCategory);
     default :
       return ListItem::Compare(itemPtr, col);
   }
@@ -67,6 +69,10 @@ void  CpItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
     case 4 :
       if (cp.cpSex >= 1 && cp.cpSex <= 4)
         DrawString(pDC, rcColumn, strSex[cp.cpSex - 1]);
+      break;
+
+    case 5 :
+      DrawString(pDC, rcColumn, cp.cpCategory);
       break;
 
     default :
