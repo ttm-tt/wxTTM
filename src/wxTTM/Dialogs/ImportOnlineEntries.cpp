@@ -66,6 +66,7 @@ struct Competition
   int id;
   wxString name;
   wxString description;
+  wxString category;
   wxString type;
   wxString sex;
   int born;
@@ -434,7 +435,7 @@ bool CImportOnlineEntries::ImportThreadRead()
 
   if (!res)
   {
-    wxString fault =xmlRpcClient.getError();
+    wxString fault = xmlRpcClient.getError();
     if (fault.IsEmpty())
       fault = "Unkown error";
 
@@ -457,6 +458,8 @@ bool CImportOnlineEntries::ImportThreadRead()
     cp.id = GetInt(val["id"]);
     cp.name = wxString::FromUTF8((const char *) val["name"]);
     cp.description = wxString::FromUTF8((const char *) val["description"]);
+    if (val.hasMember("category"))
+      cp.category = wxString::FromUTF8((const char *) val["category"]);
     cp.type = wxString::FromUTF8((const char *) val["type_of"]);
     cp.sex = wxString::FromUTF8((const char *) val["sex"]);
     cp.born = GetInt(val["born"]);
@@ -699,8 +702,8 @@ bool CImportOnlineEntries::ImportThreadRead()
   // Write Competitions
   wxFFile cpFile(cpFileName.GetFullPath(), "w");    
   cpFile.Write(wxChar(0xFEFF));
-  cpFile.Write("#EVENTS\n");
-  cpFile.Write("# Name; Desc; Type; Sex; Year\n");
+  cpFile.Write("#EVENTS 2\n");
+  cpFile.Write("# Name; Desc; Category; Type; Sex; Year\n");
                 
   for (std::map<int, Competition>::iterator it = cpMap.begin(); it != cpMap.end(); it++)
   {
@@ -708,6 +711,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     wxString line;
     line << cp.name << ";" 
          << cp.description << ";" 
+         << cp.category << ";"
          << cp.type << ";" 
          << cp.sex << ";" 
          << cp.born << "\n";
