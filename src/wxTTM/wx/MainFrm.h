@@ -29,7 +29,7 @@ public:
 
   private:
     void Import(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &));
-    void Export(const wxString &ttile, const wxString &defaultName, bool (*func)(wxTextBuffer &));
+    void Export(const wxString &ttile, const wxString &defaultName, bool (*func)(wxTextBuffer &, long), long maxVersion = 1);
     
 
   private:

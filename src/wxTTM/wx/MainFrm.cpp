@@ -225,7 +225,7 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     CTT32App::instance()->ImportOnlineEntries();
 
   else if (evt.GetId() == XRCID("TournamentExportEventsMenuItem"))
-    Export(_("Export Events"), "cp.csv", &CpStore::Export);
+    Export(_("Export Events"), "cp.csv", &CpStore::Export, CpStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportGroupsMenuItem"))
     CTT32App::instance()->OpenView(_("Export Groups"), wxT("GrExport"), &GrStore::Export);
   else if (evt.GetId() == XRCID("TournamentExportAssocMenuItem"))
@@ -396,25 +396,54 @@ void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool
 }
 
 
-
-void CMainFrame::Export(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &))
+void CMainFrame::Export(const wxString &title, const wxString &defaultName, bool (*func)(wxTextBuffer &, long), long maxVersion)
 {
   wxString fileName;
+  int version = maxVersion;
 
-  wxFileDialog dlg(this, title, CTT32App::instance()->GetPath(), defaultName, 
-    _("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+  // Initial path with default file, 
+  wxFileName fn(CTT32App::instance()->GetPath(), defaultName);
+  // Normalize so we have the absolute path
+  fn.Normalize();
 
-  if (dlg.ShowModal() != wxID_OK)
+  wxDialog *dlg = wxXmlResource::Get()->LoadDialog(this, "ExportDialog");
+
+  dlg->SetTitle(title);
+  XRCCTRL(*dlg, "File", wxFilePickerCtrl)->SetFileName(fn);
+
+  // Fill combobox with all possible versions in descending order
+  wxArrayString as;
+  for (int v = maxVersion; v; v--)
+    as.Add(wxString::Format("%d", v));
+    
+  XRCCTRL(*dlg, "Version", wxComboBox)->Set(as);
+  // And select the first (highest) one as default
+  XRCCTRL(*dlg, "Version", wxComboBox)->SetSelection(0);
+
+  // Disable version selection if there is only one
+  // Hiding the ctrl doesn't look good because the dlg has to have a mininum size 
+  // (or we don't see the buttons)
+  if (maxVersion == 1)
+    dlg->FindWindow("Version")->Disable();
+
+  if (dlg->ShowModal() != wxID_OK)
     return;
 
-  fileName = dlg.GetPath();
+  fileName = XRCCTRL(*dlg, "File", wxFilePickerCtrl)->GetPath();
+  // Versions are in descending order so selection 0 is equal to maxVersion, and so on
+  version = maxVersion - XRCCTRL(*dlg, "Version", wxComboBox)->GetSelection();
 
+  delete dlg;
+
+  // We read into a buffer where each line is an entry so this is the only place
+  // where we have to care about the encoding
   wxMemoryText buf;
-  if (!(*func)(buf))
+  if (!(*func)(buf, version))
     return;
 
   std::ofstream  ofs(fileName.mb_str(), std::ios::out);
 
+  // Excel needs a BOM to read UTF-8 (with ';') correctly. Strange ...
   const wxString bom(wxChar(0xFEFF));
   ofs << bom.ToUTF8();
 

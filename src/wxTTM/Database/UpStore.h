@@ -49,7 +49,7 @@ class  UpStore : public StoreObj, public UpRec
 
     // Import / Export
     static  bool Import(wxTextBuffer &);
-    static  bool Export(wxTextBuffer &);
+    static  bool Export(wxTextBuffer &, long version = 1);
 
   public:
     UpStore(Connection *connPtr = 0);    // Defaultkonstruktor

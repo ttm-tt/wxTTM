@@ -345,10 +345,8 @@ bool RpStore::Import(wxTextBuffer &is)
 }
 
 
-bool RpStore::Export(wxTextBuffer &os)
+bool RpStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   PlStore  pl(connPtr);

@@ -49,7 +49,7 @@ class  PlStore : public StoreObj, public PlRec
 
     // Import / Export
     static  bool Import(wxTextBuffer &is);
-    static  bool Export(wxTextBuffer &os);
+    static  bool Export(wxTextBuffer &o, long version = 1);
 
   public:
     PlStore(Connection *connPtr = 0);    // Defaultkonstruktor

@@ -719,10 +719,8 @@ bool  CpStore::Import(wxTextBuffer &is)
 }
 
 
-bool  CpStore::Export(wxTextBuffer &os)
+bool  CpStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 2;
-
   CpStore  cp;
   if (!cp.SelectAll())
     return false;
@@ -755,6 +753,12 @@ bool  CpStore::Export(wxTextBuffer &os)
   }
 
   return true;
+}
+
+
+long CpStore::GetMaxSupportedExportVersion()
+{
+  return 2;
 }
 
 

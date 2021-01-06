@@ -681,10 +681,8 @@ bool  UpStore::Import(wxTextBuffer &is)
 }
 
 
-bool UpStore::Export(wxTextBuffer &os)
+bool UpStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   UpStore  up(connPtr);

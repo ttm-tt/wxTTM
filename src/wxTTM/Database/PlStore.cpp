@@ -918,10 +918,8 @@ bool  PlStore::Import(wxTextBuffer &is)
 }
 
 
-bool PlStore::Export(wxTextBuffer &os)
+bool PlStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   PlListStore  pl(connPtr);

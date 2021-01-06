@@ -554,10 +554,8 @@ bool  NaStore::Import(wxTextBuffer &is)
 }
 
 
-bool  NaStore::Export(wxTextBuffer &os)
+bool  NaStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   NaStore  na(connPtr);

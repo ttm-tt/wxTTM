@@ -14,6 +14,7 @@
 #include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/filepicker.h>
 #include <wx/fontdlg.h>
 #include <wx/grid.h>
 #include <wx/hyperlink.h>
@@ -32,6 +33,7 @@
 #include <wx/printdlg.h>
 #include <wx/print.h>
 #include <wx/renderer.h>
+#include <wx/spinctrl.h>
 #include <wx/sstream.h>
 #include <wx/stdpaths.h>
 #include <wx/regex.h>
@@ -44,10 +46,9 @@
 #include <wx/valgen.h>
 #include <wx/wfstream.h>
 #include <wx/wizard.h>
-#include <wx/xrc/xmlres.h>
 #include <wx/aui/auibook.h>
 #include <wx/msw/dc.h>
-#include <wx/spinctrl.h>
+#include <wx/xrc/xmlres.h>
 
 // fuer Definition von "timestamp"
 #include "SQLInclude.h"

@@ -928,10 +928,8 @@ bool LtStore::Import(wxTextBuffer &is)
 }
 
 
-bool  LtStore::Export(wxTextBuffer &os)
+bool  LtStore::Export(wxTextBuffer &os, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   os.AddLine(wxString::Format("#ENTRIES %d", version));

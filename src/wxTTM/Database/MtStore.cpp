@@ -2980,14 +2980,12 @@ bool MtStore::ImportResults(wxTextBuffer &is)
 }
 
 
-bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
   
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
@@ -3130,7 +3128,7 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
 }
 
 
-bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
@@ -3276,7 +3274,7 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
 }
 
 
-bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
@@ -3568,7 +3566,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 }
 
 
-bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
   /*
     Format Individual
@@ -3929,10 +3927,8 @@ bool  MtStore::ImportSchedule(wxTextBuffer &is)
 }
 
 
-bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append)
+bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
-  long version = 1;
-
   // Format: CP;GR;RD;MT;MS;Date;Time;Table
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();

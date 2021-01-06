@@ -29,7 +29,7 @@ class RpStore : public StoreObj, public RpRec
 
     // Import / Export
     static  bool Import(wxTextBuffer &is);
-    static  bool Export(wxTextBuffer &os);
+    static  bool Export(wxTextBuffer &os, long version = 1);
 
   public:
     RpStore(const RpRec &, Connection * = 0);

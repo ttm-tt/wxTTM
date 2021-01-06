@@ -38,7 +38,7 @@ class  LtStore : public StoreObj, public LtRec
 
     // Import / Export
     static  bool Import(wxTextBuffer &is);
-    static  bool Export(wxTextBuffer &os);
+    static  bool Export(wxTextBuffer &os, long version = 1);
     static  bool RemoveFromDoubles(wxTextBuffer &is);
 
   public:

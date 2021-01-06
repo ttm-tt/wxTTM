@@ -62,7 +62,8 @@ class  CpStore : public StoreObj, public CpRec
 
     // Import / Export
     static  bool  Import(wxTextBuffer &);
-    static  bool  Export(wxTextBuffer &);
+    static  bool  Export(wxTextBuffer &, long version);
+    static  long  GetMaxSupportedExportVersion();
 
   public:
     CpStore(Connection * = 0);  // Defaultkonstruktor

@@ -1053,10 +1053,8 @@ bool  StStore::Import(wxTextBuffer &is)
 }
 
 
-bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append)
+bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   wxChar cpName[9], grName[9];

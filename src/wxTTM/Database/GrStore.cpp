@@ -2788,10 +2788,8 @@ bool  GrStore::Import(wxTextBuffer &is)
 }
 
 
-bool  GrStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append)
+bool  GrStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & idList, bool append, long version)
 {
-  long version = 1;
-
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   
   if (!append)
