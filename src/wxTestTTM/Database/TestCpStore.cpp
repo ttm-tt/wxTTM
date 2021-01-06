@@ -45,6 +45,25 @@ namespace wxTestTTM
 
 			Assert::AreNotEqual(0L, cp.cpID);
 		}
+
+		TEST_METHOD(O_011_Import_v2)
+		{
+			wxMemoryText is;
+			is.AddLine("#EVENTS 2");
+      is.AddLine("# Name; Description; Category; Type; Sex; Year");
+			is.AddLine("MS;Men's Singles;Cat;S;M;0");
+			bool ret = CpStore::Import(is);
+			Assert::IsTrue(ret);
+
+			CpStore cp;
+			cp.SelectAll();
+			cp.Next();
+			cp.Close();
+
+			Assert::AreNotEqual(0L, cp.cpID);
+			Assert::AreEqual(wxT("Cat"), cp.cpCategory);
+		}
+
 		TEST_METHOD(O_020_Export)
 		{
 		  wxMemoryText os;
@@ -54,7 +73,7 @@ namespace wxTestTTM
 			Assert::AreEqual((size_t) 3, os.GetLineCount());
 
 			wxString line = os.GetFirstLine();
-			Assert::AreEqual(line.c_str(), "#EVENTS 1");
+			Assert::AreEqual(line.c_str(), "#EVENTS 2");
 			Assert::IsFalse(os.Eof());
 
 			line = os.GetNextLine();
@@ -62,7 +81,8 @@ namespace wxTestTTM
 			Assert::IsFalse(os.Eof());
 
 			line = os.GetNextLine();
-			Assert::AreEqual(line.c_str(), "MS;Men's Singles;1;1;0;");
+			Assert::AreEqual(line.c_str(), "MS;Men's Singles;Cat;1;1;0;");
 		}
+
 	};
 }

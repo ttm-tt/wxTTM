@@ -22,19 +22,28 @@
     <Filter Include="Test Resources">
       <UniqueIdentifier>{adcb11be-5fe8-4724-a4a5-983674eab1ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test Cases\Database\Tables">
+      <UniqueIdentifier>{26b3db01-5866-4e35-9425-4fc43b40c496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test Cases\Database\Engine">
+      <UniqueIdentifier>{79d73e6b-3f03-4c5a-b3dc-df0862bc4510}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Database\TestCpStore.cpp">
-      <Filter>Test Cases\Database</Filter>
+      <Filter>Test Cases\Database\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Database\TestGrStore.cpp">
-      <Filter>Test Cases\Database</Filter>
+      <Filter>Test Cases\Database\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Database\TestTTDbse.cpp">
-      <Filter>Test Cases\Database</Filter>
+      <Filter>Test Cases\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TestStoreObj.cpp">
+      <Filter>Test Cases\Database\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
