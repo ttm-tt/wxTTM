@@ -212,7 +212,7 @@ namespace wxTestTTM
 			Assert::IsTrue(mt.mtWalkOverX);
 		}
 
-		TEST_METHOD(O_020_SetResultWithInjX)
+		TEST_METHOD(O_030_SetResultWithInjX)
 		{
 		  CpStore cp;
 			cp.SelectAll();
@@ -254,7 +254,7 @@ namespace wxTestTTM
 			Assert::IsTrue(mt.mtInjuredX);
 		}
 
-		TEST_METHOD(O_020_SetResultWithDisquX)
+		TEST_METHOD(O_040_SetResultWithDisquX)
 		{
 		  CpStore cp;
 			cp.SelectAll();
@@ -295,6 +295,82 @@ namespace wxTestTTM
 			Assert::AreEqual((short) 0, mt.mtResX);
 			Assert::IsTrue(mt.mtDisqualifiedX);
 		}
+
+		TEST_METHOD(O_050_SetIncompleteResult)
+		{
+		  CpStore cp;
+			cp.SelectAll();
+			cp.Next();
+			cp.Close();
+
+			Assert::AreNotEqual(0L, cp.cpID);
+
+			GrStore gr;
+			gr.SelectAll(cp);
+			gr.Next();
+			gr.Close();
+
+			MtStore::MtEvent mtEvent;
+			mtEvent.grID = gr.grID;
+			mtEvent.mtRound = 1;
+			mtEvent.mtMatch = 1;
+			mtEvent.mtMS = 0;
+			mtEvent.mtChance = 0;
+
+			MtStore mt;
+			mt.SelectByEvent(mtEvent);
+			mt.Next();
+			mt.Close();
+
+			// Set a normal result
+			Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+			Statement *tmp = connPtr->CreateStatement();
+
+			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, '11081106', 0, 0, 0, 0, 0, 1", mt.mtNr);
+			tmp->ExecuteUpdate(sql);
+
+		  // They still did not proceeed in the draw
+			mt.SelectByGr(gr);
+			while (mt.Next())
+			{
+				switch (mt.mtEvent.mtRound)
+				{
+				  case 1 :
+						Assert::IsTrue(mt.stA);
+						Assert::IsTrue(mt.stX);
+						break;
+					case 2 :
+						Assert::IsFalse(mt.stA);
+						Assert::IsFalse(mt.stX);
+						break;
+				}
+			}
+
+			// Verify the result is 2:0
+			mt.SelectByEvent(mtEvent);
+			mt.Next();
+			mt.Close();
+			Assert::AreEqual((short) 2, mt.mtResA);
+			Assert::AreEqual((short) 0, mt.mtResX);
+			
+			Assert::IsTrue(mt.UpdateScoreChecked(mt.mtID, true));
+
+			mt.SelectByGr(gr);
+			while (mt.Next())
+			{
+				switch (mt.mtEvent.mtRound)
+				{
+				  case 1 :
+						Assert::IsTrue(mt.stA);
+						Assert::IsTrue(mt.stX);
+						break;
+					case 2 :
+						Assert::IsFalse(mt.stA);
+						Assert::IsFalse(mt.stX);
+						break;
+				}
+			}
+	}
 
 		TEST_METHOD(O_999_Dummy)
 		{
