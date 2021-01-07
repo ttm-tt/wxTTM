@@ -28,6 +28,15 @@
     <Filter Include="Test Cases\Database\Engine">
       <UniqueIdentifier>{79d73e6b-3f03-4c5a-b3dc-df0862bc4510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test Cases\Database\Scripts">
+      <UniqueIdentifier>{91d3ffe1-8539-48b1-937c-fefc6960038d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test Cases\Database\Scripts\MtStore">
+      <UniqueIdentifier>{235a9637-4e86-48ec-8195-87f70c1b3ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test Cases\Fixtures">
+      <UniqueIdentifier>{e50bddbb-a0b9-4ef1-b855-303ca0b1eb7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -44,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="Database\TestStoreObj.cpp">
       <Filter>Test Cases\Database\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\TestSetResultProc.cpp">
+      <Filter>Test Cases\Database\Scripts\MtStore</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\Fixtures.cpp">
+      <Filter>Test Cases\Fixtures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

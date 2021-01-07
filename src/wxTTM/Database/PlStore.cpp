@@ -56,7 +56,7 @@ bool PlRecImpExp::Read(const wxString &line)
   wxString strNr    = tokens.GetNextToken();
   wxString strLast  = tokens.GetNextToken().Strip(wxString::both);
   wxString strFirst = tokens.GetNextToken().Strip(wxString::both);
-  wxString strSex   = tokens.GetNextToken();
+  wxString strSex   = tokens.GetNextToken().Strip(wxString::both);
   wxString strYear  = tokens.GetNextToken();
   wxString strNa    = tokens.GetNextToken().Strip(wxString::both);
   wxString strExtID = tokens.GetNextToken().Strip(wxString::both);

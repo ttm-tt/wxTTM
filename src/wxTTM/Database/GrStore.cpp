@@ -2181,7 +2181,7 @@ unsigned  GrStore::CreateGroup(void *arg)
     if (!sy.SelectById(grTempl.syID) || !sy.Next())
     {
       connPtr->Rollback();
-      if (!defaultConnection)
+      if (delConnPtr)
         delete connPtr;
 
       return 0;
@@ -2193,7 +2193,7 @@ unsigned  GrStore::CreateGroup(void *arg)
     if (!md.SelectById(grTempl.mdID) || !md.Next())
     {
       connPtr->Rollback();
-      if (!defaultConnection)
+      if (delConnPtr)
         delete connPtr;
       return 0;
     }
@@ -2214,7 +2214,7 @@ unsigned  GrStore::CreateGroup(void *arg)
     if (!gr.Insert(cp))
     {
       connPtr->Rollback();
-      if (!defaultConnection)
+      if (delConnPtr)
         delete connPtr;
 
       return 0;
@@ -2267,7 +2267,7 @@ unsigned  GrStore::CreateGroup(void *arg)
           if (!mt.Insert(gr))
           {
             connPtr->Rollback();
-            if (!defaultConnection)
+            if (delConnPtr)
               delete connPtr;
 
             return 0;
@@ -2341,7 +2341,7 @@ unsigned  GrStore::CreateGroup(void *arg)
 
   } // Ende des Scopes
 
-  if (!defaultConnection && delConnPtr)
+  if (delConnPtr)
     delete connPtr;
 
   return 1;
@@ -2773,12 +2773,20 @@ bool  GrStore::Import(wxTextBuffer &is)
         continue;
     }
 
-    connPtr->StartTransaction();
+    GrStore::CreateGroupStruct *cgs = new GrStore::CreateGroupStruct();
+    cgs->connPtr = connPtr;
+    cgs->cp = cp;
+    cgs->cp.cpID = gr.cpID;
+    cgs->gr = gr;
+    cgs->start = 1;
+    cgs->count = 1;
+    cgs->numeric = 1;
+    cgs->delConnPtr = false;
 
-    if (gr.InsertOrUpdate())
-      connPtr->Commit();
-    else
-      connPtr->Rollback();
+    if (!GrStore::CreateGroup(cgs))
+    {
+      // Warning, group could not created?
+    }
   }
   }  // HACK ]
 

@@ -10,7 +10,7 @@ namespace wxTestTTM
 {
   extern wxString cwd;
 
-	TEST_CLASS(TeststoreObj)
+	TEST_CLASS(TestStoreObj)
   {
 		// Run once before all methods in this class
 		TEST_CLASS_INITIALIZE(SetUpClassCpStore)

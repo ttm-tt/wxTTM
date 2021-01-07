@@ -159,8 +159,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Database\Fixtures.cpp" />
     <ClCompile Include="Database\TestCpStore.cpp" />
     <ClCompile Include="Database\TestGrStore.cpp" />
+    <ClCompile Include="Database\TestSetResultProc.cpp" />
     <ClCompile Include="Database\TestStoreObj.cpp" />
     <ClCompile Include="Database\TestTTDbse.cpp" />
     <ClCompile Include="pch.cpp">

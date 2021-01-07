@@ -68,7 +68,7 @@ namespace wxTestTTM
 		{
 		  wxMemoryText os;
 			std::vector<long> ids;
-			CpStore::Export(os);
+			CpStore::Export(os, 2);
 
 			Assert::AreEqual((size_t) 3, os.GetLineCount());
 
