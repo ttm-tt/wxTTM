@@ -244,7 +244,7 @@
 
 // Ergebnis in die DB eintragen
     tmp->ExecuteUpdate(str = 
-        "CREATE PROCEDURE mtSetResultProc "
+        "CREATE PROCEDURE mtSetResultProc \n"
         "       @mtNr " + INTEGER + ", \n"
         "       @mtMS " + SMALLINT + ", \n"
         "       @mtBestOf " + SMALLINT + ", \n"
