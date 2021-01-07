@@ -45,12 +45,28 @@ namespace wxTestTTM
         wxT("Could not find tournament / database \"TTM_UTEST\", please create it before running the tests")
     );
     
+    cwd = wxFileName(wxFileName(tmp).GetPath()).GetPath();
+    wxSetWorkingDirectory(cwd);
+
+    delete resPtr;
+    delete stmtPtr;
+
+    // And kill all connections
+    sql = 
+        "USE [master]; \n"
+        "DECLARE @kill varchar(8000) = '';  \n"
+        "SELECT @kill = @kill + 'kill ' + CONVERT(varchar(5), session_id) + ';'  \n"
+        "  FROM sys.dm_exec_sessions \n"
+        " WHERE database_id  = db_id('TTM_UTEST') \n"
+        "EXEC(@kill);"
+    ;
+
+    stmtPtr = masterConnection->CreateStatement();
+    resPtr = stmtPtr->ExecuteQuery(sql);
+
     delete resPtr;
     delete stmtPtr;
     delete masterConnection;
-
-    cwd = wxFileName(wxFileName(tmp).GetPath()).GetPath();
-    wxSetWorkingDirectory(cwd);
 
     wxString connStr = "DRIVER=SQL Server;SERVER=localhost;Trusted_Connection=Yes;DATABASE=TTM_UTEST;AnsiNPW=No;";
     bool ret = TTDbse::instance()->OpenDatabase(connStr, false);
