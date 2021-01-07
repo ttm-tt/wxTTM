@@ -124,7 +124,7 @@ namespace wxTestTTM
 			Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 			Statement *tmp = connPtr->CreateStatement();
 
-			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, 11081107110600000000, 0, 0, 0, 0, 0, 0", mt.mtNr);
+			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, '110811071106', 0, 0, 0, 0, 0, 0", mt.mtNr);
 			tmp->ExecuteUpdate(sql);
 
 			// They still did not proceeed in the draw
@@ -200,7 +200,7 @@ namespace wxTestTTM
 			Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 			Statement *tmp = connPtr->CreateStatement();
 
-			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, 11001100110000000000, 0, 1, 0, 0, 0, 0", mt.mtNr);
+			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, '110011001100', 0, 1, 0, 0, 0, 0", mt.mtNr);
 			tmp->ExecuteUpdate(sql);
 
 			// Verify the result is 3:0 w/o
@@ -242,7 +242,7 @@ namespace wxTestTTM
 			Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
 			Statement *tmp = connPtr->CreateStatement();
 
-			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, 11081107110300000000, 0, 0, 0, 1, 0, 0", mt.mtNr);
+			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, '110811071103', 0, 0, 0, 1, 0, 0", mt.mtNr);
 			tmp->ExecuteUpdate(sql);
 
 			// Verify the result is 3:0 w/o
