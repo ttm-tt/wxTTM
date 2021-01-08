@@ -2720,9 +2720,15 @@ bool  GrStore::Import(wxTextBuffer &is)
       continue;
     }
 
-    // TODO: Don't change modus, system, size of existing groups
-
     GrStore gr(connPtr);
+
+    // If it exists read the current settings
+    GrRec grRec;
+    cp.cpID = cpMap[strCpName];
+    gr.SelectByName(strGrName, cp);
+    if (gr.Next())
+      grRec = gr;
+    gr.Close();
 
     wxStrncpy((wxChar *) gr.grName, strGrName.t_str(), sizeof(grName) / sizeof(wxChar) -1);
     wxStrncpy((wxChar *) gr.grDesc, strGrDesc.t_str(), sizeof(grDesc) / sizeof(wxChar) -1);
@@ -2773,6 +2779,26 @@ bool  GrStore::Import(wxTextBuffer &is)
         continue;
     }
 
+    // Insert or Update?
+    if (gr.WasOK())
+    {
+      if (grRec.grModus != gr.grModus ||
+          grRec.grSize != gr.grSize ||
+          grRec.grModus == MOD_SKO && grRec.grOnlyThirdPlace != gr.grOnlyThirdPlace
+          )
+      {
+        infoSystem.Error(_("Cannot change structure of an existing group"));
+        continue;
+      }
+
+      if (!gr.Update())
+      {
+        infoSystem.Error(_("Could not update group %s - %s"), strCpName.t_str(), strGrName.t_str());
+      }
+
+      continue;
+    }
+
     GrStore::CreateGroupStruct *cgs = new GrStore::CreateGroupStruct();
     cgs->connPtr = connPtr;
     cgs->cp = cp;
@@ -2785,7 +2811,7 @@ bool  GrStore::Import(wxTextBuffer &is)
 
     if (!GrStore::CreateGroup(cgs))
     {
-      // Warning, group could not created?
+        infoSystem.Error(_("Could not update group %s - %s"), strCpName.t_str(), strGrName.t_str());
     }
   }
   }  // HACK ]
