@@ -170,6 +170,88 @@ namespace wxTestTTM
 			}
 		}
 
+		TEST_METHOD(O_011_SetResultTiebreak)
+		{
+		  CpStore cp;
+			cp.SelectAll();
+			cp.Next();
+			cp.Close();
+
+			// Change 5th game to play to 6
+			cp.cpPtsToWinLast = 6;
+			cp.cpPtsAheadLast = 1;
+			cp.Update();
+
+			Assert::AreNotEqual(0L, cp.cpID);
+
+			GrStore gr;
+			gr.SelectAll(cp);
+			gr.Next();
+			gr.Close();
+
+			MtStore::MtEvent mtEvent;
+			mtEvent.grID = gr.grID;
+			mtEvent.mtRound = 1;
+			mtEvent.mtMatch = 1;
+			mtEvent.mtMS = 0;
+			mtEvent.mtChance = 0;
+
+			MtStore mt;
+			mt.SelectByEvent(mtEvent);
+			mt.Next();
+			mt.Close();
+
+			// Set a normal result
+			Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+			Statement *tmp = connPtr->CreateStatement();
+
+			wxString sql = wxString::Format("mtSetResultProc %d, 0, 5, '11081107061107110605', 0, 0, 0, 0, 0, 0", mt.mtNr);
+			tmp->ExecuteUpdate(sql);
+
+			// They still did not proceeed in the draw
+			mt.SelectByGr(gr);
+			while (mt.Next())
+			{
+				switch (mt.mtEvent.mtRound)
+				{
+				  case 1 :
+						Assert::IsTrue(mt.stA);
+						Assert::IsTrue(mt.stX);
+						break;
+					case 2 :
+						Assert::IsFalse(mt.stA);
+						Assert::IsFalse(mt.stX);
+						break;
+				}
+			}
+
+			// Verify the result is 3:2
+			mt.SelectByEvent(mtEvent);
+			mt.Next();
+			mt.Close();
+			Assert::AreEqual((short) 3, mt.mtResA);
+			Assert::AreEqual((short) 2, mt.mtResX);
+			
+			Assert::IsTrue(mt.UpdateScoreChecked(mt.mtID, true));
+
+			mt.SelectByGr(gr);
+			while (mt.Next())
+			{
+				switch (mt.mtEvent.mtRound)
+				{
+				  case 1 :
+						Assert::IsTrue(mt.stA);
+						Assert::IsTrue(mt.stX);
+						break;
+					case 2 :
+						Assert::IsTrue(mt.stA);
+						Assert::IsFalse(mt.stX);
+						break;
+				}
+			}
+
+		}
+
 		TEST_METHOD(O_020_SetResultWithWOX)
 		{
 		  CpStore cp;
