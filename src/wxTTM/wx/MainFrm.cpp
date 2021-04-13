@@ -374,12 +374,15 @@ void CMainFrame::Import(const wxString &title, const wxString &defaultName, bool
     static unsigned Run(void *arg)
     {
       ImportHelper *ih = (ImportHelper *) arg;
-      wxTextFile is(ih->fileName);
+      wxTextFile is;
+      if (!is.Open(ih->fileName))
+        return 1;
+
       bool ret = (*ih->func)(is);
       is.Close();
 
       delete ih;
-      return 0;
+      return ret ? 0 : 1;
     }
   };
 
