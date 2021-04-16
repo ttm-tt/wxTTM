@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 21.01
+AppVerName=TTM 21.04
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={pf}\TTM
@@ -26,7 +26,7 @@ MinVersion=6.1
 ; ArchitecturesInstallIn64BitMode=x64
 
 ; Sign installer
-SignTool=MS /d $qTable Tennis Manager$q $f
+; SignTool=MS /d $qTable Tennis Manager$q $f
 
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
