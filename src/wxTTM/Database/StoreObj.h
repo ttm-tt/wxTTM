@@ -21,6 +21,8 @@ class  StoreObj
     static wxString  ltostr(long id);
     static wxString  tstostr(const timestamp &ts);
     static wxString  tstostr(const std::vector<timestamp> &list);
+
+    static wxString  ts2tostr(const timestamp &ts);
     
     static wxString  TransformString(const wxString &str);
 
@@ -233,7 +235,7 @@ inline  wxString StoreObj::tstostr(const timestamp &ts)
 {
   wxChar  buf[32];
   wxSprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d",
-            ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, ts.fraction);
+            ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, (ts.fraction / 1000000));
 
   return wxString(buf);
 }
@@ -252,6 +254,16 @@ inline  wxString StoreObj::tstostr(const std::vector<timestamp> &list)
   ret += ",'9999-12-31T23:59:59.999'";
 
   return ret;
+}
+
+
+inline  wxString StoreObj::ts2tostr(const timestamp &ts)
+{
+  wxChar  buf[32];
+  wxSprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%09d",
+            ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, ts.fraction);
+
+  return wxString(buf);
 }
 
 
