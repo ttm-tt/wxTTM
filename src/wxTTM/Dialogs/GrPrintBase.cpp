@@ -65,6 +65,8 @@ void CGrPrintBase::OnInitialUpdate()
     m_options->Select(m_options->FindString(poName));
   else
     m_options->Select(0);
+
+  OnOptionChange(wxCommandEvent());
 }
 
 
