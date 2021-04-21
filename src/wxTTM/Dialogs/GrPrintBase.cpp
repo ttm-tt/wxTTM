@@ -37,6 +37,8 @@ END_EVENT_TABLE()
 // CGrPrintBase dialog
 CGrPrintBase::CGrPrintBase() : CFormViewEx()
 {
+  m_options = NULL;
+  m_grList = NULL;
 }
 
 
@@ -442,6 +444,9 @@ void  CGrPrintBase::OnOptions(wxCommandEvent &)
 void CGrPrintBase::OnOptionChange(wxCommandEvent &)
 {
   m_po.Read(m_options->GetStringSelection());
+
+  if (!m_grList)
+    return;
 
   for (int idx = 0; idx < m_grList->GetItemCount(); idx++)
   {

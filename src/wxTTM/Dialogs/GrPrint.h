@@ -35,7 +35,6 @@ class CGrPrint : public CGrPrintBase
     wxComboBox  * m_options;
 
     CpRec    m_cp;
-    PoStore  m_po;
     
   protected:
     DECLARE_DYNAMIC_CLASS(CGrPrint)
