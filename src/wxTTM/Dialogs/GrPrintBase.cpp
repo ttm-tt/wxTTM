@@ -436,8 +436,6 @@ void  CGrPrintBase::OnOptions(wxCommandEvent &)
     m_options->AppendString(m_po.poName);
     m_options->SetStringSelection(m_po.poName);
   }
-
-  OnOptionChange(wxCommandEvent());
 }
 
 
