@@ -31,6 +31,9 @@
 #include  <fstream>
 #include  <stdlib.h>
 
+short CpRec::defPtsToWin = 11;  // Pts to win a game
+short CpRec::defPtsAhead = 2;   // Pts to be ahead to win a game
+
 
 bool CpRec::Read(const wxString &line, int version)
 {
@@ -502,10 +505,10 @@ bool  CpStore::Insert()
     stmtPtr->SetData(++idx, &cpYear);
     stmtPtr->SetData(++idx, syID ? &syID : NULL);
     stmtPtr->SetData(++idx, &cpBestOf);
-    stmtPtr->SetData(++idx, &cpPtsToWin);
-    stmtPtr->SetData(++idx, &cpPtsToWinLast);
-    stmtPtr->SetData(++idx, &cpPtsAhead);
-    stmtPtr->SetData(++idx, &cpPtsAhead);
+    stmtPtr->SetData(++idx, cpPtsToWin ?  &cpPtsToWin : &defPtsToWin);
+    stmtPtr->SetData(++idx, cpPtsToWinLast ? &cpPtsToWinLast : &defPtsToWin);
+    stmtPtr->SetData(++idx, cpPtsAhead ? &cpPtsAhead : &defPtsAhead);
+    stmtPtr->SetData(++idx, cpPtsAheadLast ? &cpPtsAheadLast : &defPtsAhead);
 
     stmtPtr->Execute();
   }
@@ -556,10 +559,10 @@ bool  CpStore::Update()
     stmtPtr->SetData(++idx, &cpYear);
     stmtPtr->SetData(++idx, syID ? &syID : NULL);
     stmtPtr->SetData(++idx, &cpBestOf);
-    stmtPtr->SetData(++idx, &cpPtsToWin);
-    stmtPtr->SetData(++idx, &cpPtsToWinLast);
-    stmtPtr->SetData(++idx, &cpPtsAhead);
-    stmtPtr->SetData(++idx, &cpPtsAheadLast);
+    stmtPtr->SetData(++idx, cpPtsToWin ?  &cpPtsToWin : &defPtsToWin);
+    stmtPtr->SetData(++idx, cpPtsToWinLast ? &cpPtsToWinLast : &defPtsToWin);
+    stmtPtr->SetData(++idx, cpPtsAhead ? &cpPtsAhead : &defPtsAhead);
+    stmtPtr->SetData(++idx, cpPtsAheadLast ? &cpPtsAheadLast : &defPtsAhead);
     stmtPtr->SetData(++idx, &cpID);
 
     stmtPtr->Execute();

@@ -22,6 +22,9 @@ class  TmStore;
 // Tabellendaten in eigene Struktur
 struct CpRec
 {
+  static short defPtsToWin;
+  static short defPtsAhead;
+
   long      cpID;        // Unique ID
   wxChar    cpName[9];   // Short name ("MS")
   wxChar    cpDesc[65];  // Full description ("Mens Singles")
