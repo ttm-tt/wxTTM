@@ -500,7 +500,7 @@ bool  PoStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
 
-  wxString str = "INSERT INTO PoRec (poName,, poJSON) VALUES(?, ?)";
+  wxString str = "INSERT INTO PoRec (poID, poName, poJSON) VALUES(?, ?, ?)";
 
   try
   {
