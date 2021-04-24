@@ -72,7 +72,7 @@ class  MtListStore : public StoreObj, public MtListRec
 
     timestamp GetLastUpdateTime();
 
-    // Return pairs of grID and mtRound
+    // Return tuples of grID and mtRound, and mtDateTime
     std::list<std::tuple<long, short, timestamp>> GetFinishedRounds(Finished what);
     
   private:
