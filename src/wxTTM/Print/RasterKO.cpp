@@ -2236,7 +2236,7 @@ int  RasterPLO::Print(CpRec &cp_, GrRec &gr_,
     ko2.rd = gr.NofRounds() - 1;
     ko2.nrrd = 2;
 
-    // Platz 4 - 8: Drucken, wenn mehr als 4 Spieler
+    // Platz 5 - 8: Drucken, wenn mehr als 4 Spieler
     if (gr.grSize - nofByes > 4)
       PrintRaster(ko2);
 
