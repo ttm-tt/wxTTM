@@ -101,6 +101,7 @@ unsigned CGrPrintBase::PrintThread(void *arg)
     ct.hour = tm->tm_hour;
     ct.minute = tm->tm_min;
     ct.second = tm->tm_sec;
+    ct.fraction = 0;
   }
 
   wxString path;
@@ -334,7 +335,7 @@ unsigned CGrPrintBase::PrintThread(void *arg)
       }
 
       if (!isPreview && !isPdf)
-        GrStore(gr.GetConnectionPtr()).SetPrinted(ct);
+        GrStore(gr, gr.GetConnectionPtr()).SetPrinted(ct);
     }
 
     printer->EndPage();
