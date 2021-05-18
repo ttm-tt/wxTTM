@@ -51,7 +51,12 @@ bool  CMdEdit::Edit(va_list vaList)
     FindWindow("Automatic")->Enable(count == 0);
   }
   else
+  {
     md.ChangeSize(md.mdSize = 4);
+    md.mdMtPtsWin = 2;
+    md.mdMtPtsTie = 1;
+    md.mdMtPtsLoss = 1;
+  }
 
   // GridCtrl aufziehen und Daten ausgeben
   m_gridCtrl->CreateGrid(md.Rounds(), md.Matches());
@@ -78,6 +83,9 @@ void CMdEdit::OnInitialUpdate()
 	
 	FindWindow("Name")->SetValidator(CCharArrayValidator(md.mdName, sizeof(md.mdName) / sizeof(wxChar)));
 	FindWindow("Description")->SetValidator(CCharArrayValidator(md.mdDesc, sizeof(md.mdDesc) / sizeof(wxChar)));
+	FindWindow("PtsWin")->SetValidator(CShortValidator(&md.mdMtPtsWin));
+	FindWindow("PtsTie")->SetValidator(CShortValidator(&md.mdMtPtsTie));
+	FindWindow("PtsLoss")->SetValidator(CShortValidator(&md.mdMtPtsLoss));
 	FindWindow("Size")->SetValidator(CShortValidator(&md.mdSize));
 
   FindWindow("Size")->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(CMdEdit::OnChangeMdEditSize), NULL, this);

@@ -253,6 +253,9 @@ bool  MdStore::CreateTable()
     "mdName      "+WVARCHAR+"(8)  NOT NULL,  "
 	  "mdDesc      "+WVARCHAR+"(64),           "
 	  "mdSize      "+SMALLINT+"     NOT NULL,  "
+    "mdMtPtsWin  "+SMALLINT+"     NOT NULL DEFAULT 2, "
+    "mdMtPtsTie  "+SMALLINT+"     NOT NULL DEFAULT 1, "
+    "mdMtPtsLoss "+SMALLINT+"     NOT NULL DEFAULT 1, "
     "CONSTRAINT mdIdKey PRIMARY KEY (mdID)   "
 	  ")";
 
@@ -291,6 +294,39 @@ bool  MdStore::UpdateTable(long version)
   if (version == 0)
     return CreateTable();
 
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
+  wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+  wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
+
+  if (version < 156)
+  {
+    // Setting of how to play (pts to win, etc)
+    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Statement *stmtPtr = connPtr->CreateStatement();
+
+    wxString str;
+
+    try
+    {
+      str = "ALTER TABLE MdRec ADD "
+          "mdMtPtsWin  "+SMALLINT+"     NOT NULL DEFAULT 2, "
+          "mdMtPtsTie  "+SMALLINT+"     NOT NULL DEFAULT 1, "
+          "mdMtPtsLoss "+SMALLINT+"     NOT NULL DEFAULT 1  "
+      ;
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(str, e);
+      delete stmtPtr;
+      return false;
+    }
+
+    delete stmtPtr;
+  }
+
   return true;
 }
 
@@ -324,7 +360,7 @@ MdStore::~MdStore()
 // Select
 bool  MdStore::SelectAll()
 {
-  wxString str = "SELECT mdID, mdName, mdDesc, mdSize "
+  wxString str = "SELECT mdID, mdName, mdDesc, mdSize, mdMtPtsWin, mdMtPtsTie, mdMtPtsLoss "
                     "FROM MdRec";
 
   try
@@ -336,6 +372,9 @@ bool  MdStore::SelectAll()
     BindCol(2, mdName, sizeof(mdName));
     BindCol(3, mdDesc, sizeof(mdDesc));
     BindCol(4, &mdSize);
+    BindCol(5, &mdMtPtsWin);
+    BindCol(6, &mdMtPtsTie);
+    BindCol(7, &mdMtPtsLoss);
   }
   catch (SQLException &e)
   {
@@ -348,7 +387,7 @@ bool  MdStore::SelectAll()
 
 bool  MdStore::SelectById(long id)
 {
-  wxString str = "SELECT mdID, mdName, mdDesc, mdSize "
+  wxString str = "SELECT mdID, mdName, mdDesc, mdSize, mdMtPtsWin, mdMtPtsTie, mdMtPtsLoss "
                     "FROM MdRec "
                     "WHERE mdID = ";
   str += ltostr(id);
@@ -363,6 +402,9 @@ bool  MdStore::SelectById(long id)
     BindCol(2, mdName, sizeof(mdName));
     BindCol(3, mdDesc, sizeof(mdDesc));
     BindCol(4, &mdSize);
+    BindCol(5, &mdMtPtsWin);
+    BindCol(6, &mdMtPtsTie);
+    BindCol(7, &mdMtPtsLoss);
 
     return true;
   }
@@ -379,7 +421,7 @@ bool  MdStore::SelectById(long id)
 bool  MdStore::SelectByName(const wxString &name)
 {
   wxString str = 
-    "SELECT mdID, mdName, mdDesc, mdSize "
+    "SELECT mdID, mdName, mdDesc, mdSize, mdMtPtsWin, mdMtPtsTie, mdMtPtsLoss "
     "  FROM MdRec "
     " WHERE mdName = '";
   str += name;
@@ -394,6 +436,9 @@ bool  MdStore::SelectByName(const wxString &name)
     BindCol(2, mdName, sizeof(mdName));
     BindCol(3, mdDesc, sizeof(mdDesc));
     BindCol(4, &mdSize);
+    BindCol(5, &mdMtPtsWin);
+    BindCol(6, &mdMtPtsTie);
+    BindCol(7, &mdMtPtsLoss);
 
     return true;
   }
@@ -412,8 +457,8 @@ bool  MdStore::Insert()
   PreparedStatement *stmtPtr = 0;
 
   wxString str = "INSERT INTO MdRec "
-                    "(mdID, mdName, mdDesc, mdSize) "
-                    "VALUES(?, ?, ?, ?)";
+                    "(mdID, mdName, mdDesc, mdSize, mdMtPtsWin, mdMtPtsTie, mdMtPtsLoss) "
+                    "VALUES(?, ?, ?, ?, ?, ?, ?)";
 
   try
   {
@@ -427,6 +472,9 @@ bool  MdStore::Insert()
     stmtPtr->SetData(2, mdName);
     stmtPtr->SetData(3, mdDesc);
     stmtPtr->SetData(4, &mdSize);
+    stmtPtr->SetData(5, &mdMtPtsWin);
+    stmtPtr->SetData(6, &mdMtPtsTie);
+    stmtPtr->SetData(7, &mdMtPtsLoss);
 
     stmtPtr->Execute();
 
@@ -456,7 +504,7 @@ bool  MdStore::Update()
   PreparedStatement *stmtPtr = 0;
 
   wxString str = "UPDATE MdRec "
-                    "SET mdName = ?, mdDesc = ? "
+                    "SET mdName = ?, mdDesc = ?, mdMtPtsWin = ?, mdMtPtsTie = ?, mdMtPtsLoss = ? "
                     "WHERE mdID = ?";
 
   try
@@ -467,7 +515,10 @@ bool  MdStore::Update()
 
     stmtPtr->SetData(1, mdName);
     stmtPtr->SetData(2, mdDesc);
-    stmtPtr->SetData(3, &mdID);
+    stmtPtr->SetData(3, &mdMtPtsWin);
+    stmtPtr->SetData(4, &mdMtPtsTie);
+    stmtPtr->SetData(5, &mdMtPtsLoss);
+    stmtPtr->SetData(6, &mdID);
 
     stmtPtr->Execute();    
   }

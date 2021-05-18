@@ -20,6 +20,9 @@ struct MdRec
   wxChar    mdName[9];   // Short name ("MD4")
   wxChar    mdDesc[65];  // Full description ("Modus for 4")
   short     mdSize;      // Number of entries
+  short     mdMtPtsWin;  // Match points for a win
+  short     mdMtPtsTie;  // Match points for a tie
+  short     mdMtPtsLoss; // Match points for a loss
 
   struct    MdList
   {
