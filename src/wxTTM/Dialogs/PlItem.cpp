@@ -31,7 +31,7 @@ bool PlItem::HasString(const wxString &str) const
   if (!wxStrcoll(tmp, str))
     return true;
 
-  if (!wxStrcoll(pl.psName.psLast, str))
+  if (!_wcsnicoll(pl.psName.psLast, str.wc_str(), str.Length()))
     return true;
 
   return false;
