@@ -11,6 +11,9 @@
 
 #include  "Rec.h"
 
+#include "checked.xpm"
+#include "unchecked.xpm"
+
 TbItem::TbItem() : StItem() 
 {
   memset(&result, 0, sizeof(result));
@@ -77,9 +80,16 @@ int  TbItem::Compare(const ListItem *itemPtr, int col) const
 
 void TbItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 {
+  static wxImage checkedImg(checked);
+  static wxImage uncheckedImg(unchecked);
+
   // Keine Ergebnisse oder Plazierung, wenn Freilos
   if (col >= 6 && entry.tmID == 0)
     return;
+
+  wxColor oldFg = pDC->GetTextForeground();
+  if (hidden)
+    pDC->SetTextForeground(*wxLIGHT_GREY);
     
   switch (col)
   {
@@ -132,7 +142,13 @@ void TbItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       }
       break;
     }
+
+    case 11 :
+      DrawImage(pDC, rect, hidden ? uncheckedImg : checkedImg);
+      break;
   }
+
+  pDC->SetTextForeground(oldFg);
 }
 
 

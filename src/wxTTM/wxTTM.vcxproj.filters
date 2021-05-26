@@ -533,6 +533,9 @@
     <ClCompile Include="Dialogs\RpEdit.cpp">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClCompile>
+    <ClCompile Include="Database\TbListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -903,6 +906,9 @@
     </ClInclude>
     <ClInclude Include="Dialogs\RpEdit.h">
       <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\TbListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

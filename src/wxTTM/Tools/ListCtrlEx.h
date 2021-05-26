@@ -89,7 +89,7 @@ class CListCtrlEx : public wxListCtrl
 
     // Sort items
     void  SortItems(int col = -1);
-	void  SetSortColumn(int col) { m_sortIdx = col; }
+    void  SetSortColumn(int col) { m_sortIdx = col; }
 
     // Insert column
     long InsertColumn(long col, const wxString &heading, int format = wxLIST_FORMAT_LEFT, int width = -1);
@@ -106,6 +106,9 @@ class CListCtrlEx : public wxListCtrl
     void SetResizeColumn(int col);
 
     bool HasColumn(long col);
+
+    long GetIdxForColumn(long col);
+    long GetColumnForIdx(long idx);
 
     bool SaveColumnInfo(const wxString &prefix) const;
     bool RestoreColumnInfo(const wxString &prefix);
@@ -146,9 +149,6 @@ class CListCtrlEx : public wxListCtrl
         int   column;
         bool  enableHide;
     };
-
-    long GetIdxForColumn(long col);
-    long GetColumnForIdx(long idx);
 
     std::vector<ColumnInfo> columnInfo;
       

@@ -527,6 +527,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Database\RpListStore.cpp" />
     <ClCompile Include="Database\RpStore.cpp" />
     <ClCompile Include="Database\TbEntryStore.cpp" />
+    <ClCompile Include="Database\TbListStore.cpp" />
     <ClCompile Include="Database\UpListStore.cpp" />
     <ClCompile Include="Database\UpStore.cpp" />
     <ClCompile Include="Dialogs\DatabaseLogin.cpp" />
@@ -691,6 +692,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Database\RpListStore.h" />
     <ClInclude Include="Database\RpStore.h" />
     <ClInclude Include="Database\TbEntryStore.h" />
+    <ClInclude Include="Database\TbListStore.h" />
     <ClInclude Include="Database\UpListStore.h" />
     <ClInclude Include="Database\UpStore.h" />
     <ClInclude Include="Dialogs\CpEntries.h" />

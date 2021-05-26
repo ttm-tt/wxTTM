@@ -23,12 +23,14 @@ class  TbItem : public StItem
     virtual void DrawItem(wxDC *pDC, wxRect &rec);
 
   public:
-    TbEntryStore::Result     result;
+    TbListRec::Result     result;
+
+    void SetResult(const TbListRec &r) { result = r.result; }
 
     void  PushResult();
     void  PopResult();
 
-  private:
+    bool hidden = false;
     std::stack<TbEntryStore::Result *>  resultStack;
 };
 

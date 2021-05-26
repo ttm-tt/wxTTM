@@ -4,22 +4,10 @@
 
 // Spieler / Teams in RR-Gruppe mit ihren Ergebnis
 #include "StEntryStore.h"
+#include "TbListStore.h"
 
-struct TbEntry : public StEntry
+struct TbEntry : public StEntry, public TbListRec
 {
-  struct  Result
-  {
-    short  pos;         // Abschliesende Position
-    short  nrMatches;   // Zahl der Spiele
-    short  matchPoints; // ITTF Punkte Regeleung
-    short  points[2];   // Punkteverhaeltnis
-    short  matches[2];  // Mannschaft: Spielverhaeltnis
-    short  sets[2];     // Satzverhaeltnis
-    short  balls[2];    // Ballverhaeltnis
-  };
-
-  Result     result;
-
   TbEntry() { memset(this, 0, sizeof(TbEntry)); }
 
   void  Init() { memset(this, 0, sizeof(TbEntry)); }

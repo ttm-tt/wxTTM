@@ -12,6 +12,7 @@
 #include "StEntryStore.h"
 #include "TbEntryStore.h"
 #include "MtStore.h"
+#include "TbListStore.h"
 
 #include "CpItem.h"
 #include "GrItem.h"
@@ -34,6 +35,8 @@ BEGIN_EVENT_TABLE(CStListView, CFormViewEx)
   EVT_COMBOBOX(XRCID("Event"), CStListView::OnSelChangeCp)
   EVT_COMBOBOX(XRCID("Group"), CStListView::OnSelChangeGr)
   EVT_COMBOBOX(XRCID("Count"), CStListView::OnSelChangeCount)
+
+  EVT_BUTTON(XRCID("Calculate"), CStListView::OnCalculate)
 END_EVENT_TABLE()
 
 
@@ -53,7 +56,7 @@ CStListView::~CStListView()
 bool  CStListView::Edit(va_list vaList)
 {
   id = va_arg(vaList, long);
-  
+
   if (id)
   {
     StListStore st;
@@ -91,7 +94,7 @@ bool  CStListView::Edit(va_list vaList)
       
     if (id && m_listCtrl->FindListItem(id))
       m_listCtrl->SetCurrentItem(id);
-  
+
     return true;
   }
 
@@ -531,6 +534,7 @@ void CStListView::OnInitialUpdate()
   m_listCtrl->InsertColumn(8, _("Games"), fmt);
   m_listCtrl->InsertColumn(9, _("Points"), fmt);
   m_listCtrl->InsertColumn(10, _("Stndg."), fmt);
+  m_listCtrl->InsertColumn(11, "C", wxALIGN_CENTER);
 
   m_listCtrl->AllowHideColumn(8);
   m_listCtrl->AllowHideColumn(9);
@@ -590,12 +594,16 @@ void CStListView::OnSelChangeGr(wxCommandEvent &)
 
   CTT32App::instance()->SetDefaultGR(gr.grName);
 
+  // Hide Calculate in KO
+  FindWindow("Calculate")->Show(gr.grModus == MOD_RR);
+
   // Angabe ueber RR-Ergebnises nur in RR-Gruppen
   m_listCtrl->ShowColumn(6, gr.grModus == MOD_RR);   // Mt. Pts.
   m_listCtrl->ShowColumn(7, gr.grModus == MOD_RR);   // Result (Matches / Games)
   m_listCtrl->ShowColumn(8, false && gr.grModus == MOD_RR && cp.cpType == CP_TEAM);   // Games
   m_listCtrl->ShowColumn(9, false && gr.grModus == MOD_RR);   // Points
   m_listCtrl->ShowColumn(10, gr.grModus == MOD_RR);  // Standing
+  m_listCtrl->ShowColumn(11, gr.grModus == MOD_RR);
 
   m_listCtrl->ResizeColumn();
 
@@ -710,28 +718,59 @@ void CStListView::OnMouseLeftDown(wxMouseEvent &evt)
 
       switch (col)
       {
-      case 1 :
-        st.SetSeeded(!itemPtr->st.stSeeded);
-        break;
+        case 1 :
+          st.SetSeeded(!itemPtr->st.stSeeded);
+          break;
 
-      case 2 :
-        st.SetGaveup(!itemPtr->st.stGaveup);
-        break;
+        case 2 :
+          st.SetGaveup(!itemPtr->st.stGaveup);
+          break;
 
-      case 3 :
-        st.SetDisqualified(!itemPtr->st.stDisqu);
-        break;
+        case 3 :
+          st.SetDisqualified(!itemPtr->st.stDisqu);
+          break;
 
-      case 4 :
-        st.SetNoConsolation(!itemPtr->st.stNocons);
-        break;
+        case 4 :
+          st.SetNoConsolation(!itemPtr->st.stNocons);
+          break;
       }
+    }
+    else if (item >= 0 && m_listCtrl->GetIdxForColumn(col) == 11 && gr.grModus == MOD_RR)
+    {
+      TbItem *itemPtr = (TbItem *) m_listCtrl->GetListItem( (int) item );
+      itemPtr->hidden = !itemPtr->hidden;
+
+      m_listCtrl->RefreshItem(item);
     }
     else
       evt.Skip();
   }
   else
     evt.Skip();
+}
+
+
+void CStListView::OnCalculate(wxCommandEvent&)
+{
+  std::set<long> ids;
+  for (int idx = 0; idx < m_listCtrl->GetItemCount(); ++idx)
+  {
+    TbItem *itemPtr = ((TbItem *) m_listCtrl->GetListItem(idx));
+
+    if ( !itemPtr->hidden )
+      ids.insert( ((TbItem *) m_listCtrl->GetListItem(idx))->GetID() );
+  }
+
+  TbListStore tb;
+  tb.SelectByGr(gr, ids);
+
+  while (tb.Next())
+  {
+    TbItem *tbItem = (TbItem *) m_listCtrl->FindListItem(tb.tbID);
+    tbItem->SetResult(tb);
+  }
+ 
+  m_listCtrl->Refresh();
 }
 
 

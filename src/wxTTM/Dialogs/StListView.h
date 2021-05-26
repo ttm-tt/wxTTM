@@ -43,6 +43,8 @@ class CStListView : public CFormViewEx
 
     void OnChildClose(wxCloseEvent &);
 
+    void OnCalculate(wxCommandEvent &);
+
   private:
     void DoDelete(StItem *);
 
