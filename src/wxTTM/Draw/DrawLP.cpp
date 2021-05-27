@@ -147,7 +147,7 @@ bool DrawLP::ReadGroups()
     int stPos = 0;
     bool modified = false;
 
-    for (auto it : tbList)
+    for (auto &it : tbList)
     {
       if (it.st.stPos == 0 || it.st.stPos == stPos)
       {
