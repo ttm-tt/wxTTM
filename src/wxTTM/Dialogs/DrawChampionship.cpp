@@ -232,7 +232,7 @@ unsigned int CDrawChampionship::DrawThread(void *arg)
       if (wnd->lpsolve)
       {
         DrawLP  draw(false, false, connPtr);
-        draw.Draw(item->cp, wnd->frStage, wnd->toStage, 0, 0, 0, wnd->rkChoice, wnd->seed);
+        draw.Draw(item->cp, wnd->frStage, wnd->toStage, wnd->fromPos, wnd->toPos, 0, wnd->rkChoice, wnd->seed);
       }
       else
       {
@@ -245,7 +245,7 @@ unsigned int CDrawChampionship::DrawThread(void *arg)
       if (wnd->lpsolve)
       {
         DrawLP  draw(true, false, connPtr);
-        draw.Draw(item->cp, wnd->frStage, wnd->toStage, 0, 0, 0, wnd->rkChoice, wnd->seed);
+        draw.Draw(item->cp, wnd->frStage, wnd->toStage, wnd->fromPos, wnd->toPos, 0, wnd->rkChoice, wnd->seed);
       }
       else
       {
