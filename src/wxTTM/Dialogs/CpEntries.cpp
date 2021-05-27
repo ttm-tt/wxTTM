@@ -49,6 +49,7 @@ const char * CCpEntries::openHeaders[] =
   wxTRANSLATE("Born in"),
   wxTRANSLATE("Extern ID"),
   wxTRANSLATE("Rk.Pts."),
+  wxTRANSLATE("Region"),
   NULL
 };
 
@@ -136,6 +137,7 @@ void  CCpEntries::OnInitialUpdate()
   openEntries->AllowHideColumn(4);
   openEntries->AllowHideColumn(5);
   openEntries->AllowHideColumn(6);
+  openEntries->AllowHideColumn(7);
 
   openEntries->SetResizeColumn(1);
 
