@@ -28,10 +28,10 @@ bool PlItem::HasString(const wxString &str) const
 {
   wxChar tmp[10];
   _ltot(pl.plNr, tmp, 10);
-  if (!wxStrcoll(tmp, str))
+  if (!wxStrnicmp(tmp, str, str.Length()))
     return true;
 
-  if (!_wcsnicoll(pl.psName.psLast, str.wc_str(), str.Length()))
+  if (!wxStrnicmp(pl.psName.psLast, str.wc_str(), str.Length()))
     return true;
 
   return false;
