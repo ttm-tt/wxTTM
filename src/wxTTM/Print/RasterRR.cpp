@@ -100,10 +100,18 @@ int  RasterRR::Print(CpRec &cp_, GrRec &gr_,
 
   mt.Close();
 
+#if 0
   for (const auto &it : stMap)
     tbList.push_back(new TbItem(it.second));
 
   TbSort::Sort(gr, cp.cpType, tbList, mtList);
+#else
+  TbEntryStore tb;
+  tb.SelectByGr(gr, cp.cpType);
+  while (tb.Next())
+    tbList.push_back(new TbItem(tb));
+  tb.Close();
+#endif
   
   bool newPage = false;
   
