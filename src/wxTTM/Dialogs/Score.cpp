@@ -128,23 +128,36 @@ bool CScore::Edit(va_list vaList)
 
     if (matchOption == 5)
     {
-      // Alle Gruppen anschauen, die zu dieser Zeit spielen, ob sie Combined sind
+      // We are combined if there is at least one case where 2 matches of a group are on one table.
+      bool combined = false;
+
       std::set<long> grIDs;
 
       MtListStore  mt, lastMt;
       mt.SelectByTime(fromPlace.mtDateTime, fromPlace.mtTable, toPlace.mtDateTime, toPlace.mtTable);
 
-      bool combined = true;
 
       while (mt.Next())
       {
         grIDs.insert(mt.mtEvent.grID);
         if (mt.mtEvent.grID != lastMt.mtEvent.grID)
-          lastMt = mt;
+        {
+          // Group on different (not adjectant) tables / times: not combined
+          if (grIDs.find(mt.mtEvent.grID) != grIDs.end())
+            combined = false;
+        }
         else if (mt.mtPlace.mtDateTime != lastMt.mtPlace.mtDateTime || mt.mtPlace.mtTable != lastMt.mtPlace.mtTable)
         {
+          // Group on different tables / times: not combined 
           combined = false;
         }
+        else
+        {
+          // 2 matches on a table: must be combined
+          combined = true;
+        }
+
+        lastMt = mt;
       }
 
       if (combined)
