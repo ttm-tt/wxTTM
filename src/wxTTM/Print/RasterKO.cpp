@@ -1300,9 +1300,6 @@ int  RasterSKO::Print(const CpRec &cp_, const GrRec &gr_,
     }
   }
 
-  int  nrrd = std::min(options.koToRound - options.koFromRound + 1,
-    gr.NofRounds() - options.koFromRound + 1);
-
   // Schriftgroesse in Abhaengigkeit von der Zahl der Runden
   // Abstand Texte von Raendern
   space = 0.5 *printer->cW;
@@ -1638,9 +1635,6 @@ int  RasterDKO::Print(CpRec &cp_, GrRec &gr_,
       maxMatch /= 2;
     }
   }
-
-  int  nrrd = std::min(options.koToRound - options.koFromRound + 1,
-    gr.NofRounds() - options.koFromRound + 1);
 
   // Abstand Texte von Raendern
   space = 0.5 *printer->cW;
@@ -2000,9 +1994,6 @@ int  RasterPLO::Print(CpRec &cp_, GrRec &gr_,
       maxMatch /= 2;
     }
   }
-
-  int  nrrd = std::min(options.koToRound - options.koFromRound + 1,
-    gr.NofRounds() - options.koFromRound + 1);
 
   // Abstand Texte von Raendern
   space = 0.5 * printer->cW;
