@@ -2101,31 +2101,19 @@ int  RasterPLO::Print(CpRec &cp_, GrRec &gr_,
   ko.maxRound = maxRound;
   ko.maxMatch = maxMatch;
   ko.sc = 0;
-  if (!options.koSlctRound)
-  {
-    ko.rd = 1;
-    ko.nrrd = gr.NofRounds();
-    ko.lastRd = gr.NofRounds();
-  }
-  else
-  {
-    ko.rd = options.koFromRound;
-    ko.nrrd = std::min(options.koToRound - options.koFromRound + 1,
-      gr.NofRounds() - options.koFromRound + 1);
-    ko.lastRd = options.koToRound;
-  }
+  int fromRound = options.koFromRound;
+  int toRound = options.koToRound;
 
-  if (!options.koSlctMatch)
-  {
-    ko.mt = 1;
-    ko.nrmt = gr.NofMatches(ko.rd);
-  }
-  else
-  {
-    ko.mt = options.koFromMatch;
-    ko.nrmt = std::min(options.koToMatch - options.koFromMatch + 1,
-      (int)gr.NofMatches(ko.rd));
-  }
+  ko.rd = fromRound;
+  ko.nrrd = std::min(toRound - fromRound + 1, gr.NofRounds() - fromRound + 1);
+  ko.lastRd = options.koToRound;
+
+  int fromMatch = options.koFromMatch;
+  int toMatch = options.koToMatch;
+
+  ko.mt = fromMatch;
+  ko.nrmt = std::min(toMatch - fromMatch + 1, (int)gr.NofMatches(ko.rd));
+
   ko.width = width;
   ko.height = height;
   ko.startX = offsetX;
