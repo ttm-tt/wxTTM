@@ -1114,6 +1114,21 @@ bool CTT32App::GetPrintScoreExtras() const
 }
 
 
+bool CTT32App::GetPrintScoreUmpireName() const
+{
+  return ttProfile.GetInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCOREUMPIRENAME, 1) != 0;
+}
+
+
+void CTT32App::SetPrintScoreUmpireName(bool f, bool writeDB)
+{
+  ttProfile.AddInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCOREUMPIRENAME, f ? 1 : 0);
+
+  if (writeDB)
+    IdStore::SetPrintScoreUmpireName(f);
+}
+
+
 void CTT32App::SetPrintScoreExtras(bool f, bool writeDB)
 {
   ttProfile.AddInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCOREEXTRAS, f ? 1 : 0);

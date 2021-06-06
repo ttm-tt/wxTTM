@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-26 18:04+0200\n"
+"POT-Creation-Date: 2021-06-06 19:02+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -84,7 +84,7 @@ msgid "ITTFMenuBar"
 msgstr "ITTFMenuBar"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:64
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13062
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13072
 msgid "&Close"
 msgstr "&Close"
 
@@ -216,7 +216,7 @@ msgid "Associations"
 msgstr "Associations"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:230
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:5277 Print/RasterRR.cpp:641
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:5277 Print/RasterRR.cpp:649
 msgid "Teams"
 msgstr "Teams"
 
@@ -292,7 +292,7 @@ msgid "&Unscheduled"
 msgstr "&Unscheduled"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:307
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12996
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13006
 msgid "&Print"
 msgstr "&Print"
 
@@ -376,8 +376,8 @@ msgstr "Password"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9036
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11037
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11323
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12866
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13825
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12876
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13835
 msgid "&OK"
 msgstr "&OK"
 
@@ -400,8 +400,8 @@ msgstr "&OK"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9043
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11044
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11330
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12873
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13832
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12883
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13842
 msgid "&Cancel"
 msgstr "&Cancel"
 
@@ -521,10 +521,10 @@ msgstr "Print"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10735
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10804
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11269
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13592
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13965
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14484
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14623 Dialogs/OvListBook.cpp:257
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13602
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13975
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14494
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14633 Dialogs/OvListBook.cpp:257
 #: Dialogs/SQLEditorBook.cpp:258
 msgid "Close"
 msgstr "Close"
@@ -536,8 +536,8 @@ msgstr "Close"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7979
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12427
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12447
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13636
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14014 Dialogs/CpEntries.cpp:46
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13646
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14024 Dialogs/CpEntries.cpp:46
 #: Dialogs/CpListView.cpp:82 Dialogs/GrListView.cpp:160
 #: Dialogs/GrOptionsList.cpp:103 Dialogs/GrOptionsList.cpp:156
 #: Dialogs/GrOptionsList.cpp:217 Dialogs/GrPrint.cpp:109
@@ -588,8 +588,8 @@ msgstr "Settings"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7999
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12428
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12448
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13656
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14041 Dialogs/CpListView.cpp:85
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13666
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14051 Dialogs/CpListView.cpp:85
 #: Dialogs/GrFinished.cpp:167 Dialogs/GrListView.cpp:163
 #: Dialogs/GrPrint.cpp:112 Dialogs/MdListView.cpp:61 Dialogs/NaListView.cpp:87
 #: Dialogs/RkListView.cpp:113 Dialogs/SyListView.cpp:60
@@ -625,19 +625,19 @@ msgstr "Mixed"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:1551
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8313
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8582
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:8875 Print/RasterSC.cpp:922
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8875 Print/RasterSC.cpp:925
 msgid "Team"
 msgstr "Team"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:1583
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9744
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14808
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14818
 msgid "Male"
 msgstr "Male"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:1593
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9765
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14829
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14839
 msgid "Female"
 msgstr "Female"
 
@@ -688,8 +688,8 @@ msgstr "Points Ahead Last Game"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10451
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10843
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11082
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13393
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14362 Dialogs/GrFinished.cpp:161
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13403
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14372 Dialogs/GrFinished.cpp:161
 #: Dialogs/MtUnscheduled.cpp:151
 msgid "Event"
 msgstr "Event"
@@ -716,10 +716,10 @@ msgstr "Open"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5772
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8138
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10230
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13502
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13900
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14420
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14558
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13512
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13910
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14430
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14568
 msgid "Add"
 msgstr "Add"
 
@@ -736,10 +736,10 @@ msgstr "Add"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10242
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10991
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11142
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13514
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13912
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14432
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14570
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13524
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13922
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14442
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14580
 msgid "Edit"
 msgstr "Edit"
 
@@ -751,10 +751,10 @@ msgstr "Edit"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5796
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8162
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10254
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13526
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13924
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14444
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14582
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13536
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13934
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14454
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14592
 msgid "Delete"
 msgstr "Delete"
 
@@ -764,8 +764,8 @@ msgid "Entries"
 msgstr "Entries"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:2312
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13153
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14079
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13163
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14089
 msgid "Combo!"
 msgstr "Combo!"
 
@@ -894,8 +894,8 @@ msgstr "Export"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7242
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7490 Dialogs/GrFinished.cpp:173
 #: Dialogs/MtUnscheduled.cpp:153 Print/Raster.cpp:1185 Print/RasterKO.cpp:1164
-#: Print/RasterKO.cpp:1492 Print/RasterKO.cpp:1525 Print/RasterKO.cpp:1876
-#: Print/RasterKO.cpp:1881
+#: Print/RasterKO.cpp:1489 Print/RasterKO.cpp:1522 Print/RasterKO.cpp:1870
+#: Print/RasterKO.cpp:1875
 msgid "Round"
 msgstr "Round"
 
@@ -911,7 +911,7 @@ msgstr "Round"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8266
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8535
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8828
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13418 Dialogs/GrFinished.cpp:164
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13428 Dialogs/GrFinished.cpp:164
 #: Dialogs/MtUnscheduled.cpp:152
 msgid "Group"
 msgstr "Group"
@@ -1036,8 +1036,8 @@ msgstr "Last rounds"
 msgid "Print selected matches"
 msgstr "Print selected matches"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4397 Print/RasterRR.cpp:279
-#: Print/RasterRR.cpp:840
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4397 Print/RasterRR.cpp:287
+#: Print/RasterRR.cpp:848
 msgid "Matches"
 msgstr "Matches"
 
@@ -1050,9 +1050,9 @@ msgstr "Last Matches"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8059
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9831
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10151
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13339
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14309
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14970
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13349
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14319
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14980
 msgid "OK"
 msgstr "OK"
 
@@ -1066,9 +1066,9 @@ msgstr "Save As ..."
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9843
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10163
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11795
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13351
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14321
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14982
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13361
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14331
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14992
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1105,7 +1105,7 @@ msgid "Competitions"
 msgstr "Competitions"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5163 Dialogs/MtTeam.cpp:283
-#: Print/RasterRR.cpp:643 Print/RasterSC.cpp:352 Print/RasterSC.cpp:1293
+#: Print/RasterRR.cpp:651 Print/RasterSC.cpp:352 Print/RasterSC.cpp:1296
 msgid "Players"
 msgstr "Players"
 
@@ -1138,8 +1138,8 @@ msgstr "Partner"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5392
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9777
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10864
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14068
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14850
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14078
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14860
 msgid "Association"
 msgstr "Association"
 
@@ -1210,7 +1210,7 @@ msgstr "Injured"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6343
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6405
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13208 Print/Raster.cpp:1702
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13218 Print/Raster.cpp:1702
 #: Print/RasterKO.cpp:103
 msgid "Disqualified"
 msgstr "Disqualified"
@@ -1248,7 +1248,7 @@ msgid "<->"
 msgstr "<->"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7025 Print/Raster.cpp:1813
-#: Print/RasterSC.cpp:542 Print/RasterSC.cpp:1542
+#: Print/RasterSC.cpp:542 Print/RasterSC.cpp:1545
 msgid "Winner"
 msgstr "Winner"
 
@@ -1261,14 +1261,14 @@ msgstr "Match"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7344
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9090
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11489 Dialogs/MtListView.cpp:476
-#: Dialogs/MtUnscheduled.cpp:156 Print/RasterRR.cpp:481 Print/RasterSC.cpp:120
+#: Dialogs/MtUnscheduled.cpp:156 Print/RasterRR.cpp:489 Print/RasterSC.cpp:120
 msgid "Date"
 msgstr "Date"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7368
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9107
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11550 Dialogs/MtListView.cpp:479
-#: Dialogs/MtUnscheduled.cpp:157 Print/RasterRR.cpp:482 Print/RasterSC.cpp:121
+#: Dialogs/MtUnscheduled.cpp:157 Print/RasterRR.cpp:490 Print/RasterSC.cpp:121
 msgid "Time"
 msgstr "Time"
 
@@ -1276,7 +1276,7 @@ msgstr "Time"
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9117
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11611
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11961 Dialogs/MtListView.cpp:482
-#: Print/RasterRR.cpp:483 Print/RasterSC.cpp:122
+#: Print/RasterRR.cpp:491 Print/RasterSC.cpp:122
 msgid "Table"
 msgstr "Table"
 
@@ -1337,15 +1337,15 @@ msgstr "Assign Player"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8019
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12429
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12449 Dialogs/NaListView.cpp:90
-#: Dialogs/PlListView.cpp:46
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12449 Dialogs/CpEntries.cpp:52
+#: Dialogs/NaListView.cpp:90 Dialogs/PlListView.cpp:46
 msgid "Region"
 msgstr "Region"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8343
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8612
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8905
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14113
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14123
 msgid "Available Players"
 msgstr "Available Players"
 
@@ -1357,8 +1357,8 @@ msgstr "Nominated Players"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8376
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8645
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:8938 Print/RasterSC.cpp:1001
-#: Print/RasterSC.cpp:1022
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:8938 Print/RasterSC.cpp:1004
+#: Print/RasterSC.cpp:1025
 msgid "Nomination"
 msgstr "Nomination"
 
@@ -1435,12 +1435,12 @@ msgid "Rank. Pts."
 msgstr "Rank. Pts."
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9618
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14717
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14727
 msgid "Family Name"
 msgstr "Family Name"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9652
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14751
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14761
 msgid "Given Name"
 msgstr "Given Name"
 
@@ -1449,7 +1449,7 @@ msgid "Year of Birth"
 msgstr "Year of Birth"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9721
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14785 Dialogs/CpEntries.cpp:48
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14795 Dialogs/CpEntries.cpp:48
 #: Dialogs/CpListView.cpp:98 Dialogs/PlHistView.cpp:27
 #: Dialogs/PlListView.cpp:42 Dialogs/UpListView.cpp:31
 msgid "Sex"
@@ -1465,12 +1465,12 @@ msgid "Entered Events"
 msgstr "Entered Events"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9983
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14170
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14180
 msgid "Add>>>"
 msgstr "Add>>>"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9995
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14182
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14192
 msgid "Remove<<<"
 msgstr "Remove<<<"
 
@@ -1513,12 +1513,12 @@ msgid "Qualifiers"
 msgstr "Qualifiers"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10979
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14226
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14236
 msgid "Up"
 msgstr "Up"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11003
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14238
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14248
 msgid "Down"
 msgstr "Down"
 
@@ -1707,90 +1707,94 @@ msgid "Print Umpires"
 msgstr "Print Umpires"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12837
+msgid "Print Umpire Name"
+msgstr "Print Umpire Name"
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12847
 msgid "Print Call Area"
 msgstr "Print Call Area"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12847
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12857
 msgid "Print Remarks"
 msgstr "Print Remarks"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12983
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12993
 msgid "&Execute"
 msgstr "&Execute"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13009
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13019
 msgid "&Save"
 msgstr "&Save"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13029
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13039
 msgid "Open Query"
 msgstr "Open Query"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13042
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13052
 msgid "Save Query"
 msgstr "Save Query"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13142 Dialogs/StListView.cpp:529
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13152 Dialogs/StListView.cpp:529
 msgid "Player(s) / Team"
 msgstr "Player(s) / Team"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13198
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13208
 msgid "Seeded"
 msgstr "Seeded"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13225
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13235
 msgid "No Consolation"
 msgstr "No Consolation"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13235
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13245
 msgid "Gave Up"
 msgstr "Gave Up"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13285
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13295
 msgid "Final Position"
 msgstr "Final Position"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13444
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13454
 msgid "Seed. Pos."
 msgstr "Seed. Pos."
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13545
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13555
 msgid "Calculate"
 msgstr "Calculate"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13676
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13686
 msgid "No of Matches"
 msgstr "No of Matches"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13711
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13721
 msgid "No of Singles"
 msgstr "No of Singles"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13739
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13749
 msgid "No of Doubles"
 msgstr "No of Doubles"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13790
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13800
 msgid "Play all Matches"
 msgstr "Play all Matches"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14130
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14140
 msgid "Entered Players"
 msgstr "Entered Players"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14259
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14269
 msgid "Show All"
 msgstr "Show All"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14672
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14682
 msgid "Upmpire Number"
 msgstr "Upmpire Number"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14885
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14895
 msgid "Email"
 msgstr "Email"
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14918
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14928
 msgid "Phone"
 msgstr "Phone"
 
@@ -1910,24 +1914,24 @@ msgstr "Extern ID"
 msgid "Rk.Pts."
 msgstr "Rk.Pts."
 
-#: Dialogs/CpEntries.cpp:397 Dialogs/CpEntries.cpp:471
+#: Dialogs/CpEntries.cpp:399 Dialogs/CpEntries.cpp:473
 #: Dialogs/TmListView.cpp:75 Dialogs/TmListView.cpp:90
 msgid "Edit Team"
 msgstr "Edit Team"
 
-#: Dialogs/CpEntries.cpp:414 Dialogs/CpEntries.cpp:441
+#: Dialogs/CpEntries.cpp:416 Dialogs/CpEntries.cpp:443
 msgid "Edit Double"
 msgstr "Edit Double"
 
-#: Dialogs/CpEntries.cpp:477
+#: Dialogs/CpEntries.cpp:479
 msgid "Select Player"
 msgstr "Select Player"
 
-#: Dialogs/CpEntries.cpp:554 Dialogs/TmListView.cpp:99
+#: Dialogs/CpEntries.cpp:556 Dialogs/TmListView.cpp:99
 msgid "Are you sure to delete selected team(s)?"
 msgstr "Are you sure to delete selected team(s)?"
 
-#: Dialogs/CpEntries.cpp:587
+#: Dialogs/CpEntries.cpp:589
 msgid "Are you sure to delete selected entry?"
 msgstr "Are you sure to delete selected entry?"
 
@@ -2171,8 +2175,8 @@ msgstr "Edit Result"
 msgid "Mt.Nr"
 msgstr "Mt.Nr"
 
-#: Dialogs/MtListView.cpp:519 Dialogs/MtTeam.cpp:545 Dialogs/Score.cpp:563
-#: Dialogs/Score.cpp:611
+#: Dialogs/MtListView.cpp:519 Dialogs/MtTeam.cpp:545 Dialogs/Score.cpp:576
+#: Dialogs/Score.cpp:624
 msgid "Print Scoresheets"
 msgstr "Print Scoresheets"
 
@@ -2201,13 +2205,13 @@ msgid "Edit Group Results"
 msgstr "Edit Group Results"
 
 #: Dialogs/MtSelect.cpp:75 Dialogs/OvList.cpp:1521 Dialogs/OvList.cpp:1527
-#: Dialogs/OvList.cpp:1603 Dialogs/OvList.cpp:1629 Dialogs/Score.cpp:330
-#: Dialogs/Score.cpp:347
+#: Dialogs/OvList.cpp:1603 Dialogs/OvList.cpp:1629 Dialogs/Score.cpp:343
+#: Dialogs/Score.cpp:360
 msgid "Print Scoresheet"
 msgstr "Print Scoresheet"
 
 #: Dialogs/MtTeam.cpp:120 Dialogs/MtTeam.cpp:333 Dialogs/MtTeam.cpp:516
-#: Print/RasterSC.cpp:1563
+#: Print/RasterSC.cpp:1566
 msgid "Tie"
 msgstr "Tie"
 
@@ -2379,15 +2383,15 @@ msgid "Edit Ranking Points"
 msgstr "Edit Ranking Points"
 
 #: Dialogs/PlEvents.cpp:124 Print/Raster.cpp:1690 Print/RasterKO.cpp:99
-#: Print/RasterRR.cpp:801 Print/RasterRR.cpp:815
+#: Print/RasterRR.cpp:809 Print/RasterRR.cpp:823
 msgid "w/o"
 msgstr "w/o"
 
-#: Dialogs/PlEvents.cpp:126 Print/RasterRR.cpp:805 Print/RasterRR.cpp:820
+#: Dialogs/PlEvents.cpp:126 Print/RasterRR.cpp:813 Print/RasterRR.cpp:828
 msgid "Disqu."
 msgstr "Disqu."
 
-#: Dialogs/PlEvents.cpp:128 Print/RasterRR.cpp:803 Print/RasterRR.cpp:817
+#: Dialogs/PlEvents.cpp:128 Print/RasterRR.cpp:811 Print/RasterRR.cpp:825
 msgid "Inj."
 msgstr "Inj."
 
@@ -2529,17 +2533,17 @@ msgid "Are you sure to delete selected entries?"
 msgstr "Are you sure to delete selected entries?"
 
 #: Dialogs/StListView.cpp:523 Print/Raster.cpp:1191 Print/RasterKO.cpp:1136
-#: Print/RasterKO.cpp:1149 Print/RasterKO.cpp:1506 Print/RasterKO.cpp:1519
+#: Print/RasterKO.cpp:1149 Print/RasterKO.cpp:1503 Print/RasterKO.cpp:1516
 msgid "Pos."
 msgstr "Pos."
 
-#: Dialogs/StListView.cpp:532 Print/RasterRR.cpp:271
+#: Dialogs/StListView.cpp:532 Print/RasterRR.cpp:279
 msgid "Mt.Pts."
 msgstr "Mt.Pts."
 
-#: Dialogs/StListView.cpp:534 Print/Raster.cpp:1372 Print/RasterRR.cpp:281
-#: Print/RasterRR.cpp:842 Print/RasterSC.cpp:432 Print/RasterSC.cpp:1314
-#: Print/RasterSC.cpp:1327
+#: Dialogs/StListView.cpp:534 Print/Raster.cpp:1372 Print/RasterRR.cpp:289
+#: Print/RasterRR.cpp:850 Print/RasterSC.cpp:432 Print/RasterSC.cpp:1317
+#: Print/RasterSC.cpp:1330
 msgid "Games"
 msgstr "Games"
 
@@ -2764,7 +2768,7 @@ msgstr "Page"
 msgid "Bye"
 msgstr "Bye"
 
-#: Print/Raster.cpp:1271 Print/RasterRR.cpp:288 Print/RasterRR.cpp:843
+#: Print/Raster.cpp:1271 Print/RasterRR.cpp:296 Print/RasterRR.cpp:851
 msgid "Place"
 msgstr "Place"
 
@@ -2789,20 +2793,20 @@ msgstr "Game"
 msgid "Mt %d"
 msgstr "Mt %d"
 
-#: Print/RasterKO.cpp:1130 Print/RasterKO.cpp:1500 Print/RasterKO.cpp:1848
+#: Print/RasterKO.cpp:1130 Print/RasterKO.cpp:1497 Print/RasterKO.cpp:1842
 msgid "Final"
 msgstr "Final"
 
-#: Print/RasterKO.cpp:1144 Print/RasterKO.cpp:1514 Print/RasterKO.cpp:1863
+#: Print/RasterKO.cpp:1144 Print/RasterKO.cpp:1511 Print/RasterKO.cpp:1857
 msgid "Semifinal"
 msgstr "Semifinal"
 
-#: Print/RasterKO.cpp:1840 Print/RasterKO.cpp:1853 Print/RasterKO.cpp:1868
-#: Print/RasterKO.cpp:1886
+#: Print/RasterKO.cpp:1834 Print/RasterKO.cpp:1847 Print/RasterKO.cpp:1862
+#: Print/RasterKO.cpp:1880
 msgid "Pos"
 msgstr "Pos"
 
-#: Print/RasterRR.cpp:838
+#: Print/RasterRR.cpp:846
 msgid "Mt. Pts."
 msgstr "Mt. Pts."
 
@@ -2815,16 +2819,16 @@ msgid "T"
 msgstr "T"
 
 #: Print/RasterSC.cpp:377 Print/RasterSC.cpp:661 Print/RasterSC.cpp:676
-#: Print/RasterSC.cpp:934 Print/RasterSC.cpp:950 Print/RasterSC.cpp:1007
-#: Print/RasterSC.cpp:1028
+#: Print/RasterSC.cpp:937 Print/RasterSC.cpp:953 Print/RasterSC.cpp:1010
+#: Print/RasterSC.cpp:1031
 msgid "Y"
 msgstr "Y"
 
-#: Print/RasterSC.cpp:382 Print/RasterSC.cpp:1012 Print/RasterSC.cpp:1033
+#: Print/RasterSC.cpp:382 Print/RasterSC.cpp:1015 Print/RasterSC.cpp:1036
 msgid "1P"
 msgstr "1P"
 
-#: Print/RasterSC.cpp:387 Print/RasterSC.cpp:1017 Print/RasterSC.cpp:1038
+#: Print/RasterSC.cpp:387 Print/RasterSC.cpp:1020 Print/RasterSC.cpp:1041
 msgid "2P"
 msgstr "2P"
 
@@ -2836,7 +2840,7 @@ msgstr "Signature of Player(s)"
 msgid "Signature of Player(s) / Coach(es)"
 msgstr "Signature of Player(s) / Coach(es)"
 
-#: Print/RasterSC.cpp:646 Print/RasterSC.cpp:650 Print/RasterSC.cpp:922
+#: Print/RasterSC.cpp:646 Print/RasterSC.cpp:650 Print/RasterSC.cpp:925
 msgid "Coach(es)"
 msgstr "Coach(es)"
 
@@ -2844,68 +2848,68 @@ msgstr "Coach(es)"
 msgid "Sd"
 msgstr "Sd"
 
-#: Print/RasterSC.cpp:665 Print/RasterSC.cpp:680 Print/RasterSC.cpp:939
-#: Print/RasterSC.cpp:955
+#: Print/RasterSC.cpp:665 Print/RasterSC.cpp:680 Print/RasterSC.cpp:942
+#: Print/RasterSC.cpp:958
 msgid "R"
 msgstr "R"
 
-#: Print/RasterSC.cpp:710 Print/RasterSC.cpp:1705
+#: Print/RasterSC.cpp:710 Print/RasterSC.cpp:1708
 msgid "Umpire(s)"
 msgstr "Umpire(s)"
 
-#: Print/RasterSC.cpp:752 Print/RasterSC.cpp:1710
+#: Print/RasterSC.cpp:755 Print/RasterSC.cpp:1713
 msgid "Signature of Umpire(s)"
 msgstr "Signature of Umpire(s)"
 
-#: Print/RasterSC.cpp:1328
+#: Print/RasterSC.cpp:1331
 msgid "Score"
 msgstr "Score"
 
-#: Print/RasterSC.cpp:1598
+#: Print/RasterSC.cpp:1601
 msgid "Signature of Team Captains"
 msgstr "Signature of Team Captains"
 
-#: Print/RasterSC.cpp:1773
+#: Print/RasterSC.cpp:1776
 msgid "Color of Shirt"
 msgstr "Color of Shirt"
 
-#: Print/RasterSC.cpp:1774
+#: Print/RasterSC.cpp:1777
 msgid "Back N."
 msgstr "Back N."
 
-#: Print/RasterSC.cpp:1775
+#: Print/RasterSC.cpp:1778
 msgid "Racket Control"
 msgstr "Racket Control"
 
-#: Print/RasterSC.cpp:1776
+#: Print/RasterSC.cpp:1779
 msgid "Ball Selection"
 msgstr "Ball Selection"
 
-#: Print/RasterSC.cpp:1794
+#: Print/RasterSC.cpp:1797
 msgid "Before"
 msgstr "Before"
 
-#: Print/RasterSC.cpp:1795
+#: Print/RasterSC.cpp:1798
 msgid "After"
 msgstr "After"
 
-#: Print/RasterSC.cpp:1802
+#: Print/RasterSC.cpp:1805
 msgid "Yes"
 msgstr "Yes"
 
-#: Print/RasterSC.cpp:1803
+#: Print/RasterSC.cpp:1806
 msgid "No"
 msgstr "No"
 
-#: Print/RasterSC.cpp:1849
+#: Print/RasterSC.cpp:1852
 msgid "Start at:"
 msgstr "Start at:"
 
-#: Print/RasterSC.cpp:1850
+#: Print/RasterSC.cpp:1853
 msgid "End at:"
 msgstr "End at:"
 
-#: Print/RasterSC.cpp:1853
+#: Print/RasterSC.cpp:1856
 msgid "Remarks:"
 msgstr "Remarks:"
 
@@ -3207,55 +3211,55 @@ msgstr "Licensed by %s. License expires %s"
 msgid "Unlicensed copy"
 msgstr "Unlicensed copy"
 
-#: wx/TT32App.cpp:1299
+#: wx/TT32App.cpp:1314
 msgid "No valid license found"
 msgstr "No valid license found"
 
-#: wx/TT32App.cpp:1306
+#: wx/TT32App.cpp:1321
 msgid "Illegal tournament name"
 msgstr "Illegal tournament name"
 
-#: wx/TT32App.cpp:1312 wx/TT32App.cpp:1322
+#: wx/TT32App.cpp:1327 wx/TT32App.cpp:1337
 msgid "Illegal database name"
 msgstr "Illegal database name"
 
-#: wx/TT32App.cpp:1587 wx/TT32App.cpp:1645
+#: wx/TT32App.cpp:1602 wx/TT32App.cpp:1660
 msgid "Backup Database"
 msgstr "Backup Database"
 
-#: wx/TT32App.cpp:1634
+#: wx/TT32App.cpp:1649
 msgid "Backup successful"
 msgstr "Backup successful"
 
-#: wx/TT32App.cpp:1670
+#: wx/TT32App.cpp:1685
 msgid "Restore successful"
 msgstr "Restore successful"
 
-#: wx/TT32App.cpp:1879
+#: wx/TT32App.cpp:1894
 msgid "You are using the latest version of TTM"
 msgstr "You are using the latest version of TTM"
 
-#: wx/TT32App.cpp:1887
+#: wx/TT32App.cpp:1902
 msgid "Could not determine the current version of TTM"
 msgstr "Could not determine the current version of TTM"
 
-#: wx/TT32App.cpp:1897
+#: wx/TT32App.cpp:1912
 msgid "Install License"
 msgstr "Install License"
 
-#: wx/TT32App.cpp:1907
+#: wx/TT32App.cpp:1922
 msgid "The license is not valid"
 msgstr "The license is not valid"
 
-#: wx/TT32App.cpp:1911
+#: wx/TT32App.cpp:1926
 msgid "The license has expired"
 msgstr "The license has expired"
 
-#: wx/TT32App.cpp:1915
+#: wx/TT32App.cpp:1930
 msgid "Could not copy license file"
 msgstr "Could not copy license file"
 
-#: wx/TT32App.cpp:1919
+#: wx/TT32App.cpp:1934
 msgid "License file was copied"
 msgstr "License file was copied"
 

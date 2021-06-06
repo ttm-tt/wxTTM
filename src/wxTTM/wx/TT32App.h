@@ -167,6 +167,9 @@ class CTT32App : public wxApp
     bool GetPrintScoreUmpires() const;
     void SetPrintScoreUmpires(bool, bool writeDB = true);
 
+    bool GetPrintScoreUmpireName() const;
+    void SetPrintScoreUmpireName(bool, bool writeDB = true);
+
     bool GetPrintScoreServiceTimeout() const;
     void SetPrintScoreServiceTimeout(bool, bool writeDB = true);
 

@@ -64,6 +64,9 @@ class  IdStore : public StoreObj, public IdRec
     static bool GetPrintScoreUmpires();
     static void SetPrintScoreUmpires(bool);
 
+    static bool GetPrintScoreUmpireName();
+    static void SetPrintScoreUmpireName(bool);
+
     static bool GetPrintPlayersSignature();
     static void SetPrintPlayersSignature(bool);
 

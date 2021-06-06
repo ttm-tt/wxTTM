@@ -43,6 +43,7 @@ bool  IdStore::CreateTable(long dbVersion)
       "idScoreRemarks " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idScoreCoaches " + SMALLINT + " DEFAULT 1 NOT NULL, "
       "idScoreUmpires " + SMALLINT + " DEFAULT 1 NOT NULL, "
+      "idScoreUmpireName " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idPrintScoreServiceTimeout " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idLogo     "+IMAGE+", "
       "idSponsor  "+IMAGE+", "
@@ -209,6 +210,23 @@ bool  IdStore::UpdateTable(long version, long dbVersion)
     wxString str;
 
     str = "ALTER TABLE IdRec ADD idBanner  " + IMAGE + "  ";
+
+    try
+    {
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &)
+    {
+    }
+  }
+
+  if (version <= 158)
+  {
+    wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+
+    wxString str;
+
+    str = "ALTER TABLE IdRec ADD idScoreUmpireName " + SMALLINT + " DEFAULT 0 NOT NULL ";
 
     try
     {
@@ -674,6 +692,18 @@ void IdStore::SetPrintScoreUmpires(bool f)
 bool IdStore::GetPrintScoreUmpires()
 {
   return GetFlag("idScoreUmpires");
+}
+
+
+void IdStore::SetPrintScoreUmpireName(bool f)
+{
+  SetFlag("idScoreUmpireName", f);
+}
+
+
+bool IdStore::GetPrintScoreUmpireName()
+{
+  return GetFlag("idScoreUmpireName");
 }
 
 

@@ -709,43 +709,46 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	  regUmpire.bottom = regUmpire.top + heightTop;
 	  PrintStringCentered(_("Umpire(s)"), regUmpire);
 
-    CRect regSRNr(regGroup.left + printer->cW, regGroup.top + heightTop, 
-            regGroup.left + regGroup.GetWidth() / 2 - printer->cW, regGroup.bottom);
+		if (CTT32App::instance()->GetPrintScoreUmpireName())
+		{
+			CRect regSRNr(regGroup.left + printer->cW, regGroup.top + heightTop, 
+							regGroup.left + regGroup.GetWidth() / 2 - printer->cW, regGroup.bottom);
 
-    char tmpSRNr[64], tmpSR2Nr[64];
-    _itoa(mt.mt.mtUmpire, tmpSRNr, 10);
-    _itoa(mt.mt.mtUmpire2, tmpSR2Nr, 10);
+			char tmpSRNr[64], tmpSR2Nr[64];
+			_itoa(mt.mt.mtUmpire, tmpSRNr, 10);
+			_itoa(mt.mt.mtUmpire2, tmpSR2Nr, 10);
 
-    UpListStore sr(connPtr), sr2(connPtr);
+			UpListStore sr(connPtr), sr2(connPtr);
 
-    if (mt.mt.mtUmpire)
-    {
-      sr.SelectByNr(mt.mt.mtUmpire);
-      sr.Next();
-      sr.Close();
+			if (mt.mt.mtUmpire)
+			{
+				sr.SelectByNr(mt.mt.mtUmpire);
+				sr.Next();
+				sr.Close();
+			}
+
+			if (mt.mt.mtUmpire2)
+			{
+				sr2.SelectByNr(mt.mt.mtUmpire2);
+				sr2.Next();
+				sr2.Close();
+			}
+
+			CRect regSR1Nr = regSRNr, regSR2Nr = regSRNr;
+			regSR1Nr.bottom = regSR1Nr.top + regSR1Nr.GetHeight() / 2;
+			regSR2Nr.top = regSR1Nr.bottom;
+
+			if (sr.WasOK())
+				PrintUmpire(sr, regSR1Nr, FLAG_PRINT_NOPLNR | FLAG_PRINT_NATION | FLAG_PRINT_FNAME);
+			else if (mt.mt.mtUmpire)
+				PrintString(tmpSRNr, regSR1Nr);
+
+			if (sr2.WasOK())
+				PrintUmpire(sr2, regSR2Nr, FLAG_PRINT_NOPLNR | FLAG_PRINT_NATION | FLAG_PRINT_FNAME);
+			else if (mt.mt.mtUmpire2)
+				PrintString(tmpSR2Nr, regSR2Nr);
     }
 
-    if (mt.mt.mtUmpire2)
-    {
-      sr2.SelectByNr(mt.mt.mtUmpire2);
-      sr2.Next();
-      sr2.Close();
-    }
-
-    CRect regSR1Nr = regSRNr, regSR2Nr = regSRNr;
-    regSR1Nr.bottom = regSR1Nr.top + regSR1Nr.GetHeight() / 2;
-    regSR2Nr.top = regSR1Nr.bottom;
-
-    if (sr.WasOK())
-      PrintUmpire(sr, regSR1Nr, FLAG_PRINT_NOPLNR | FLAG_PRINT_NATION | FLAG_PRINT_FNAME);
-    else if (mt.mt.mtUmpire)
-      PrintString(tmpSRNr, regSR1Nr);
-
-    if (sr2.WasOK())
-      PrintUmpire(sr2, regSR2Nr, FLAG_PRINT_NOPLNR | FLAG_PRINT_NATION | FLAG_PRINT_FNAME);
-    else if (mt.mt.mtUmpire2)
-      PrintString(tmpSR2Nr, regSR2Nr);
-  
 	  // rechts "Signature of Umpire"
 	  regUmpire.left = regUmpire.right;
 	  regUmpire.right = regGroup.right;
