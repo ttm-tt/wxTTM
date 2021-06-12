@@ -117,6 +117,7 @@ bool CTT32App::OnInit()
   m_locale.AddCatalog("ttm");
   m_locale.AddCatalog("wxstd");
 
+#if 0
   // Lizenzueberpruefung
   wxString licenseFileName = wxGetCwd() + ps + "license.ini";
 
@@ -139,7 +140,7 @@ bool CTT32App::OnInit()
   {
     ReadLicense(licenseFileName);
   }
-
+#endif
   
   // Setup von [Raster]
   if (!ttProfile.GetFirstKey(PRF_RASTER))
@@ -559,6 +560,7 @@ void CTT32App::ShowAboutDialog()
   info.SetVersion(version);
   info.SetWebSite("http://downloads.ttm.co.at/ttm/changes.html", _("View changes"));
 
+#if 0
   if (!expire.IsEmpty())
   {
     int day  = wxAtoi(expire.c_str()) % 100;
@@ -579,6 +581,7 @@ void CTT32App::ShowAboutDialog()
   {
     info.SetLicense(wxString::Format(_("Unlicensed copy")));
   }
+#endif
 
   ::wxAboutBox(info, m_pMainWnd);
 }
@@ -1322,6 +1325,7 @@ bool  CTT32App::CreateTournament(
     bool windowsAuthentication, const wxString &user, const wxString &passwd,
     short type, short table)
 {
+#if 0
   if (expire.IsEmpty())
   {
     if (server.IsEmpty() || TTDbse::IsLocalAddress(server))
@@ -1330,6 +1334,7 @@ bool  CTT32App::CreateTournament(
       return false;
     }
   }
+#endif
 
   if (name == "")
   {
@@ -1817,14 +1822,19 @@ wxString CTT32App::GetResourcesPath() const
 // -----------------------------------------------------------------------
 bool CTT32App::IsLicenseValid() const
 {
+#if 0
   wxString name = wxGetCwd() + wxFileName::GetPathSeparator() + "License.ini";
 
   return CheckLicenseCode(name) && !HasLicenseExpired(name);
+#else
+  return true;
+#endif
 }
 
 
 bool CTT32App::CheckLicenseCode(const wxString &name) const
 {
+#if 0
   char tmpLicensee[256];
   char tmpExpires[256];
   char buffer[512];
@@ -1840,11 +1850,15 @@ bool CTT32App::CheckLicenseCode(const wxString &name) const
   long tmp = crypt(buffer);
 
   return (tmp == atol(code));
+#else
+  return true;
+#endif
 }
 
 
 bool CTT32App::HasLicenseExpired(const wxString &name) const
 {
+#if 0
   char tmpExpires[256];
 
   GetPrivateProfileStringA("License", "expires", "", tmpExpires, sizeof(tmpExpires), name);
@@ -1875,6 +1889,9 @@ bool CTT32App::HasLicenseExpired(const wxString &name) const
     return true;
 
   return false;
+#else
+  return false;
+#endif
 }
 
 
