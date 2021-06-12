@@ -1040,6 +1040,15 @@ bool  MtStore::UpdateStoredProcedure(long version)
     
   try 
   {
+    tmp->ExecuteUpdate("DROP FUNCTION TbSortSubsetFunc");
+  }
+  catch (SQLException &)
+  {
+    // infoSystem.Exception("DROP PROCEDURE ...", e);
+  }
+    
+  try 
+  {
     tmp->ExecuteUpdate("DROP FUNCTION TbSortFunc");
   }
   catch (SQLException &)

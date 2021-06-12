@@ -40,6 +40,7 @@ bool  IdStore::CreateTable(long dbVersion)
       "idSubTitle "+WVARCHAR+"(64) DEFAULT '' NOT NULL, "
       "idScoreExtras "+SMALLINT+" DEFAULT 0 NOT NULL, "
       "idPlayersSignature "+SMALLINT+" DEFAULT 1 NOT NULL, "
+      "idScoreStartEnd " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idScoreRemarks " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idScoreCoaches " + SMALLINT + " DEFAULT 1 NOT NULL, "
       "idScoreUmpires " + SMALLINT + " DEFAULT 1 NOT NULL, "
@@ -227,6 +228,22 @@ bool  IdStore::UpdateTable(long version, long dbVersion)
     wxString str;
 
     str = "ALTER TABLE IdRec ADD idScoreUmpireName " + SMALLINT + " DEFAULT 0 NOT NULL ";
+
+    try
+    {
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &)
+    {
+    }
+  }
+
+  if (version <= 159)
+  {
+    wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+    wxString str = "ALTER TABLE IdRec ADD "
+        "idScoreStartEnd " + SMALLINT + " DEFAULT 0 NOT NULL "
+    ;
 
     try
     {
@@ -716,6 +733,18 @@ void IdStore::SetPrintScoreExtras(bool f)
 bool IdStore::GetPrintScoreExtras()
 {
   return GetFlag("idScoreExtras");
+}
+
+
+void IdStore::SetPrintScoreStartEnd(bool f)
+{
+  SetFlag("idScoreStartEnd", f);
+}
+
+
+bool IdStore::GetPrintScoreStartEnd()
+{
+  return GetFlag("idScoreStartEnd");
 }
 
 

@@ -35,7 +35,7 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "21.04";
+static const wxString versionNumber = "21.06";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
@@ -1135,6 +1135,21 @@ void CTT32App::SetPrintScoreExtras(bool f, bool writeDB)
 
   if (writeDB)
     IdStore::SetPrintScoreExtras(f);
+}
+
+
+bool CTT32App::GetPrintScoreStartEnd() const
+{
+  return ttProfile.GetInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORESTARTENDTIME, 0) != 0;
+}
+
+
+void CTT32App::SetPrintScoreStartEnd(bool f, bool writeDB)
+{
+  ttProfile.AddInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORESTARTENDTIME, f ? 1 : 0);
+
+  if (writeDB)
+    IdStore::SetPrintScoreRemarks(f);
 }
 
 

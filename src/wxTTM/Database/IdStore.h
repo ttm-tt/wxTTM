@@ -73,6 +73,9 @@ class  IdStore : public StoreObj, public IdRec
     static bool GetPrintScoreExtras();
     static void SetPrintScoreExtras(bool);
 
+    static bool GetPrintScoreStartEnd();
+    static void SetPrintScoreStartEnd(bool);
+
     static bool GetPrintScoreRemarks();
     static void SetPrintScoreRemarks(bool);
 

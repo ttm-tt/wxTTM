@@ -23,6 +23,7 @@ class  RasterScore : public RasterBase
 		int  PrintScore(const MtEntry &);
 		int  PrintScoreTM(const MtEntry &);
     int  PrintScoreExtras(const MtEntry &);
+		int  PrintScoreStartEnd(const MtEntry &);
     int  PrintScoreRemarks(const MtEntry &);
     int  PrintScoreFooter(const MtEntry &);
 

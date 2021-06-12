@@ -158,6 +158,9 @@ class CTT32App : public wxApp
     bool GetPrintPlayersSignature() const;
     void SetPrintPlayersSignature(bool, bool writeDB = true);
 
+    bool GetPrintScoreStartEnd() const;
+    void SetPrintScoreStartEnd(bool, bool writeDB = true);
+
     bool GetPrintScoreRemarks() const;
     void SetPrintScoreRemarks(bool, bool writeDB = true);
 

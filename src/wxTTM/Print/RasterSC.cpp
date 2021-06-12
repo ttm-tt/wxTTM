@@ -1829,7 +1829,7 @@ int RasterScore::PrintScoreExtras(const MtEntry &mt)
 }
 
 
-int  RasterScore::PrintScoreRemarks(const MtEntry &)
+int RasterScore::PrintScoreStartEnd(const MtEntry&)
 {
   int top = offsetY;
   int left = offsetX;
@@ -1843,7 +1843,7 @@ int  RasterScore::PrintScoreRemarks(const MtEntry &)
   if (bot > top + 5 * printer->cH)
   {
     // Thick line around box
-    printer->Rectangle(offsetX, top, printer->width, bot, THICK_FRAME);
+    printer->Rectangle(offsetX, top, printer->width, top + heightTop, THICK_FRAME);
 
     // Line below caption
     printer->Line(offsetX, top + heightTop, printer->width, top + heightTop, THICK_FRAME);
@@ -1851,6 +1851,29 @@ int  RasterScore::PrintScoreRemarks(const MtEntry &)
     // "Start At", "End At"
     printer->Text(CRect(offsetX + printer->cH, top, (printer->width - offsetX) / 2, top + heightTop), _("Start at:"));
     printer->Text(CRect((printer->width - offsetX) / 2 + printer->cH, top, printer->width - offsetX, top + heightTop), _("End at:"));
+
+    offsetY = top + heightTop;
+  }
+
+  return 0;
+}
+
+
+int  RasterScore::PrintScoreRemarks(const MtEntry &)
+{
+  int top = offsetY;
+  int left = offsetX;
+  int heightTop = 2 * printer->cH;
+  // Bottom on top of the boxes
+  int bot = printer->height - 5 * printer->cH - 0.5 * printer->cH;
+
+  if (CTT32App::instance()->GetPrintSponsor())
+    bot -= 1470 / 3;
+
+  if (bot > top + 3 * printer->cH)
+  {
+    // Thick line around box
+    printer->Rectangle(offsetX, top, printer->width, bot, THICK_FRAME);
 
     // "Remarks"
     printer->Text(offsetX + printer->cH, top + heightTop + 1.5 * printer->cH, _("Remarks:"));
@@ -2004,9 +2027,15 @@ int  RasterScore::Print(const CpRec &cp_, const GrRec &gr_, const MtEntry &mt)
     PrintScoreExtras(mt);
   }
 
-  if (CTT32App::instance()->GetPrintScoreRemarks())
+  if (CTT32App::instance()->GetPrintScoreStartEnd())
   {
     offsetY += printer->cH;
+    PrintScoreStartEnd(mt);
+  }
+
+  if (CTT32App::instance()->GetPrintScoreRemarks())
+  {
+		offsetY += printer->cH;
     PrintScoreRemarks(mt);
   }
 
