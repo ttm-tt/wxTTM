@@ -1024,12 +1024,21 @@ void CImportOnlineEntries::ClearTournament()
   delete conn;
 }
 
+
+// Auto Open / Close wxTextFile
+class wxTextFileAuto : public wxTextFile
+{
+  public:
+    wxTextFileAuto(const wxString &fileName) : wxTextFile(fileName) { Open(); }
+   ~wxTextFileAuto() { Close(); }
+};
+
 void CImportOnlineEntries::ImportCP()
 {
   CTT32App::SetProgressBarText(_("Import Competitions"));
 
   // Import CP
-  wxTextFile is(cpFileName.GetFullPath());
+  wxTextFileAuto is(cpFileName.GetFullPath());
   CpStore::Import(is);
 }
 
@@ -1038,7 +1047,7 @@ void CImportOnlineEntries::ImportNA()
   CTT32App::SetProgressBarText(_("Import Associations"));
 
   // Import NA
-  wxTextFile is(naFileName.GetFullPath());
+  wxTextFileAuto is(naFileName.GetFullPath());
   NaStore::Import(is);
 }
 
@@ -1047,7 +1056,7 @@ void CImportOnlineEntries::ImportPL()
   CTT32App::SetProgressBarText(_("Import Players"));
 
   // Import PL
-  wxTextFile is(plFileName.GetFullPath());
+  wxTextFileAuto is(plFileName.GetFullPath());
   PlStore::Import(is);
 }
 
@@ -1056,7 +1065,7 @@ void CImportOnlineEntries::ImportRP()
   CTT32App::SetProgressBarText(_("Import Rankikng"));
 
   // Import RP
-  wxTextFile is(rpFileName.GetFullPath());
+  wxTextFileAuto is(rpFileName.GetFullPath());
   RpStore::Import(is);
 }
 
@@ -1067,7 +1076,7 @@ void CImportOnlineEntries::ImportLT()
     // Import LTS
     CTT32App::SetProgressBarText(_("Import Singles"));
 
-    wxTextFile is(ltsFileName.GetFullPath());
+    wxTextFileAuto is(ltsFileName.GetFullPath());
     LtStore::Import(is);
   }
 
@@ -1076,7 +1085,7 @@ void CImportOnlineEntries::ImportLT()
     // Import LTD
     CTT32App::SetProgressBarText(_("Import Doubles"));
 
-    wxTextFile is(ltdFileName.GetFullPath());
+    wxTextFileAuto is(ltdFileName.GetFullPath());
     LtStore::Import(is);
   }
 
@@ -1085,7 +1094,7 @@ void CImportOnlineEntries::ImportLT()
     // Import LTX
     CTT32App::SetProgressBarText(_("Import Mixed"));
 
-    wxTextFile is(ltxFileName.GetFullPath());
+    wxTextFileAuto is(ltxFileName.GetFullPath());
     LtStore::Import(is);
   }
 
@@ -1094,7 +1103,7 @@ void CImportOnlineEntries::ImportLT()
     // Import LTT
     CTT32App::SetProgressBarText(_("Import Teams"));
 
-    wxTextFile is(lttFileName.GetFullPath());
+    wxTextFileAuto is(lttFileName.GetFullPath());
     LtStore::Import(is);
   }
 }
