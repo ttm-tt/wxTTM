@@ -51,6 +51,7 @@ class CSettings : public CFormViewEx
     bool     m_printPlayersSignature;
     bool     m_printCoaches;
     bool     m_printUmpires;
+    bool     m_printUmpireName;
     bool     m_printStartEnd;
     bool     m_printRemarks;
     bool     m_printServiceTimeout;

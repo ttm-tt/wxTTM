@@ -100,6 +100,7 @@ void CSettings::OnInitialUpdate()
   m_printPlayersSignature = CTT32App::instance()->GetPrintPlayersSignature();
   m_printCoaches = CTT32App::instance()->GetPrintScoreCoaches();
   m_printUmpires = CTT32App::instance()->GetPrintScoreUmpires();
+  m_printUmpireName = CTT32App::instance()->GetPrintScoreUmpireName();
   m_printStartEnd = CTT32App::instance()->GetPrintScoreStartEnd();
   m_printRemarks = CTT32App::instance()->GetPrintScoreRemarks();
   m_printServiceTimeout = CTT32App::instance()->GetPrintScoreServiceTimeout();
@@ -146,6 +147,7 @@ void CSettings::OnInitialUpdate()
   FindWindow("PrintPlayersSignature")->SetValidator(wxGenericValidator(&m_printPlayersSignature));
   FindWindow("PrintScoreCoaches")->SetValidator(wxGenericValidator(&m_printCoaches));
   FindWindow("PrintScoreUmpires")->SetValidator(wxGenericValidator(&m_printUmpires));
+  FindWindow("PrintScoreUmpireName")->SetValidator(wxGenericValidator(&m_printUmpireName));
   FindWindow("PrintScoreStartEnd")->SetValidator(wxGenericValidator(&m_printStartEnd));
   FindWindow("PrintScoreRemarks")->SetValidator(wxGenericValidator(&m_printRemarks));
 
@@ -363,6 +365,7 @@ void CSettings::OnOK()
   CTT32App::instance()->SetPrintPlayersSignature(m_printPlayersSignature);
   CTT32App::instance()->SetPrintScoreCoaches(m_printCoaches);
   CTT32App::instance()->SetPrintScoreUmpires(m_printUmpires);
+  CTT32App::instance()->SetPrintScoreUmpireName(m_printUmpireName);
   CTT32App::instance()->SetPrintScoreExtras(m_printCallArea);
   CTT32App::instance()->SetPrintScoreStartEnd(m_printStartEnd);
   CTT32App::instance()->SetPrintScoreRemarks(m_printRemarks);

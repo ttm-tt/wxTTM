@@ -1637,7 +1637,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	  printer->Line(regGroup.left, regGroup.top + heightTop,
 					   regGroup.right, regGroup.top + heightTop, THICK_FRAME);
 
-    if (mt.mt.mtUmpire)
+    if (CTT32App::instance()->GetPrintScoreUmpireName() && mt.mt.mtUmpire)
     {
       CRect regSRNr(regGroup.left + printer->cW, regGroup.top + heightTop, 
              regGroup.left + regGroup.GetWidth() / 2 - printer->cW, regGroup.bottom);
