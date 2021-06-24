@@ -306,7 +306,12 @@ void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
   if (itemPtr)
   {
     if (mt.mt.mtPlace.mtTable)
+    {
+      long idx = m_listCtrl->GetCurrentIndex();
+      if (idx >= 0)
+        m_listCtrl->SetCurrentIndex(idx + 1);
       m_listCtrl->RemoveListItem(reqPtr->id);
+    }
     else
       itemPtr->mt = mt;
   }
