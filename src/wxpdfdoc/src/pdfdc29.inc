@@ -988,7 +988,7 @@ wxPdfDCImpl::DoDrawRotatedText(const wxString& text, wxCoord x, wxCoord y, doubl
     for (size_t lineNum = 0; lineNum < lines.size(); lineNum++)
     {
       DoGetTextExtent(lines[lineNum], &w, &h);
-      m_pdfDocument->Rect(ScaleLogicalToPdfX(x), ScaleLogicalToPdfY(originalY + wxRound(lineNum*heightLine)), ScaleLogicalToPdfXRel(w), ScaleLogicalToPdfYRel(h), wxPDF_STYLE_FILL);
+      m_pdfDocument->Rect(ScaleLogicalToPdfX(x), ScaleLogicalToPdfY(originalY + (lineNum ? wxRound(lineNum*heightLine) : 0)), ScaleLogicalToPdfXRel(w), ScaleLogicalToPdfYRel(h), wxPDF_STYLE_FILL);
     }
     SetBrush(previousBrush);
     SetupAlpha();
@@ -1005,8 +1005,8 @@ wxPdfDCImpl::DoDrawRotatedText(const wxString& text, wxCoord x, wxCoord y, doubl
   for (size_t lineNum = 0; lineNum < lines.size(); lineNum++)
   {
     // Calculate origin for each line to avoid accumulation of rounding errors.
-    m_pdfDocument->RotatedText(ScaleLogicalToPdfX(x + wxRound(lineNum*dx)), ScaleLogicalToPdfY(y + wxRound(lineNum*dy)),
-                               ScaleLogicalToPdfX(x + wxRound(lineNum*dx)), ScaleLogicalToPdfY(originalY + wxRound(lineNum*dy)), lines[lineNum], angle);
+    m_pdfDocument->RotatedText(ScaleLogicalToPdfX(x + wxRound(lineNum*dx)), ScaleLogicalToPdfY(y + (lineNum ? wxRound(lineNum*dy) : 0)),
+                               ScaleLogicalToPdfX(x + wxRound(lineNum*dx)), ScaleLogicalToPdfY(originalY + (lineNum ? wxRound(lineNum*dy) : 0)), lines[lineNum], angle);
   }
 
   m_pdfDocument->StopTransform();
