@@ -1813,12 +1813,12 @@ int RasterScore::PrintScoreExtras(const MtEntry &mt)
   printer->Line(regExtras.left, regPl.bottom, regExtras.right, regPl.bottom);
 
   regPl.left += printer->cW;
-  PrintEntry(mt.tmA, regPl, 0);
+  PrintEntry(mt.mt.mtReverse ? mt.tmX : mt.tmA, regPl, 0);
 
   regPl.top = regPl.bottom;
   regPl.bottom = regExtras.bottom;
 
-  PrintEntry(mt.tmX, regPl, 0);
+  PrintEntry(mt.mt.mtReverse ? mt.tmA : mt.tmX, regPl, 0);
 
   offsetY = regExtras.bottom;
 
