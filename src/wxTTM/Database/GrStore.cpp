@@ -2565,7 +2565,7 @@ short GrStore::CalculateSortOrder()
     // Wenn die Stufe noch nicht existiert, dann Stufen zaehlen
     if (res == 0)
     {
-      str = "SELECT 1 + COUNT(DISTINCT grStage) FROM GrRec WHERE cpID = " + ltostr(cpID) + " AND grStage < '" + grStage + "'";
+      str = "SELECT 1 + MAX(grSortOrder) FROM GrRec WHERE cpID = " + ltostr(cpID);
       resPtr = stmtPtr->ExecuteQuery(str);
 
       if (!resPtr->Next() || !resPtr->GetData(1, res) || resPtr->WasNull(1))
