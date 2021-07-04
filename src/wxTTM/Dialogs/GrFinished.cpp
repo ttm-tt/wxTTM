@@ -448,6 +448,9 @@ void CGrFinished::OnTypeChange(wxCommandEvent &)
   itemList.clear();
 
   m_grList->Thaw();
+
+  // Recolor entries if only part of group is printed
+  OnOptionChange(wxCommandEvent());
 }
 
 
