@@ -7,6 +7,7 @@
 
 #include "StListStore.h"
 #include "PlStore.h"
+#include "UpStore.h"
 #include "NaStore.h"
 #include "CpStore.h"
 #include "RpStore.h"
@@ -997,6 +998,17 @@ void CImportOnlineEntries::ClearTournament()
   
     for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
       pl.Remove(*it);
+
+    idList.clear();
+
+    UpStore up(conn);
+    up.SelectAll();
+    while (up.Next())
+      idList.push_back(up.upID);
+    up.Close();
+
+    for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
+      up.Remove(*it);
 
     idList.clear();
   
