@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-06 19:02+0200\n"
+"POT-Creation-Date: 2021-07-05 13:16+0200\n"
 "PO-Revision-Date: 2015-05-24 15:42+0100\n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;wxTRANSLATE\n"
 "X-Poedit-Basepath: F:/User/ChT/wxTTM/src/wxTTM\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: wx\n"
 "X-Poedit-SearchPath-1: Dialogs\n"
 "X-Poedit-SearchPath-2: Database\n"
@@ -26,348 +26,343 @@ msgid "NOMenuBar"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:54
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:49
 msgid "&Tournament"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:56
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:51
 msgid "&New...\tCtrl+N"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:60
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:55
 msgid "&Open...\tCtrl+O"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:16
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:68
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:63
 msgid "&Detach"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:21
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:200
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:195
 msgid "E&xit"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:26
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:337
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:332
 msgid "&Help"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:28
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:339
-msgid "&Install License"
-msgstr ""
-
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:33
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:344
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:334
 msgid "&Check for Update"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:38
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:349
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:33
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:339
 msgid "Shortcuts"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:42
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:353
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:37
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:343
 msgid "Third-Party Software"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:46
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:357
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:41
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:347
 msgid "&About"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:52
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:47
 msgid "ITTFMenuBar"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:64
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13072
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:59
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13082
 msgid "&Close"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:72
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:67
 msgid "&Settings..."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:77
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:72
 msgid "&Backup"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:81
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:76
 msgid "&Restore"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:86
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:81
 msgid "&Import"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:88
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:136
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:83
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:131
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10316
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10698
 msgid "&Events"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:92
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:140
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:87
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:135
 msgid "&Groups"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:96
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:144
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:91
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:139
 msgid "&Associations"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:100
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:148
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:238
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:95
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:143
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:233
 msgid "Umpires"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:104
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:152
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:234
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:99
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:147
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:229
 msgid "&Players"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:108
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:156
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:103
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:151
 msgid "Ranking Poin&ts"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:112
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:160
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:107
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:155
 msgid "E&ntries"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:116
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:164
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:111
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:159
 msgid "&Positions"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:120
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:168
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:115
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:163
 msgid "&Schedules"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:124
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:172
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:119
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:167
 msgid "&Results"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:129
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:124
 msgid "&Online Entries"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:134
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:129
 msgid "&Export"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:176
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:171
 msgid "&For Ranking"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:180
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:175
 msgid "&For ITTF"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:184
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:179
 msgid "&For ETTU"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:190
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:185
 msgid "S&QL Editor"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:195
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:190
 msgid "Cancel Double"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:205
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:200
 msgid "&Competition"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:207
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:202
 msgid "Team &System"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:211
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:206
 msgid "Group &Modus"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:215
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:210
 msgid "&Event"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:219
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:214
 msgid "&Group"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:224
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:219
 msgid "&Registration"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:226
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:221
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5153
 msgid "Associations"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:230
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:225
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5277 Print/RasterRR.cpp:649
 msgid "Teams"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:243
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:238
 msgid "&Draw"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:245
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:240
 msgid "Seeding"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:249
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2472
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:244
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2462
 msgid "Ranking"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:254
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1575
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2748
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:249
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1565
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2738
 #: Dialogs/DrawChampionship.cpp:104 Print/RasterKO.cpp:1159
 msgid "Qualification"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:258
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2749
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:253
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2739
 #: Dialogs/DrawChampionship.cpp:105
 msgid "Championship"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:262
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2750
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:257
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2740
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5945
 msgid "Consolation"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:266
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:261
 msgid "From Qualification"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:270
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:265
 msgid "Groups from Qualification"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:274
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:269
 msgid "Consolation of Knock-Out"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:278 wx/MainFrm.cpp:294
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:273 wx/MainFrm.cpp:294
 msgid "CSD"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:283
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:278
 msgid "&Match"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:285
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:280
 msgid "&Time"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:289
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:284
 msgid "&Result"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:293
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:288
 msgid "&Match Result"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:298
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:293
 msgid "&Overview"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:302
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:297
 msgid "&Unscheduled"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:307
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13006
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:302
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13016
 msgid "&Print"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:309
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:304
 msgid "&Preview"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:314
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:309
 msgid "&Create PDF"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:320
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:315
 msgid "&Reports"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:324
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:319
 msgid "Results &Forms"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:328
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:323
 msgid "Print Played"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:332
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:327
 msgid "&Manage Options"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:365
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:355
 msgid "TTM32"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:389
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:379
 msgid "Database Login"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:418
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:697
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:408
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:687
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11993
 msgid "Server"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:442
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:717
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:432
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:707
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12013
 msgid "Database"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:475
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:465
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12041
 msgid "Windows Authentication"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:487
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:477
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5009
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12070
 msgid "Username"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:510
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:500
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5032
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12089
 msgid "Password"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:546
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:629
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:813
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:879
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1083
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1178
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1325
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1752
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3132
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:536
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:619
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:803
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:869
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1073
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1168
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1315
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1742
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3122
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4953
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5697
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6700
@@ -378,20 +373,20 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9036
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11037
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11323
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12876
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13835
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12886
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13845
 msgid "&OK"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:553
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:636
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:820
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:886
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1090
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1185
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1332
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1759
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3139
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:543
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:626
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:810
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:876
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1080
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1175
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1322
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1749
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3129
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4960
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5704
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6707
@@ -402,98 +397,98 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9043
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11044
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11330
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12883
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13842
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12893
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13852
 msgid "&Cancel"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:564
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:554
 msgid "Detach Tournament"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:579
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:676
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:846
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:569
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:666
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:836
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5064
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11824
 msgid "Tournament"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:608
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:598
 msgid "Delete Directory"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:647
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:637
 msgid "Create Tournament"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:756
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1513
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3347
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:746
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1503
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3337
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11941 Dialogs/CpListView.cpp:93
 #: Dialogs/RkEdit.cpp:127
 msgid "Type"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:759
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:749
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11944
 msgid "Youth"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:760
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:750
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11945
 msgid "Regular"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:761
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:751
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11946
 msgid "Veterans"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:781
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:771
 msgid "Group Modus"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:784
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:774
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11964
 msgid "ITTF"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:785
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:775
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11965
 msgid "DTTB"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:831
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:821
 msgid "Open Tournament"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:896
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:886
 msgid "Preview"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:913
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:903
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5977
 msgid "|<"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:928
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:918
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5990
 msgid "<"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:943
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:933
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6003
 msgid ">"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:958
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:948
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6016
 msgid ">|"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1009
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3461
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:999
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3451
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4798
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9222
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10792
@@ -501,15 +496,15 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1023
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1244
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2110
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2257
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2541
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2676
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3313
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3499
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3717
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1013
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1234
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2100
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2247
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2531
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2666
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3303
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3489
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3707
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4647
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4817
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5837
@@ -523,27 +518,27 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10735
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10804
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11269
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13602
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13975
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14494
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14633 Dialogs/OvListBook.cpp:257
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13612
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13985
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14504
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14643 Dialogs/OvListBook.cpp:257
 #: Dialogs/SQLEditorBook.cpp:258
 msgid "Close"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1145
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1375
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2795
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1135
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1365
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2785
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5495
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7979
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12427
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12447
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13646
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14024 Dialogs/CpEntries.cpp:46
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13656
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14034 Dialogs/CpEntries.cpp:46
 #: Dialogs/CpListView.cpp:82 Dialogs/GrListView.cpp:160
 #: Dialogs/GrOptionsList.cpp:103 Dialogs/GrOptionsList.cpp:156
 #: Dialogs/GrOptionsList.cpp:217 Dialogs/GrPrint.cpp:109
-#: Dialogs/GrPrintBase.cpp:389 Dialogs/MdListView.cpp:58
+#: Dialogs/GrPrintBase.cpp:394 Dialogs/MdListView.cpp:58
 #: Dialogs/NaListView.cpp:84 Dialogs/PlHistView.cpp:25
 #: Dialogs/PlListView.cpp:40 Dialogs/RkListView.cpp:110
 #: Dialogs/SyListView.cpp:57 Dialogs/TmListView.cpp:134
@@ -551,47 +546,47 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1195
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1185
 msgid "Update Available"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1205
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1195
 msgid "An update is available."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1215 wx/TT32App.cpp:560
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1205 wx/TT32App.cpp:561
 msgid "View changes"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1226
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1216
 msgid "Download and install"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1271
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3235
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1261
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3225
 msgid "File"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1282
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1272
 msgid "Select a file"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1293
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1283
 msgid "Version"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1358
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1348
 msgid "Settings"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1399
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2819
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1389
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2809
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5515
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7999
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12428
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12448
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13666
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14051 Dialogs/CpListView.cpp:85
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13676
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14061 Dialogs/CpListView.cpp:85
 #: Dialogs/GrFinished.cpp:167 Dialogs/GrListView.cpp:163
 #: Dialogs/GrPrint.cpp:112 Dialogs/MdListView.cpp:61
 #: Dialogs/NaListView.cpp:87 Dialogs/RkListView.cpp:113
@@ -599,85 +594,85 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1423 Dialogs/CpListView.cpp:103
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1413 Dialogs/CpListView.cpp:103
 msgid "Category"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1455
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1445
 msgid "Default Team System"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1480
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1470
 msgid "Default Best of"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1521
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1511
 msgid "Single"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1531
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1521
 msgid "Double"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1541
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1531
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5256
 msgid "Mixed"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1551
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1541
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8313
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8582
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8875 Print/RasterSC.cpp:925
 msgid "Team"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1583
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1573
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9744
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14818
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14828
 msgid "Male"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1593
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1583
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9765
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14839
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14849
 msgid "Female"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1610
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1600
 msgid "Born on"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1631 Dialogs/CpEdit.cpp:134
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1621 Dialogs/CpEdit.cpp:134
 msgid "or after"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1643
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1633
 msgid "Extended"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1660
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1650
 msgid "Points To Win"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1679
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1669
 msgid "Points To Win Last Game"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1698
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1688
 msgid "Points Ahead"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1717
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1707
 msgid "Points Ahead Last Game"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1789
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2299
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2577
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2712
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3181
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3362
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3542
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1779
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2289
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2567
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2702
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3171
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3352
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3532
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4689
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5879
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6154
@@ -690,45 +685,45 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10451
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10843
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11082
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13403
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14372 Dialogs/GrFinished.cpp:161
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13413
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14382 Dialogs/GrFinished.cpp:161
 #: Dialogs/MtUnscheduled.cpp:151
 msgid "Event"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1814
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1804
 msgid "Entries / Pairs"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1833
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1915
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1823
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1905
 msgid "Complete"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1862
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1999
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1852
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1989
 msgid "Open"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1956
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2040
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2174
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3602
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1946
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2030
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2164
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3592
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4563
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5772
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8138
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10230
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13512
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13910
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14430
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14568
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13522
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13920
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14440
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14578
 msgid "Add"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1968
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2052
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2186
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3614
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1958
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2042
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2176
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3604
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4575
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5784
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5906
@@ -738,144 +733,144 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10242
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10991
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11142
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13524
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13922
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14442
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14580
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13534
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13932
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14452
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14590
 msgid "Edit"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:1980
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2064
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2198
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3626
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:1970
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2054
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2188
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3616
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4587
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5796
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8162
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10254
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13536
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13934
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14454
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14592
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13546
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13944
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14464
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14602
 msgid "Delete"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2217
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2207
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5183
 msgid "Entries"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2312
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13163
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14089
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2302
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13173
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14099
 msgid "Combo!"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2324
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2314
 msgid "From stage"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2349
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2339
 msgid "To stage"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2374
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2364
 msgid "To group"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2399
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2389
 msgid "From pos."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2424
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2414
 msgid "To pos."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2449
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2627
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2439
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2617
 msgid "Seed"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2488
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2478
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12426
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12446 Dialogs/NmEditETS.cpp:173
 msgid "None"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2489
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3209
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2479
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3199
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4714
 msgid "Groups"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2490
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2480
 msgid "World"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2503
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2493
 msgid "Use lpsolve"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2522
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2657
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2512
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2647
 msgid "Draw"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2602
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2733
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3363 Dialogs/GrFinished.cpp:170
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2592
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2723
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3353 Dialogs/GrFinished.cpp:170
 #: Dialogs/GrListView.cpp:166 Dialogs/GrPrint.cpp:115
 msgid "Stage"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2762
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2752
 msgid "Sort Order"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2852
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2842
 msgid "Group System"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2877
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2867
 msgid "TeamSystem"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2923
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2913
 msgid "No. of Entries"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2957
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2947
 msgid "No. of Rounds"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:2982
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:2972
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6444
 msgid "Best of"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3016
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3006
 msgid "No. of Qual. Rounds"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3042
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3032
 msgid "Winner is"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3067
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3057
 msgid "No Match for 3rd Place"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3079
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3069
 msgid "Only Match for 3rd Place"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3109
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3099
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4910
 msgid "Template"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3256
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3438
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3246
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3428
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4775
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5113
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9604
@@ -887,12 +882,12 @@ msgstr ""
 msgid "..."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3301
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3291
 msgid "Export"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3360
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3365
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3350
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3355
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7242
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7490 Dialogs/GrFinished.cpp:173
 #: Dialogs/MtUnscheduled.cpp:153 Print/Raster.cpp:1185
@@ -901,7 +896,7 @@ msgstr ""
 msgid "Round"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3364
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3354
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4918
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4928
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5920
@@ -913,113 +908,117 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8266
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8535
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8828
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13428 Dialogs/GrFinished.cpp:164
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13438 Dialogs/GrFinished.cpp:164
 #: Dialogs/MtUnscheduled.cpp:152
 msgid "Group"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3377
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3367
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9405 Dialogs/OvList.cpp:1450
 msgid "Finished"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3400
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3390
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4737
 msgid "Options"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3480
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3470
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9210
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10626
 msgid "Refresh"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3645
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3635
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10285 Dialogs/GrListView.cpp:169
 #: Dialogs/PlListView.cpp:47
 msgid "Notes"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3664
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3654
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4606
 msgid "Publish"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3676
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3666
 msgid "Unpublish"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3739
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3729
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11679
 msgid "Print Options"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3756
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3746
 msgid "Round Robin"
+msgstr ""
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3779
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4118
+msgid "Treat byes like players"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:3789
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4128
-msgid "Treat byes like players"
-msgstr ""
-
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3799
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4138
 msgid "Start new page"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3809
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3799
 msgid "Print schedule in raster"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3819
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4158
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3809
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4148
 msgid "Print Notes"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3864
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3854
 msgid "Include match details"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3885
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3875
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4224
 msgid "Result from last played round"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3897
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3887
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4203
 msgid "Print individual matches"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3944
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3934
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4271
 msgid "Print selected rounds"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3965
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3955
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9171
 msgid "From"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:3990
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:3980
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9259
 msgid "To"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4050
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4040
 msgid "Combined scoresheet"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4071
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4061
 msgid "Print participate consolation"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4095 Dialogs/MdItem.cpp:26
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4085 Dialogs/MdItem.cpp:26
 msgid "Knock Out"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:4148
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4138
 msgid "Print position numbers"
+msgstr ""
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:4158
+msgid "Print only scheduled"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4292
@@ -1052,9 +1051,9 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8059
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9831
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10151
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13349
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14319
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14980
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13359
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14329
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14990
 msgid "OK"
 msgstr ""
 
@@ -1068,9 +1067,9 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9843
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10163
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11795
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13361
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14331
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14992
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13371
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14341
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:15002
 msgid "Cancel"
 msgstr ""
 
@@ -1140,8 +1139,8 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:5392
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9777
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10864
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14078
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14860
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14088
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14870
 msgid "Association"
 msgstr ""
 
@@ -1212,7 +1211,7 @@ msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6343
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6405
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13218 Print/Raster.cpp:1702
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13228 Print/Raster.cpp:1702
 #: Print/RasterKO.cpp:103
 msgid "Disqualified"
 msgstr ""
@@ -1349,7 +1348,7 @@ msgstr ""
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8343
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8612
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:8905
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14123
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14133
 msgid "Available Players"
 msgstr ""
 
@@ -1439,12 +1438,12 @@ msgid "Rank. Pts."
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9618
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14727
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14737
 msgid "Family Name"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9652
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14761
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14771
 msgid "Given Name"
 msgstr ""
 
@@ -1453,7 +1452,7 @@ msgid "Year of Birth"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9721
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14795 Dialogs/CpEntries.cpp:48
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14805 Dialogs/CpEntries.cpp:48
 #: Dialogs/CpListView.cpp:98 Dialogs/PlHistView.cpp:27
 #: Dialogs/PlListView.cpp:42 Dialogs/UpListView.cpp:31
 msgid "Sex"
@@ -1469,12 +1468,12 @@ msgid "Entered Events"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9983
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14180
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14190
 msgid "Add>>>"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:9995
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14192
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14202
 msgid "Remove<<<"
 msgstr ""
 
@@ -1517,12 +1516,12 @@ msgid "Qualifiers"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:10979
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14236
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14246
 msgid "Up"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:11003
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14248
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14258
 msgid "Down"
 msgstr ""
 
@@ -1719,92 +1718,96 @@ msgid "Print Call Area"
 msgstr ""
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12857
+msgid "Print Start And End Time"
+msgstr ""
+
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:12867
 msgid "Print Remarks"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:12993
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13003
 msgid "&Execute"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13019
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13029
 msgid "&Save"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13039
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13049
 msgid "Open Query"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13052
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13062
 msgid "Save Query"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13152 Dialogs/StListView.cpp:529
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13162 Dialogs/StListView.cpp:529
 msgid "Player(s) / Team"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13208
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13218
 msgid "Seeded"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13235
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13245
 msgid "No Consolation"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13245
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13255
 msgid "Gave Up"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13295
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13305
 msgid "Final Position"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13454
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13464
 msgid "Seed. Pos."
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13555
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13565
 msgid "Calculate"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13686
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13696
 msgid "No of Matches"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13721
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13731
 msgid "No of Singles"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13749
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13759
 msgid "No of Doubles"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:13800
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:13810
 msgid "Play all Matches"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14140
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14150
 msgid "Entered Players"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14269
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14279
 msgid "Show All"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14682
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14692
 msgid "Upmpire Number"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14895
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14905
 msgid "Email"
 msgstr ""
 
-#: /user/cht/wxTTM/src/Resources/ttm.xrc:14928
+#: /user/cht/wxTTM/src/Resources/ttm.xrc:14938
 msgid "Phone"
 msgstr ""
 
 #: Database/CpStore.cpp:685 Database/GrStore.cpp:2636
 #: Database/LtStore.cpp:519 Database/LtStore.cpp:1109
-#: Database/MtStore.cpp:2783 Database/MtStore.cpp:3751
+#: Database/MtStore.cpp:2792 Database/MtStore.cpp:3760
 #: Database/NaStore.cpp:518 Database/PlStore.cpp:868 Database/PsStore.cpp:696
 #: Database/RpStore.cpp:272 Database/StStore.cpp:905 Database/UpStore.cpp:639
 #, c-format
@@ -1812,8 +1815,8 @@ msgid "First comment is not %s but \"%s\". Continue anyway?"
 msgstr ""
 
 #: Database/CpStore.cpp:691 Database/GrStore.cpp:2642
-#: Database/LtStore.cpp:525 Database/MtStore.cpp:2789
-#: Database/MtStore.cpp:3757 Database/NaStore.cpp:524
+#: Database/LtStore.cpp:525 Database/MtStore.cpp:2798
+#: Database/MtStore.cpp:3766 Database/NaStore.cpp:524
 #: Database/PlStore.cpp:874 Database/RpStore.cpp:278 Database/StStore.cpp:911
 #: Database/UpStore.cpp:645
 #, c-format
@@ -2008,12 +2011,12 @@ msgid "Add Note"
 msgstr ""
 
 #: Dialogs/GrOptionsList.cpp:103 Dialogs/GrOptionsList.cpp:156
-#: Dialogs/GrPrintBase.cpp:389 Dialogs/GrPrintBase.cpp:398
+#: Dialogs/GrPrintBase.cpp:394 Dialogs/GrPrintBase.cpp:403
 msgid "Enter Print Option Name"
 msgstr ""
 
 #: Dialogs/GrOptionsList.cpp:113 Dialogs/GrOptionsList.cpp:166
-#: Dialogs/GrPrintBase.cpp:421
+#: Dialogs/GrPrintBase.cpp:426
 #, c-format
 msgid "Print option %s already exists. Overwrite?"
 msgstr ""
@@ -2022,7 +2025,7 @@ msgstr ""
 msgid "Are you sure to delete selected print options?"
 msgstr ""
 
-#: Dialogs/GrPrint.cpp:243 Dialogs/GrPrintBase.cpp:120
+#: Dialogs/GrPrint.cpp:243 Dialogs/GrPrintBase.cpp:122
 msgid "Result Forms"
 msgstr ""
 
@@ -2068,43 +2071,43 @@ msgstr ""
 msgid "Clear Tournament"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1029
+#: Dialogs/ImportOnlineEntries.cpp:1038
 msgid "Import Competitions"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1038 wx/MainFrm.cpp:209
+#: Dialogs/ImportOnlineEntries.cpp:1047 wx/MainFrm.cpp:209
 msgid "Import Associations"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1047 wx/MainFrm.cpp:213
+#: Dialogs/ImportOnlineEntries.cpp:1056 wx/MainFrm.cpp:213
 msgid "Import Players"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1056
+#: Dialogs/ImportOnlineEntries.cpp:1065
 msgid "Import Rankikng"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1068
+#: Dialogs/ImportOnlineEntries.cpp:1077
 msgid "Import Singles"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1077
+#: Dialogs/ImportOnlineEntries.cpp:1086
 msgid "Import Doubles"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1086
+#: Dialogs/ImportOnlineEntries.cpp:1095
 msgid "Import Mixed"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1095
+#: Dialogs/ImportOnlineEntries.cpp:1104
 msgid "Import Teams"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1123
+#: Dialogs/ImportOnlineEntries.cpp:1132
 msgid "Import Tournament"
 msgstr ""
 
-#: Dialogs/ImportOnlineEntries.cpp:1158
+#: Dialogs/ImportOnlineEntries.cpp:1167
 msgid "Select Directory for Import Files"
 msgstr ""
 
@@ -2483,25 +2486,25 @@ msgstr ""
 msgid "SQL Editor"
 msgstr ""
 
-#: Dialogs/Settings.cpp:411
+#: Dialogs/Settings.cpp:417
 msgid "Select Banner Image"
 msgstr ""
 
-#: Dialogs/Settings.cpp:412 Dialogs/Settings.cpp:434 Dialogs/Settings.cpp:456
+#: Dialogs/Settings.cpp:418 Dialogs/Settings.cpp:440 Dialogs/Settings.cpp:462
 msgid ""
 "Image Files (*.bmp, *.jpg, *.png, *.gif)|*.bmp;*.jpg;*.png;*.gif|All Files "
 "(*.*)|*.*"
 msgstr ""
 
-#: Dialogs/Settings.cpp:433
+#: Dialogs/Settings.cpp:439
 msgid "Select Logo Image"
 msgstr ""
 
-#: Dialogs/Settings.cpp:455
+#: Dialogs/Settings.cpp:461
 msgid "Select Sponsor Image"
 msgstr ""
 
-#: Dialogs/Settings.cpp:503
+#: Dialogs/Settings.cpp:509
 msgid "Select Backup Path"
 msgstr ""
 
@@ -2900,7 +2903,7 @@ msgstr ""
 msgid "End at:"
 msgstr ""
 
-#: Print/RasterSC.cpp:1856
+#: Print/RasterSC.cpp:1879
 msgid "Remarks:"
 msgstr ""
 
@@ -3129,123 +3132,123 @@ msgstr ""
 msgid "Manage Options"
 msgstr ""
 
-#: wx/TT32App.cpp:131
+#: wx/TT32App.cpp:132
 msgid ""
 "The license is not valid! You are allowed to use existing tournaments but "
 "you cannot create new ones."
 msgstr ""
 
-#: wx/TT32App.cpp:136
+#: wx/TT32App.cpp:137
 msgid ""
 "Your license has expired! You are allowed to use existing tournaments but "
 "you cannot create new ones."
 msgstr ""
 
-#: wx/TT32App.cpp:171
+#: wx/TT32App.cpp:172
 msgid "Registration"
 msgstr ""
 
-#: wx/TT32App.cpp:173
+#: wx/TT32App.cpp:174
 msgid "List of Players Sorted by Name"
 msgstr ""
 
-#: wx/TT32App.cpp:174
+#: wx/TT32App.cpp:175
 msgid "List of Players Sorted by Number"
 msgstr ""
 
-#: wx/TT32App.cpp:175
+#: wx/TT32App.cpp:176
 msgid "List of Players with their Events"
 msgstr ""
 
-#: wx/TT32App.cpp:176
+#: wx/TT32App.cpp:177
 msgid "Participants per Event"
 msgstr ""
 
-#: wx/TT32App.cpp:177
+#: wx/TT32App.cpp:178
 msgid "Participants in Championship"
 msgstr ""
 
-#: wx/TT32App.cpp:178
+#: wx/TT32App.cpp:179
 msgid "Participants in Consolation"
 msgstr ""
 
-#: wx/TT32App.cpp:179
+#: wx/TT32App.cpp:180
 msgid "Players with Partner Missing"
 msgstr ""
 
-#: wx/TT32App.cpp:188
+#: wx/TT32App.cpp:189
 msgid "Ranking by Association"
 msgstr ""
 
-#: wx/TT32App.cpp:192
+#: wx/TT32App.cpp:193
 msgid "International Ranking"
 msgstr ""
 
-#: wx/TT32App.cpp:195
+#: wx/TT32App.cpp:196
 msgid "List of Matches"
 msgstr ""
 
-#: wx/TT32App.cpp:198
+#: wx/TT32App.cpp:199
 msgid "Final Standings"
 msgstr ""
 
-#: wx/TT32App.cpp:576
+#: wx/TT32App.cpp:578
 #, c-format
 msgid "Licensed by %s. License expires %s"
 msgstr ""
 
-#: wx/TT32App.cpp:580
+#: wx/TT32App.cpp:582
 msgid "Unlicensed copy"
 msgstr ""
 
-#: wx/TT32App.cpp:1314
+#: wx/TT32App.cpp:1333
 msgid "No valid license found"
 msgstr ""
 
-#: wx/TT32App.cpp:1321
+#: wx/TT32App.cpp:1341
 msgid "Illegal tournament name"
 msgstr ""
 
-#: wx/TT32App.cpp:1327 wx/TT32App.cpp:1337
+#: wx/TT32App.cpp:1347 wx/TT32App.cpp:1357
 msgid "Illegal database name"
 msgstr ""
 
-#: wx/TT32App.cpp:1602 wx/TT32App.cpp:1660
+#: wx/TT32App.cpp:1622 wx/TT32App.cpp:1680
 msgid "Backup Database"
 msgstr ""
 
-#: wx/TT32App.cpp:1649
+#: wx/TT32App.cpp:1669
 msgid "Backup successful"
 msgstr ""
 
-#: wx/TT32App.cpp:1685
+#: wx/TT32App.cpp:1705
 msgid "Restore successful"
 msgstr ""
 
-#: wx/TT32App.cpp:1894
+#: wx/TT32App.cpp:1926
 msgid "You are using the latest version of TTM"
 msgstr ""
 
-#: wx/TT32App.cpp:1902
+#: wx/TT32App.cpp:1934
 msgid "Could not determine the current version of TTM"
 msgstr ""
 
-#: wx/TT32App.cpp:1912
+#: wx/TT32App.cpp:1944
 msgid "Install License"
 msgstr ""
 
-#: wx/TT32App.cpp:1922
+#: wx/TT32App.cpp:1954
 msgid "The license is not valid"
 msgstr ""
 
-#: wx/TT32App.cpp:1926
+#: wx/TT32App.cpp:1958
 msgid "The license has expired"
 msgstr ""
 
-#: wx/TT32App.cpp:1930
+#: wx/TT32App.cpp:1962
 msgid "Could not copy license file"
 msgstr ""
 
-#: wx/TT32App.cpp:1934
+#: wx/TT32App.cpp:1966
 msgid "License file was copied"
 msgstr ""
