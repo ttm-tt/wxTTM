@@ -46,6 +46,7 @@ struct  PrintRasterOptions
   bool  koInbox;       // Spieler innerhalb des Rasters
   bool  koPrintPosNrs; // Drucke Position am Anfang
   bool  koPrintNotes;  // Anmerkungen unter die Gruppe drucken
+  bool  koPrintOnlyScheduled;  // Nur angesetzte Spiele drucken
 };
 
 struct PoRec : public PrintRasterOptions

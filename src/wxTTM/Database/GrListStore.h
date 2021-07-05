@@ -35,7 +35,6 @@ class  GrListStore : public StoreObj, public GrListRec
 
     virtual void  Init();
 
-  // API: Wettbewerbe auswaehlen
   public:
     bool  SelectAll(const CpRec &);      // Alle Gruppen
     bool  SelectById(long id);           // Wettbewerb nach ID
@@ -54,6 +53,8 @@ class  GrListStore : public StoreObj, public GrListRec
     long  Count();
 
     wxString GetNote();
+
+    short GetLastScheduledRound(long id);
 
   private:
     wxString  SelectString() const;

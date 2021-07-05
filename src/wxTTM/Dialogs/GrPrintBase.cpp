@@ -7,6 +7,8 @@
 #include "TT32App.h"
 #include "GrPrintBase.h"
 
+#include "GrListStore.h"
+
 #include "GrItem.h"
 
 #include "Printer.h"
@@ -236,6 +238,9 @@ unsigned CGrPrintBase::PrintThread(void *arg)
 
         if (gr.grNofMatches)
           options.koToMatch = std::min((int)options.koToMatch, gr.grNofMatches >> (options.koFromRound - 1));
+
+        if (options.koPrintOnlyScheduled)
+          options.koToRound = std::min(options.koToRound, gr.GetLastScheduledRound(gr.grID));
       }
 
       switch (gr.grModus)

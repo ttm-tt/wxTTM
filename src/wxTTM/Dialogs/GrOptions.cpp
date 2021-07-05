@@ -70,6 +70,7 @@ void CGrOptions::OnInitDialog(wxInitDialogEvent &evt)
   FindWindow("KOResultFromLastPlayedRound")->SetValidator(wxGenericValidator(&m_poPtr->koLastResults));
   FindWindow("KOPrintPosNumbers")->SetValidator(wxGenericValidator(&m_poPtr->koPrintPosNrs));
   FindWindow("KOPrintNotes")->SetValidator(wxGenericValidator(&m_poPtr->koPrintNotes));
+  FindWindow("KOPrintOnlyScheduled")->SetValidator(wxGenericValidator(&m_poPtr->koPrintOnlyScheduled));
     
   FindWindow("RRResultFromLastPlayedRound")->Enable(m_poPtr->rrResults);
   FindWindow("RRPrintindividualMatches")->Enable(m_poPtr->rrResults);

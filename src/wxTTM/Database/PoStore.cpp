@@ -352,6 +352,7 @@ bool PoStore::ReadFromProfile(Profile &profile, const wxString &section)
   koInbox = profile.GetBool(section, PRF_PROPTIONS_KOINBOX, 0);
   koPrintPosNrs = profile.GetBool(section, PRF_PROPTIONS_KOPRINTPOSNRS, 0);
   koPrintNotes = profile.GetBool(section, PRF_PROPTIONS_KOPRINTNOTES, 0);
+  koPrintOnlyScheduled = profile.GetBool(section, PRF_PROPTIONS_KOONLYSCHEDULED, 0);
 
   return true;
 }
@@ -388,6 +389,7 @@ bool PoStore::WriteToProfile(Profile &profile, const wxString &section) const
   profile.AddBool(section, PRF_PROPTIONS_KOINBOX, koInbox);
   profile.AddBool(section, PRF_PROPTIONS_KOPRINTPOSNRS, koPrintPosNrs);
   profile.AddBool(section, PRF_PROPTIONS_KOPRINTNOTES, koPrintNotes);
+  profile.AddBool(section, PRF_PROPTIONS_KOONLYSCHEDULED, koPrintOnlyScheduled);
 
   return true;
 }

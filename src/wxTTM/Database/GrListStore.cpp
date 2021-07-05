@@ -341,6 +341,40 @@ wxString GrListStore::GetNote()
   return GrStore(*this, GetConnectionPtr()).GetNote();
 }
 
+
+short GrListStore::GetLastScheduledRound(long id)
+{
+  Statement *stmtPtr = NULL;
+  ResultSet *resPtr = NULL;
+
+  wxString str = 
+      "SELECT MAX(mtRound) FROM MtList mt "
+      "  WHERE grID = " + ltostr(id ? id : grID) + " AND DAY(mtDateTime) <> 0 ";
+
+  short count = 0;
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->CreateStatement();
+
+    ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+    if (!resPtr || !resPtr->Next())
+      count = 0;
+    else if (!resPtr->GetData(1, count) || resPtr->WasNull())
+      count = 0;
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);
+    count = 0;
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return count;
+}
+
 // -----------------------------------------------------------------------
 wxString  GrListStore::SelectString() const
 {

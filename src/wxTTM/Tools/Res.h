@@ -139,6 +139,7 @@ const unsigned  IDC_LIST_DEL   = 0x8003;
 #define  PRF_PROPTIONS_KOFIRSTRDQUAL wxT("koFirstRdQualification")
 #define  PRF_PROPTIONS_KOPRINTPOSNRS wxT("koPrintPositionNumbers")
 #define  PRF_PROPTIONS_KOPRINTNOTES  wxT("koPrintNotes")
+#define  PRF_PROPTIONS_KOONLYSCHEDULED wxT("koPrintOnlyScheduled")
 
 // Steuerungen der einzelnen Turniere
 // Event Angaben im RR-Raster
