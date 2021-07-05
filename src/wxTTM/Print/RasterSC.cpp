@@ -1865,7 +1865,7 @@ int  RasterScore::PrintScoreRemarks(const MtEntry &)
   int left = offsetX;
   int heightTop = 2 * printer->cH;
   // Bottom on top of the boxes
-  int bot = printer->height - 5 * printer->cH - 0.5 * printer->cH;
+  int bot = printer->height - 5 * printer->cH - printer->cH;
 
   if (CTT32App::instance()->GetPrintSponsor())
     bot -= 1470 / 3;
@@ -1876,7 +1876,7 @@ int  RasterScore::PrintScoreRemarks(const MtEntry &)
     printer->Rectangle(offsetX, top, printer->width, bot, THICK_FRAME);
 
     // "Remarks"
-    printer->Text(offsetX + printer->cH, top + heightTop + 1.5 * printer->cH, _("Remarks:"));
+    printer->Text(offsetX + printer->cH, top + 1.5 * printer->cH, _("Remarks:"));
 
     offsetY = bot;
   }
@@ -1892,10 +1892,10 @@ int  RasterScore::PrintScoreFooter(const MtEntry &)
 	int heightTop = 2 * printer->cH;  // Hoehe Ueberschrift
 	int heightBot = 3 * printer->cH;  // Hoehe Eintraege
 
-	if ( (printer->height - offsetY) < (2 * heightTop + heightBot) )
+	if ( (printer->height - offsetY) < (heightTop + heightBot) )
 		return 0;
 
-	offsetY = printer->height - 1.5 * heightTop - heightBot;
+	offsetY = printer->height - heightTop - heightBot;
 
 	int  genWidth = (printer->width - offsetX) / 6;
 
@@ -2039,6 +2039,7 @@ int  RasterScore::Print(const CpRec &cp_, const GrRec &gr_, const MtEntry &mt)
     PrintScoreRemarks(mt);
   }
 
+	offsetY += printer->cH;
 	PrintScoreFooter(mt);
 
   printer->SelectFont(oldFont);
