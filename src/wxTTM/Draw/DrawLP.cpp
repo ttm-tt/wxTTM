@@ -931,7 +931,7 @@ bool DrawLP::DrawSection(int stg, int sec)
     {
       DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
-      // Freilose werden extra behandelt
+      // Freilose und direct entries werden extra behandelt
       if (itemTM->lastGroup == 0)
         continue;
 
@@ -1051,7 +1051,7 @@ bool DrawLP::DrawSection(int stg, int sec)
           DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
           // Nur mehr Freilose
-          if (itemTM->lastGroup != 0)
+          if (itemTM->rkDirectEntry || itemTM->lastGroup != 0)
             continue;
 
           colvec[j] = colMapping[itemTM];
