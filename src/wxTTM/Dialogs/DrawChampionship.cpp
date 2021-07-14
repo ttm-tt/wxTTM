@@ -383,7 +383,9 @@ void CDrawChampionship::OnSelChangeToStage(wxCommandEvent &)
 
   CpRec cp = ((CpItem *) cbCP->GetCurrentItem())->cp;
 
-  if (GrStore().CountGroups(cp, toStage) < 2)
+  // Should also work with only 1 group to choose from, is then the same as Veterans CP draw
+  // But no groups doesn't make sense
+  if (GrStore().CountGroups(cp, toStage) == 0)
     return;
 
   gr.SelectByStage(cp, toStage);

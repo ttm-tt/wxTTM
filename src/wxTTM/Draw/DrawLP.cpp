@@ -326,6 +326,10 @@ bool DrawLP::ReadRegions()
 // Einlesen vom Ranking
 bool DrawLP::ReadRanking()
 {
+  // Do we use a ranking at all?
+  if (rkChoice == None)
+    return true;
+
   // Test, ob es eine Setzung gibt
   {
     StStore st(connPtr);
@@ -364,11 +368,7 @@ bool DrawLP::ReadRanking()
   // Temp. Ranking
   DrawListTeam listTMP;
 
-  if (rkChoice == None)
-  {
-    // No ranking used
-  }
-  else if (rkChoice == World)
+  if (rkChoice == World)
   {
     // Int'l ranking used, players not finishing first will be replaced with winners
     RkEntryStore rk(connPtr);
@@ -673,9 +673,12 @@ bool DrawLP::Distribute(GrStore &gr)
     gr.SetTeam(itemTM->pos[lastStage+1], tm, StStore::ST_KEEPSEEDED);
 
 # ifdef DEBUG
+    // Mark direct entries
+    bool de = itemTM->rkDirectEntry && itemTM->lastGroup == 0;
+
     wxFprintf(file, "%04i: %s:%i\n", 
              itemTM->pos[lastStage+1],
-             grList[itemTM->lastGroup].data(),
+             de ? "DE" : grList[itemTM->lastGroup].data(),
              itemTM->lastPos);
 # endif
   }
@@ -870,7 +873,10 @@ bool DrawLP::DrawSection(int stg, int sec)
 
   for (std::map<DrawItemTeam *, int>::iterator it = colMapping.begin(); it != colMapping.end(); it++)
   {
-    wxString tmp = wxString::Format("%s#%02d#%02d", grList[it->first->lastGroup].data(), it->first->lastPos, it->second);
+    // Direct entries did not play groups
+    bool de = it->first->lastGroup == 0 && it->first->rkDirectEntry;
+
+    wxString tmp = wxString::Format("%s#%02d#%02d", de ? "DE" : grList[it->first->lastGroup].data(), it->first->lastPos, it->second);
     // Name darf kein " ", "-" enthalten
     tmp.Replace(" ", "_", true);
     tmp.Replace("-", "_", true);
@@ -1002,7 +1008,7 @@ bool DrawLP::DrawSection(int stg, int sec)
       DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
       // Keine Freilose
-      if (itemTM->lastGroup == 0)
+      if (!itemTM->rkDirectEntry && itemTM->lastGroup == 0)
         continue;
 
       // Nur Sieger
@@ -1584,7 +1590,7 @@ bool DrawLP::DrawSection(int stg, int sec)
     // Zweiter hat unerwartet ein Freilos
     if (totalBY <= totalFirst)
     {
-      if (itemOne->lastGroup == 0 && itemTwo->lastPos != 1 || itemTwo->lastGroup == 0 && itemOne->lastPos != 1)
+      if (!itemOne->rkDirectEntry && itemOne->lastGroup == 0 && itemTwo->lastPos != 1 || !itemTwo->rkDirectEntry && itemTwo->lastGroup == 0 && itemOne->lastPos != 1)
         warnings.push_back(wxString::Format(_("Second got an unexpected bye in first round at pos %d - %d"), 2 * sec - 1, 2 * sec));
     }
 
