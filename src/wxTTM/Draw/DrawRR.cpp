@@ -321,19 +321,27 @@ bool DrawRR::ReadRanking()
   }
   else if (rkChoice == World)
   {
+    bool hasRanking = false;
+
     // Int'l ranking used, players not finishing first will be replaced with winners
     RkEntryStore rk(connPtr);
     rk.SelectByCp(cp);
     while (rk.Next())
     {
       // Neither int'l rank nor ranking points
-      if (rk.rk.rkIntlRank == 0 && rk.rankPts == 0)
-        continue;
+      // if (rk.rk.rkIntlRank == 0 && rk.rankPts == 0)
+      //   continue;
+
+      hasRanking |= (rk.rk.rkIntlRank > 0 || rk.rankPts > 0);
 
       DrawItemTeam *itemTMP = new DrawItemTeam(rk);
 
       listTMP.AddItem(itemTMP);
     }
+
+    // If no ranking found continue as if no ranking is used
+    if (!hasRanking)
+      listTMP.clear();
   }
   else if (rkChoice == Groups)
   {
