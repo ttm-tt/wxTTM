@@ -3628,7 +3628,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     {
       sql = 
           "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, grName, grStage, "
-          "       IIF((grModus <> 2) OR (grWinner <> 1), mtRound, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "       IIF((grModus <> 2) OR (grWinner <> 1), CONCAT('', mtRound), CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
           "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
