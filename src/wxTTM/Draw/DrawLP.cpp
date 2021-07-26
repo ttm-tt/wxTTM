@@ -59,6 +59,7 @@ DrawLP::DrawLP(bool champs_, bool koCons_, Connection *ptr)
   champs = champs_;
   koCons = koCons_;
 
+  totalDE = 0;
   totalFirst = 0;
   totalNA = 0;
   totalBY = 0;
@@ -330,20 +331,6 @@ bool DrawLP::ReadRanking()
   if (rkChoice == None)
     return true;
 
-  // Test, ob es eine Setzung gibt
-  {
-    StStore st(connPtr);
-    st.SelectSeeded(cp, toStage);
-    if (st.Next())
-    {
-      infoSystem.Information(_("Ranked players ignored because players have already been seeded"));
-
-      return true;
-    }
-
-    st.Close();
-  }
-
   // Map mit dem Abschneiden der vorigen Runde
   std::map<long, int> fromGroupMap;
   std::map<long, int> fromPosMap;
@@ -544,6 +531,8 @@ bool DrawLP::ReadSeeding(GrStore &gr)
       itemTM = listNA.AddTeam(st);
       itemTM->lastPos = 1;
       itemTM->rkDirectEntry = 1;
+      
+      ++totalDE;
     }
     
     if (itemTM)
@@ -876,7 +865,7 @@ bool DrawLP::DrawSection(int stg, int sec)
     // Direct entries did not play groups
     bool de = it->first->lastGroup == 0 && it->first->rkDirectEntry;
 
-    wxString tmp = wxString::Format("%s#%02d#%02d", de ? "DE" : grList[it->first->lastGroup].data(), it->first->lastPos, it->second);
+    wxString tmp = wxString::Format("%s#%02d#%02d#%02d", de ? "DE" : grList[it->first->lastGroup].data(), it->first->lastPos, it->second, it->first->rkIntlRank);
     // Name darf kein " ", "-" enthalten
     tmp.Replace(" ", "_", true);
     tmp.Replace("-", "_", true);
@@ -1581,21 +1570,28 @@ bool DrawLP::DrawSection(int stg, int sec)
     DrawItemTeam *itemTwo = (DrawItemTeam *) (*it);
 
     // 2 Erste gegeneinander
-    if (totalFirst < (totalNA + totalBY) / 2)
+    if ((totalDE + totalFirst) < (totalNA + totalBY) / 2)
     {
       if (itemOne->lastPos == 1 && itemTwo->lastPos == 1)
         warnings.push_back(wxString::Format(_("Two first playing in first round at pos %d - %d"), 2 * sec - 1, 2 * sec));
     }
 
     // Zweiter hat unerwartet ein Freilos
-    if (totalBY <= totalFirst)
+    if (totalBY <= totalDE + totalFirst)
     {
       if (!itemOne->rkDirectEntry && itemOne->lastGroup == 0 && itemTwo->lastPos != 1 || !itemTwo->rkDirectEntry && itemTwo->lastGroup == 0 && itemOne->lastPos != 1)
         warnings.push_back(wxString::Format(_("Second got an unexpected bye in first round at pos %d - %d"), 2 * sec - 1, 2 * sec));
     }
 
+    // DE hat nicht das erwartete Freilos
+    if (totalBY >= totalDE)
+    {
+      if (itemOne->rkDirectEntry && !itemTwo->IsBye() || !itemOne->IsBye() && itemTwo->rkDirectEntry)
+        warnings.push_back(wxString::Format(_("DE did not get an expected bye in first round at pos %d - %d"), 2 * sec - 1, 2 * sec));
+    }
+
     // Erster hat nicht das erwartete Freilos
-    if (totalBY >= totalFirst)
+    if (totalBY >= totalDE + totalFirst)
     {
       if (itemOne->lastGroup && itemTwo->lastPos == 1 || itemTwo->lastGroup && itemOne->lastPos == 1)
         warnings.push_back(wxString::Format(_("First did not get an expected bye in first round at pos %d - %d"), 2 * sec - 1, 2 * sec));

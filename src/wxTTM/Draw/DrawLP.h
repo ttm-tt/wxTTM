@@ -41,6 +41,7 @@ class DrawLP
     int  totalFirst;                   // Anzahl erster
     int  totalNA;                      // Anzahl echter Spieler
     int  totalBY;                      // Anzahl Freilose
+    int  totalDE;                      // Anzahl DE
     int  lastStage;                    // letzte 'Stufe' == Anzahl der 'Stufen'
     RankingChoice rkChoice;
 
