@@ -266,12 +266,11 @@ bool  StEntryStore::SelectAll(const CpRec &cp, const wxString &stage)
   cpType = team.cpType = cp.cpType;
 
   wxString str = SelectString();
-  str += " WHERE st.grID IN ";
-  str += "(SELECT grID FROM GrRec WHERE cpID = ";
-  str += ltostr(cp.cpID);
-  str += " AND grStage = '";
-  str += stage;
-  str += "') ORDER BY st.grID, stPos";
+  str += " INNER JOIN GrList gr ON st.grID = gr.grID ";
+  str += " INNER JOIN CpList cp ON gr.cpID = cp.cpID ";
+  str += " WHERE cp.cpID = " + ltostr(cp.cpID) + " ";
+  str += "   AND gr.grStage = '" + stage + "' ";
+  str += " ORDER BY gr.grName, stPos";
 
   try
   {
