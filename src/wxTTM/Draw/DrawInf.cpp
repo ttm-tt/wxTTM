@@ -113,6 +113,17 @@ DrawItem * DrawList::CutFirst()
 }
 
 
+DrawItem* DrawList::CutLast()
+{
+  if (begin() == end())
+    return 0;
+    
+  DrawItem *itemPtr = *rbegin();
+  remove(itemPtr);
+  return itemPtr;
+}
+
+
 // DrawItemPack
 
 DrawItemPack::DrawItemPack()

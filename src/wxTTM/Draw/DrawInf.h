@@ -85,6 +85,7 @@ class  DrawList : public DrawItemList
     void  Shuffle();
     void  AddItem(DrawItem *itemPtr) {push_back(itemPtr);}
     DrawItem * CutFirst();
+    DrawItem * CutLast();
 
     int   Count() {return size();}
     void  Sort()  {sort(DrawItem::CompareItemFunctional());}
