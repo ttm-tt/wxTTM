@@ -277,6 +277,26 @@ DrawItemTeam::DrawItemTeam(const TmListRec &tm_)
 }
 
 
+DrawItemTeam::DrawItemTeam(const StEntry & st_)
+{
+  tm = st_;
+
+  lastGroup = st_.st.grID;
+  lastPos = st_.st.stPos;
+
+  rkDirectEntry = 0;
+  rkNatlRank = 0;
+  rkIntlRank = 0;
+  rankPts = 0;
+  mask = false;
+  pack = 0;
+  
+  memset(pos, 0, MAX_POS * sizeof(pos[0]));
+
+}
+
+
+
 DrawItemTeam::DrawItemTeam(const RkEntry &rk)
 {
   tm = rk;

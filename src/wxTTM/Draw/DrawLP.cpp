@@ -349,6 +349,24 @@ bool DrawLP::ReadRanking()
     }
   }
 
+  // Test, ob es eine Setzung von gibt
+  {
+    StStore st(connPtr);
+    st.SelectSeeded(cp, toStage);
+    while (st.Next())
+    {
+      // If group ranking no QU may be seeded
+      if (rkChoice == Groups && fromGroupMap.find(st.tmID) != fromGroupMap.end())
+      {
+        infoSystem.Information(_("Ranked players ignored because players have already been seeded"));
+
+        return true;
+      }
+    }
+
+    st.Close();
+  }
+
   // Set mit den IDs der Teams, um kein Team mehrmals zu haben
   std::set<long> tmSet;
 
@@ -374,16 +392,71 @@ bool DrawLP::ReadRanking()
   else if (rkChoice == Groups)
   {
     // Result of groups used, winner of group 1 is #1, of group 2 is #2, ...
+    // Plus offset of DE
+    // If we start from pos 1 include DE
     if (fromPos == 1)
     {
+      int rank = 0;
+
+      // DE lesen
+      RkEntryStore rk(connPtr);
+      rk.SelectByCp(cp);
+      while (rk.Next())
+      {
+        // Only DE
+        if (!rk.rk.rkDirectEntry)
+          continue;
+
+        // Test if entry is in list (should not be)
+        if (fromGroupMap.find(rk.rk.tmID) != fromGroupMap.end())
+          continue;
+
+        if (!listNA.GetTeam(rk.rk.tmID))
+        {
+          DrawItemTeam *itTM = listNA.AddTeam(rk);
+          itTM->lastPos = 0;
+          itTM->rkDirectEntry = 1;
+        }
+
+        DrawItemTeam *itemTM = new DrawItemTeam(rk);
+        itemTM->rkDirectEntry = 1; 
+        itemTM->lastGroup = 0;
+        itemTM->lastPos = 1;
+        listTMP.AddItem(itemTM);        
+      }
+
+      rank = listTMP.Count();
+
       StEntryStore st(connPtr);
       st.SelectAll(cp, fromStage);
-      int rank = 0;
+
+      // Keep 2nd in seperate list
+      DrawListTeam listSecond;
+
       while (st.Next())
       {
-        if (st.st.stPos == 1)
+        if (st.st.stPos < fromPos || st.st.stPos > toPos)
+          continue;
+
+        DrawItemTeam *itemTM = new DrawItemTeam(st);
+
+        if (st.st.stPos == fromPos)
         {
-          DrawItemTeam *itemTM = new DrawItemTeam(st);
+          itemTM->rkIntlRank = ++rank;
+          listTMP.AddItem(itemTM);
+        }
+        else
+        {
+          listSecond.AddItem(itemTM);
+        }
+      }
+
+      if (listSecond.Count())
+      {
+        DrawItemTeam *itemTM;
+
+        while ((itemTM = (DrawItemTeam *) listSecond.CutLast()))
+        {
           itemTM->rkIntlRank = ++rank;
           listTMP.AddItem(itemTM);
         }
@@ -391,21 +464,33 @@ bool DrawLP::ReadRanking()
     }
   }
 
-   // Sort
-   listTMP.Shuffle();
-   std::stable_sort(listTMP.begin(), listTMP.end(), [](const DrawItem *a, const DrawItem *b)
-     {
-       const DrawItemTeam *ta = (const DrawItemTeam *)a;
-       const DrawItemTeam *tb = (const DrawItemTeam *)b;
+  // Sort
+  listTMP.Shuffle();
+  std::stable_sort(listTMP.begin(), listTMP.end(), [](const DrawItem *a, const DrawItem *b)
+    {
+      const DrawItemTeam *ta = (const DrawItemTeam *)a;
+      const DrawItemTeam *tb = (const DrawItemTeam *)b;
 
-       // Bei gleichem Int'l Ranking zaehlen die Punkte
-       if (ta->rkIntlRank == tb->rkIntlRank)
+      // rkDirectEntry nach vorn sortieren
+      if (ta->rkDirectEntry != tb->rkDirectEntry)
+        return ta->rkDirectEntry ? true : false;
+
+      // If both are DE take rkPts
+      if (ta->rkDirectEntry)
          return ta->rankPts > tb->rankPts;
 
-       // Ranking 0 immer nach hinten sortieren
-       return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
-     }
-   );
+      // Dann Int'l (faked) ranking
+      if (ta->rkIntlRank != tb->rkIntlRank)
+        return ta->rkIntlRank < tb->rkIntlRank;
+
+      // Bei gleichem Int'l Ranking zaehlen die Punkte
+      if (ta->rkIntlRank == tb->rkIntlRank)
+        return ta->rankPts > tb->rankPts;
+
+      // Ranking 0 immer nach hinten sortieren
+      return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+    }
+  );
 
   // Neu ranken
   int rank = 0;
@@ -423,22 +508,24 @@ bool DrawLP::ReadRanking()
 
     DrawItemTeam *itemTM = listNA.GetTeam(itTMP->tm.tmID);
 
-    // Wenn Spieler nicht gewonnen hat stattdessen den Sieger nehmen
-    if (!itemTM || itemTM->lastPos > 1)
+    if (rkChoice == World)
     {
-      if (champs || fromPos == 1)
-        warnings.push_back(wxString::Format(_("The ranked entry of group %s finished %d, trying winner instead"), grList[fromGroupMap[itTMP->tm.tmID]], fromPosMap[itTMP->tm.tmID]));
+      // Wenn Spieler nicht gewonnen hat stattdessen den Sieger nehmen
+      if (!itemTM || itemTM->lastPos > 1)
+      {
+        // Erster gehoert nicht dazu
+        if (!itemTM)
+        {
+          if ((champs || fromPos == 1))
+            warnings.push_back(wxString::Format(_("The ranked entry of group %s finished %d, trying winner instead"), grList[fromGroupMap[itTMP->tm.tmID]], fromPosMap[itTMP->tm.tmID]));
 
-      itemTM = listNA.GetTeam(fromGroupMap[itTMP->tm.tmID], 1);
-
-      // Erster gehoert nicht dazu
-      if (!itemTM)
-        continue;
-     
-      // Oder ist bereits drin
-      if (tmSet.find(itemTM->tm.tmID) != tmSet.end())
-        continue;
+          itemTM = listNA.GetTeam(fromGroupMap[itTMP->tm.tmID], 1);
+        }
+      }
     }
+
+    if (!itemTM)
+      continue;
 
     // Don't take twice: da wir oben ausgetauscht haben könnten wir ein Team mehrmals erwischen
     if (tmSet.find(itemTM->tm.tmID) != tmSet.end())
@@ -921,7 +1008,7 @@ bool DrawLP::DrawSection(int stg, int sec)
       DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
       // Freilose und direct entries werden extra behandelt
-      if (itemTM->lastGroup == 0)
+      if (itemTM->IsBye() || itemTM->rkDirectEntry)
         continue;
 
       mapGR[itemTM->lastGroup].push_back(itemTM);
@@ -997,7 +1084,7 @@ bool DrawLP::DrawSection(int stg, int sec)
       DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
       // Keine Freilose
-      if (!itemTM->rkDirectEntry && itemTM->lastGroup == 0)
+      if (itemTM->IsBye())
         continue;
 
       // Nur Sieger
@@ -1028,29 +1115,6 @@ bool DrawLP::DrawSection(int stg, int sec)
         // Gerade: COUNT / 2 == SUMME
         add_constraintex(lp, j, rowvec, colvec, EQ, (int) j / 2);
       }
-
-      // Gibt es gleich viel Erste wie Freilose, aber mehr als 1, muessen sie zusammenkommen
-      // Da es keinen festen Platz fuer das Freilos gibt muss der erste eine entsprechende Regel bekommen
-      // Q01:1 + Q02:1 + ... + Qnn:1 - BYE - BYE - ... == 0
-      // Die Faktoren fuer die Gruppen sind bereits gesetzt, jetzt kommen die Faktoren fuer die Freilose
-      if (j == dbc)
-      {
-        for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
-        {
-          DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
-
-          // Nur mehr Freilose
-          if (itemTM->rkDirectEntry || itemTM->lastGroup != 0)
-            continue;
-
-          colvec[j] = colMapping[itemTM];
-          rowvec[j] = -1;
-
-          j++;
-        }
-
-        add_constraintex(lp, j, rowvec, colvec, EQ, 0);
-      }
     }
     else if (itemFirst && itemFirst->pos[stg+1] == 0)
     {
@@ -1074,93 +1138,112 @@ bool DrawLP::DrawSection(int stg, int sec)
     }
   }
 
-  // Int'l Ranking verteilen
+  // Freilose gegen die (top) Spieler
   if (true)
-  {    
-    // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
-    for (int pos = 1; pos / 2 < listIRK.Count(); pos *= 2)
+  {
+    int j = 0;  // count
+    int count = 0;
+    int byes = 0;
+    int de = 0;
+    int total = listNA.Count(1, 1);
+
+    for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
     {
+      if (((DrawItemTeam *) (*it))->rkDirectEntry)
+        ++de;
+    }
+
+    // If we got byes or DE and we are not in the last stage, top seed entries follow byes
+    if ((dbc > 0 || de > 0) && stg < lastStage)
+    {
+      // Byes go against top ranked players, so we must have same number of players as byes in each half.
+      // The formula we use is #1 + #2 + ... #dbc - BYE#1 - BYE#2 - ... - BYE#dbc = 0
       memset(colvec, 0, cols * sizeof(int));
       memset(rowvec, 0, cols * sizeof(REAL));
 
-      int j = 0;
-      for (auto it = listIRK.begin(); it != listIRK.end(); it++)
+      for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
       {
         DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
-        if (itemTM->pos[stg] != sec)
-          continue;
 
-        // List ist nach int'l rank sortiert
-        if (itemTM->rkIntlRank <= pos / 2)
+        // Byes go against top ranked players
+        // rkIntlRank is the seeding order we use
+        // All DE must go into the list, they'll get the least ranked 2nd if no byes are left
+        // To find the highest ranked QU we look at all QU,not only those who won their group.
+        // Which means even 2nd could get a bye in first round
+        if (rkChoice != None && !itemTM->IsBye() && !itemTM->rkDirectEntry && itemTM->rkIntlRank > listBY.Count())
           continue;
-
-        if (itemTM->rkIntlRank > pos)
-          break;
 
         colvec[j] = colMapping[itemTM];
-        rowvec[j] = 1;
+        if (itemTM->IsBye())
+        {
+          rowvec[j] = -1;
+          byes++;
+        }
+        else
+        {
+          rowvec[j] = 1;
+          count++;
+        }
 
         j++;
       }
 
-      if (j == 0)
-        continue;
+      while (byes < de)
+      {
+        // Add the lowest ranked 2nd to play against DE, i.e. as if they were byes
+        for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
+        {
+          DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
-      if ((1 << stg) == pos)
-      {
-        // Wenn es nur einen mit Ranking geben kann, dann wandert dieser beim ersten Mal
-        //     - Wenn ungerade: nach unten
-        //     - Wenn gerade: nach oben
-        if (sec % 2)
-          add_constraintex(lp, j, rowvec, colvec, EQ, 1);
-        else
-          add_constraintex(lp, j, rowvec, colvec, EQ, 0);
+          if (itemTM->IsBye())
+            continue;
+            
+          // total is the number of real entries. They are ranked 1..n, so total is also
+          // the highest rank position
+          if (itemTM->rkIntlRank <= total - listBY.Count())
+            continue;
 
+          colvec[j] = colMapping[itemTM];
+          rowvec[j] = -1;
+
+          byes++;
+          j++;
+        }
       }
-      else if ((1 << stg) > pos / 2)
+
+      if (count == byes)
       {
-        // Wenn es nur einen mit Ranking geben kann, dann wandert dieser die weiteren Male
-        //     - Wenn gerade: nach unten
-        //     - Wenn ungerade: nach oben
-        if (sec % 2)
-          add_constraintex(lp, j, rowvec, colvec, EQ, 0);
-        else
-          add_constraintex(lp, j, rowvec, colvec, EQ, 1);
-      }
-      else 
-      {
-        // Max Haelfte moegliche Anzahl in Stufe, min was gefunden wurde als Haelfte max moeglich
-        // Moegliche Anzahl in Stufe ist pos / 2
-        // Max: pos / (2 << stg); Min: max(0, j - pos / (2 << stg))
-        add_constraintex(lp, j, rowvec, colvec, LE, (int)(pos / (2 << stg)));
-        add_constraintex(lp, j, rowvec, colvec, GE, std::max(0, (int)(j - pos / (2 << stg))));
+        add_constraintex(lp, j, rowvec, colvec, EQ, 0);
       }
     }
   }
 
-  // Nat'l Ranking verteilen
-  // Kopie von oben, aber bezogen auf nat'l rank und ohne fixe Positionen
+  // Int'l Ranking verteilen, wenn nicht gesetzt
   if (true)
-  {
-    for (auto it : listNRK)
+  {    
+    // Onl< with world ranking,
+    if (rkChoice == World)
     {
-      DrawListTeam &list = ((DrawItemNation *) it)->teams;
-
       // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
-      for (int pos = 1; pos / 2 < list.Count(); pos *= 2)
+      for (int pos = 1; pos / 2 < listIRK.Count(); pos *= 2)
       {
         memset(colvec, 0, cols * sizeof(int));
         memset(rowvec, 0, cols * sizeof(REAL));
 
         int j = 0;
-        for (auto it : list)
+
+        for (auto it = listIRK.begin(); it != listIRK.end(); it++)
         {
-          DrawItemTeam *itemTM = (DrawItemTeam *) it;
+          DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
+
           if (itemTM->pos[stg] != sec)
             continue;
 
-          // List ist nach nat'l rank sortiert
-          if (itemTM->rkNatlRank > pos)
+          // List ist nach int'l rank sortiert
+          if (itemTM->rkIntlRank <= pos / 2)
+            continue;
+
+          if (itemTM->rkIntlRank > pos)
             break;
 
           colvec[j] = colMapping[itemTM];
@@ -1172,20 +1255,91 @@ bool DrawLP::DrawSection(int stg, int sec)
         if (j == 0)
           continue;
 
-        // Wenn es mehr als einen gibt, gleichmaessig verteilen
-        // Ansonsten ist es egal, wohin er rutscht
-        if (j > 1)
+        if ((1 << stg) == pos)
         {
-          if (j % 2)
-          {
-            // Ungerade: (COUNT - 1) / 2 <= SUMME <= (COUNT + 1) / 2
-            add_constraintex(lp, j, rowvec, colvec, LE, (int)(j + 1) / 2);
-            add_constraintex(lp, j, rowvec, colvec, GE, (int)(j - 1) / 2);
-          }
+          // Wenn es nur einen mit Ranking geben kann, dann wandert dieser beim ersten Mal
+          //     - Wenn ungerade: nach unten
+          //     - Wenn gerade: nach oben
+          if (sec % 2)
+            add_constraintex(lp, j, rowvec, colvec, EQ, 1);
           else
+            add_constraintex(lp, j, rowvec, colvec, EQ, 0);
+
+        }
+        else if ((1 << stg) > pos / 2)
+        {
+          // Wenn es nur einen mit Ranking geben kann, dann wandert dieser die weiteren Male
+          //     - Wenn gerade: nach unten
+          //     - Wenn ungerade: nach oben
+          if (sec % 2)
+            add_constraintex(lp, j, rowvec, colvec, EQ, 0);
+          else
+            add_constraintex(lp, j, rowvec, colvec, EQ, 1);
+        }
+        else 
+        {
+          // Max Haelfte moegliche Anzahl in Stufe, min was gefunden wurde als Haelfte max moeglich
+          // Moegliche Anzahl in Stufe ist pos / 2
+          // Max: pos / (2 << stg); Min: max(0, j - pos / (2 << stg))
+          add_constraintex(lp, j, rowvec, colvec, LE, (int)(pos / (2 << stg)));
+          add_constraintex(lp, j, rowvec, colvec, GE, std::max(0, (int)(j - pos / (2 << stg))));
+        }
+      }
+    }
+  }
+
+  // Nat'l Ranking verteilen
+  // Kopie von oben, aber bezogen auf nat'l rank und ohne fixe Positionen
+  if (true)
+  {
+    // Only with world ranking
+    if (rkChoice == World)
+    {
+      for (auto it : listNRK)
+      {
+        DrawListTeam &list = ((DrawItemNation *) it)->teams;
+
+        // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
+        for (int pos = 1; pos / 2 < list.Count(); pos *= 2)
+        {
+          memset(colvec, 0, cols * sizeof(int));
+          memset(rowvec, 0, cols * sizeof(REAL));
+
+          int j = 0;
+          for (auto it : list)
           {
-            // Gerade: COUNT / 2 == SUMME
-            add_constraintex(lp, j, rowvec, colvec, EQ, (int)j / 2);
+            DrawItemTeam *itemTM = (DrawItemTeam *) it;
+            if (itemTM->pos[stg] != sec)
+              continue;
+
+            // List ist nach nat'l rank sortiert
+            if (itemTM->rkNatlRank > pos)
+              break;
+
+            colvec[j] = colMapping[itemTM];
+            rowvec[j] = 1;
+
+            j++;
+          }
+
+          if (j == 0)
+            continue;
+
+          // Wenn es mehr als einen gibt, gleichmaessig verteilen
+          // Ansonsten ist es egal, wohin er rutscht
+          if (j > 1)
+          {
+            if (j % 2)
+            {
+              // Ungerade: (COUNT - 1) / 2 <= SUMME <= (COUNT + 1) / 2
+              add_constraintex(lp, j, rowvec, colvec, LE, (int)(j + 1) / 2);
+              add_constraintex(lp, j, rowvec, colvec, GE, (int)(j - 1) / 2);
+            }
+            else
+            {
+              // Gerade: COUNT / 2 == SUMME
+              add_constraintex(lp, j, rowvec, colvec, EQ, (int)j / 2);
+            }
           }
         }
       }
@@ -1756,17 +1910,6 @@ bool DrawLP::DrawImpl(long seed)
     fclose(file);
 #endif      
     return false;       // ... nicht erfolgreich
-  }
-
-  // Ersten und Zweiten setzen
-  auto it = listIRK.begin();
-  if (it != listIRK.end())
-  {
-    DrawItemTeam *itemTM = (DrawItemTeam *)(*it);
-    itemTM->pos[0] = 1;
-
-    for (int stg = 1, sec = gr.grSize; sec; stg++, sec /= 2)
-      itemTM->pos[stg] = (itemTM->pos[0] - 1) / sec + 1;
   }
 
   // Spieler zaehlen und Groesse der Gruppe pruefen

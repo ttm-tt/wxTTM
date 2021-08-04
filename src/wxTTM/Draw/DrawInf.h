@@ -13,6 +13,7 @@
 #include  "StListStore.h"
 #include  "RkListStore.h"
 #include  "RkEntryStore.h"
+#include  "StEntryStore.h"
 #include  <list>
 
 
@@ -104,6 +105,7 @@ class  DrawItemTeam : public DrawItem
     // Konstruktor
     DrawItemTeam();
     DrawItemTeam(const TmListRec &);
+    DrawItemTeam(const StEntry &);
     DrawItemTeam(const RkEntry &);
    ~DrawItemTeam();
 

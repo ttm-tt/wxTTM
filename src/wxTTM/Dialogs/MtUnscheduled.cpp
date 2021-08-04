@@ -153,8 +153,8 @@ void CMtUnscheduled::OnInitialUpdate()
   m_listCtrl->InsertColumn(3, _("Round"), wxALIGN_LEFT);
   m_listCtrl->InsertColumn(4, _("Match"), wxALIGN_LEFT);
   m_listCtrl->InsertColumn(5, _("Players / Teams"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(6, _("Date"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(7, _("Time"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(6, _("Date"), wxALIGN_LEFT, 6 * cW);
+  m_listCtrl->InsertColumn(7, _("Time"), wxALIGN_LEFT, 5 * cW);
 
   m_listCtrl->ResizeColumn(5);
 
