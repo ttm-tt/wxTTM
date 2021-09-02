@@ -144,136 +144,141 @@ et7.mtID = mt.mtID AND mtSet6.mtSet = 7)#13#
 pe = 1#13##10#               AND mt.mtDat
 eTime #62#= :PSTARTTIME AND mt.mtDateTime
  #60#= :PENDTIME #13##10#               A
-ND ((SELECT 0) = :PNAID OR plAnaID = :PNA
-ID OR plXnaID = :PNAID)#13##10#          
-     AND (mtTable #62#= :PSTARTTABLE AND 
-mtTable #60#= :PENDTABLE)#13##10#UNION#13#
-#10#SELECT    plAplNr#44# plApsFirst#44# 
-plApsLast#44# plAnaName#44# #13##10#     
-          plBplNr#44# plBpsFirst#44# plBp
-sLast#44# plBnaName#44# #13##10#         
-      plXplNr#44#  plXpsFirst#44# plXpsLa
-st#44# plXnaName#44# #13##10#            
-   plYplNr#44#  plYpsFirst#44# plYpsLast#44#
- plYnaName#44# #13##10#               NUL
-L AS tmAtmName#44# NULL AS tmAtmDesc#44# 
-NULL AS tmAnaName#44##13##10#            
-   NULL AS tmXtmName#44# NULL AS tmXtmDes
-c#44# NULL AS tmXnaName#44##13##10#      
-         mt.mtID AS mtID#44# mtDateTime#44#
- mtTable#44# stA#44# stX#44# cp.cpName#44#
- gr.grName#44# gr.grDesc#44# cp.cpType#44#
-#13##10#               mt.mtWalkOverA#44#
- mt.mtWalkOverX#44##13##10#              
- mt.mtResA AS mtResA#44# mt.mtResX AS mtR
-esX#44# #13##10#               mtSet1.mtR
-esA AS mtSet1ResA#44# mtSet1.mtResX AS mt
-Set1ResX#44##13##10#               mtSet2
-.mtResA AS mtSet2ResA#44# mtSet2.mtResX A
-S mtSet2ResX#44##13##10#               mt
-Set3.mtResA AS mtSet3ResA#44# mtSet3.mtRe
-sX AS mtSet3ResX#44##13##10#             
-  mtSet4.mtResA AS mtSet4ResA#44# mtSet4.
-mtResX AS mtSet4ResX#44##13##10#         
-      mtSet5.mtResA AS mtSet5ResA#44# mtS
-et5.mtResX AS mtSet5ResX#44##13##10#     
-          mtSet6.mtResA AS mtSet6ResA#44#
- mtSet6.mtResX AS mtSet6ResX#44##13##10# 
-              mtSet7.mtResA AS mtSet7ResA
-#44# mtSet7.mtResX AS mtSet7ResX#44##13##10#
-               mtChecked#44# mtUmpire#44#
- mtUmpire2#44##13##10#               up1.
-psLast AS upApsLast#44# up1.psFirst AS up
-HpsFirst#44# up1.naName AS upHnaName#44##13#
-#10#               up2.psLast AS upApsLas
-t#44# up2.psFirst AS upApsFirst#44# up2.n
-aName AS upAnaName#13##10#FROM      MtDou
-bleList mt INNER JOIN GrList gr ON mt.grI
-D = gr.grID#13##10#               INNER J
-OIN CpList cp ON gr.cpID = cp.cpID#13##10#
-               LEFT OUTER JOIN MtSet mtSe
-t1 ON (mtSet1.mtID = mt.mtID AND mtSet1.m
-tSet = 1)#13##10#               LEFT OUTE
-R JOIN MtSet mtSet2 ON (mtSet2.mtID = mt.
-mtID AND mtSet2.mtSet = 2)#13##10#       
-        LEFT OUTER JOIN MtSet mtSet3 ON (
-mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 
-3)#13##10#               LEFT OUTER JOIN 
-MtSet mtSet4 ON (mtSet4.mtID = mt.mtID AN
-D mtSet4.mtSet = 4)#13##10#              
- LEFT OUTER JOIN MtSet mtSet5 ON (mtSet5.
-mtID = mt.mtID AND mtSet5.mtSet = 5)#13##10#
-               LEFT OUTER JOIN MtSet mtSe
-t6 ON (mtSet6.mtID = mt.mtID AND mtSet6.m
-tSet = 6)#13##10#               LEFT OUTE
-R JOIN MtSet mtSet7 ON (mtSet7.mtID = mt.
-mtID AND mtSet6.mtSet = 7)#13##10#       
-        LEFT OUTER JOIN UpList up1 ON up1
-.upNr = mtUmpire#13##10#               LE
-FT OUTER JOIN UpList up2 ON up2.upNr = mt
-Umpire2#13##10#WHERE    (cp.cpType = 2 OR
- cp.cpType = 3)#13##10#              AND 
-mt.mtDateTime #62#= :PSTARTTIME AND mt.mt
-DateTime #60#= :PENDTIME #13##10#        
-      AND ((SELECT 0) = :PNAID OR plAnaID
- = :PNAID OR plBnaID = :PNAID OR plXnaID 
-= :PNAID OR plYnaID = :PNAID)#13##10#    
-          AND (mtTable #62#= :PSTARTTABLE
- AND mtTable #60#= :PENDTABLE)#13##10#UNI
-ON#13##10#SELECT    NULL AS plAplNr#44# N
-ULL AS plApsFirst#44# NULL AS plApsLast#44#
- NULL AS plAnaName#44# #13##10#          
-     NULL AS plBplNr#44# NULL AS plBpsFir
-st#44# NULL AS plBpsLast#44# NULL AS plBn
-aName#44# #13##10#               NULL AS 
-plXplNr#44# NULL AS plXpsFirst#44# NULL A
-S plXpsLast#44# NULL AS plXnaName#44# #13#
-#10#               NULL AS plYplNr#44# NU
-LL AS plYpsFirst#44# NULL AS plYpsLast#44#
- NULL AS plYnaName#44# #13##10#          
-     tmAtmName#44# tmAtmDesc#44# tmAnaNam
-e#44# #13##10#               tmXtmName#44#
- tmXtmDesc#44# tmXnaName#44##13##10#     
-          mt.mtID AS mtID#44# mtDateTime#44#
- mtTable#44# stA#44# stX#44# cp.cpName#44#
- gr.grName#44# gr.grDesc#44# cp.cpType#44#
-#13##10#               mt.mtWalkOverA#44#
- mt.mtWalkOverX#44##13##10#              
- mt.mtResA AS mtResA#44# mt.mtResX AS mtR
-esX#44# #13##10#               NULL AS mt
-Set1ResA#44# NULL AS mtSet1tResX#44##13##10#
-               NULL AS mtSet2ResA#44# NUL
-L AS mtSet2ResX#44##13##10#              
- NULL AS mtSet3ResA#44# NULL AS mtSet3Res
+ND ((SELECT 0) = :PCPID OR cp.cpID = :PCP
+ID)#13##10#               AND ((SELECT 0)
+ = :PNAID OR plAnaID = :PNAID OR plXnaID 
+= :PNAID)#13##10#               AND (mtTa
+ble #62#= :PSTARTTABLE AND mtTable #60#= 
+:PENDTABLE)#13##10#UNION#13##10#SELECT   
+ plAplNr#44# plApsFirst#44# plApsLast#44#
+ plAnaName#44# #13##10#               plB
+plNr#44# plBpsFirst#44# plBpsLast#44# plB
+naName#44# #13##10#               plXplNr
+#44#  plXpsFirst#44# plXpsLast#44# plXnaN
+ame#44# #13##10#               plYplNr#44#
+  plYpsFirst#44# plYpsLast#44# plYnaName#44#
+ #13##10#               NULL AS tmAtmName
+#44# NULL AS tmAtmDesc#44# NULL AS tmAnaN
+ame#44##13##10#               NULL AS tmX
+tmName#44# NULL AS tmXtmDesc#44# NULL AS 
+tmXnaName#44##13##10#               mt.mt
+ID AS mtID#44# mtDateTime#44# mtTable#44#
+ stA#44# stX#44# cp.cpName#44# gr.grName#44#
+ gr.grDesc#44# cp.cpType#44##13##10#     
+          mt.mtWalkOverA#44# mt.mtWalkOve
+rX#44##13##10#               mt.mtResA AS
+ mtResA#44# mt.mtResX AS mtResX#44# #13##10#
+               mtSet1.mtResA AS mtSet1Res
+A#44# mtSet1.mtResX AS mtSet1ResX#44##13#
+#10#               mtSet2.mtResA AS mtSet
+2ResA#44# mtSet2.mtResX AS mtSet2ResX#44#
+#13##10#               mtSet3.mtResA AS m
+tSet3ResA#44# mtSet3.mtResX AS mtSet3ResX
+#44##13##10#               mtSet4.mtResA 
+AS mtSet4ResA#44# mtSet4.mtResX AS mtSet4
+ResX#44##13##10#               mtSet5.mtR
+esA AS mtSet5ResA#44# mtSet5.mtResX AS mt
+Set5ResX#44##13##10#               mtSet6
+.mtResA AS mtSet6ResA#44# mtSet6.mtResX A
+S mtSet6ResX#44##13##10#               mt
+Set7.mtResA AS mtSet7ResA#44# mtSet7.mtRe
+sX AS mtSet7ResX#44##13##10#             
+  mtChecked#44# mtUmpire#44# mtUmpire2#44#
+#13##10#               up1.psLast AS upAp
+sLast#44# up1.psFirst AS upHpsFirst#44# u
+p1.naName AS upHnaName#44##13##10#       
+        up2.psLast AS upApsLast#44# up2.p
+sFirst AS upApsFirst#44# up2.naName AS up
+AnaName#13##10#FROM      MtDoubleList mt 
+INNER JOIN GrList gr ON mt.grID = gr.grID
+#13##10#               INNER JOIN CpList 
+cp ON gr.cpID = cp.cpID#13##10#          
+     LEFT OUTER JOIN MtSet mtSet1 ON (mtS
+et1.mtID = mt.mtID AND mtSet1.mtSet = 1)#13#
+#10#               LEFT OUTER JOIN MtSet 
+mtSet2 ON (mtSet2.mtID = mt.mtID AND mtSe
+t2.mtSet = 2)#13##10#               LEFT 
+OUTER JOIN MtSet mtSet3 ON (mtSet3.mtID =
+ mt.mtID AND mtSet3.mtSet = 3)#13##10#   
+            LEFT OUTER JOIN MtSet mtSet4 
+ON (mtSet4.mtID = mt.mtID AND mtSet4.mtSe
+t = 4)#13##10#               LEFT OUTER J
+OIN MtSet mtSet5 ON (mtSet5.mtID = mt.mtI
+D AND mtSet5.mtSet = 5)#13##10#          
+     LEFT OUTER JOIN MtSet mtSet6 ON (mtS
+et6.mtID = mt.mtID AND mtSet6.mtSet = 6)#13#
+#10#               LEFT OUTER JOIN MtSet 
+mtSet7 ON (mtSet7.mtID = mt.mtID AND mtSe
+t6.mtSet = 7)#13##10#               LEFT 
+OUTER JOIN UpList up1 ON up1.upNr = mtUmp
+ire#13##10#               LEFT OUTER JOIN
+ UpList up2 ON up2.upNr = mtUmpire2#13##10#
+WHERE    (cp.cpType = 2 OR cp.cpType = 3)
+#13##10#              AND mt.mtDateTime #62#
+= :PSTARTTIME AND mt.mtDateTime #60#= :PE
+NDTIME #13##10#              AND ((SELECT
+ 0) = :PCPID OR cp.cpID = :PCPID)#13##10#
+              AND ((SELECT 0) = :PNAID OR
+ plAnaID = :PNAID OR plBnaID = :PNAID OR 
+plXnaID = :PNAID OR plYnaID = :PNAID)#13#
+#10#              AND (mtTable #62#= :PST
+ARTTABLE AND mtTable #60#= :PENDTABLE)#13#
+#10#UNION#13##10#SELECT    NULL AS plAplN
+r#44# NULL AS plApsFirst#44# NULL AS plAp
+sLast#44# NULL AS plAnaName#44# #13##10# 
+              NULL AS plBplNr#44# NULL AS
+ plBpsFirst#44# NULL AS plBpsLast#44# NUL
+L AS plBnaName#44# #13##10#              
+ NULL AS plXplNr#44# NULL AS plXpsFirst#44#
+ NULL AS plXpsLast#44# NULL AS plXnaName#44#
+ #13##10#               NULL AS plYplNr#44#
+ NULL AS plYpsFirst#44# NULL AS plYpsLast
+#44# NULL AS plYnaName#44# #13##10#      
+         tmAtmName#44# tmAtmDesc#44# tmAn
+aName#44# #13##10#               tmXtmNam
+e#44# tmXtmDesc#44# tmXnaName#44##13##10#
+               mt.mtID AS mtID#44# mtDate
+Time#44# mtTable#44# stA#44# stX#44# cp.c
+pName#44# gr.grName#44# gr.grDesc#44# cp.
+cpType#44##13##10#               mt.mtWal
+kOverA#44# mt.mtWalkOverX#44##13##10#    
+           mt.mtResA AS mtResA#44# mt.mtR
+esX AS mtResX#44# #13##10#               
+NULL AS mtSet1ResA#44# NULL AS mtSet1tRes
 X#44##13##10#               NULL AS mtSet
-4ResA#44# NULL AS mtSet4ResX#44##13##10# 
-              NULL AS mtSet5ResA#44# NULL
- AS mtSet5ResX#44##13##10#               
-NULL AS mtSet6ResA#44# NULL AS mtSet6ResX
-#44##13##10#               NULL AS mtSet7
-ResA#44# NULL AS mtSet7ResX#44##13##10#  
-             mtChecked#44# mtUmpire#44# m
-tUmpire2#44##13##10#               up1.ps
-Last AS upApsLast#44# up1.psFirst AS upHp
-sFirst#44# up1.naName AS upHnaName#44##13#
-#10#               up2.psLast AS upApsLas
-t#44# up2.psFirst AS upApsFirst#44# up2.n
-aName AS upAnaName#13##10#FROM     MtTeam
-List mt INNER JOIN GrList gr ON mt.grID =
- gr.grID#13##10#              INNER JOIN 
-CpList cp ON gr.cpID = cp.cpID#13##10#   
-            LEFT OUTER JOIN UpList up1 ON
- up1.upNr = mtUmpire#13##10#             
-  LEFT OUTER JOIN UpList up2 ON up2.upNr 
-= mtUmpire2#13##10#WHERE   cpType = 4#13#
-#10#              AND mt.mtDateTime #62#=
- :PSTARTTIME AND mt.mtDateTime #60#= :PEN
-DTIME #13##10#              AND ( (SELECT
- 0) = :PNAID OR tmAnaID = :PNAID OR tmXna
-ID = :PNAID)#13##10#              AND (mt
-Table #62#= :PSTARTTABLE AND mtTable #60#
-= :PENDTABLE)#13##10#ORDER BY mtDateTime#44#
- mtTable</SQL>
+2ResA#44# NULL AS mtSet2ResX#44##13##10# 
+              NULL AS mtSet3ResA#44# NULL
+ AS mtSet3ResX#44##13##10#               
+NULL AS mtSet4ResA#44# NULL AS mtSet4ResX
+#44##13##10#               NULL AS mtSet5
+ResA#44# NULL AS mtSet5ResX#44##13##10#  
+             NULL AS mtSet6ResA#44# NULL 
+AS mtSet6ResX#44##13##10#               N
+ULL AS mtSet7ResA#44# NULL AS mtSet7ResX#44#
+#13##10#               mtChecked#44# mtUm
+pire#44# mtUmpire2#44##13##10#           
+    up1.psLast AS upApsLast#44# up1.psFir
+st AS upHpsFirst#44# up1.naName AS upHnaN
+ame#44##13##10#               up2.psLast 
+AS upApsLast#44# up2.psFirst AS upApsFirs
+t#44# up2.naName AS upAnaName#13##10#FROM
+     MtTeamList mt INNER JOIN GrList gr O
+N mt.grID = gr.grID#13##10#              
+INNER JOIN CpList cp ON gr.cpID = cp.cpID
+#13##10#               LEFT OUTER JOIN Up
+List up1 ON up1.upNr = mtUmpire#13##10#  
+             LEFT OUTER JOIN UpList up2 O
+N up2.upNr = mtUmpire2#13##10#WHERE   cpT
+ype = 4#13##10#              AND mt.mtDat
+eTime #62#= :PSTARTTIME AND mt.mtDateTime
+ #60#= :PENDTIME #13##10#              AN
+D ((SELECT 0) = :PCPID OR cp.cpID = :PCPI
+D)#13##10#              AND ((SELECT 0) =
+ :PNAID OR tmAnaID = :PNAID OR tmXnaID = 
+:PNAID)#13##10#              AND (mtTable
+ #62#= :PSTARTTABLE AND mtTable #60#= :PE
+NDTABLE)#13##10#ORDER BY mtDateTime#44# m
+tTable</SQL>
 <DATASOURCE type="String"></DATASOURCE>
 <MYBASEFILENAME type="String"></MYBASEFILENAME>
 <MYBASEFIELDS type="String"></MYBASEFIELDS>
@@ -398,6 +403,31 @@ t5.mtID = mt.mtID AND mtSet5.mtSet = 5)#13#
 #62# 0 AND (mt.mtResA #43# mt.mtResX) #62#
  0#13##10#ORDER BY mt.mtMS</SQL>
 <DATASOURCE type="String">TT32</DATASOURCE>
+<MYBASEFILENAME type="String"></MYBASEFILENAME>
+<MYBASEFIELDS type="String"></MYBASEFIELDS>
+<MYBASEINDEXFIELDS type="String"></MYBASEINDEXFIELDS>
+<MYBASEMASTERFIELDS type="String"></MYBASEMASTERFIELDS>
+<BDEINDEXFIELDS type="String"></BDEINDEXFIELDS>
+<BDEINDEXNAME type="String"></BDEINDEXNAME>
+<BDETABLE type="String"></BDETABLE>
+<BDETYPE type="Integer">0</BDETYPE>
+<BDEFILTER type="String"></BDEFILTER>
+<BDEMASTERFIELDS type="String"></BDEMASTERFIELDS>
+<BDEFIRSTRANGE type="String"></BDEFIRSTRANGE>
+<BDELASTRANGE type="String"></BDELASTRANGE>
+<DATAUNIONS type="String"></DATAUNIONS>
+<GROUPUNION type="Boolean">False</GROUPUNION>
+<OPENONSTART type="Boolean">True</OPENONSTART>
+<PARALLELUNION type="Boolean">False</PARALLELUNION>
+</DATAINFO>
+<DATAINFO>
+<ALIAS type="String">TT32_CPLIST</ALIAS>
+<DATABASEALIAS type="String">TT32</DATABASEALIAS>
+<SQL type="WideString">SELECT #39# All Events#39# AS cpDesc#44# 
+0 AS cpID#13##10#UNION#13##10#SELECT cpDe
+sc#44# cpID FROM CpList#13##10#ORDER BY c
+pDesc</SQL>
+<DATASOURCE type="String"></DATASOURCE>
 <MYBASEFILENAME type="String"></MYBASEFILENAME>
 <MYBASEFIELDS type="String"></MYBASEFIELDS>
 <MYBASEINDEXFIELDS type="String"></MYBASEINDEXFIELDS>
@@ -760,6 +790,27 @@ t5.mtID = mt.mtID AND mtSet5.mtSet = 5)#13#
 <SEARCHDATASET type="String">TT32_MTDATETIME</SEARCHDATASET>
 <SEARCHPARAM type="String"></SEARCHPARAM>
 <VALUE type="String"></VALUE>
+</PARAMETER>
+<PARAMETER>
+<NAME type="String">PCPID</NAME>
+<DESCRIPTION type="WideString">Select Event</DESCRIPTION>
+<HINT type="WideString"></HINT>
+<ERRORMESSAGE type="WideString"></ERRORMESSAGE>
+<VALIDATION type="WideString"></VALIDATION>
+<SEARCH type="WideString"></SEARCH>
+<VISIBLE type="Boolean">True</VISIBLE>
+<ISREADONLY type="Boolean">False</ISREADONLY>
+<NEVERVISIBLE type="Boolean">False</NEVERVISIBLE>
+<ALLOWNULLS type="Boolean">False</ALLOWNULLS>
+<PARAMTYPE type="Integer">11</PARAMTYPE>
+<DATASETS type="String">TT32#13##10#</DATASETS>
+<ITEMS type="String"></ITEMS>
+<VALUES type="String"></VALUES>
+<SELECTED type="String"></SELECTED>
+<LOOKUPDATASET type="String">TT32_CPLIST</LOOKUPDATASET>
+<SEARCHDATASET type="String"></SEARCHDATASET>
+<SEARCHPARAM type="String"></SEARCHPARAM>
+<VALUE type="String">0</VALUE>
 </PARAMETER>
 <PARAMETER>
 <NAME type="String">PNAID</NAME>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-05 13:16+0200\n"
+"POT-Creation-Date: 2021-09-02 14:03+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -1016,7 +1016,6 @@ msgid "Print position numbers"
 msgstr "Print position numbers"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:4158
-#| msgid "Print schedule in raster"
 msgid "Print only scheduled"
 msgstr "Print only scheduled"
 
@@ -1715,7 +1714,6 @@ msgid "Print Call Area"
 msgstr "Print Call Area"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:12857
-#| msgid "Print Service And Timeout"
 msgid "Print Start And End Time"
 msgstr "Print Start And End Time"
 
@@ -2029,7 +2027,7 @@ msgstr "Result Forms"
 msgid "Group Template"
 msgstr "Group Template"
 
-#: Dialogs/ImportOnlineEntries.cpp:268
+#: Dialogs/ImportOnlineEntries.cpp:269
 #, c-format
 msgid ""
 "Could not read list of tournaments: \n"
@@ -2038,27 +2036,27 @@ msgstr ""
 "Could not read list of tournaments: \n"
 "%s"
 
-#: Dialogs/ImportOnlineEntries.cpp:274
+#: Dialogs/ImportOnlineEntries.cpp:275
 msgid "Could not read list of tournaments"
 msgstr "Could not read list of tournaments"
 
-#: Dialogs/ImportOnlineEntries.cpp:295
+#: Dialogs/ImportOnlineEntries.cpp:296
 msgid "No tournaments found"
 msgstr "No tournaments found"
 
-#: Dialogs/ImportOnlineEntries.cpp:332
+#: Dialogs/ImportOnlineEntries.cpp:333
 msgid "Reading List of Tournaments"
 msgstr "Reading List of Tournaments"
 
-#: Dialogs/ImportOnlineEntries.cpp:351
+#: Dialogs/ImportOnlineEntries.cpp:352
 msgid "Overwrite exsting import files?"
 msgstr "Overwrite exsting import files?"
 
-#: Dialogs/ImportOnlineEntries.cpp:416
+#: Dialogs/ImportOnlineEntries.cpp:417
 msgid "Reading Tournament"
 msgstr "Reading Tournament"
 
-#: Dialogs/ImportOnlineEntries.cpp:442
+#: Dialogs/ImportOnlineEntries.cpp:443
 #, c-format
 msgid ""
 "Could not read tournament:\n"
@@ -2067,47 +2065,47 @@ msgstr ""
 "Could not read tournament:\n"
 "%s"
 
-#: Dialogs/ImportOnlineEntries.cpp:985
+#: Dialogs/ImportOnlineEntries.cpp:986
 msgid "Clear Tournament"
 msgstr "Clear Tournament"
 
-#: Dialogs/ImportOnlineEntries.cpp:1038
+#: Dialogs/ImportOnlineEntries.cpp:1050
 msgid "Import Competitions"
 msgstr "Import Competitions"
 
-#: Dialogs/ImportOnlineEntries.cpp:1047 wx/MainFrm.cpp:209
+#: Dialogs/ImportOnlineEntries.cpp:1059 wx/MainFrm.cpp:209
 msgid "Import Associations"
 msgstr "Import Associations"
 
-#: Dialogs/ImportOnlineEntries.cpp:1056 wx/MainFrm.cpp:213
+#: Dialogs/ImportOnlineEntries.cpp:1068 wx/MainFrm.cpp:213
 msgid "Import Players"
 msgstr "Import Players"
 
-#: Dialogs/ImportOnlineEntries.cpp:1065
+#: Dialogs/ImportOnlineEntries.cpp:1077
 msgid "Import Rankikng"
 msgstr "Import Rankikng"
 
-#: Dialogs/ImportOnlineEntries.cpp:1077
+#: Dialogs/ImportOnlineEntries.cpp:1089
 msgid "Import Singles"
 msgstr "Import Singles"
 
-#: Dialogs/ImportOnlineEntries.cpp:1086
+#: Dialogs/ImportOnlineEntries.cpp:1098
 msgid "Import Doubles"
 msgstr "Import Doubles"
 
-#: Dialogs/ImportOnlineEntries.cpp:1095
+#: Dialogs/ImportOnlineEntries.cpp:1107
 msgid "Import Mixed"
 msgstr "Import Mixed"
 
-#: Dialogs/ImportOnlineEntries.cpp:1104
+#: Dialogs/ImportOnlineEntries.cpp:1116
 msgid "Import Teams"
 msgstr "Import Teams"
 
-#: Dialogs/ImportOnlineEntries.cpp:1132
+#: Dialogs/ImportOnlineEntries.cpp:1144
 msgid "Import Tournament"
 msgstr "Import Tournament"
 
-#: Dialogs/ImportOnlineEntries.cpp:1167
+#: Dialogs/ImportOnlineEntries.cpp:1179
 msgid "Select Directory for Import Files"
 msgstr "Select Directory for Import Files"
 
@@ -2603,22 +2601,22 @@ msgstr "Edit Umpire"
 msgid "Are you sure to delete selected umpires?"
 msgstr "Are you sure to delete selected umpires?"
 
-#: Draw/DrawCP.cpp:1925 Draw/DrawLP.cpp:120 Draw/DrawRR.cpp:203
+#: Draw/DrawCP.cpp:1925 Draw/DrawLP.cpp:121 Draw/DrawRR.cpp:203
 #, c-format
 msgid "Group %s has not finished"
 msgstr "Group %s has not finished"
 
-#: Draw/DrawCP.cpp:1971 Draw/DrawLP.cpp:154 Draw/DrawRR.cpp:237
+#: Draw/DrawCP.cpp:1971 Draw/DrawLP.cpp:155 Draw/DrawRR.cpp:237
 #, c-format
 msgid "Group %s has invalid final standings"
 msgstr "Group %s has invalid final standings"
 
-#: Draw/DrawCP.cpp:1977 Draw/DrawLP.cpp:160 Draw/DrawRR.cpp:243
+#: Draw/DrawCP.cpp:1977 Draw/DrawLP.cpp:161 Draw/DrawRR.cpp:243
 #, c-format
 msgid "The group positions of group %s have been modified. Continue anyway?"
 msgstr "The group positions of group %s have been modified. Continue anyway?"
 
-#: Draw/DrawCP.cpp:2118 Draw/DrawLP.cpp:592
+#: Draw/DrawCP.cpp:2118 Draw/DrawLP.cpp:668
 #, c-format
 msgid ""
 "Second of group %s is seeded into the same half as first. Continue anyway?"
@@ -2639,17 +2637,17 @@ msgstr ""
 msgid "More than 1 pack in last stage at pos %d - %d"
 msgstr "More than 1 pack in last stage at pos %d - %d"
 
-#: Draw/DrawCP.cpp:2446 Draw/DrawLP.cpp:1581
+#: Draw/DrawCP.cpp:2446 Draw/DrawLP.cpp:1730
 #, c-format
 msgid "Two first playing in first round at pos %d - %d"
 msgstr "Two first playing in first round at pos %d - %d"
 
-#: Draw/DrawCP.cpp:2456 Draw/DrawLP.cpp:1588
+#: Draw/DrawCP.cpp:2456 Draw/DrawLP.cpp:1737
 #, c-format
 msgid "Second got an unexpected bye in first round at pos %d - %d"
 msgstr "Second got an unexpected bye in first round at pos %d - %d"
 
-#: Draw/DrawCP.cpp:2467 Draw/DrawLP.cpp:1595
+#: Draw/DrawCP.cpp:2467 Draw/DrawLP.cpp:1751
 #, c-format
 msgid "First did not get an expected bye in first round at pos %d - %d"
 msgstr "First did not get an expected bye in first round at pos %d - %d"
@@ -2660,17 +2658,17 @@ msgid "No group or group to small!"
 msgstr "No group or group to small!"
 
 #: Draw/DrawCP.cpp:2892 Draw/DrawCSD.cpp:1149 Draw/DrawCSD.cpp:1188
-#: Draw/DrawLP.cpp:1671 Draw/DrawRR.cpp:137
+#: Draw/DrawLP.cpp:1827 Draw/DrawRR.cpp:137
 #, c-format
 msgid "Group %s has already started!"
 msgstr "Group %s has already started!"
 
-#: Draw/DrawCP.cpp:2900 Draw/DrawLP.cpp:1679 Draw/DrawRR.cpp:131
+#: Draw/DrawCP.cpp:2900 Draw/DrawLP.cpp:1835 Draw/DrawRR.cpp:131
 #, c-format
 msgid "A draw has been performed and scheduled for group %s!"
 msgstr "A draw has been performed and scheduled for group %s!"
 
-#: Draw/DrawCP.cpp:2904 Draw/DrawLP.cpp:1683 Draw/DrawRR.cpp:143
+#: Draw/DrawCP.cpp:2904 Draw/DrawLP.cpp:1839 Draw/DrawRR.cpp:143
 #, c-format
 msgid "A draw has been performed for group %s. Continue anyway?"
 msgstr "A draw has been performed for group %s. Continue anyway?"
@@ -2697,62 +2695,68 @@ msgstr "A draw has been performed and scheduled!"
 msgid "A draw has been performed. Continue anyway?"
 msgstr "A draw has been performed. Continue anyway?"
 
-#: Draw/DrawLP.cpp:186
+#: Draw/DrawLP.cpp:187
 #, c-format
 msgid ""
 "Entry on pos. %d in group %s is qualified but has No Consolation flag set"
 msgstr ""
 "Entry on pos. %d in group %s is qualified but has No Consolation flag set"
 
-#: Draw/DrawLP.cpp:228
+#: Draw/DrawLP.cpp:229
 #, c-format
 msgid "No groups found for stage %s!"
 msgstr "No groups found for stage %s!"
 
-#: Draw/DrawLP.cpp:234
+#: Draw/DrawLP.cpp:235
 #, c-format
 msgid "Group %s has not yet started!"
 msgstr "Group %s has not yet started!"
 
-#: Draw/DrawLP.cpp:266
+#: Draw/DrawLP.cpp:267
 #, c-format
 msgid "Not all required matches of group %s have been played"
 msgstr "Not all required matches of group %s have been played"
 
-#: Draw/DrawLP.cpp:335 Draw/DrawRR.cpp:288
+#: Draw/DrawLP.cpp:361 Draw/DrawRR.cpp:288
 msgid "Ranked players ignored because players have already been seeded"
 msgstr "Ranked players ignored because players have already been seeded"
 
-#: Draw/DrawLP.cpp:443 Draw/DrawRR.cpp:394
+#: Draw/DrawLP.cpp:520 Draw/DrawRR.cpp:402
 #, c-format
 msgid "The ranked entry of group %s finished %d, trying winner instead"
 msgstr "The ranked entry of group %s finished %d, trying winner instead"
 
-#: Draw/DrawLP.cpp:1500
+#: Draw/DrawLP.cpp:1649
 #, c-format
 msgid "Error solving the draw in stg %d sec %d: res = %d"
 msgstr "Error solving the draw in stg %d sec %d: res = %d"
 
-#: Draw/DrawLP.cpp:1561
+#: Draw/DrawLP.cpp:1710
 #, c-format
 msgid "Team seeded to pos %d was drawn to different pos %d in std %d sec %d"
 msgstr "Team seeded to pos %d was drawn to different pos %d in std %d sec %d"
 
-#: Draw/DrawLP.cpp:1609
+#: Draw/DrawLP.cpp:1744
+#, c-format
+#| msgid "First did not get an expected bye in first round at pos %d - %d"
+msgid "DE did not get an expected bye in first round at pos %d - %d"
+msgstr "DE did not get an expected bye in first round at pos %d - %d"
+
+#: Draw/DrawLP.cpp:1765
 #, c-format
 msgid "No solution exists in stg %d sec %d"
 msgstr "No solution exists in stg %d sec %d"
 
-#: Draw/DrawLP.cpp:1665
+#: Draw/DrawLP.cpp:1821
 msgid "No group!"
 msgstr "No group!"
 
-#: Draw/DrawLP.cpp:1776
+#: Draw/DrawLP.cpp:1921
 #, c-format
 msgid "Group too small for %d entries!"
 msgstr "Group too small for %d entries!"
 
-#: Draw/DrawLP.cpp:1785
+#: Draw/DrawLP.cpp:1930
 #, c-format
 msgid "Group too large for %d entries!"
 msgstr "Group too large for %d entries!"
@@ -2761,7 +2765,7 @@ msgstr "Group too large for %d entries!"
 msgid "Too few groups for the draw!"
 msgstr "Too few groups for the draw!"
 
-#: Draw/DrawRR.cpp:901
+#: Draw/DrawRR.cpp:909
 msgid "Could not find solution to draw ranked entries"
 msgstr "Could not find solution to draw ranked entries"
 
