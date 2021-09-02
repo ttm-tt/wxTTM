@@ -513,6 +513,8 @@ void CMtListView::OnResultTime(wxCommandEvent &)
 void CMtListView::OnScore(wxCommandEvent &)
 {
   ListItem *itemPtr = m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
 
   bool selected = XRCCTRL(*this, "GroupView", wxCheckBox)->GetValue();
 
@@ -544,11 +546,28 @@ void  CMtListView::OnConsolation(wxCommandEvent &)
   }
   
   OnChangeRound();
+
+  m_listCtrl->SetSelected(0);
 }
+
 
 void CMtListView::OnGroupView(wxCommandEvent &)
 {
+  bool groupView = XRCCTRL(*this, "GroupView", wxCheckBox)->GetValue();
+  ListItem *itemPtr = m_listCtrl->GetCurrentItem();
+  MtEntry mt = (itemPtr ? ((MtItem *) itemPtr)->mt : MtEntry());
+
+  if (!groupView)
+    round = std::max(mt.mt.mtEvent.mtRound, (short) 1);
+  else
+    round = 0;
+
   OnChangeRound();
+
+  if (mt.mt.mtID)
+    m_listCtrl->SetCurrentItem(mt.mt.mtID);
+  else
+    m_listCtrl->SetCurrentIndex(0);
 }
 
 
