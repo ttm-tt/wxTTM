@@ -60,8 +60,8 @@ CScore::CScore() : CFormViewEx()
   fromPlace.mtDateTime.month = tm->tm_mon + 1;
   fromPlace.mtDateTime.day   = tm->tm_mday;
 
-  fromPlace.mtDateTime.hour = tm->tm_hour;
-  fromPlace.mtDateTime.minute = tm->tm_min;
+  fromPlace.mtDateTime.hour = 0;
+  fromPlace.mtDateTime.minute = 0;
 
   fromPlace.mtTable = 0;
 
@@ -85,6 +85,8 @@ bool CScore::Edit(va_list vaList)
   short matchOption = va_arg(vaList, int); 
   short fromTable = (matchOption == 5 ? va_arg(vaList, short) : 0);
   short toTable = (matchOption == 5 ? va_arg(vaList, short) : 999);
+  timestamp fromTime = (matchOption == 5 ? va_arg(vaList, timestamp) : timestamp());
+  timestamp toTime = (matchOption == 5 ? va_arg(vaList, timestamp) : timestamp());
 
   MtListStore  tmpMt;
   tmpMt.SelectById(id);
@@ -125,51 +127,53 @@ bool CScore::Edit(va_list vaList)
       m_combined = true;
       m_consolation = CTT32App::instance()->GetType() == TT_SCI;
     }
-
-    if (matchOption == 5)
-    {
-      // We are combined if there is at least one case where 2 matches of a group are on one table.
-      bool combined = false;
-
-      std::set<long> grIDs;
-
-      MtListStore  mt, lastMt;
-      mt.SelectByTime(fromPlace.mtDateTime, fromPlace.mtTable, toPlace.mtDateTime, toPlace.mtTable);
-
-
-      while (mt.Next())
-      {
-        grIDs.insert(mt.mtEvent.grID);
-        if (mt.mtEvent.grID != lastMt.mtEvent.grID)
-        {
-          // Group on different (not adjectant) tables / times: not combined
-          if (grIDs.find(mt.mtEvent.grID) != grIDs.end())
-            combined = false;
-        }
-        else if (mt.mtPlace.mtDateTime != lastMt.mtPlace.mtDateTime || mt.mtPlace.mtTable != lastMt.mtPlace.mtTable)
-        {
-          // Group on different tables / times: not combined 
-          combined = false;
-        }
-        else
-        {
-          // 2 matches on a table: must be combined
-          combined = true;
-        }
-
-        lastMt = mt;
-      }
-
-      if (combined)
-      {
-        m_combined = true;
-        m_consolation = CTT32App::instance()->GetType() == TT_SCI;
-      }
-    }
   }
   else
   {
     m_matchOption = 5;
+    fromPlace.mtDateTime = fromTime;
+    toPlace.mtDateTime = toTime;
+  }
+
+  if (matchOption == 5)
+  {
+    // We are combined if there is at least one case where 2 matches of a group are on one table.
+    bool combined = false;
+
+    std::set<long> grIDs;
+
+    MtListStore  mt, lastMt;
+    mt.SelectByTime(fromPlace.mtDateTime, fromPlace.mtTable, toPlace.mtDateTime, toPlace.mtTable);
+
+
+    while (mt.Next())
+    {
+      grIDs.insert(mt.mtEvent.grID);
+      if (mt.mtEvent.grID != lastMt.mtEvent.grID)
+      {
+        // Group on different (not adjectant) tables / times: not combined
+        if (grIDs.find(mt.mtEvent.grID) != grIDs.end())
+          combined = false;
+      }
+      else if (mt.mtPlace.mtDateTime != lastMt.mtPlace.mtDateTime || mt.mtPlace.mtTable != lastMt.mtPlace.mtTable)
+      {
+        // Group on different tables / times: not combined 
+        combined = false;
+      }
+      else
+      {
+        // 2 matches on a table: must be combined
+        combined = true;
+      }
+
+      lastMt = mt;
+    }
+
+    if (combined)
+    {
+      m_combined = true;
+      m_consolation = CTT32App::instance()->GetType() == TT_SCI;
+    }
   }
 
   if (m_matchOption == 5)
@@ -204,8 +208,8 @@ void CScore::OnInitialUpdate()
 	
 	FindWindow("DateFrom")->SetValidator(CDateValidator(&fromPlace.mtDateTime));
 	FindWindow("DateUntil")->SetValidator(CDateValidator(&toPlace.mtDateTime));
-	FindWindow("TimeFrom")->SetValidator(CTimeValidator(&fromPlace.mtDateTime));
-	FindWindow("TimeUntil")->SetValidator(CTimeValidator(&toPlace.mtDateTime));
+	FindWindow("TimeFrom")->SetValidator(CTimeValidator(&fromPlace.mtDateTime, false));
+	FindWindow("TimeUntil")->SetValidator(CTimeValidator(&toPlace.mtDateTime, false));
 	FindWindow("TableFrom")->SetValidator(CShortValidator(&fromPlace.mtTable));
 	FindWindow("TableUntil")->SetValidator(CShortValidator(&toPlace.mtTable));
 	

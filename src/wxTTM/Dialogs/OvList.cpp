@@ -668,10 +668,9 @@ void COvList::OnInitialUpdate()
   m_gridCtrl->SetGridLineColour(*wxBLACK);
   
   // Kann ein wxGrid kein wxEVT_CONTEXT_MENU?
-  m_gridCtrl->GetGridWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
+  m_gridCtrl->GetGridCornerLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
   m_gridCtrl->GetGridRowLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
-  // TODO: Click in Ecke gilt fuer das gesamte Grid
-  // m_gridCtrl->GetGridCornerLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
+  m_gridCtrl->GetGridWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
 
   wxFont labelFont = m_gridCtrl->GetLabelFont();
   labelFont.SetPointSize(fontSize);
@@ -1551,14 +1550,16 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
   // coordinates of the cell under mouse
   wxGridCellCoords coords(row, col); 
 
-  if (coords.GetRow() < 0)
-    return;
-    
-  OvItem *itemPtr = coords.GetCol() < 0 ? NULL : m_gridCtrl->GetItem(coords.GetRow(), coords.GetCol());
+  OvItem *itemPtr = (coords.GetRow() < 0 || coords.GetCol() < 0) ? NULL : m_gridCtrl->GetItem(coords.GetRow(), coords.GetCol());
 
   wxMenu popupMenu("");  
   
-  if (itemPtr == 0 || itemPtr->mt.mtID == 0)
+  if (coords.GetRow() < 0)
+  {
+    for (int i = 0; i < WXSIZEOF(emptyCellMenu); i++)
+      popupMenu.Append(2000 + i, wxGetTranslation(emptyCellMenu[i]));
+  }
+  else if (itemPtr == NULL || itemPtr->mt.mtID == 0)
   {
     for (int i = 0; i < WXSIZEOF(emptyCellMenu); i++)
       popupMenu.Append(2000 + i, wxGetTranslation(emptyCellMenu[i]));
@@ -1586,11 +1587,8 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
     }
   }
   
-  if (itemPtr == NULL || itemPtr->mt.mtID == 0)
-    return;
-
   // Combined Group haben Runde auf 0 gesetzt (da alle Spiele zur gleichen Zeit stattfinden)
-  bool combined = itemPtr->mt.mtEvent.mtRound == 0;
+  bool combined = itemPtr && itemPtr->mt.mtEvent.mtRound == 0;
 
   if (emptyCell)
   {
@@ -1600,7 +1598,11 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
       {
         short from = m_fromTable ? m_fromTable : 1;
         short to   = m_toTable ? m_toTable : m_fromTable + m_gridCtrl->GetNumberCols() - 1;
-        CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("Score"), itemPtr->mt.mtID, 5, from, to);
+
+        timestamp fromTime = m_fromTime;
+        timestamp toTime = m_toTime;
+        
+        CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("Score"), itemPtr ? itemPtr->mt.mtID : 0, 5, from, to, fromTime, toTime);
         
         break;
       }
@@ -1608,11 +1610,15 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
       case 1 :
       {
         std::map<wxString, wxString> params;
-        timestamp mtDateTime = itemPtr->mt.mtPlace.mtDateTime;
+        timestamp fromDateTime = m_fromTime, toDateTime = m_toTime;
+        
+        if (itemPtr)
+         fromDateTime = toDateTime = itemPtr->mt.mtPlace.mtDateTime;
+
         params["PSTARTTIME"] = wxString::Format("%04d-%02d-%02d %02d:%02d:00", 
-          mtDateTime.year, mtDateTime.month, mtDateTime.day, mtDateTime.hour, mtDateTime.minute);
+          fromDateTime.year, fromDateTime.month, fromDateTime.day, fromDateTime.hour, fromDateTime.minute);
         params["PENDTIME"] = wxString::Format("%04d-%02d-%02d %02d:%02d:00", 
-          mtDateTime.year, mtDateTime.month, mtDateTime.day, mtDateTime.hour, mtDateTime.minute);
+          toDateTime.year, toDateTime.month, toDateTime.day, toDateTime.hour, toDateTime.minute);
         params["PSTARTTABLE"] = wxString::Format("%d", m_fromTable);
         params["PENDTABLE"] = wxString::Format("%d", m_toTable);
 
