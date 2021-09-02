@@ -141,6 +141,9 @@ bool CDrawChampionship::Edit(va_list vaList)
       fromPos = 1;
       toPos = 2;
 
+      FindWindow("ToGroupLabel")->Show(false);
+      FindWindow("ToGroup")->Show(false);
+
       FindWindow("cbLpsolve")->Hide();
 
       // Re-Layout
