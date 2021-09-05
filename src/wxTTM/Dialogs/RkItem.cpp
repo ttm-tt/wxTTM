@@ -54,7 +54,7 @@ int  RkItem::Compare(const ListItem *itemPtr, int col) const
     // Weder dieses noch das andere item hat Int'l Rank: fall through
     case 5 :
     {
-      int ret = tmp->entry.rankPts - entry.rankPts;
+      double ret = tmp->entry.rankPts - entry.rankPts;
 
       if (ret == 0)
         ret = tmp->rk.rkDirectEntry - rk.rkDirectEntry;
@@ -107,7 +107,7 @@ void RkItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       break;
 
     case 4 :
-      DrawLong(pDC, rect, entry.rankPts);
+      DrawDouble(pDC, rect, entry.rankPts);
       break;
   }
 }
@@ -144,5 +144,3 @@ void RkItem::EndEditColumn(int col, const wxString &value)
   if (!*endPtr)
     rk.rkIntlRank = rank;
 }
-
-

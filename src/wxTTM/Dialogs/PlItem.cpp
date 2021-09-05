@@ -137,7 +137,7 @@ void  PlItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 
     case 6 :
       if (pl.plRankPts)
-        DrawLong(pDC, rect, pl.plRankPts);
+        DrawDouble(pDC, rect, pl.plRankPts);
       break;
 
     case 7:

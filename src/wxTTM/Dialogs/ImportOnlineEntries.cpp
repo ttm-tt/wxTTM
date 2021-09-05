@@ -52,6 +52,22 @@ static int GetInt(XmlRpcValue &val)
 }
 
 
+static int GetDouble(XmlRpcValue &val)
+{
+  switch (val.getType())
+  {
+    case XmlRpcValue::TypeInt :
+      return (double) val;
+    case XmlRpcValue::TypeString :
+      return atof(val);
+    case XmlRpcValue::TypeDouble :
+      return val;
+    default :
+      return 0;
+  }
+}
+
+
 class TournamentItem : public ListItem
 {
   public:
@@ -91,7 +107,7 @@ struct Person {
   int      naID;
   int      born;
   wxString externID;
-  int      rankPts;
+  double   rankPts;
   int      startNr;
   wxString naName;
   wxString phone;
@@ -581,20 +597,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     }
     pl.externID = wxString::FromUTF8((const char *)player["extern_id"]);
     pl.startNr = GetInt(participant["start_no"]);
-    switch (player["rank_pts"].getType())
-    {
-      case XmlRpcValue::TypeDouble :
-        pl.rankPts = (double) player["rank_pts"];
-        break;
-
-      case XmlRpcValue::TypeString :
-        pl.rankPts = atof(player["rank_pts"]);
-        break;
-
-      default :
-        pl.rankPts = 0;
-        break;
-    }
+    pl.rankPts = GetDouble(player["rank_pts"]);
 
     pl.naName = naMap[pl.naID].name;
 
@@ -638,22 +641,7 @@ bool CImportOnlineEntries::ImportThreadRead()
       continue;
 
     int year = GetInt(rankings[idx]["year"]);
-    double rankPts = 0;
-
-    switch (rankings[idx]["rank_pts"].getType())
-    {
-      case XmlRpcValue::TypeDouble :
-        rankPts = (double) rankings[idx]["rank_pts"];
-        break;
-
-      case XmlRpcValue::TypeString :
-        rankPts = atof(rankings[idx]["rank_pts"]);
-        break;
-
-      default :
-        rankPts = 0;
-        break;
-    }
+    double rankPts = GetDouble(rankings[idx]["rank_pts"]);
 
     rpMap[id][year] = rankPts;
   }
@@ -762,7 +750,7 @@ bool CImportOnlineEntries::ImportThreadRead()
            << pl.born << ";"
            << pl.naName << ";" 
            << pl.externID << ";" 
-           << pl.rankPts << ";"
+           << wxString::FromCDouble(pl.rankPts) << ";"
            << pl.comment << ""
            << "\n"
       ;
@@ -800,7 +788,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     line << plMap[plIt->first].startNr << ";";
     for (std::map<short, double>::const_iterator rpIt = plIt->second.cbegin(); rpIt != plIt->second.cend(); rpIt++)
     {
-      line << rpIt->first << ";" << rpIt->second << ";";
+      line << rpIt->first << ";" << wxString::FromCDouble(rpIt->second) << ";";
     }
 
     line << "\n";

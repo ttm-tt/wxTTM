@@ -142,7 +142,7 @@ bool PlRecImpExp::Read(const wxString &line)
     wxStrncpy(naName, strNa, sizeof(naName) / sizeof(wxChar) - 1);
     wxStrncpy(plExtID, strExtID, sizeof(plExtID) / sizeof(wxChar) - 1);
 
-    strRankPts.ToDouble(&plRankPts);
+    strRankPts.ToCDouble(&plRankPts);
   }
 
   psNote = URLDecode(strComment);
@@ -161,7 +161,7 @@ bool PlRecImpExp::Write(wxString &line) const
        << psBirthday << ";"
        << naName << ";"        // Name der Nation
        << plExtID << ";"      // ITTF / DTTB ID
-       << plRankPts << ";"    // Ranking points
+       << wxString::FromCDouble(plRankPts) << ";"    // Ranking points
        << URLEncode(psNote) << ""
   ;
 

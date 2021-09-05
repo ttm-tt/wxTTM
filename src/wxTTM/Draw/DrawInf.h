@@ -121,10 +121,10 @@ class  DrawItemTeam : public DrawItem
     int   lastPos;            // Plazierung in Gruppe
     
     // Qualification + CP
-    bool  rkDirectEntry;      // Qualifier / Direct Entry
-    int   rkNatlRank;         // Nationales ranking
-    int   rkIntlRank;         // Internationalies Ranking
-    int   rankPts;            // Ranking points
+    bool   rkDirectEntry;      // Qualifier / Direct Entry
+    int    rkNatlRank;         // Nationales ranking
+    int    rkIntlRank;         // Internationalies Ranking
+    double rankPts;            // Ranking points
     
     bool  mask;
     
