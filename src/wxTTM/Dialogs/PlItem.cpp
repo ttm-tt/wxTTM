@@ -69,7 +69,14 @@ int  PlItem::Compare(const ListItem *itemPtr, int col) const
       return wxStrcoll(pl.plExtID, plItem->pl.plExtID);
 
     case 6 :
-      return -(pl.plRankPts - plItem->pl.plRankPts);
+      // To compare floats we can't return the difference:
+      // if it is e.g. != 0, but smaller than 1 the return value would be cast to 0
+      if (pl.plRankPts > plItem->pl.plRankPts)
+        return -1;
+      else if (pl.plRankPts < plItem->pl.plRankPts)
+        return +1;
+      else
+        return 0;
 
     case 7:
       return wxStrcoll(pl.naRegion, plItem->pl.naRegion);
