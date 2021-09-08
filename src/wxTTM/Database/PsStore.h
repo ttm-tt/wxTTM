@@ -33,10 +33,6 @@ struct PsRec
   PsRec()       {Init();}
   
   void  Init()  {memset(this, 0, sizeof(PsRec));}
-
-  // Import / Export als CSV-Datei
-  bool Read(const wxString &);
-  bool Write(wxString &) const;
 };
 
 
@@ -49,10 +45,6 @@ class  PsStore : public StoreObj, public PsRec
     static  bool  UpdateTable(long version);
     static  bool  CreateConstraints();
     static  bool  UpdateConstraints(long version);
-
-    // Import / Export
-    static  bool  Import(const wxString &name);
-    static  bool  Export(const wxString &name);
 
   public:
     PsStore(Connection *connPtr = 0);    // Defaultkonstruktor

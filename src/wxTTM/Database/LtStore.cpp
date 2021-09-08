@@ -1060,7 +1060,7 @@ bool  LtStore::Export(wxTextBuffer &os, long version)
           os.AddLine("# Pl. No.; Event; Partner No.; Association; Natl. Ranking; Int'l Ranking");
           
         line << plNr << ";" << cpName << ";;" 
-             << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+             << naName << ";" << rkNatlRank << ";" << rkIntlRank;
         os.AddLine(line);
 
         break;
@@ -1071,7 +1071,7 @@ bool  LtStore::Export(wxTextBuffer &os, long version)
           os.AddLine("# Pl. No.; Event; Partner No.; Association; Natl. Ranking; Int'l Ranking");
               
         line << plNr << ";" << cpName << ";" << bdNr << ";" 
-             << naName << ";" << rkNatlRank << ";" << rkIntlRank << '\n';
+             << naName << ";" << rkNatlRank << ";" << rkIntlRank;
         os.AddLine(line);
 
         break;
@@ -1080,7 +1080,7 @@ bool  LtStore::Export(wxTextBuffer &os, long version)
         if (cpType != lastCpType)
           os.AddLine("# Pl. No.; Event; Team; Team Pos.");
           
-        line << plNr << ";" << cpName << ";" << tmName << ";" << ntNr << '\n';
+        line << plNr << ";" << cpName << ";" << tmName << ";" << ntNr;
         os.AddLine(line);
 
         break;
