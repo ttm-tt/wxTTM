@@ -935,6 +935,10 @@ bool PlStore::Export(wxTextBuffer &os, long version)
   
   while (pl.Next())
   {
+    // Skip deleted players
+    if (pl.plDeleted)
+      continue;
+
     PlRecImpExp plRec;
     (PlRec &) plRec = pl;
 
