@@ -1225,10 +1225,9 @@ bool DrawLP::DrawSection(int stg, int sec)
     if (rkChoice == World || rkChoice == Groups && totalDE == 0)
     {
       // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
-      // But only as far as half of max with IRK. 
-      // And only as far as half of total first because for the other group winners
-      // the seeding positions are not relevant.
-      for (int pos = 1; pos / 2 < listIRK.Count() && pos / 2 < totalFirst; pos *= 2)
+      // But only as far as half of max with IRK.
+      // XXX: Only max totalFirst?
+      for (int pos = 1; pos / 2 < listIRK.Count(); pos *= 2)
       {
         memset(colvec, 0, cols * sizeof(int));
         memset(rowvec, 0, cols * sizeof(REAL));
