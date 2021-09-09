@@ -377,11 +377,11 @@ void CGrFinished::OnTypeChange(wxCommandEvent &)
 
   if (type == "Event")
     what = MtListStore::Finished::Event;
-  if (type == "Stage")
+  else if (type == "Stage")
     what = MtListStore::Finished::Stage;
-  if (type == "Group")
+  else if (type == "Group")
     what = MtListStore::Finished::Group;
-  if (type == "Round")
+  else if (type == "Round")
     what = MtListStore::Finished::Round;
 
   std::list <std::tuple<long, short, timestamp>> list = MtListStore().GetFinishedRounds(what);
