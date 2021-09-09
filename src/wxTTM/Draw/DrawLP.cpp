@@ -1221,8 +1221,8 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Int'l Ranking verteilen, wenn nicht gesetzt
   if (true)
   {    
-    // Only with ranking. "Groups" requires snake system in the previous stage
-    if (rkChoice == World || rkChoice == Groups)
+    // Only with ranking. "Groups" requires snake system in the previous stage and no DE
+    if (rkChoice == World || rkChoice == Groups && totalDE == 0)
     {
       // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
       for (int pos = 1; pos / 2 < listIRK.Count(); pos *= 2)
@@ -1292,8 +1292,8 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Kopie von oben, aber bezogen auf nat'l rank und ohne fixe Positionen
   if (true)
   {
-    // Only with ranking. "Groups" requires snake system in the previous stage
-    if (rkChoice == World || rkChoice == Groups)
+    // Only with ranking. "Groups" requires snake system in the previous stage and no DE
+    if (rkChoice == World || rkChoice == Groups && totalDE == 0)
     {
       for (auto it : listNRK)
       {
