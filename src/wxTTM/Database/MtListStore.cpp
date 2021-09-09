@@ -431,7 +431,7 @@ std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Fin
     " FROM MtList mt INNER JOIN GrList gr on mt.grID = gr.grID "
     "      INNER JOIN CpList cp ON gr.cpID = cp.cpID ";
 
-  // Select all checked (finished) matches where no corresponding match today is not checked (finished)
+  // Select all checked (finished) matches where no corresponding match today is not checked (finished) and no bye involved
   sql += 
     "WHERE CAST(mtDateTime AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE) "
     "  AND mt.mtChecked <> 0 "
@@ -439,7 +439,7 @@ std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Fin
     "  SELECT * FROM MtList INNER JOIN GrList ON MtList.grID = GrList.grID INNER JOIN CpList ON GrList.cpID = CpList.cpID " 
     "   WHERE MtList.mtID IS NOT NULL "
     "     AND CAST(mtDateTime AS DATE) = CAST(mt.mtDateTime AS DATE) "
-    "     AND MtList.mtChecked = 0 "
+    "     AND MtList.mtChecked = 0 AND MtList.tmA IS NOT NULL AND MtList.tmX IS NOT NULL "
   ;
 
   // Fall through intended
