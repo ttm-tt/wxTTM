@@ -1224,7 +1224,7 @@ bool DrawLP::DrawSection(int stg, int sec)
     // Only with ranking. "Groups" requires snake system in the previous stage and no DE
     if (rkChoice == World || rkChoice == Groups && totalDE == 0)
     {
-      // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
+      // pos points to the end of the faction, i.e. 1, 2, 4, 8, 16, ...
       // But only as far as half of max with IRK.
       // XXX: Only max totalFirst?
       for (int pos = 1; pos / 2 < listIRK.Count(); pos *= 2)
@@ -1301,8 +1301,10 @@ bool DrawLP::DrawSection(int stg, int sec)
       {
         DrawListTeam &list = ((DrawItemNation *) it)->teams;
 
-        // pos zeigt auf das Ende der Fraktion, also 1, 2, 4, 8, 16, ...
-        for (int pos = 1; pos / 2 < list.Count(); pos *= 2)
+        // pos points to the end of the faction, i.e. 2, 4, 8, 16, ...
+        // No fix place for 1st, only 1st and 2nd in different halfes, but that is done by separating nations.
+        // So we start with 2 and end at half of entries, remaining ones are left to optimize function
+        for (int pos = 2; pos < list.Count(); pos *= 2)
         {
           memset(colvec, 0, cols * sizeof(int));
           memset(rowvec, 0, cols * sizeof(REAL));
