@@ -410,12 +410,12 @@ Nr</SQL>
 <COMPONENT>
 <NAME type="String">TRpExpression7</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">9075</WIDTH>
+<WIDTH type="Integer">11040</WIDTH>
 <HEIGHT type="Integer">570</HEIGHT>
 <PRINTCONDITION type="WideString">PAGE = 1 AND PTITLE #60##62# #39##39#</PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">1155</POSX>
+<POSX type="Integer">120</POSX>
 <POSY type="Integer">120</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -460,12 +460,12 @@ Nr</SQL>
 <COMPONENT>
 <NAME type="String">TRpExpression8</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">9075</WIDTH>
+<WIDTH type="Integer">11040</WIDTH>
 <HEIGHT type="Integer">465</HEIGHT>
 <PRINTCONDITION type="WideString">PAGE = 1 AND PTITLE #60##62# #39##39#</PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">1155</POSX>
+<POSX type="Integer">120</POSX>
 <POSY type="Integer">915</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -938,7 +938,7 @@ Nr</SQL>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
 <WIDTH type="Integer">570</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
-<PRINTCONDITION type="WideString">stPos == 1</PRINTCONDITION>
+<PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
 <POSX type="Integer">696</POSX>
@@ -963,7 +963,7 @@ Nr</SQL>
 <SINGLELINE type="Boolean">False</SINGLELINE>
 <BIDIMODES type="String"></BIDIMODES>
 <MULTIPAGE type="Boolean">False</MULTIPAGE>
-<PRINTSTEP type="Integer">0</PRINTSTEP>
+<PRINTSTEP type="Integer">1</PRINTSTEP>
 <EXPRESSION type="WideString">cpName</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
@@ -975,7 +975,7 @@ Nr</SQL>
 <AGTYPE type="Integer">0</AGTYPE>
 <AUTOEXPAND type="Boolean">False</AUTOEXPAND>
 <AUTOCONTRACT type="Boolean">False</AUTOCONTRACT>
-<PRINTONLYONE type="Boolean">False</PRINTONLYONE>
+<PRINTONLYONE type="Boolean">True</PRINTONLYONE>
 <PRINTNULLS type="Boolean">True</PRINTNULLS>
 <EXPORTDISPLAYFORMAT type="WideString"></EXPORTDISPLAYFORMAT>
 <EXPORTLINE type="Integer">0</EXPORTLINE>
@@ -1332,7 +1332,7 @@ t</EXPRESSION>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
 <WIDTH type="Integer">570</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
-<PRINTCONDITION type="WideString">stPos == 1</PRINTCONDITION>
+<PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
 <POSX type="Integer">696</POSX>
@@ -1352,7 +1352,7 @@ t</EXPRESSION>
 <ALIGNMENT type="Integer">0</ALIGNMENT>
 <VALIGNMENT type="Integer">0</VALIGNMENT>
 <INTERLINE type="Integer">0</INTERLINE>
-<WORDWRAP type="Boolean">False</WORDWRAP>
+<WORDWRAP type="Boolean">True</WORDWRAP>
 <WORDBREAK type="Boolean">False</WORDBREAK>
 <SINGLELINE type="Boolean">False</SINGLELINE>
 <BIDIMODES type="String"></BIDIMODES>
@@ -1369,7 +1369,7 @@ t</EXPRESSION>
 <AGTYPE type="Integer">0</AGTYPE>
 <AUTOEXPAND type="Boolean">False</AUTOEXPAND>
 <AUTOCONTRACT type="Boolean">False</AUTOCONTRACT>
-<PRINTONLYONE type="Boolean">False</PRINTONLYONE>
+<PRINTONLYONE type="Boolean">True</PRINTONLYONE>
 <PRINTNULLS type="Boolean">True</PRINTNULLS>
 <EXPORTDISPLAYFORMAT type="WideString"></EXPORTDISPLAYFORMAT>
 <EXPORTLINE type="Integer">0</EXPORTLINE>
@@ -1675,7 +1675,7 @@ t</EXPRESSION>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
 <WIDTH type="Integer">570</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
-<PRINTCONDITION type="WideString">stPos == 1</PRINTCONDITION>
+<PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
 <POSX type="Integer">696</POSX>
@@ -1704,7 +1704,7 @@ t</EXPRESSION>
 <EXPRESSION type="WideString">cpName</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
-<DATATYPE type="Integer">16</DATATYPE>
+<DATATYPE type="Integer">0</DATATYPE>
 <DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
 <IDENTIFIER type="String"></IDENTIFIER>
 <AGGREGATE type="Integer">0</AGGREGATE>
@@ -1712,7 +1712,7 @@ t</EXPRESSION>
 <AGTYPE type="Integer">0</AGTYPE>
 <AUTOEXPAND type="Boolean">False</AUTOEXPAND>
 <AUTOCONTRACT type="Boolean">False</AUTOCONTRACT>
-<PRINTONLYONE type="Boolean">False</PRINTONLYONE>
+<PRINTONLYONE type="Boolean">True</PRINTONLYONE>
 <PRINTNULLS type="Boolean">True</PRINTNULLS>
 <EXPORTDISPLAYFORMAT type="WideString"></EXPORTDISPLAYFORMAT>
 <EXPORTLINE type="Integer">0</EXPORTLINE>
