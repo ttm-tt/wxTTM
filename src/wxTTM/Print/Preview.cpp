@@ -164,6 +164,31 @@ void CPreview::OnPreviewPrev(wxCommandEvent &)
 }
 
 
+void CPreview::OnCharHook(wxKeyEvent& evt)
+{
+  switch (evt.GetKeyCode())
+  {
+    case WXK_PAGEUP :
+      if (evt.GetModifiers() == WXK_NONE)
+        OnPreviewPrev(wxCommandEvent());
+      else if (evt.GetModifiers() & WXK_CONTROL)
+        OnPreviewFirst(wxCommandEvent());
+
+      evt.Skip();
+      break;
+
+    case WXK_PAGEDOWN :
+      if (evt.GetModifiers() == WXK_NONE)
+        OnPreviewNext(wxCommandEvent());
+      else if (evt.GetModifiers() & WXK_CONTROL)
+        OnPreviewLast(wxCommandEvent());
+
+      evt.Skip();
+      break;
+  }
+}
+
+
 void CPreview::OnPreview()
 {
   if (pages && previewWnd)

@@ -70,6 +70,7 @@ class CPreview : public wxFrame
     void OnZoom(wxCommandEvent &);
     void OnClose(wxCommandEvent &);
     void OnPrint(wxCommandEvent &);
+    void OnCharHook(wxKeyEvent &);
 
     void OnPreview();
 
