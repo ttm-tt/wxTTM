@@ -15,6 +15,7 @@
 IMPLEMENT_DYNAMIC_CLASS(CPreview, wxFrame)
 
 BEGIN_EVENT_TABLE(CPreview, wxFrame)
+  EVT_COMMAND(wxID_ANY, IDC_STARTDOC, CPreview::OnStartDoc)
   EVT_COMMAND(wxID_ANY, IDC_ENDDOC, CPreview::OnEndDoc)
   EVT_COMMAND(wxID_ANY, IDC_ABORTDOC, CPreview::OnEndDoc)
 
@@ -75,6 +76,12 @@ void  CPreview::SetSize(long newWidth, long newHeight)
 
 // -----------------------------------------------------------------------
 // CPreview message handlers
+
+void CPreview::OnStartDoc(wxCommandEvent&)
+{
+  // 
+}
+
 
 void CPreview::OnEndDoc(wxCommandEvent &)
 {

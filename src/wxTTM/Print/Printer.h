@@ -33,6 +33,10 @@ class  Printer
     Printer(bool showPrintDlg = true);
     virtual  ~Printer();
 
+  public:
+    virtual bool   IsPDF() const {return false;}
+    virtual bool   IsPreview() const {return false;}
+
   // Dokumentenverwaltung
   public:
     virtual  bool  StartDoc(const wxString &);
@@ -117,6 +121,8 @@ class  PrinterPreview : public Printer
     virtual  ~PrinterPreview();
 
   public:
+    virtual  bool  IsPreview() const {return true;}
+
     virtual  bool  StartDoc(const wxString &);
     virtual  bool  EndDoc();
     virtual  bool  AbortDoc();
@@ -139,6 +145,8 @@ class PrinterPdf : public Printer
    ~PrinterPdf();
 
   public:
+    virtual bool IsPDF() const {return true;}
+
     virtual bool StartDoc(const wxString &);
 
     virtual bool Bookmark(const wxString &txt, int level = 0, double y = 0);

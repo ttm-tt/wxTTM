@@ -138,7 +138,7 @@ unsigned CGrPrintBase::PrintThread(void *arg)
 
       if (isMultiple && lastCpID != gr.cpID)
       {
-        if (lastCpID)
+        if (lastCpID && !printer->IsPreview())
           printer->EndDoc();
 
         CpListStore cp(connPtr);
@@ -149,7 +149,8 @@ unsigned CGrPrintBase::PrintThread(void *arg)
 
         printer->SetFilename(wxFileName(path, cp.cpName, "pdf").GetFullPath());
 
-        printer->StartDoc(docString);
+        if (!printer->IsPreview())
+          printer->StartDoc(docString);
 
         lastCpID = gr.cpID;
 

@@ -61,6 +61,7 @@ class CPreview : public wxFrame
     int  origH;
     
   private:
+    void OnStartDoc(wxCommandEvent &);
     void OnEndDoc(wxCommandEvent &);
 	  void OnPreviewFirst(wxCommandEvent &);
 	  void OnPreviewLast(wxCommandEvent &);
