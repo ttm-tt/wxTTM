@@ -343,7 +343,7 @@ bool  TmEntryStore::SelectTeamForSeeding(const GrRec &gr, short type)
 
   str += " WHERE cpID = " + ltostr(gr.cpID) +
          "   AND tmID NOT IN ("
-         "      SELECT tmID FROM StRec WHERE StRec.grID IN ("
+         "      SELECT ISNULL(tmID, 0) FROM StRec WHERE StRec.grID IN ("
          "            SELECT grID FROM GrRec "
          "             WHERE GrRec.cpID = " + ltostr(gr.cpID) + 
          "               AND GrRec.grStage = '" + TransformString(gr.grStage) + "')"
