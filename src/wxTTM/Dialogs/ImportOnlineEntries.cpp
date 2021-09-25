@@ -580,7 +580,7 @@ bool CImportOnlineEntries::ImportThreadRead()
       pl.comment = URLEncode(wxString::FromUTF8((const char *)registration["comment"]));
 
     // Unterschiede in Typ und Format vom Geburtsdatum
-    XmlRpcValue dob = person["dob"].getType() == XmlRpcValue::TypeStruct ? person["dob"]["date"] : person["dob"];
+    XmlRpcValue dob = person["dob"].getType() == XmlRpcValue::TypeStruct && person["dob"].hasMember("year") ? person["dob"]["year"] : person["dob"];
 
     switch (dob.getType())
     {
@@ -590,6 +590,10 @@ bool CImportOnlineEntries::ImportThreadRead()
 
       case XmlRpcValue::TypeString :
         pl.born = atoi(wxString::FromUTF8((const char *)dob).Left(4));
+        break;
+
+      case XmlRpcValue::TypeInt :
+        pl.born = GetInt(dob);
         break;
 
       default :
@@ -629,7 +633,6 @@ bool CImportOnlineEntries::ImportThreadRead()
 
     plMap[(*it).id] = (*it);
   }
-
 
   // Rankingpunkte lesen
   std::map<int, std::map<short, double>> rpMap;
