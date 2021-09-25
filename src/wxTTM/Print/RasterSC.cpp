@@ -35,7 +35,7 @@
 #define STR_RESULT  IDS_RESULT
 
 // Breite des Eintrags fuer 'A' etc...
-#define  WIDTH_AX  (5 * printer->cW)
+#define  WIDTH_AX  (6 * printer->cW)
 
 
 // Definition von Strings
@@ -820,12 +820,14 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   sy.Next();
   sy.Close();   
   
-  // Korrektur fuer olympic system
+  // Correction for special systems
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
   
   if ( wxStrcmp(sy.syName, wxT("OTS")) == 0 )
     sySingles = 3;
+	else if ( wxStrcmp(sy.syName, wxT("ETS")) == 0 )
+	  sySingles = 4;
   
   short textFont =  sy.syMatches + sySingles + syDoubles > 12 ?
                     printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL) :
@@ -1112,10 +1114,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
     // Die horizontale Trennlinie
     printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
-    if (syDoubles > 1)
- 	    wxSprintf(str, "DA%i", doubles+1);
- 	  else if (wxStrcmp(sy.syName, "OTS") == 0)
+ 	  if (wxStrcmp(sy.syName, "OTS") == 0)
  	    wxSprintf(str, "C\nA/B");
+    else if (syDoubles > 1)
+ 	    wxSprintf(str, "DA%i", doubles+1);
  	  else
  	    wxSprintf(str, "DA");
 
@@ -1378,25 +1380,45 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		{
 			regGroup.bottom += heightMatches;
 
-			if (sySingles < 4)
+			if (mtmt.nmAnmNr > sySingles) 
 			{
-			  if (mtmt.nmAnmNr > sySingles)
+				if (wxStrcmp(sy.syName, "OTS") == 0) 
 			    wxSprintf(strA, "A/B"); // wxSprintf(strA, "A/B\nn.i.D.");
-        else if (mtmt.nmAnmNr > 0)
+				else if (wxStrcmp(sy.syName, "ETS") == 0)
+				  wxSprintf(strA, "A%d/A4", mtmt.nmAnmNr == 5 ? 1 : 2);
+				else
+				  wxSprintf(strA, "");
+			}
+			else if (sySingles < 4)
+			{
+        if (mtmt.nmAnmNr > 0)
 				  wxSprintf(strA, "%s", alpha[mtmt.nmAnmNr-1]);
         else
           wxSprintf(strA, "");
-          
-        if (mtmt.nmXnmNr > sySingles)
+			}
+			else
+			{
+				wxSprintf(strA, "A%i", mtmt.nmAnmNr);
+			}
+
+			if (mtmt.nmXnmNr > sySingles)
+			{
+				if (wxStrcmp(sy.syName, "OTS") == 0) 
           wxSprintf(strX, "X/Y"); // wxSprintf(strX, "X/Y\nn.i.D.");
-        else if (mtmt.nmXnmNr > 0)
-				  wxSprintf(strX, "%s", alpha[mtmt.nmXnmNr+2]);
+				else if (wxStrcmp(sy.syName, "ETS") == 0)
+				  wxSprintf(strX, "X%d/X4", mtmt.nmXnmNr == 5 ? 1 : 2);
+				else
+				  wxSprintf(strA, "");
+			}
+			else if (sySingles < 4)
+			{
+        if (mtmt.nmXnmNr > 0)
+				  wxSprintf(strX, "%s", alpha[mtmt.nmAnmNr-1]);
         else
           wxSprintf(strX, "");
 			}
 			else
 			{
-				wxSprintf(strA, "A%i", mtmt.nmAnmNr);
 				wxSprintf(strX, "X%i", mtmt.nmXnmNr);
 			}
 		}

@@ -133,13 +133,13 @@ bool  CNmEditETS::Edit(va_list vaList)
 
   // Test, ob 5 und 6 gesetzt sind. NmRec ist 0-basiert
   if (nm.GetSingle(3) == 0)
-    plFourReplace->Select(0);
-  else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0)
-    plFourReplace->Select(0);
-  else if (nm.GetSingle(3) == nm.GetSingle(4))
     plFourReplace->Select(1);
-  else if (nm.GetSingle(3) == nm.GetSingle(5))
+  else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0)
+    plFourReplace->Select(0); // Not decided
+  else if (nm.GetSingle(3) == nm.GetSingle(4))
     plFourReplace->Select(2);
+  else if (nm.GetSingle(3) == nm.GetSingle(5))
+    plFourReplace->Select(3);
   else
     plFourReplace->Select(0);
 
@@ -170,6 +170,7 @@ void CNmEditETS::OnInitialUpdate()
 
   // wxFormbuilder kann die Strings nicht speicher, darum muss ich das hier machen.
   // Vorerst.
+  plFourReplace->AppendString(_("Not decided"));
   plFourReplace->AppendString(_("None"));
   plFourReplace->AppendString(_("Player 1"));
   plFourReplace->AppendString(_("Player 2"));
@@ -236,27 +237,19 @@ void  CNmEditETS::OnAdd()
     delete plList->CutCurrentItem();
   }
   
-  // Wenn es Spieler 4 war, dann die Auswahl "Spieler 4 ersetzt ..." freigegben
-  if (nmItemPtr->nm.nmNr == 4)
-    plFourReplace->Enable(true);
+  plList->SetSelected(0);
 
-  if (nmItemPtr->nm.ltB || nmItemPtr->nm.team.cpType == CP_SINGLE)
+  // With 4 players enable "Player four replaces" and select "Not decided"
+  if ( ((NmItem *) nmList->GetListItem(3))->nm.ltA != 0)
   {
-    long idx = nmList->GetCurrentIndex();
-    if (idx < nmList->GetCount() - 1)
-      nmList->SetSelected(idx+1);
-      
-    // Wenn sich der Typ geaendert hat, die "available players"
-    // Liste neu aufbauen. Ansonsten wurde sie oben schon korrigiert
-    if ( nmList->GetCurrentItem() && 
-         ((NmItem *) nmList->GetCurrentItem())->nm.team.cpType != nmItemPtr->nm.team.cpType
-        )
-    {
-      OnSelChanged(wxListEvent());
-    }
-  }     
+    plFourReplace->Enable(true);
+    plFourReplace->Select(0);
+  }
   else
-    plList->SetSelected(0);
+  {
+    plFourReplace->Select(1);
+    plFourReplace->Enable(false);
+  }
 
   nmList->Refresh();
 }
@@ -271,12 +264,7 @@ void  CNmEditETS::OnDelete()
   LtEntry lt;
   lt.cpID = cp.cpID;
 
-  if (nmItemPtr->nm.team.cpType != CP_SINGLE && nmItemPtr->nm.ltB)
-  {
-    lt.ltID = nmItemPtr->nm.ltB;
-    lt.SetPlayer(nmItemPtr->nm.team.bd);
-  }
-  else if (nmItemPtr->nm.ltA)
+  if (nmItemPtr->nm.ltA)
   {
     lt.ltID = nmItemPtr->nm.ltA;
     lt.SetPlayer(nmItemPtr->nm.team.pl);
@@ -309,8 +297,16 @@ void  CNmEditETS::OnDelete()
     }
   }
 
-  if (nmItemPtr->nm.nmNr == 4)
+  if ( ((NmItem *) nmList->GetListItem(3))->nm.ltA == 0)
+  {
+    plFourReplace->Select(1);
     plFourReplace->Enable(false);
+  }
+  else
+  {
+    plFourReplace->Enable(true);
+    plFourReplace->Select(0);
+  }
 }
 
 
@@ -337,26 +333,32 @@ void  CNmEditETS::OnOK()
     }
   }
 
-  // In ETS sind Spieler 1 und 2 auch 5 und 6, ausser es wurde umgemeldet
   // NmRec beginnt bei 0 zu zaehlen
   int choice = (nm.GetSingle(3) == 0 ? 0 : plFourReplace->GetSelection());
   switch (choice)
   {
     case 0 :
     {
+      nm.SetSingle(4, 0);
+      nm.SetSingle(5, 0);
+      break;
+    }
+
+    case 1 :
+    {
       nm.SetSingle(4, nm.GetSingle(0));
       nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
-    case 1 :
+    case 2 :
     {
       nm.SetSingle(4, nm.GetSingle(3));
       nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
-    case 2 :
+    case 3 :
     {
       nm.SetSingle(4, nm.GetSingle(0));
       nm.SetSingle(5, nm.GetSingle(3));
