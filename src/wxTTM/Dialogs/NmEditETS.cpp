@@ -239,6 +239,10 @@ void  CNmEditETS::OnAdd()
   
   plList->SetSelected(0);
 
+  long idx = nmList->GetCurrentIndex();
+  if (idx < nmList->GetCount() - 1)
+    nmList->SetSelected(idx+1);
+      
   // With 4 players enable "Player four replaces" and select "Not decided"
   if ( ((NmItem *) nmList->GetListItem(3))->nm.ltA != 0)
   {
