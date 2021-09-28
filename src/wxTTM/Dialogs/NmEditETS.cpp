@@ -132,18 +132,19 @@ bool  CNmEditETS::Edit(va_list vaList)
   }
 
   // Test, ob 5 und 6 gesetzt sind. NmRec ist 0-basiert
-  if (nm.GetSingle(3) == 0)
+  if (nm.GetSingle(3) == 0) // No 4th, we'll stay at None
     plFourReplace->Select(1);
-  else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0)
+  else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0) // Player for 4th and 5th not set
     plFourReplace->Select(0); // Not decided
-  else if (nm.GetSingle(3) == nm.GetSingle(4))
+  else if (nm.GetSingle(3) == nm.GetSingle(4))           // 4 replaces 1
     plFourReplace->Select(2);
-  else if (nm.GetSingle(3) == nm.GetSingle(5))
+  else if (nm.GetSingle(3) == nm.GetSingle(5))           // 4 replaces 2
     plFourReplace->Select(3);
-  else
-    plFourReplace->Select(0);
+  else                                                   // Else 4 replaces none
+    plFourReplace->Select(1);
 
   plFourReplace->Enable(nm.GetSingle(3) != 0);
+  // plFourReplace->Enable(true);
   
   OnSelChanged(wxListEvent());
 
@@ -253,6 +254,7 @@ void  CNmEditETS::OnAdd()
   {
     plFourReplace->Select(1);
     plFourReplace->Enable(false);
+    // plFourReplace->Enable(true);
   }
 
   nmList->Refresh();
@@ -304,6 +306,7 @@ void  CNmEditETS::OnDelete()
   if ( ((NmItem *) nmList->GetListItem(3))->nm.ltA == 0)
   {
     plFourReplace->Select(1);
+    // plFourReplace->Enable(true);
     plFourReplace->Enable(false);
   }
   else
@@ -338,31 +341,31 @@ void  CNmEditETS::OnOK()
   }
 
   // NmRec beginnt bei 0 zu zaehlen
-  int choice = (nm.GetSingle(3) == 0 ? 0 : plFourReplace->GetSelection());
+  int choice = plFourReplace->GetSelection();
   switch (choice)
   {
-    case 0 :
+    case 0 :  // Not decided
     {
       nm.SetSingle(4, 0);
       nm.SetSingle(5, 0);
       break;
     }
 
-    case 1 :
+    case 1 :  // None
     {
-      nm.SetSingle(4, nm.GetSingle(0));
-      nm.SetSingle(5, nm.GetSingle(1));
+      nm.SetSingle(4, nm.GetSingle(0));  // A1 / X1
+      nm.SetSingle(5, nm.GetSingle(1));  // A2 / X2
       break;
     }
 
-    case 2 :
+    case 2 :  // 4 replaces A1 / X1; A2 / X2 stay
     {
       nm.SetSingle(4, nm.GetSingle(3));
       nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
-    case 3 :
+    case 3 :  // 4 replaces A2 / X2; A1 / X1 stay
     {
       nm.SetSingle(4, nm.GetSingle(0));
       nm.SetSingle(5, nm.GetSingle(3));
