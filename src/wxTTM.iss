@@ -113,7 +113,7 @@ Name: {code:GetIniDir}; Permissions: authusers-modify
 
 [Files]
 Source: src\wxTTM\x86\Release\TTM32.exe; DestDir: {app}; Flags: ignoreversion signonce; Check: not Is64BitInstallMode()
-Source: src\wxTTM\x64\Release\TTM32.exe; DestDir: {app}; Flags: ignoreversion signonce; Check: Is64BitInstallMode()
+; Source: src\wxTTM\x64\Release\TTM32.exe; DestDir: {app}; Flags: ignoreversion signonce; Check: Is64BitInstallMode()
 Source: src\Resources\shortcuts.html; DestDir: {app}; Flags: ignoreversion
 Source: src\Resources\3rdparty.html; DestDir: {app}; Flags: ignoreversion
 Source: src\Resources\en\ttm.mo; DestDir: {app}\en; Flags: ignoreversion
