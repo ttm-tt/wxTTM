@@ -31,6 +31,8 @@ TbItem::TbItem(const StEntry &rec)
       : StItem(rec)
 {
   memset(&result, 0, sizeof(result));
+
+  result.pos = rec.st.stPos;
 }
 
 TbItem::TbItem(const TbEntry &rec)

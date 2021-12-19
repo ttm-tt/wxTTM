@@ -538,6 +538,7 @@ void CStListView::OnInitialUpdate()
 
   m_listCtrl->AllowHideColumn(8);
   m_listCtrl->AllowHideColumn(9);
+  m_listCtrl->AllowHideColumn(10);
 
   m_listCtrl->HideColumn(8);
   m_listCtrl->HideColumn(9);
@@ -681,7 +682,6 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
       if (gr.grNofMatches && st.st.stNr > 2 * gr.grNofMatches)
         continue;
 
-      StItem *itemPtr = new StItem(st);
       int stNr = st.st.stNr;
 
       if (count != gr.grSize)
@@ -692,6 +692,8 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
       
       bool bold = ( (stNr % mod) == 0 ) || ( (stNr % mod) == 1 );
       
+      TbItem *itemPtr = new TbItem(st);
+
       itemPtr->boldStNr = bold;
       
       m_listCtrl->AddListItem(itemPtr);
