@@ -2142,7 +2142,7 @@ bool  GrStore::ClearTable()
 // Eine Gruppe mit allen Abhaengigkeiten anlegen
 unsigned  GrStore::CreateGroup(void *arg)
 {
-  CpRec cp      = ((CreateGroupStruct *) arg)->cp;
+  CpRec cpTempl  = ((CreateGroupStruct *) arg)->cp;
   GrRec grTempl = ((CreateGroupStruct *) arg)->gr;
   int   start   = ((CreateGroupStruct *) arg)->start;
   int   count   = ((CreateGroupStruct *) arg)->count;
@@ -2172,9 +2172,20 @@ unsigned  GrStore::CreateGroup(void *arg)
   // Scope der Variablen begrenzen. 
   // Sie muessen vor dem delete connPtr geloescht werden
   {
+  CpStore  cp(connPtr);
   GrStore  gr(connPtr);
   SyStore  sy(connPtr);
   MdStore  md(connPtr);
+
+  // We need the event, not just the id
+  if (!cp.SelectById(grTempl.cpID) || !cp.Next())
+  {
+      connPtr->Rollback();
+      if (delConnPtr)
+        delete connPtr;
+
+      return 0;
+  }
 
   if (cp.cpType == CP_TEAM)
   {
