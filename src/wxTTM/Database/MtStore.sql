@@ -22,6 +22,7 @@
         "   DECLARE @grID " + INTEGER + "; \n"
         "   DECLARE @grModus " + INTEGER + "; \n"
         "   DECLARE @grSize " + INTEGER + "; \n"     
+        "   DECLARE @grNofRounds " + INTEGER + "; \n"     
         "   DECLARE @maxRounds " + INTEGER + "; \n"
         "   DECLARE @id " + INTEGER + "; \n"
         "   DECLARE @ax " + INTEGER + "; \n"
@@ -45,6 +46,7 @@
         "   SET @grID     = (SELECT grID FROM MtRec WHERE mtNr = @mtNr); \n"
         "   SET @grModus  = (SELECT grModus FROM GrRec WHERE grID = @grID); \n"
         "   SET @grSize   = (SELECT grSize FROM GrRec WHERE grID = @grID); \n"
+        "   SET @grNofRounds = (SELECT grNofRounds FROM GrRec WHERE grID = @grID); \n"
         
         "   --- Round Robin: Nothing to do \n"
         "   IF @grModus = 1 \n"
@@ -65,6 +67,10 @@
         "     SET @tmp = 2 * @tmp; \n"
         "     SET @maxRounds = @maxRounds + 1; \n"
         "   END \n"
+        " \n"
+        "   IF (@grNofRounds = 0) \n"
+        "     SET @grNofRounds = @maxRounds; \n"
+        " \n"
         
         "  --- Correct for DKO \n"
         "   IF @grModus = 3 \n"
@@ -149,6 +155,8 @@
         "         SET @stPos = 1; \n"
         "       ELSE IF @forWinner = 0 AND @mtRound = @maxRounds \n"
         "         SET @stPos = 2; \n"
+        "       ELSE IF @forWinner = 1 AND @mtRound = @grNofRounds \n"
+        "         SET @stPos = POWER(2, @maxRounds - (@mtRound + 1)) + 1; \n"
         "       ELSE IF @forWinner = 0 \n"
         "         SET @stPos = POWER(2, @maxRounds - @mtRound) + 1; \n"
         "       ELSE \n"
@@ -295,6 +303,14 @@
         "   SET @cpID = (SELECT cpID FROM GrRec WHERE grID = @grID); \n"
         "   SELECT @ptsToWin = cpPtsToWin, @ptsToWinLast = cpPtsToWinLast, @ptsAhead = cpPtsAhead, @ptsAheadLast = cpPtsAheadLast FROM CpRec WHERE cpID = @cpID;\n"
         "   SELECT @mtMatches = mtMatches, @mtBestOf = mtBestOf FROM MtRec WHERE mtNr = @mtNr; \n"
+
+        "   --- Special case if there is only 1 game \n"
+        "   IF (@mtBestOf = 1) THEN \n"
+        "   BEGIN \n"
+        "     SET @ptsToWinLast = @ptsToWin; \n"
+        "     SET @ptsAheadLast = @ptsAhead; \n"
+        "   END \n"
+
         "   SET @tmp = 0;\n"
         
         "   --- Remove and insert all results into MtSet \n"
