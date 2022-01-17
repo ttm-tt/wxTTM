@@ -34,7 +34,8 @@ class CGrExport : public CFormViewEx
     CComboBoxEx  *cbCP;
     CListCtrlEx  *lbGR;
 
-    unsigned (*func)(wxTextBuffer &, short cpType, std::vector<long> &, bool); 
+    unsigned (*func)(wxTextBuffer &, short cpType, std::vector<long> &, bool, long version); 
+    long maxSupportedVersion;
 
   DECLARE_DYNAMIC_CLASS(CGrExport)
   DECLARE_EVENT_TABLE()

@@ -53,6 +53,7 @@ class  StStore : public StoreObj, public StRec
     // Import / Export
     static  bool  Import(wxTextBuffer &is);
     static  bool  Export(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long versin = 1);
+    static  long  GetMaxSupportedExportVersion() {return 1;}
 
   public:
     StStore(Connection *ptr = 0);

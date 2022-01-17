@@ -3283,6 +3283,113 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
 }
 
 
+bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+{
+  // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
+  //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
+  //         mtBallsA[0], mtBallsX[0], ...
+  
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  if (!append)
+  {    
+    os.AddLine(
+          "# Scheduled;Event;Stage;Seq;Group;Size;Modus;Round;Match;Indiv. Match;"
+          "Pl. A ID;Pl. B ID;Pl. X ID;Pl. Y ID;"
+          "Stdg A;Stdg B;"
+          "Best Of;"
+          "Result A;Result X;"
+          "Lost by w/o A;Lost by w/o X;"
+          "Injured A;Injured X;"
+          "Disqualified A;Disqualified X"
+    );
+  }
+  
+  for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
+  {
+    Statement  *stmtPtr = connPtr->CreateStatement();
+    ResultSet  *resPtr  = 0;
+
+    wxString str;
+    long grID = (*it);
+
+    if (cpType == CP_SINGLE)
+      str = 
+        "SELECT "
+        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, NULL AS mtMS, "
+        "       plAplExtID, NULL AS plBplExtId, plXplExtID, NULL AS plYplExtId, "
+        "       stA.stPos, stX.stPos, "
+        "       mtBestOf, "
+        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX, "
+        "       stA.stPos, stX.stPos "
+        "  FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+        "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " ORDER BY cpName, mtDateTime, mtNr ";
+    else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
+      str = 
+        "SELECT "
+        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, NULL AS mtMS, "
+        "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
+        "       stA.stPos, stX.stPos, "
+        "       mtBestOf, "
+        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+        "  FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
+        "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " ORDER BY cpName, mtDateTime, mtNr ";
+    else if (cpType == CP_TEAM)
+      str = 
+        "SELECT "
+        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, mtMS, "
+        "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
+        "       NULL AS stAstPos, NULL AS stXstPos, "
+        "       mtBestOf, "
+        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+        "  FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+        " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " ORDER BY cpName, mtDateTime, mtNr, mtMS";
+    else
+      return false;
+
+    try
+    {
+      if ( stmtPtr->Execute(str) )
+        resPtr = stmtPtr->GetResultSet(false);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(str, e);
+      return false;
+    }
+    
+    while (resPtr->Next())
+    {
+      if (resPtr->WasNull(1))
+        continue;
+
+      wxChar str[128];
+      wxString line;
+
+      for (int col = 1, numCol = resPtr->GetColumnCount(); col <= numCol; col++)
+      {
+        if (resPtr->GetData(col, str, 128) && !resPtr->WasNull())
+          line << str;
+        line << ";";
+      }
+
+      os.AddLine(line);
+    }
+    
+    
+    delete resPtr;
+    delete stmtPtr;
+  }
+
+  return true;
+}
+
+
 bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \

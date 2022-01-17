@@ -47,7 +47,8 @@ bool CGrExport::Edit(va_list vaList)
 {
   void *ptr = va_arg(vaList, void *);
 
-  func = ( unsigned (*) (wxTextBuffer &, short, std::vector<long> &, bool) ) (ptr);
+  func = ( unsigned (*) (wxTextBuffer &, short, std::vector<long> &, bool, long) ) (ptr);
+  maxSupportedVersion = va_arg(vaList, long);
 
   return true;
 }
@@ -107,7 +108,7 @@ void CGrExport::OnExport(wxCommandEvent &evt)
         idList.push_back(grList.grID);
 
       dlg.Update(++i, (*it).cpDesc);
-      if (!(*func)(buf, (*it).cpType, idList, it != cpList.begin()))
+      if (!(*func)(buf, (*it).cpType, idList, it != cpList.begin(), maxSupportedVersion))
         return;
 
       if (dlg.WasCancelled())
@@ -124,7 +125,7 @@ void CGrExport::OnExport(wxCommandEvent &evt)
         idList.push_back(lbGR->GetListItem(idx)->GetID());
     }
 
-    if (!(*func)(buf, cp.cpType, idList, false))
+    if (!(*func)(buf, cp.cpType, idList, false, maxSupportedVersion))
       return;
   }
 

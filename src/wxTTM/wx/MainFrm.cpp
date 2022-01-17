@@ -67,6 +67,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentExportSchedulesMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportResultsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForRankingMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentExportForTTMMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForITTFMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForETTUMenuItem"), CMainFrame::OnMenuCommand)
 
@@ -227,7 +228,7 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
   else if (evt.GetId() == XRCID("TournamentExportEventsMenuItem"))
     Export(_("Export Events"), "cp.csv", &CpStore::Export, CpStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportGroupsMenuItem"))
-    CTT32App::instance()->OpenView(_("Export Groups"), wxT("GrExport"), &GrStore::Export);
+    CTT32App::instance()->OpenView(_("Export Groups"), wxT("GrExport"), &GrStore::Export, GrStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportAssocMenuItem"))
     Export(_("Export Associations"), "na.csv", &NaStore::Export);
   else if (evt.GetId() == XRCID("TournamentExportUmpiresMenuItem"))
@@ -239,17 +240,19 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
   else if (evt.GetId() == XRCID("TournamentExportEntriesMenuItem"))
     Export(_("Export Entries"), "lt.csv", &LtStore::Export);
   else if (evt.GetId() == XRCID("TournamentExportPositionsMenuItem"))
-    CTT32App::instance()->OpenView(_("Export Positions"), wxT("GrExport"), &StStore::Export);
+    CTT32App::instance()->OpenView(_("Export Positions"), wxT("GrExport"), &StStore::Export, StStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportSchedulesMenuItem"))
-    CTT32App::instance()->OpenView(_("Export Schedules"), wxT("GrExport"), &MtStore::ExportSchedule);
+    CTT32App::instance()->OpenView(_("Export Schedules"), wxT("GrExport"), &MtStore::ExportSchedule, MtStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportResultsMenuItem"))
-    CTT32App::instance()->OpenView(_("Export Results"), wxT("GrExport"), &MtStore::ExportResults);
+    CTT32App::instance()->OpenView(_("Export Results"), wxT("GrExport"), &MtStore::ExportResults, MtStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportForRankingMenuItem"))
-    CTT32App::instance()->OpenView(_("Export for Ranking"), wxT("GrExport"), &MtStore::ExportForRanking);
+    CTT32App::instance()->OpenView(_("Export for Ranking"), wxT("GrExport"), &MtStore::ExportForRanking, MtStore::GetMaxSupportedExportVersion());
+  else if (evt.GetId() == XRCID("TournamentExportForTTMMenuItem"))
+    CTT32App::instance()->OpenView(_("Export for Ranking TTM"), wxT("GrExport"), &MtStore::ExportForRankingTTM, MtStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportForITTFMenuItem"))
-    CTT32App::instance()->OpenView(_("Export for Ranking ITTF"), wxT("GrExport"), &MtStore::ExportForRankingITTF);
+    CTT32App::instance()->OpenView(_("Export for Ranking ITTF"), wxT("GrExport"), &MtStore::ExportForRankingITTF, MtStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportForETTUMenuItem"))
-    CTT32App::instance()->OpenView(_("Export for Ranking ETTU"), wxT("GrExport"), &MtStore::ExportForRankingETTU);
+    CTT32App::instance()->OpenView(_("Export for Ranking ETTU"), wxT("GrExport"), &MtStore::ExportForRankingETTU, MtStore::GetMaxSupportedExportVersion());
 
   // else if (evt.GetId() == XRCID("TournamentRemoveDoublesMenuItem"))
   //   Import(_("Remove From Doubles"), "", &LtStore::RemoveFromDoubles);

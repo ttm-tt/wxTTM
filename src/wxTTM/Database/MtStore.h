@@ -223,12 +223,14 @@ class  MtStore : public StoreObj, public MtRec
     static  bool  ImportResults(wxTextBuffer &is);
     static  bool  ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long version = 1);
     static  bool  ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long version = 1);
+    static  bool  ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long versin = 1);
     static  bool  ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long versin = 1);
     static  bool  ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long version = 1);
 
     // Import / Export Schedule
     static  bool  ImportSchedule(wxTextBuffer &is);
     static  bool  ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &, bool append, long version = 1);
+    static  long  GetMaxSupportedExportVersion() {return 1;}
     
   private:
     static  bool UpdateStoredProcedure(long version);
