@@ -39,7 +39,7 @@ static const wxString versionNumber = "22.01";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
-static wxString copyright = "(C) Christoph Theis 2021";
+static wxString copyright = "(C) Christoph Theis 2022";
 static wxString expire = "";
 
 
