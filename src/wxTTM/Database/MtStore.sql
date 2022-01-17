@@ -305,7 +305,7 @@
         "   SELECT @mtMatches = mtMatches, @mtBestOf = mtBestOf FROM MtRec WHERE mtNr = @mtNr; \n"
 
         "   --- Special case if there is only 1 game \n"
-        "   IF (@mtBestOf = 1) THEN \n"
+        "   IF (@mtBestOf = 1) \n"
         "   BEGIN \n"
         "     SET @ptsToWinLast = @ptsToWin; \n"
         "     SET @ptsAheadLast = @ptsAhead; \n"
