@@ -338,8 +338,8 @@ bool  CMtRes::Edit(va_list vaList)
   // Validator haengt von mt.mtReverse ab
   for (int i = 0; i < MAX_SET; i++)
   {
-    short win = i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin;
-    short ahd = i == mt.mtBestOf - 1 ? cp.cpPtsAheadLast : cp.cpPtsAhead;
+    short win = mt.mtBestOf > 1 && i == mt.mtBestOf - 1 ? cp.cpPtsToWinLast : cp.cpPtsToWin;
+    short ahd = mt.mtBestOf > 1 && i == mt.mtBestOf - 1 ? cp.cpPtsAheadLast : cp.cpPtsAhead;
 
     if (mt.mtReverse)
       FindWindow(idcList[i])->SetValidator(CSetValidator(&mtSetList[i].mtResX, &mtSetList[i].mtResA, win, ahd));
