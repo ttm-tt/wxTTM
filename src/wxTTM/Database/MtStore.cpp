@@ -3320,11 +3320,10 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
         "       plAplExtID, NULL AS plBplExtId, plXplExtID, NULL AS plYplExtId, "
         "       stA.stPos, stX.stPos, "
         "       mtBestOf, "
-        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX, "
-        "       stA.stPos, stX.stPos "
+        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
         "  FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
         "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
-        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
         " ORDER BY cpName, mtDateTime, mtNr ";
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
       str = 
@@ -3336,7 +3335,7 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
         "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
         "  FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
         "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
-        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
         " ORDER BY cpName, mtDateTime, mtNr ";
     else if (cpType == CP_TEAM)
       str = 
@@ -3347,7 +3346,7 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
         "       mtBestOf, "
         "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
         "  FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
-        " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL "
+        " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
         " ORDER BY cpName, mtDateTime, mtNr, mtMS";
     else
       return false;
