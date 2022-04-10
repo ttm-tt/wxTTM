@@ -39,6 +39,10 @@ void LtItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
         DrawLong(pDC, rect, lt.ltRankPts);
       break;
 
+    case 7 : // Region
+      DrawString(pDC, rect, pl.naRegion);
+      break;
+
     default :
       PlItem::DrawColumn(pDC, col, rect);
   }

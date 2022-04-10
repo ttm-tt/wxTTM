@@ -385,7 +385,7 @@ wxString  LtEntryStore::SelectString(const timestamp *when) const
 
   str += 
      " plID, plNr, psLast, psFirst, psSex, psBirthday, plExtID, plRankPts, ltRankPts, "
-     "       naName, naDesc, ltID, lt.cpID, naID, ltRankPts "
+     "       naName, naDesc, naRegion, ltID, lt.cpID, naID, ltRankPts "
      "  FROM LtEntryList " + ts + " lt INNER JOIN CpList " + ts + " cp ON lt.cpID = cp.cpID "
    ;
 
@@ -408,6 +408,7 @@ bool  LtEntryStore::BindRec()
   BindCol(col++, &ltRankPts);
   BindCol(col++, naName, sizeof(naName));
   BindCol(col++, naDesc, sizeof(naDesc));
+  BindCol(col++, naRegion, sizeof(naRegion));
   BindCol(col++, &ltID);
   BindCol(col++, &cpID);
   BindCol(col++, &naID);
