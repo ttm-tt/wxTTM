@@ -1413,7 +1413,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			else if (sySingles < 4)
 			{
         if (mtmt.nmXnmNr > 0)
-				  wxSprintf(strX, "%s", alpha[mtmt.nmAnmNr-1]);
+				  wxSprintf(strX, "%s", alpha[mtmt.nmXnmNr+2]);
         else
           wxSprintf(strX, "");
 			}
