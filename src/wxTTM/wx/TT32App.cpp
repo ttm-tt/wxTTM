@@ -216,7 +216,8 @@ bool CTT32App::OnInit()
 
   m_pMainWnd->Maximize(true);
   
-  m_pMainWnd->GetEventHandler()->ProcessEvent(wxInitDialogEvent());
+  wxInitDialogEvent wxInitDialogEvent_;
+  m_pMainWnd->GetEventHandler()->ProcessEvent(wxInitDialogEvent_);
   m_pMainWnd->Show(true);
 
   OpenLastTournament();
@@ -307,7 +308,7 @@ class CProgressDialog : public wxProgressDialog
       }
     }
 
-    CProgressDialog::~CProgressDialog()
+   ~CProgressDialog()
     {
 
     }
@@ -476,7 +477,8 @@ wxPanel * CTT32App::OpenViewChildFrame(const wxString &childFrame, const wxStrin
 
   // panel->RestoreSettings();  
 
-  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent());
+  wxInitDialogEvent wxInitDialogEvent_;
+  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent_);
   
   panel->Edit(vaList);
   
@@ -495,9 +497,9 @@ wxPanel * CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *
   
   wxDialog *child = new wxDialog(m_pMainWnd, wxID_ANY, title);
 
-  CFormViewEx *panel = NULL;
+  CFormViewEx *panel = (CFormViewEx *) wxXmlResource::Get()->LoadPanel(child, xrcName);
   
-  if ( !(panel = (CFormViewEx *) wxXmlResource::Get()->LoadPanel(child, xrcName)) )
+  if (!panel)
   {
     delete child;
     return NULL;
@@ -507,7 +509,8 @@ wxPanel * CTT32App::OpenDialog(bool modal, const wxString &title, const wxChar *
   child->SetClientSize(panel->GetSize());
   child->SetSize(panel->GetSize());
 
-  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent());
+  wxInitDialogEvent wxInitDialogEvent_;
+  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent_);
   
   panel->Edit(vaList);
   
@@ -1435,8 +1438,8 @@ bool  CTT32App::OpenTournament(const wxString &name)
     table = ttProfile.GetInt(name, PRF_SETTINGS_TABLE);
 
     bool trustedConn = TTDbse::GetWindowsAuthentication(connStr);
-    wxString user = trustedConn ? TTDbse::GetUser(connStr) : wxEmptyString;
-    wxString pwd = trustedConn ? TTDbse::GetPassword(connStr) : wxEmptyString;
+    wxString user = trustedConn ? TTDbse::GetUser(connStr).c_str() : wxEmptyString;
+    wxString pwd = trustedConn ? TTDbse::GetPassword(connStr).c_str() : wxEmptyString;
 
     TTDbse::instance()->DetachDatabase(connStr, false);
     if (!TTDbse::instance()->CreateDatabase(database, server, trustedConn, user, pwd, type, table))
@@ -1709,8 +1712,7 @@ void CTT32App::RestoreDatabase()
 // -----------------------------------------------------------------------
 void CTT32App::OnTimer(wxTimerEvent &evt)
 {
-  wxChar tmp[16];
-  *tmp = 0;
+  wxChar tmp[16] = {0};
 
   if (GetBackupAppendTimestamp())
   {
@@ -1738,7 +1740,7 @@ void CTT32App::OnTimer(wxTimerEvent &evt)
     if (!GetBackupPath().IsEmpty())
       pathes.push_back(GetBackupPath());
 
-    for (auto path : pathes)
+    for (auto &path : pathes)
     {
       // Numerierung beginnt bei 0
       int nof = CTT32App::GetBackupKeepNofItems() - 1;

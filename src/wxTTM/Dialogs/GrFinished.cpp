@@ -178,7 +178,7 @@ void CGrFinished::OnInitialUpdate()
   // Printed
   m_grList->InsertColumn(6, _("Printed"), wxALIGN_RIGHT, 6 * cW);
 
-  OnTypeChange(wxCommandEvent());
+  OnTypeChange(wxCommandEvent_);
 }
 
 
@@ -450,12 +450,12 @@ void CGrFinished::OnTypeChange(wxCommandEvent &)
   m_grList->Thaw();
 
   // Recolor entries if only part of group is printed
-  OnOptionChange(wxCommandEvent());
+  OnOptionChange(wxCommandEvent_);
 }
 
 
 // -----------------------------------------------------------------------
 void CGrFinished::OnRefresh()
 {
-  OnTypeChange(wxCommandEvent());
+  OnTypeChange(wxCommandEvent_);
 }

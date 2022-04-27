@@ -85,7 +85,7 @@ public:
 class XmlRpcValue {
 public:
 	/* <Chris Morley> */
-	enum Type {
+	enum class Type {
 		TypeInvalid,
 		TypeBoolean,
 		TypeInt,
@@ -134,32 +134,32 @@ public:
 	/* <Chris Morley> */
 
 	//! Constructors
-	XmlRpcValue() : _type(TypeInvalid) { u.asBinary = 0; }
-	XmlRpcValue(bool value) : _type(TypeBoolean) { u.asBool = value; }
-	XmlRpcValue(int value)	: _type(TypeInt) { u.asInt = value; }
-	XmlRpcValue(double value)	: _type(TypeDouble) { u.asDouble = value; }
-	XmlRpcValue(char value)	: _type(TypeString) { 
+	XmlRpcValue() : _type(Type::TypeInvalid) { u.asBinary = 0; }
+	XmlRpcValue(bool value) : _type(Type::TypeBoolean) { u.asBool = value; }
+	XmlRpcValue(int value)	: _type(Type::TypeInt) { u.asInt = value; }
+	XmlRpcValue(double value)	: _type(Type::TypeDouble) { u.asDouble = value; }
+	XmlRpcValue(char value)	: _type(Type::TypeString) { 
 					u.asString = (char*)malloc(2); 
 					u.asString[0] = value;
 					u.asString[1] = '\0';
 				}
 
-	XmlRpcValue(std::string const& value) : _type(TypeString) 
+	XmlRpcValue(std::string const& value) : _type(Type::TypeString) 
 	{ u.asString = _strdup(value.c_str()); }
 
-	XmlRpcValue(const char* value)	: _type(TypeString)
+	XmlRpcValue(const char* value)	: _type(Type::TypeString)
 	{ u.asString = _strdup(value); }
 
-	XmlRpcValue(struct tm* value)	: _type(TypeDateTime) 
+	XmlRpcValue(struct tm* value)	: _type(Type::TypeDateTime) 
 	{ u.asTime = new struct tm(*value); }
 
-	XmlRpcValue(void* value, int nBytes)	: _type(TypeBase64)
+	XmlRpcValue(void* value, int nBytes)	: _type(Type::TypeBase64)
 	{
 		u.asBinary = new BinaryData((char*)value, ((char*)value)+nBytes);
 	}
 
 	//! Copy
-	XmlRpcValue(XmlRpcValue const& rhs) : _type(TypeInvalid) { *this = rhs; }
+	XmlRpcValue(XmlRpcValue const& rhs) : _type(Type::TypeInvalid) { *this = rhs; }
 
 	//! Destructor (make virtual if you want to subclass)
 	/*virtual*/ ~XmlRpcValue() { invalidate(); }
@@ -181,44 +181,44 @@ public:
 	bool operator!=(XmlRpcValue const& other) const { return !(*this == other); }
 
 	std::string GetStdString()	{
-								if (_type == TypeInt) {
-									char tmp[16];
+								if (_type == Type::TypeInt) {
+									char tmp[16] = {0};
 									_itoa_s(u.asInt, tmp, 10);
 									return tmp;
 								}
-								assertTypeOrInvalid(TypeString);
+								assertTypeOrInvalid(Type::TypeString);
 								return u.asString;
 							}
 
 	// There are some basic type conversions here. This might mean that your
 	// program parses stuff that strictly speaking it should report as a type error.
 
-	operator bool()			{	assertTypeOrInvalid(TypeBoolean); 
+	operator bool()			{	assertTypeOrInvalid(Type::TypeBoolean); 
 								return u.asBool; 
 							}
 	operator int()			{								
-								if (_type == TypeString && u.asString[0] >= '0' && u.asString[0] <= '9')
+								if (_type == Type::TypeString && u.asString[0] >= '0' && u.asString[0] <= '9')
 									return atoi(u.asString);
-								if (_type == TypeDouble)
+								if (_type == Type::TypeDouble)
 									return (int)u.asDouble;
-								if (_type == TypeInt)
+								if (_type == Type::TypeInt)
 									return u.asInt;
-								assertTypeOrInvalid(TypeInt);
+								assertTypeOrInvalid(Type::TypeInt);
 								return 0;
 							}
-	operator char()			{ assertTypeOrInvalid(TypeString); return *u.asString; }
-	operator double()		{	if (_type == TypeDouble)
+	operator char()			{ assertTypeOrInvalid(Type::TypeString); return *u.asString; }
+	operator double()		{	if (_type == Type::TypeDouble)
 									return u.asDouble; 
-								if (_type == TypeInt)
+								if (_type == Type::TypeInt)
 									return u.asInt;
-								assertTypeOrInvalid(TypeDouble);
+								assertTypeOrInvalid(Type::TypeDouble);
 								return 0;
 							}
 
-	operator const char*()	{ assertTypeOrInvalid(TypeString); return u.asString; }
-	operator BinaryData&()	{ assertTypeOrInvalid(TypeBase64); return *u.asBinary; }
-	operator struct tm&()	{ assertTypeOrInvalid(TypeDateTime); return *u.asTime; }
-	operator ValueStruct&()	{ assertTypeOrInvalid(TypeStruct); return *u.asStruct; }	// good for iterating thru fields
+	operator const char*()	{ assertTypeOrInvalid(Type::TypeString); return u.asString; }
+	operator BinaryData&()	{ assertTypeOrInvalid(Type::TypeBase64); return *u.asBinary; }
+	operator struct tm&()	{ assertTypeOrInvalid(Type::TypeDateTime); return *u.asTime; }
+	operator ValueStruct&()	{ assertTypeOrInvalid(Type::TypeStruct); return *u.asStruct; }	// good for iterating thru fields
 
 	XmlRpcValue const& operator[](int i) const { 
 			assertArray(i+1); return u.asArray->at(i); 
@@ -230,7 +230,7 @@ public:
 
 	// Accessors
 	//! Return true if the value has been set to something.
-	bool valid() const { return _type != TypeInvalid; }
+	bool valid() const { return _type != Type::TypeInvalid; }
 
 	//! Return the type of the value stored. \see Type.
 	Type const &getType() const { return _type; }

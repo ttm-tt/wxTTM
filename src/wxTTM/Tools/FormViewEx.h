@@ -11,6 +11,15 @@
 
 class  CRequest;
 
+// Some default events to be used in direct call of event handler
+// Don't use for PostEvent or other calls, only to call event handler directly
+extern wxCommandEvent     wxCommandEvent_; 
+extern wxFocusEvent       wxFocusEvent_;
+extern wxListEvent        wxListEvent_;
+// Don't initialize wxInitDialogEvent, it seems an instance can be used only once
+// and not more dialogs / frames are initialized after that
+// extern wxInitDialogEvent  wxInitDialogEvent_;
+
 class CFormViewEx : public wxPanel
 {
   public:

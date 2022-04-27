@@ -18,6 +18,9 @@ typedef TIMESTAMP_STRUCT  timestamp;
 # define SQL_TVARCHAR SQL_VARCHAR
 #endif
 
+// SQL_ERROR is only "-1", SQL_SUCCESS only 0, SQL_SUCCEEDED only SQL_SUCCESS, but we need to cover "-2" (SQL_INVALID_HANDLE) as well
+// But not SQL_NO_DATA etc.
+#define SQL_FAILED(ret) (ret == SQL_ERROR || ret == SQL_INVALID_HANDLE)
 
 inline bool operator<(const timestamp &ts1, const timestamp &ts2)
 {

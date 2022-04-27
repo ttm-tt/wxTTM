@@ -12,9 +12,9 @@ class  SQLException
   public:
     SQLException(
       const wxString &file, long line,
-      SQLHSTMT hStmt = SQL_NULL_HANDLE, 
-      SQLHDBC  hDbc  = SQL_NULL_HANDLE,
-      SQLHENV  hEnv  = SQL_NULL_HANDLE);
+      SQLHSTMT hStmt = SQL_NULL_HSTMT, 
+      SQLHDBC  hDbc  = SQL_NULL_HDBC,
+      SQLHENV  hEnv  = SQL_NULL_HENV);
 
     SQLException(
       const wxString &file, long line, const wxString &msg);

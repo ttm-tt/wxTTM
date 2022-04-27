@@ -56,7 +56,7 @@ class  RasterSKO : public RasterKO
 {
   // Konstruktor
   public:
-    RasterSKO::RasterSKO(Printer *prt, Connection *connPtr);
+    RasterSKO(Printer *prt, Connection *connPtr);
 
   // Kopfzeile drucken
   public:
@@ -81,7 +81,7 @@ class  RasterDKO : public RasterKO
 {
   // Konstruktor
   public:
-    RasterDKO::RasterDKO(Printer *prt, Connection *connPtr);
+    RasterDKO(Printer *prt, Connection *connPtr);
 
   // Kopfzeile drucken
   public:
@@ -104,7 +104,7 @@ class  RasterPLO : public RasterKO
 {
   // Konstruktor
   public:
-    RasterPLO::RasterPLO(Printer *prt, Connection *connPtr);
+    RasterPLO(Printer *prt, Connection *connPtr);
 
   // Kopfzeile drucken
   public:

@@ -75,24 +75,24 @@ class  ListItem
     
   public:
     // Strings etc. zeichnen
-    static void  DrawString(wxDC *pDC, wxRect &rect, const wxString &str, unsigned fmt = wxALIGN_LEFT);
-    static void  DrawLong(wxDC *pDC, wxRect &rect, long val, unsigned fmt = wxALIGN_RIGHT);
-    static void  DrawDouble(wxDC *pDC, wxRect &rect, double val, unsigned fmt = wxALIGN_RIGHT);
+    static void  DrawString(wxDC *pDC, const wxRect &rect, const wxString &str, unsigned fmt = wxALIGN_LEFT);
+    static void  DrawLong(wxDC *pDC, const wxRect &rect, long val, unsigned fmt = wxALIGN_RIGHT);
+    static void  DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt = wxALIGN_RIGHT);
 
-    static void  DrawStringCentered(wxDC *pDC, wxRect &rect, const wxString &str);
-    static void  DrawBye(wxDC *pDC, wxRect &rect);
+    static void  DrawStringCentered(wxDC *pDC, const wxRect &rect, const wxString &str);
+    static void  DrawBye(wxDC *pDC, const wxRect &rect);
 
-    static void  DrawImage(wxDC *pDC, wxRect &rect, const wxBitmap &img);
+    static void  DrawImage(wxDC *pDC, const wxRect &rect, const wxBitmap &img);
 
     // Komplexere Ausgaben
-    static void  DrawPlayer(wxDC *pDC, wxRect &rect, const PlRec &pl, bool showNaName = true);
+    static void  DrawPlayer(wxDC *pDC, const wxRect &rect, const PlRec &pl, bool showNaName = true);
 
-    static void  DrawTeam(wxDC *pDC, wxRect &rect, const TmTeam &tm, bool showNaName = true);
-    static void  DrawGroup(wxDC *pDC, wxRect &rect, const TmGroup &gr);
-    static void  DrawEntry(wxDC *pDC, wxRect &rect, const TmEntry &tm, bool showNaName = true);
+    static void  DrawTeam(wxDC *pDC, const wxRect &rect, const TmTeam &tm, bool showNaName = true);
+    static void  DrawGroup(wxDC *pDC, const wxRect &rect, const TmGroup &gr);
+    static void  DrawEntry(wxDC *pDC, const wxRect &rect, const TmEntry &tm, bool showNaName = true);
 
     // Ergebnisausgabe
-    static void  DrawResult(wxDC *pDC, wxRect &rect, short resA, short resX);
+    static void  DrawResult(wxDC *pDC, const wxRect &rect, short resA, short resX);
 
     // Zeichenhilfen: 
     // String verkuerzen, bis er in das Rechteck passt
@@ -129,7 +129,7 @@ inline  ListItem::ListItem(long id, const wxString &label, long type)
 
 
 
-inline  void  ListItem::DrawLong(wxDC *pDC, wxRect &rect, long val, unsigned fmt)
+inline  void  ListItem::DrawLong(wxDC *pDC, const wxRect &rect, long val, unsigned fmt)
 {
   wxChar  buf[32];
   _ltot(val, buf, 10);
@@ -139,20 +139,20 @@ inline  void  ListItem::DrawLong(wxDC *pDC, wxRect &rect, long val, unsigned fmt
  
 
 
-inline  void  ListItem::DrawDouble(wxDC *pDC, wxRect &rect, double val, unsigned fmt)
+inline  void  ListItem::DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt)
 {
   DrawString(pDC, rect, wxString::FromCDouble(val), fmt);
 }
  
 
 
-inline  void  ListItem::DrawStringCentered(wxDC *pDC, wxRect &rect, const wxString &str)
+inline  void  ListItem::DrawStringCentered(wxDC *pDC, const wxRect &rect, const wxString &str)
 {
   DrawString(pDC, rect, str, wxALIGN_CENTER);
 }
 
 
-inline  void  ListItem::DrawBye(wxDC *pDC, wxRect &rect)
+inline  void  ListItem::DrawBye(wxDC *pDC, const wxRect &rect)
 {
   DrawStringCentered(pDC, rect, _("BYE"));
 }

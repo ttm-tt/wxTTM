@@ -75,6 +75,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
 
   EVT_MENU(XRCID("CompetitionTeamSystemMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("CompetitionGroupModusMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("CompetitionMatchPointsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("CompetitionEventMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("CompetitionGroupMenuItem"), CMainFrame::OnMenuCommand)
   
@@ -261,6 +262,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     CTT32App::instance()->OpenView(_("List of Team Systems"), wxT("SyListView"));
   else if (evt.GetId() == XRCID("CompetitionGroupModusMenuItem"))
     CTT32App::instance()->OpenView(_("List of Group Modi"), wxT("MdListView"));
+  else if (evt.GetId() == XRCID("CompetitionMatchPointsMenuItem"))
+    CTT32App::instance()->OpenView(_("List of Match Points"), wxT("MpListView"));
   else if (evt.GetId() == XRCID("CompetitionEventMenuItem"))
     CTT32App::instance()->OpenView(_("List of Events"), wxT("CpListView"));
   else if (evt.GetId() == XRCID("CompetitionEventMenuItem"))

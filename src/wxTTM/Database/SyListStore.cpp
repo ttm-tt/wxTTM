@@ -19,7 +19,7 @@
 
 
 // -----------------------------------------------------------------------
-// Neue Tabelle in DB erzeugen
+// Create new view in database
 bool  SyListStore::CreateView()
 {
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();

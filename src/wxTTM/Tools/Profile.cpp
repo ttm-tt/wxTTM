@@ -96,7 +96,7 @@ wxString Profile::GetFirstKey(const wxString &section)
     key = (wxChar *) realloc(key, (len + 1) * sizeof(wxChar));
   } while ( ::GetPrivateProfileString(section.t_str(), NULL, wxT(""), key, len, fileName.t_str()) == len - 2);
   
-  return (*key ? wxString(key) : wxEmptyString);
+  return (*key ? wxString(key).c_str() : wxEmptyString);
 }
 
 
@@ -108,7 +108,7 @@ wxString Profile::GetNextKey()
   wxChar *ptr = key + keyPointer;  // Liste von '\0' terminierten Strings
   keyPointer += wxStrlen(ptr) + 1;
 
-  return (*(key + keyPointer) ? wxString(key + keyPointer) : wxEmptyString);
+  return (*(key + keyPointer) ? wxString(key + keyPointer).c_str() : wxEmptyString);
 }
 
 
@@ -178,7 +178,7 @@ wxString Profile::GetFirstSection()
     key = (wxChar *)realloc(key, (len + 1) * sizeof(wxChar));
   } while (::GetPrivateProfileSectionNames(key, len, fileName.t_str()) == len - 2);
 
-  return (*key ? wxString(key) : wxEmptyString);
+  return (*key ? wxString(key).c_str() : wxEmptyString);
 }
 
 
@@ -190,7 +190,7 @@ wxString Profile::GetNextSection()
   wxChar *ptr = key + keyPointer;  // Liste von '\0' terminierten Strings
   keyPointer += wxStrlen(ptr) + 1;
 
-  return (*(key + keyPointer) ? wxString(key + keyPointer) : wxEmptyString);
+  return (*(key + keyPointer) ? wxString(key + keyPointer).c_str() : wxEmptyString);
 }
 
 

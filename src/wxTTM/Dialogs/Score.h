@@ -38,6 +38,7 @@ class CScore : public CFormViewEx
   private:
     void OnSelectMatch(wxCommandEvent &);
     void OnResetPrinted(wxCommandEvent &);
+    void OnMarkPrinted(wxCommandEvent &);
     void OnKillFocus(wxFocusEvent &);
     void OnCombined(wxCommandEvent &);
   
@@ -66,6 +67,8 @@ class CScore : public CFormViewEx
     void  DoPrintRound();
     void  DoPrintGroup();
     void  DoPrintScheduled();
+
+    void  DoSetPrinted(boolean set);
 
     Printer *m_printer;
 

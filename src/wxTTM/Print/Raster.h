@@ -112,18 +112,18 @@ class  RasterBase
 
 	// Variablen
 	protected:
-		Printer   *printer;
+		Printer   *printer = nullptr;
 		// TEAMLIST  teamList;
 
-    long   width;     // Einheitsweite
-		short  textFont;  // Font der Ausgabe
+    long   width = 0;     // Einheitsweite
+		short  textFont = 0;  // Font der Ausgabe
 
-		long   offsetX;   // Abstand vom linken Rand
-		long   offsetY;   // Abstand vom oberen Rand
+		long   offsetX = 0;   // Abstand vom linken Rand
+		long   offsetY = 0;   // Abstand vom oberen Rand
 
-		long   space;     // Abstand Schrift zum Rand
+		long   space = 0;     // Abstand Schrift zum Rand
 
-		short  page;      // Aktuelle Seitenzahl
+		short  page = 0;      // Aktuelle Seitenzahl
 
 	// Einzelne Ergebnisse drucken
 	public:

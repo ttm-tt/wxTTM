@@ -49,9 +49,9 @@ class  Statement
     ResultSet * GetResultSet(bool check); 
 
   protected:
-    SQLHSTMT  hStmt;
-    SQLHDBC   hDbc;
-    SQLHENV   hEnv;
+    SQLHSTMT  hStmt = SQL_NULL_HSTMT;
+    SQLHDBC   hDbc = SQL_NULL_HDBC;
+    SQLHENV   hEnv = SQL_NULL_HENV;
 };
 
 
@@ -76,7 +76,7 @@ class  PreparedStatement : public Statement
 
   private:
     // TODO: Eine Queue dafuer
-    SQLLEN  nullData[64];
+    SQLLEN  nullData[64] = {0};
 };
 
 

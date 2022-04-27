@@ -755,8 +755,10 @@ bool  PrinterPreview::EndDoc()
 {
   if (previewWindow)
   {
+    wxCommandEvent evt(IDC_ENDDOC);
+
     previewWindow->Show(true);
-    previewWindow->ProcessWindowEvent(wxCommandEvent(IDC_ENDDOC));
+    previewWindow->ProcessWindowEvent(evt);
   }
 
   return true;
@@ -767,8 +769,10 @@ bool  PrinterPreview::AbortDoc()
 {
   if (previewWindow)
   {
+    wxCommandEvent evt(IDC_ENDDOC);
+
     previewWindow->Show(true);
-    previewWindow->ProcessWindowEvent(wxCommandEvent(IDC_ENDDOC));
+    previewWindow->ProcessWindowEvent(evt);
   }
 
   previewWindow = NULL;

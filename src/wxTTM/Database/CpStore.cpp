@@ -41,7 +41,7 @@ bool CpRec::Read(const wxString &line, int version)
 
   wxString strName = tokens.GetNextToken();
   wxString strDesc = tokens.GetNextToken();
-  wxString strCat  = (version < 2 ? wxEmptyString : tokens.GetNextToken());
+  wxString strCat  = (version < 2 ? wxEmptyString : tokens.GetNextToken().wx_str());
   wxString strType = tokens.GetNextToken();
   wxString strSex  = tokens.GetNextToken();
   wxString strYear = tokens.GetNextToken();

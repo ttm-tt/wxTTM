@@ -150,9 +150,9 @@ int  RasterScore::PrintScoreHeader(const CpRec &cp, const GrRec &gr, const MtEnt
 
 	if (mttm.mt.mtPlace.mtTable)
 	{
-	 // Der Tisch erscheint groesser
+ 		// Der Tisch erscheint groesser
 		// PrintInt(mt.mtPlace.mtTable, regTable);
-		wxChar  str[17];
+		wxChar  str[17] = {0};
 		_itot(mttm.mt.mtPlace.mtTable, str, 10);
 
 		short cpFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_COMP);
@@ -325,7 +325,7 @@ int  RasterScore::PrintScore(const MtEntry &mt)
   regGroup.bottom = regGroup.top + heightTop + 2 * heightBot;
 
   // Die rechte Haelfte der Seite enthaelt die Saetze und das Ergebnis
-  double width = (printer->width - left) / (2 * (mt.mt.mtBestOf + 1));
+  double width = (1. * printer->width - left) / (2 * (mt.mt.mtBestOf + 1));
 
   // Erste Gruppe: Spieler und einzelne Saetze
   regGroup.right = printer->width;
@@ -456,8 +456,7 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	// Ergebnisse, soweit bekannt
 	if (mt.mt.mtResA || mt.mt.mtResX)
 	{
-	  short res[2];
-	  res[0] = res[1] = 0;
+	  short res[2] = {0};
 	  
 	  MtSetStore  mtSet(mt.mt, connPtr);
 	  mtSet.SelectAll();
@@ -477,7 +476,7 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	    else if ( (mtSet.mtResX > mtSet.mtResA) && (mtSet.mtResX >= win) )
 	      res[1]++;
 	      
-	    wxChar tmp[10];
+	    wxChar tmp[10] = {0};
 	    
 	    CRect  regRes;
 	    regRes.top = regGroup.top + heightTop;
@@ -497,7 +496,7 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	  
 	  if (res[0] || res[1])
 	  {
-	    wxChar tmp[10];
+	    wxChar tmp[10] = {0};
   	  
 	    CRect  regRes;
 	    regRes.top = regGroup.top + heightTop;
@@ -841,8 +840,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	int heightBot = 2 * printer->cH;  // Hoehe Eintraege
 	int cW = printer->cW;
 
-	double width = printer->width / (2 * (mt.mt.mtBestOf +1));
-	wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+	double width = 1. * printer->width / (2 * (mt.mt.mtBestOf +1));
+	const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
 
 	// Insgesamt gibt es ??? Gruppen
 	CRect  regGroup;
@@ -1049,7 +1048,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   // Jetzt den Rahmen drucken
   for (int singles = 0; singles < sySingles; singles++)
   {
-    wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+    const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
     wxChar str[4];
     
     CRect reg = regGroup;
@@ -1360,14 +1359,11 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
     
   mtmt.Close();
   
-  short  mtTotalGames[2];
-  mtTotalGames[0] = mtTotalGames[1] = 0;
+  short  mtTotalGames[2] = {0};
   
-  short  mtTotalPoints[2];
-  mtTotalPoints[0] = mtTotalPoints[1] =0;
+  short  mtTotalPoints[2] = {0};
   
-  for (std::vector<MtEntry *>::const_iterator it = mtEntryList.begin();
-       it != mtEntryList.end(); it++)
+  for (auto it = mtEntryList.begin(); it != mtEntryList.end(); it++)
 	{
 	  // Geloescht wird am Ende, also Vorsicht bei continue
 	  MtEntry &mtmt = *(*it);	  
@@ -1481,8 +1477,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		  MtSetStore mtSet(mtmt.mt, connPtr);
 		  mtSet.SelectAll(mtmt.mt.mtEvent.mtMS);
 		  
-		  short res[2];
-		  res[0] = res[1] = 0;
+		  short res[2] = {0};
 		  
 		  while (mtSet.Next())
 		  {
@@ -1665,7 +1660,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
              regGroup.left + regGroup.GetWidth() / 2 - printer->cW, regGroup.bottom);
 
       // Doha: SR-Nr drucken
-      wxChar tmpSRNr[20], tmpSR2Nr[20];
+      wxChar tmpSRNr[20] = {0}, tmpSR2Nr[20] = {0};
       _itot(mt.mt.mtUmpire, tmpSRNr, 10);
       _itot(mt.mt.mtUmpire2, tmpSR2Nr, 10);
 
@@ -1973,7 +1968,7 @@ int  RasterScore::PrintScoreFooter(const MtEntry &)
 
 	for (int k = 1; k <= 3; k++)
 	{
-	 wxChar str[16];
+	 wxChar str[16] = {0};
 	 _itot(k, str, 10);
 
 	 CRect  reg;

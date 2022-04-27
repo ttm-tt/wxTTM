@@ -69,7 +69,7 @@ bool CGrOptionsList::Edit(va_list vaList)
 {
   std::list<wxString> options = PoStore().List();
 
-  for each (wxString option in options)
+  for (wxString option : options)
   {
     if (option.IsEmpty())
       continue;

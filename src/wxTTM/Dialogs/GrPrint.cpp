@@ -141,7 +141,7 @@ void CGrPrint::OnInitialUpdate()
   else
     m_cpCombo->SetCurrentItem(m_cpCombo->GetListItem(0));
 
-  OnSelChangeCp(wxCommandEvent());
+  OnSelChangeCp(wxCommandEvent_);
 }
 
 
@@ -178,7 +178,7 @@ void CGrPrint::OnSelChangeCp(wxCommandEvent &)
 
   m_grList->SortItems();
 
-  OnOptionChange(wxCommandEvent());
+  OnOptionChange(wxCommandEvent_);
 }
 
 

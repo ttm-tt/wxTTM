@@ -2738,7 +2738,6 @@ msgstr "Team seeded to pos %d was drawn to different pos %d in std %d sec %d"
 
 #: Draw/DrawLP.cpp:1744
 #, c-format
-#| msgid "First did not get an expected bye in first round at pos %d - %d"
 msgid "DE did not get an expected bye in first round at pos %d - %d"
 msgstr "DE did not get an expected bye in first round at pos %d - %d"
 

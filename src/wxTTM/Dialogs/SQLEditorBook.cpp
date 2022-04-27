@@ -219,8 +219,10 @@ void CSQLEditorBook::OnRefresh()
   // Allerdings verarbeitet SQLEditor dann nicht das Event
   // m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(wxCommandEvent(IDC_REFRESH));
 
+  wxCommandEvent cmdRefresh(IDC_REFRESH);
+
   if ( m_notebook->GetPage(m_notebook->GetSelection()) )
-    m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(wxCommandEvent(IDC_REFRESH));
+    m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(cmdRefresh);
     // ((COvList *) m_notebook->GetPage(m_notebook->GetSelection()))->OnRefresh();  
 }
 
@@ -231,8 +233,10 @@ void CSQLEditorBook::OnPrint()
   // Allerdings verarbeitet SQLEditor dann nicht das Event
   // m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(wxCommandEvent(wxID_PRINT));
 
+  wxCommandEvent cmdPrint(wxID_PRINT);
+
   if ( m_notebook->GetPage(m_notebook->GetSelection()) )
-    m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(wxCommandEvent(wxID_PRINT));
+    m_notebook->GetPage(m_notebook->GetSelection())->GetEventHandler()->ProcessEvent(cmdPrint);
     // ((COvList *) m_notebook->GetPage(m_notebook->GetSelection()))->OnPrint();  
 }
 
@@ -242,7 +246,8 @@ void CSQLEditorBook::AddNewPage()
   wxPanel *panel = wxXmlResource::Get()->LoadPanel(this, "SQLEditor");
   m_notebook->InsertPage(m_notebook->GetPageCount() - 1, panel, _("SQL Editor"), false);
 
-  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent());
+  wxInitDialogEvent wxInitDialogEvent_;
+  panel->GetEventHandler()->ProcessEvent(wxInitDialogEvent_);
   ((CSQLEditor *) panel)->Edit(0);
 
   m_notebook->SetSelection(m_notebook->GetPageIndex(panel));

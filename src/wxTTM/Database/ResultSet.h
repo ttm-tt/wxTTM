@@ -54,7 +54,7 @@ class  ResultSet
     wxString GetColumnLabel(int nr);
 
   private:
-    SQLHSTMT hStmt;
+    SQLHSTMT hStmt = SQL_NULL_HSTMT;
     NullDataMap  nullData;
     // unsigned long nullData[32];
 };

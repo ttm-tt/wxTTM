@@ -82,7 +82,7 @@ bool  CNmEditETS::Edit(va_list vaList)
   // Versteckte Spieler in ETS
   sySingles = 4;
 
-  wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+  const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
   wxChar str[6];
     
   for (int nmSingle = 1; nmSingle <= sySingles; nmSingle++)
@@ -146,7 +146,7 @@ bool  CNmEditETS::Edit(va_list vaList)
   plFourReplace->Enable(nm.GetSingle(3) != 0);
   // plFourReplace->Enable(true);
   
-  OnSelChanged(wxListEvent());
+  OnSelChanged(wxListEvent_);
 
   // OK-Button sperren, wenn schon Ergebnisse und Aufstellung existieren
   hasNomination &= (mt.mtResA + mt.mtResX) != 0;
@@ -299,7 +299,7 @@ void  CNmEditETS::OnDelete()
          ((NmItem *) nmList->GetCurrentItem())->nm.team.cpType != nmItemPtr->nm.team.cpType
         )
     {
-      OnSelChanged(wxListEvent());
+      OnSelChanged(wxListEvent_);
     }
   }
 

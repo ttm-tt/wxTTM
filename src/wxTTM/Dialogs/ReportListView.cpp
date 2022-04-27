@@ -92,7 +92,7 @@ bool CReportListView::Edit(va_list vaList)
   pattern += "\\*.rep";
   
   _finddata_t findinfo; 
-  long h = _findfirst(pattern.data(), &findinfo);
+  intptr_t h = _findfirst(pattern.data(), &findinfo);
   if (h != -1L)
   {
     do

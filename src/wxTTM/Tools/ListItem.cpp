@@ -59,7 +59,7 @@ bool  ListItem::HasString(const wxString &str) const
 
 
 // -----------------------------------------------------------------------
-void  ListItem::DrawString(wxDC *pDC, wxRect &rect, const wxString &str, unsigned fmt)
+void  ListItem::DrawString(wxDC *pDC, const wxRect &rect, const wxString &str, unsigned fmt)
 {
   if (rect.GetLeft() >= rect.GetRight())
     return;
@@ -87,14 +87,14 @@ void  ListItem::DrawString(wxDC *pDC, wxRect &rect, const wxString &str, unsigne
 
 
 // -----------------------------------------------------------------------
-void ListItem::DrawImage(wxDC *pDC, wxRect &rect, const wxBitmap &img)
+void ListItem::DrawImage(wxDC *pDC, const wxRect &rect, const wxBitmap &img)
 {
   pDC->DrawLabel(wxEmptyString, img, rect, wxALIGN_CENTER);
 }
 
 
 // -----------------------------------------------------------------------
-void  ListItem::DrawPlayer(wxDC *pDC, wxRect &rect, const PlRec &pl, bool showNaName)
+void  ListItem::DrawPlayer(wxDC *pDC, const wxRect &rect, const PlRec &pl, bool showNaName)
 {
   if (!pl.plNr)
     return;
@@ -154,7 +154,7 @@ void  ListItem::DrawPlayer(wxDC *pDC, wxRect &rect, const PlRec &pl, bool showNa
 }
 
 
-void  ListItem::DrawTeam(wxDC *pDC, wxRect &rect, const TmTeam &tm, bool showNaName)
+void  ListItem::DrawTeam(wxDC *pDC, const wxRect &rect, const TmTeam &tm, bool showNaName)
 {
   if (!*tm.tmName && !*tm.tmDesc)
     return;
@@ -209,7 +209,7 @@ void  ListItem::DrawTeam(wxDC *pDC, wxRect &rect, const TmTeam &tm, bool showNaN
 }
 
 
-void  ListItem::DrawGroup(wxDC *pDC, wxRect &rect, const TmGroup &gr)
+void  ListItem::DrawGroup(wxDC *pDC, const wxRect &rect, const TmGroup &gr)
 {
   if (!gr.grID)
   {
@@ -253,7 +253,7 @@ void  ListItem::DrawGroup(wxDC *pDC, wxRect &rect, const TmGroup &gr)
 }
 
 
-void  ListItem::DrawEntry(wxDC *pDC, wxRect &rect, const TmEntry &tm, bool showNaName)
+void  ListItem::DrawEntry(wxDC *pDC, const wxRect &rect, const TmEntry &tm, bool showNaName)
 {
   switch (tm.team.cpType)
   {
@@ -287,7 +287,7 @@ void  ListItem::DrawEntry(wxDC *pDC, wxRect &rect, const TmEntry &tm, bool showN
 }
 
 
-void  ListItem::DrawResult(wxDC *pDC, wxRect &rect, short resA, short resX)
+void  ListItem::DrawResult(wxDC *pDC, const wxRect &rect, short resA, short resX)
 {
   wxRect  rc = rect;
   rc.SetLeft(rc.GetLeft() + offset);

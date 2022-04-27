@@ -16,10 +16,10 @@
 IMPLEMENT_DYNAMIC_CLASS(CCpEdit, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CCpEdit, CFormViewEx)
-  EVT_RADIOBUTTON(XRCID("Single"), CCpEdit::OnSelectType)
-  EVT_RADIOBUTTON(XRCID("Double"), CCpEdit::OnSelectType)
-  EVT_RADIOBUTTON(XRCID("Mixed"), CCpEdit::OnSelectType)
-  EVT_RADIOBUTTON(XRCID("Team"), CCpEdit::OnSelectType)
+  EVT_RADIOBUTTON(XRCID("TypeSingle"), CCpEdit::OnSelectType)
+  EVT_RADIOBUTTON(XRCID("TypeDouble"), CCpEdit::OnSelectType)
+  EVT_RADIOBUTTON(XRCID("TypeMixed"), CCpEdit::OnSelectType)
+  EVT_RADIOBUTTON(XRCID("TypeTeam"), CCpEdit::OnSelectType)
 END_EVENT_TABLE()
 
 
@@ -56,22 +56,22 @@ bool  CCpEdit::Edit(va_list vaList)
   while (sy.Next())
     m_cbSystem->AddListItem(new SyItem(sy));
 
-  m_cbSystem->SetCurrentItem(cp.syID);
-
-  m_cbSystem->Enable(cp.cpType == CP_TEAM);
-
-  FindWindow("Male")->Enable(cp.cpType != CP_MIXED);
-  FindWindow("Female")->Enable(cp.cpType != CP_MIXED);
-  
   if (cp.cpID)
   {
-    FindWindow("Male")->Enable(false);
-    FindWindow("Female")->Enable(false);
+    m_cbSystem->SetCurrentItem(cp.syID);
+
+    FindWindow("SexMale")->Enable(false);
+    FindWindow("SexFemale")->Enable(false);
+    FindWindow("SexMixed")->Enable(false);
     
-    FindWindow("Single")->Enable(false);
-    FindWindow("Double")->Enable(false);
-    FindWindow("Mixed")->Enable(false);
-    FindWindow("Team")->Enable(false);
+    FindWindow("TypeSingle")->Enable(false);
+    FindWindow("TypeDouble")->Enable(false);
+    FindWindow("TypeMixed")->Enable(false);
+    FindWindow("TypeTeam")->Enable(false);
+  }
+  else
+  {
+    OnSelectType(wxCommandEvent_);
   }
 
   TransferDataToWindow();
@@ -86,22 +86,43 @@ bool  CCpEdit::Edit(va_list vaList)
 void CCpEdit::OnSelectType(wxCommandEvent &)
 {
   TransferDataFromWindow();
-  
-  if (cp.cpType == CP_MIXED)
-    cp.cpSex = SEX_MIXED;
-  else if (cp.cpSex != SEX_MALE && cp.cpSex != SEX_FEMALE)
-    cp.cpSex = SEX_MALE;
 
-  if (cp.cpType != CP_TEAM)
-    m_cbSystem->SetCurrentItem((long) 0);
-  else
-    m_cbSystem->SetCurrentItem(cp.syID);
+  switch (cp.cpType)
+  {
+    case CP_SINGLE :
+    case CP_DOUBLE :
+      if (cp.cpSex != SEX_MALE && cp.cpSex != SEX_FEMALE)
+        cp.cpSex = SEX_MALE;
 
-  m_cbSystem->Enable(cp.cpType == CP_TEAM);
-  
-  FindWindow("Male")->Enable(cp.cpType != CP_MIXED);
-  FindWindow("Female")->Enable(cp.cpType != CP_MIXED);
-  
+      m_cbSystem->SetCurrentItem((long) 0);
+
+      FindWindow("SexMale")->Enable(true);
+      FindWindow("SexFemale")->Enable(true);
+      FindWindow("SexMixed")->Enable(false);
+
+      break;
+
+    case CP_MIXED :
+      cp.cpSex = SEX_MIXED;
+
+      m_cbSystem->SetCurrentItem((long) 0);
+
+      FindWindow("SexMale")->Enable(false);
+      FindWindow("SexFemale")->Enable(false);
+      FindWindow("SexMixed")->Enable(true);
+
+      break;
+
+    case CP_TEAM :
+      m_cbSystem->SetCurrentItem(cp.syID);
+
+      FindWindow("SexMale")->Enable(true);
+      FindWindow("SexFemale")->Enable(true);
+      FindWindow("SexMixed")->Enable(true);
+
+      break;
+  }
+
   TransferDataToWindow();
 }
 
@@ -118,13 +139,14 @@ void CCpEdit::OnInitialUpdate()
 	
   m_cbSystem = XRCCTRL(*this, "TeamSystem", CComboBoxEx);	  
 
-  FindWindow("Single")->SetValidator(CEnumValidator(&cp.cpType, CP_SINGLE));
-	FindWindow("Double")->SetValidator(CEnumValidator(&cp.cpType, CP_DOUBLE));
-	FindWindow("Mixed")->SetValidator(CEnumValidator(&cp.cpType, CP_MIXED));
-	FindWindow("Team")->SetValidator(CEnumValidator(&cp.cpType, CP_TEAM));
+  FindWindow("TypeSingle")->SetValidator(CEnumValidator(&cp.cpType, CP_SINGLE));
+	FindWindow("TypeDouble")->SetValidator(CEnumValidator(&cp.cpType, CP_DOUBLE));
+	FindWindow("TypeMixed")->SetValidator(CEnumValidator(&cp.cpType, CP_MIXED));
+	FindWindow("TypeTeam")->SetValidator(CEnumValidator(&cp.cpType, CP_TEAM));
 	
-	FindWindow("Male")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MALE));
-	FindWindow("Female")->SetValidator(CEnumValidator(&cp.cpSex, SEX_FEMALE));
+	FindWindow("SexMale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MALE));
+	FindWindow("SexFemale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_FEMALE));
+	FindWindow("SexMixed")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MIXED));
 
   FindWindow("Year")->SetValidator(CLongValidator(&cp.cpYear, true));
 	
@@ -143,16 +165,6 @@ void CCpEdit::OnInitialUpdate()
 void  CCpEdit::OnOK()
 {
   TransferDataFromWindow();
-
-  if (cp.cpType == CP_MIXED)
-    cp.cpSex = SEX_MIXED;
-  else if (cp.cpSex != SEX_MALE && cp.cpSex != SEX_FEMALE)
-    cp.cpSex = SEX_MALE;
-  
-  if (cp.cpType != CP_TEAM)
-    cp.syID = 0;
-  else
-    cp.syID = m_cbSystem->GetCurrentItem()->GetID();
 
   bool res = false;
 

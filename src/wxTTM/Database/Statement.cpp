@@ -67,7 +67,7 @@ bool Statement::Execute(const wxString &sql)
   // Execute statement
   ret = SQLExecDirect(hStmt, (SQLTCHAR *) sql.wx_str(), SQL_NTS);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   if (GetColumnCount() > 0)
@@ -77,13 +77,15 @@ bool Statement::Execute(const wxString &sql)
 }
 
 
-// Rest internal state
+// Reset internal state
 void Statement::Reset()
 {
-  if (hStmt != SQL_NULL_HANDLE)
+  if (hStmt != SQL_NULL_HSTMT)
   {
     SQLFreeStmt(hStmt, SQL_CLOSE);
   }
+
+  // handle remains valid
 }
 
 
@@ -91,13 +93,13 @@ void Statement::Reset()
 void  Statement::Close()
 {
   SQLRETURN  ret;
-  if (hStmt != SQL_NULL_HANDLE)
+  if (hStmt != SQL_NULL_HSTMT)
   {
     ret = SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-    hStmt = SQL_NULL_HANDLE;
+    hStmt = SQL_NULL_HSTMT;
 
-    if (ret == SQL_ERROR)
-      throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, hDbc);
+    if (SQL_FAILED(ret))
+      throw SQLException(__TFILE__, __LINE__, SQL_NULL_HSTMT, hDbc);
   }
 }
 
@@ -110,7 +112,7 @@ int  Statement::GetColumnCount()
 
   ret = SQLNumResultCols(hStmt, &numOfCols);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return numOfCols;
@@ -157,7 +159,7 @@ bool  PreparedStatement::SetData(int nr, bool *dataPtr)
   ret = SQLBindParameter(hStmt, nr, SQL_PARAM_INPUT, SQL_C_BIT, SQL_SMALLINT, 
                          0, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -176,7 +178,7 @@ bool  PreparedStatement::SetData(int nr, short *dataPtr)
   ret = SQLBindParameter(hStmt, nr, SQL_PARAM_INPUT, SQL_C_SSHORT, SQL_SMALLINT, 
                          0, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -195,7 +197,7 @@ bool  PreparedStatement::SetData(int nr, long *dataPtr)
   ret = SQLBindParameter(hStmt, nr, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 
                          0, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -214,7 +216,7 @@ bool  PreparedStatement::SetData(int nr, double *dataPtr)
   ret = SQLBindParameter(hStmt, nr, SQL_PARAM_INPUT, SQL_C_DOUBLE, SQL_FLOAT, 
                          0, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -233,7 +235,7 @@ bool  PreparedStatement::SetData(int nr, wxChar *dataPtr)
   ret = SQLBindParameter(hStmt, nr, SQL_PARAM_INPUT, SQL_C_TCHAR, SQL_TVARCHAR, 
                          SQL_NTS, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -253,7 +255,7 @@ bool  PreparedStatement::SetData(int nr, timestamp *dataPtr)
         hStmt, nr, SQL_PARAM_INPUT, SQL_C_TIMESTAMP, SQL_TIMESTAMP, 
         0, 0, dataPtr, 0, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;
@@ -268,7 +270,7 @@ bool  PreparedStatement::SetData(int nr, void *data, size_t len)
         hStmt, nr, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_LONGVARBINARY, 
         len, 0, data, 1, &nullData[nr]);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
     
   return true;
@@ -283,7 +285,7 @@ bool  PreparedStatement::Execute()
   wxASSERT(hStmt);
 
   ret = SQLExecute(hStmt);
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return true;

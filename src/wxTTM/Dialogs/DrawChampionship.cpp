@@ -156,7 +156,7 @@ bool CDrawChampionship::Edit(va_list vaList)
   {
   }
   
-  OnSelChangeCP(wxCommandEvent());
+  OnSelChangeCP(wxCommandEvent_);
   
   TransferDataToWindow();
 
@@ -361,7 +361,7 @@ void CDrawChampionship::OnSelChangeCP(wxCommandEvent &)
 
   TransferDataToWindow();
 
-  OnSelChangeToStage(wxCommandEvent());
+  OnSelChangeToStage(wxCommandEvent_);
 }
 
 

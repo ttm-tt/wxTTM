@@ -1,8 +1,6 @@
 /* Copyright (C) 2020 Christoph Theis */
 
-#ifndef _GREDIT_H_
-#define _GREDIT_H_
-
+#pragma once
 
 
 // -----------------------------------------------------------------------
@@ -41,13 +39,13 @@ class CGrEdit : public CFormViewEx
     void CalculateNextSortOrder();
 
   private:
-    CItemCtrl *  m_cpItem;     // Spielerdaten Spieler
-    wxComboBox *  m_cbStage;   // Qualifikation etc.
-    CComboBoxEx * m_cbModus;   // Spielmodi
-    CComboBoxEx * m_cbSystem;  // Spielsystem
+    CItemCtrl *  m_cpItem;       // Player
+    wxComboBox *  m_cbStage;     // Qualification etc.
+    CComboBoxEx * m_cbModus;     // Group modus
+    CComboBoxEx * m_cbSystem;    // Team system
 
-    GrStore     gr;            // Gruppe
-    CpStore     cp;            // Wettbewerb
+    GrStore     gr;              // Group
+    CpStore     cp;              // Event
 
     short nofEntries;
     
@@ -55,9 +53,3 @@ class CGrEdit : public CFormViewEx
   DECLARE_EVENT_TABLE()  
 };
 
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_GREDIT_H__CE420989_DFCC_11D4_9D66_000000000000__INCLUDED_)

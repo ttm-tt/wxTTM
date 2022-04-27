@@ -123,7 +123,7 @@ void CPreview::OnEndDoc(wxCommandEvent &)
   XRCCTRL(*this, "Zoom", wxSlider)->SetRange(0, 100);
   XRCCTRL(*this, "Zoom", wxSlider)->SetValue(0);
   
-  OnPreviewFirst(wxCommandEvent());
+  OnPreviewFirst(wxCommandEvent_);
 }
 
 
@@ -170,18 +170,18 @@ void CPreview::OnCharHook(wxKeyEvent& evt)
   {
     case WXK_PAGEUP :
       if (evt.GetModifiers() == WXK_NONE)
-        OnPreviewPrev(wxCommandEvent());
+        OnPreviewPrev(wxCommandEvent_);
       else if (evt.GetModifiers() & WXK_CONTROL)
-        OnPreviewFirst(wxCommandEvent());
+        OnPreviewFirst(wxCommandEvent_);
 
       evt.Skip();
       break;
 
     case WXK_PAGEDOWN :
       if (evt.GetModifiers() == WXK_NONE)
-        OnPreviewNext(wxCommandEvent());
+        OnPreviewNext(wxCommandEvent_);
       else if (evt.GetModifiers() & WXK_CONTROL)
-        OnPreviewLast(wxCommandEvent());
+        OnPreviewLast(wxCommandEvent_);
 
       evt.Skip();
       break;

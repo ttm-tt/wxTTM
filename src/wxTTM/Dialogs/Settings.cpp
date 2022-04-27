@@ -68,7 +68,7 @@ void CSettings::OnInitialUpdate()
   }
 
   cbFonts->Select(0);
-  OnSelectFont(wxCommandEvent());
+  OnSelectFont(wxCommandEvent_);
   
   m_title = CTT32App::instance()->GetReportTitle();
   m_subtitle = CTT32App::instance()->GetReportSubtitle();
@@ -269,7 +269,7 @@ void CSettings::OnKillFocus(wxFocusEvent &evt)
 
   if (tmp != m_server)
   {
-    wxString connStr = TTDbse::IsLocalAddress(m_server) ? TTDbse::instance()->GetConnectionString() : "";
+    wxString connStr = TTDbse::IsLocalAddress(m_server) ? TTDbse::instance()->GetConnectionString().c_str() : wxEmptyString;
     XRCCTRL(*this, "Database", wxComboBox)->Clear();
 
     if (m_server != "localhost")

@@ -175,7 +175,7 @@ void CMtUnscheduled::OnInitialUpdate()
   if (!CTT32App::instance()->GetDefaultCP().IsEmpty())
     m_cbCp->SetCurrentItem(CTT32App::instance()->GetDefaultCP());
 
-  OnSelChangeCp(wxCommandEvent());
+  OnSelChangeCp(wxCommandEvent_);
 }
 
 
@@ -202,7 +202,7 @@ void CMtUnscheduled::OnSelChangeCp(wxCommandEvent &)
   if (cp.cpID && !CTT32App::instance()->GetDefaultGR().IsEmpty())
     m_cbGr->SetCurrentItem(CTT32App::instance()->GetDefaultGR());
 
-  OnSelChangeGr(wxCommandEvent());
+  OnSelChangeGr(wxCommandEvent_);
 }
 
 

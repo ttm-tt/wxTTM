@@ -28,6 +28,7 @@
 #include  "PlStore.h"
 #include  "SyStore.h"
 #include  "MdStore.h"
+#include  "MpStore.h"
 #include  "LtStore.h"
 #include  "NmStore.h"
 #include  "NtStore.h"
@@ -49,6 +50,7 @@
 #include  "TmListStore.h"
 #include  "SyListStore.h"
 #include  "MdListStore.h"
+#include  "MpListStore.h"
 #include  "GrListStore.h"
 #include  "StListStore.h"
 #include  "RkListStore.h"
@@ -73,7 +75,7 @@
 
 #include  "Res.h"
 
-#define  DB_VERSION  163
+#define  DB_VERSION  164
 
 TTDbse * TTDbse::selfPtr = 0;
 
@@ -97,28 +99,28 @@ bool  TTDbse::GetWindowsAuthentication(const wxString &connStr)
 wxString  TTDbse::GetServer(const wxString &connStr)
 {
   static wxRegEx serverRegEx("SERVER=([^;]+);");
-  return serverRegEx.Matches(connStr) ? serverRegEx.GetMatch(connStr, 1) : wxEmptyString;
+  return serverRegEx.Matches(connStr) ? serverRegEx.GetMatch(connStr, 1) : wxString();
 }
 
 
 wxString  TTDbse::GetDatabase(const wxString &connStr)
 {
   static wxRegEx databaseRegEx("DATABASE=([^;]+);");
-  return databaseRegEx.Matches(connStr) ? databaseRegEx.GetMatch(connStr, 1) : wxEmptyString;
+  return databaseRegEx.Matches(connStr) ? databaseRegEx.GetMatch(connStr, 1) : wxString();
 }
 
 
 wxString  TTDbse::GetUser(const wxString &connStr)
 {
   static wxRegEx userRegEx("UID=([^;]+);");
-  return userRegEx.Matches(connStr) ? userRegEx.GetMatch(connStr, 1) : wxEmptyString;
+  return userRegEx.Matches(connStr) ? userRegEx.GetMatch(connStr, 1) : wxString();
 }
 
 
 wxString  TTDbse::GetPassword(const wxString &connStr)
 {
   static wxRegEx passwordRegEx("PWD=([^;]+);");
-  return passwordRegEx.Matches(connStr) ? passwordRegEx.GetMatch(connStr, 1) : wxEmptyString;
+  return passwordRegEx.Matches(connStr) ? passwordRegEx.GetMatch(connStr, 1) : wxString();
 }
 
 
@@ -544,6 +546,7 @@ bool  TTDbse::UpdateTables(long version)
     res &= PlStore::UpdateTable(version);
     res &= SyStore::UpdateTable(version);
     res &= MdStore::UpdateTable(version);
+    res &= MpStore::UpdateTable(version);
     res &= LtStore::UpdateTable(version);
     res &= NtStore::UpdateTable(version);
     res &= TmStore::UpdateTable(version);
@@ -592,6 +595,7 @@ bool  TTDbse::UpdateTables(long version)
     res &= RkListStore::RemoveView();
     res &= StListStore::RemoveView();
     res &= GrListStore::RemoveView();
+    res &= MpListStore::RemoveView();
     res &= MdListStore::RemoveView();
     res &= SyListStore::RemoveView();
     res &= TmListStore::RemoveView();
@@ -609,6 +613,7 @@ bool  TTDbse::UpdateTables(long version)
     res &= TmListStore::CreateView();
     res &= SyListStore::CreateView();
     res &= MdListStore::CreateView();
+    res &= MpListStore::CreateView();
     res &= GrListStore::CreateView();
     res &= StListStore::CreateView();
     res &= RkListStore::CreateView();

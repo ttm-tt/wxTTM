@@ -94,7 +94,7 @@ bool  CSyEdit::Edit(va_list vaList)
     }
   }
 
-  OnChangeSyEditSinglesDoubles(wxFocusEvent());
+  OnChangeSyEditSinglesDoubles(wxFocusEvent_);
   
   // m_gridCtrl->ExpandColumnsToFit();
   return true;

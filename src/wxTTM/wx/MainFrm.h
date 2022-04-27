@@ -15,9 +15,9 @@ class CMainFrame : public wxMDIParentFrame
     
   public:
     void  SetFindString(const wxString &str);
-    void  SetDefaultCP(const wxString & str) { m_statusBar->SetStatusText(str, 1); }
-    void  SetDefaultGR(const wxString & str) { m_statusBar->SetStatusText(str, 2); }
-    void  SetDefaultNA(const wxString & str) { m_statusBar->SetStatusText(str, 3); } 
+    void  SetDefaultCP(const wxString & str) { if (m_statusBar) m_statusBar->SetStatusText(str, 1); }
+    void  SetDefaultGR(const wxString & str) { if (m_statusBar) m_statusBar->SetStatusText(str, 2); }
+    void  SetDefaultNA(const wxString & str) { if (m_statusBar) m_statusBar->SetStatusText(str, 3); } 
 
 public:
     void  SetMenuBar(wxMenuBar *menuBar);
@@ -33,7 +33,7 @@ public:
     
 
   private:
-    wxStatusBar * m_statusBar;
+    wxStatusBar * m_statusBar = nullptr;
   
   
   DECLARE_DYNAMIC_CLASS(CMainFrame)

@@ -10,6 +10,9 @@
 #include  "FormViewEx.h"
 #include  "MdStore.h"
 
+class CComboBoxEx;
+
+
 class CMdEdit : public CFormViewEx
 {
   public:
@@ -23,6 +26,7 @@ class CMdEdit : public CFormViewEx
     virtual void OnOK();
 
   private:
+    void OnSelChangeMp(wxCommandEvent &);
 	  void OnChangeMdEditSize(wxFocusEvent &);
 	  void OnMdEditAuto(wxCommandEvent &);
 	  void OnGridCellChanged(wxGridEvent &);
@@ -30,6 +34,7 @@ class CMdEdit : public CFormViewEx
   private:  
     void WriteGridCtrl();   // Daten in GridCtrl ausgeben
 
+    CComboBoxEx * m_cbMtPts;
     wxGrid  * m_gridCtrl;
     MdStore   md;
     

@@ -82,7 +82,7 @@ bool  CNmEditOTS::Edit(va_list vaList)
   if (syDoubles)
     nmList->SetItemHeight(1.5);
 
-  wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+  const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
   wxChar str[6];
 
   for (int nmSingle = 1; nmSingle <= sySingles; nmSingle++)
@@ -142,7 +142,7 @@ bool  CNmEditOTS::Edit(va_list vaList)
     }
   }
   
-  OnSelChanged(wxListEvent());
+  OnSelChanged(wxListEvent_);
 
   // OK-Button sperren, wenn schon Ergebnisse und Aufstellung existieren
   hasNomination &= (mt.mtResA + mt.mtResX) != 0;
@@ -251,7 +251,7 @@ void  CNmEditOTS::OnAdd()
          ((NmItem *) nmList->GetCurrentItem())->nm.team.cpType != nmItemPtr->nm.team.cpType
         )
     {
-      OnSelChanged(wxListEvent());
+      OnSelChanged(wxListEvent_);
     }
   }     
   else
@@ -317,7 +317,7 @@ void  CNmEditOTS::OnDelete()
          ((NmItem *) nmList->GetCurrentItem())->nm.team.cpType != nmItemPtr->nm.team.cpType
         )
     {
-      OnSelChanged(wxListEvent());
+      OnSelChanged(wxListEvent_);
     }
   }
 }

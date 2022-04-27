@@ -147,7 +147,7 @@ class  OvItem : public ListItem
 
     // Tooltips
     virtual wxSize GetToolTipSize(wxDC *pDC);
-    virtual void DrawToolTip(wxDC *pDC, wxRect &rect);
+    virtual void DrawToolTip(wxDC *pDC, const wxRect &rect);
 
   private:
     static  wxColor  defaultColors[][2];

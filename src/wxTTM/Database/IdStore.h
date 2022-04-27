@@ -49,13 +49,13 @@ class  IdStore : public StoreObj, public IdRec
     static void SetReportSubtitle(const wxString &subtitle);    
     static wxString GetReportSubtitle();    
     
-    static void SetBannerImage(wxString &);
+    static void SetBannerImage(const wxString &);
     static bool GetBannerImage(wxImage &);
 
-    static void SetLogoImage(wxString &);
+    static void SetLogoImage(const wxString &);
     static bool GetLogoImage(wxImage &);
     
-    static void SetSponsorImage(wxString &);
+    static void SetSponsorImage(const wxString &);
     static bool GetSponsorImage(wxImage &);
 
     static bool GetPrintScoreCoaches();

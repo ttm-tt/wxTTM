@@ -161,12 +161,12 @@ class OvItemGridTable : public wxGridTableBase
     
     virtual wxString GetRowLabelValue(int row) 
     {
-      return row < (int) m_rowLabels.GetCount() ? m_rowLabels[row] : "";
+      return row < (int) m_rowLabels.GetCount() ? m_rowLabels[row].c_str() : wxEmptyString;
     }
     
     virtual wxString GetColLabelValue(int col) 
     {
-      return col < (int) m_colLabels.GetCount() ? m_colLabels[col] : "";
+      return col < (int) m_colLabels.GetCount() ? m_colLabels[col].c_str() : wxEmptyString;
     }
 
     void SetRowLabelType(int row, OvItem::OvType type)
@@ -778,7 +778,8 @@ void COvList::OnRefresh()
   }
   else
   {
-    ProcessEvent(wxCommandEvent(IDC_SET_TITLE));
+    wxCommandEvent evt(IDC_SET_TITLE);
+    ProcessEvent(evt);
   }
   
   m_fromTime.year = m_toTime.year = from.year;
@@ -1052,7 +1053,7 @@ void COvList::OnRefresh()
   if (m_showUmpire)
   {
     m_showUmpire = !m_showUmpire;
-    OnShowUmpire(wxCommandEvent());
+    OnShowUmpire(wxCommandEvent_);
   }  
 
   m_gridCtrl->Thaw();

@@ -143,7 +143,9 @@ void CPreviewWnd::OnPaint(wxPaintEvent &evt)
 
   if (metaFile)
   {
-    metaFile->Play(&dc, &wxRect(-rectLeft, -rectTop, rectWidth, rectHeight));
+    wxRect rect(-rectLeft, -rectTop, rectWidth, rectHeight);
+
+    metaFile->Play(&dc, &rect);
     // PlayEnhMetaFile(dc, hmf, &CRect(CPoint(-rectLeft, -rectTop), CSize(rectWidth, rectHeight)));
   }
 }

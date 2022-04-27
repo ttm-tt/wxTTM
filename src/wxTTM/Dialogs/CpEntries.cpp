@@ -91,7 +91,7 @@ bool  CCpEntries::Edit(va_list vaList)
 
   TransferDataToWindow();
   
-  OnSelChangeCp(wxCommandEvent());
+  OnSelChangeCp(wxCommandEvent_);
 
   return true;
 }
@@ -369,9 +369,9 @@ void CCpEntries::OnUpdate(CRequest *reqPtr)
 void CCpEntries::OnEdit()
 {
   if (notebook->GetSelection() == 1)
-    OnEditOpen(wxCommandEvent());
+    OnEditOpen(wxCommandEvent_);
   else
-    OnEditComplete(wxCommandEvent());
+    OnEditComplete(wxCommandEvent_);
 }
 
 
@@ -448,9 +448,9 @@ void CCpEntries::OnEditOpen(wxCommandEvent &)
 void CCpEntries::OnAdd()
 {
   if (notebook->GetSelection() == 1)
-    OnAddOpen(wxCommandEvent());
+    OnAddOpen(wxCommandEvent_);
   else
-    OnAddComplete(wxCommandEvent());
+    OnAddComplete(wxCommandEvent_);
 }
 
 void CCpEntries::OnAddComplete(wxCommandEvent &)
@@ -531,9 +531,9 @@ void CCpEntries::OnAddPlayer()
 void CCpEntries::OnDelete()
 {
   if (notebook->GetSelection() == 1)
-    OnDeleteOpen(wxCommandEvent());
+    OnDeleteOpen(wxCommandEvent_);
   else
-    OnDeleteComplete(wxCommandEvent());
+    OnDeleteComplete(wxCommandEvent_);
 }
 
 void CCpEntries::OnDeleteComplete(wxCommandEvent &)

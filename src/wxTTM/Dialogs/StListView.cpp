@@ -85,9 +85,9 @@ bool  CStListView::Edit(va_list vaList)
     // Sollte existieren
     m_cbCp->SetCurrentItem(gr.cpID);
     long grID = gr.grID;
-    OnSelChangeCp(wxCommandEvent());
+    OnSelChangeCp(wxCommandEvent_);
     m_cbGr->SetCurrentItem(grID);    
-    OnSelChangeGr(wxCommandEvent());
+    OnSelChangeGr(wxCommandEvent_);
     
     if (gr.grModus == MOD_RR)
       m_listCtrl->SortItems(5);
@@ -103,7 +103,7 @@ bool  CStListView::Edit(va_list vaList)
   wxString cpName = CTT32App::instance()->GetDefaultCP();
   m_cbCp->SetCurrentItem(cpName);
 
-  OnSelChangeCp(wxCommandEvent());
+  OnSelChangeCp(wxCommandEvent_);
 
   return true;
 }
@@ -575,7 +575,7 @@ void CStListView::OnSelChangeCp(wxCommandEvent &)
   m_cbGr->SetCurrentItem(m_cbGr->GetListItem(0));
   m_cbGr->SetCurrentItem(grName);
 
-  OnSelChangeGr(wxCommandEvent());
+  OnSelChangeGr(wxCommandEvent_);
 }
 
 
@@ -629,7 +629,7 @@ void CStListView::OnSelChangeGr(wxCommandEvent &)
     cbCount->Select(0);
   }
 
-  OnSelChangeCount(wxCommandEvent());
+  OnSelChangeCount(wxCommandEvent_);
 }
 
 

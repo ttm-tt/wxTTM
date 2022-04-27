@@ -536,6 +536,21 @@
     <ClCompile Include="Database\TbListStore.cpp">
       <Filter>Source Files\Database\Views</Filter>
     </ClCompile>
+    <ClCompile Include="Database\MpStore.cpp">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MpListStore.cpp">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MpListView.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MpItem.cpp">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MpEdit.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -909,6 +924,21 @@
     </ClInclude>
     <ClInclude Include="Database\TbListStore.h">
       <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MpStore.h">
+      <Filter>Source Files\Database\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\MpListStore.h">
+      <Filter>Source Files\Database\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MpListView.h">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MpItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MpEdit.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

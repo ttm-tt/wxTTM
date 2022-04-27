@@ -340,8 +340,10 @@ void CComboBoxEx::OnKeyDown(wxKeyEvent &evt)
         {
           SetSelection(idx);
           
+          wxCommandEvent evt(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId());
+
           if (idx != m_lastIdx)
-            GetEventHandler()->ProcessEvent(wxCommandEvent(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId()));
+            GetEventHandler()->ProcessEvent(evt);
                 
           m_lastIdx = idx;
         }
@@ -364,8 +366,10 @@ void CComboBoxEx::OnKeyDown(wxKeyEvent &evt)
         {
           SetSelection(idx);
           
+          wxCommandEvent evt(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId());
+
           if (idx != m_lastIdx)
-            GetEventHandler()->ProcessEvent(wxCommandEvent(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId()));
+            GetEventHandler()->ProcessEvent(evt);
                 
           m_lastIdx = idx;
 
@@ -414,9 +418,11 @@ void CComboBoxEx::OnChar(wxKeyEvent &evt)
           if (itemPtr->HasString(m_editString))
           {
             SetSelection(idx);            
+
+            wxCommandEvent evt(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId());
             
             if (idx != m_lastIdx)
-              GetEventHandler()->ProcessEvent(wxCommandEvent(wxEVT_COMMAND_COMBOBOX_SELECTED, GetId()));
+              GetEventHandler()->ProcessEvent(evt);
               
             m_lastIdx = idx;
 

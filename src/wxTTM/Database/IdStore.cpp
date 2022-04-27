@@ -499,15 +499,15 @@ wxString IdStore::GetReportSubtitle()
 }
 
 
-void IdStore::SetBannerImage(wxString &file)
+void IdStore::SetBannerImage(const wxString &file)
 {
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   Statement *stmtPtr = NULL;
 
   // Max 8000 Byte, sonst muss man ein XML format file angeben
-  wxString str = file.IsEmpty() ?
-    "UPDATE IdRec SET idBanner = NULL" :
-    "UPDATE IdRec SET idBanner = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idBanner)";
+  const wxString str = file.IsEmpty() ?
+    wxString("UPDATE IdRec SET idBanner = NULL") :
+    wxString("UPDATE IdRec SET idBanner = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idBanner)");
 
   try
   {
@@ -558,15 +558,15 @@ bool IdStore::GetBannerImage(wxImage &img)
 }
 
 
-void IdStore::SetLogoImage(wxString &file)
+void IdStore::SetLogoImage(const wxString &file)
 {
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   Statement *stmtPtr = NULL; 
 
   // Max 8000 Byte, sonst muss man ein XML format file angeben
-  wxString str = file.IsEmpty() ?
-    "UPDATE IdRec SET idLogo = NULL" :
-    "UPDATE IdRec SET idLogo = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idLogo)"; 
+  const wxString str = file.IsEmpty() ?
+    wxString("UPDATE IdRec SET idLogo = NULL") :
+    wxString("UPDATE IdRec SET idLogo = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idLogo)"); 
 
   try
   {
@@ -617,15 +617,15 @@ bool IdStore::GetLogoImage(wxImage &img)
 }
 
 
-void IdStore::SetSponsorImage(wxString &file)
+void IdStore::SetSponsorImage(const wxString &file)
 {
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
   Statement *stmtPtr = NULL; 
 
   // Max 8000 Byte, sonst muss man ein XML format file angeben
-  wxString str = file.IsEmpty() ?  
-    "UPDATE IdRec SET idSponsor = NULL" :
-    "UPDATE IdRec SET idSponsor = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idSponsor)"; 
+  const wxString str = file.IsEmpty() ?  
+    wxString("UPDATE IdRec SET idSponsor = NULL") :
+    wxString("UPDATE IdRec SET idSponsor = (SELECT * FROM OPENROWSET(BULK N'" + file + "', SINGLE_BLOB) as idSponsor)"); 
 
   try
   {

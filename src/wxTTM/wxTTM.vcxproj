@@ -166,13 +166,14 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -210,13 +211,14 @@ echo Convert de\ttm.po
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.;./Database;./Dialogs;./Tools;./Draw;./Print;./wx;./Resources;../lp_solve;../wxpdfdoc/include;../XmlRpc4Win;../wxjson;$(WXWIN)\include;$(WXWIN)\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_LIB;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -263,6 +265,7 @@ echo Convert de\ttm.po
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -305,6 +308,7 @@ echo Convert de\ttm.po
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31ud_aui.lib;wxmsw31ud_xrc.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -348,6 +352,7 @@ echo Convert de\ttm.po
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -395,6 +400,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -403,7 +409,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <AdditionalDependencies>liblpsolve.lib;wxpdfdoc.lib;XmlRpc4Win.lib;wxjson.lib;wxmsw31u_aui.lib;wxmsw31u_xrc.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)TTM32.exe</OutputFile>
       <AdditionalLibraryDirectories>..\lp_solve\lpsolve55\$(PlatformShortName)\$(Configuration);..\wxpdfdoc\$(PlatformShortName)\$(Configuration);..\XmlRpc4Win\$(PlatformShortName)\$(Configuration);..\wxjson\$(PlatformShortName)\$(Configuration);$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -442,6 +448,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -488,6 +495,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%WXWIN%\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -523,6 +531,8 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Database\LtListStore.cpp" />
+    <ClCompile Include="Database\MpListStore.cpp" />
+    <ClCompile Include="Database\MpStore.cpp" />
     <ClCompile Include="Database\PoStore.cpp" />
     <ClCompile Include="Database\RpListStore.cpp" />
     <ClCompile Include="Database\RpStore.cpp" />
@@ -535,6 +545,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\GrOptionsList.cpp" />
     <ClCompile Include="Dialogs\GrPrintBase.cpp" />
     <ClCompile Include="Dialogs\ImportOnlineEntries.cpp" />
+    <ClCompile Include="Dialogs\MpEdit.cpp" />
+    <ClCompile Include="Dialogs\MpItem.cpp" />
+    <ClCompile Include="Dialogs\MpListView.cpp" />
     <ClCompile Include="Dialogs\MtUnscheduled.cpp" />
     <ClCompile Include="Dialogs\NmEditETS.cpp" />
     <ClCompile Include="Dialogs\NmEditOTS.cpp" />
@@ -688,6 +701,8 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database\LtListStore.h" />
+    <ClInclude Include="Database\MpListStore.h" />
+    <ClInclude Include="Database\MpStore.h" />
     <ClInclude Include="Database\PoStore.h" />
     <ClInclude Include="Database\RpListStore.h" />
     <ClInclude Include="Database\RpStore.h" />
@@ -705,6 +720,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\GrOptionsList.h" />
     <ClInclude Include="Dialogs\GrPrintBase.h" />
     <ClInclude Include="Dialogs\ImportOnlineEntries.h" />
+    <ClInclude Include="Dialogs\MpEdit.h" />
+    <ClInclude Include="Dialogs\MpItem.h" />
+    <ClInclude Include="Dialogs\MpListView.h" />
     <ClInclude Include="Dialogs\MtUnscheduled.h" />
     <ClInclude Include="Dialogs\NmEditETS.h" />
     <ClInclude Include="Dialogs\NmEditOTS.h" />
@@ -949,7 +967,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\Reports\FinalStandings.rep" />
+    <None Include="..\Reports\FinalStandings.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="..\Reports\GroupMatches.rep">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|Win32'">true</ExcludedFromBuild>
@@ -968,7 +988,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\Reports\GroupResults.rep" />
+    <None Include="..\Reports\GroupResults.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="..\Reports\Hallensprecher.rep">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|Win32'">true</ExcludedFromBuild>
@@ -1005,7 +1027,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\Reports\Playerlist.rep" />
+    <None Include="..\Reports\Playerlist.rep">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="..\Reports\QualificationMatchesSingles.rep">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Lib|Win32'">true</ExcludedFromBuild>

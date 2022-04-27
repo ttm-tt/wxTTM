@@ -61,7 +61,7 @@ bool  CMtListView::Edit(va_list vaList)
   // Muss kommen, bevor die Spiele eingetragen werden
   // OnResultTime invertiert showTimes
   showTimes = !showTimes;  
-  OnResultTime(wxCommandEvent());
+  OnResultTime(wxCommandEvent_);
 
   if (id)
   {
@@ -107,7 +107,7 @@ bool  CMtListView::Edit(va_list vaList)
       m_cbGr->AddListItem(new GrItem(grList));
     
     m_cbGr->SetCurrentItem(gr.grID);
-    OnSelChangeGr(wxCommandEvent());
+    OnSelChangeGr(wxCommandEvent_);
   
     round = mt.mtEvent.mtRound;
     OnChangeRound();
@@ -125,7 +125,7 @@ bool  CMtListView::Edit(va_list vaList)
       
     m_cbCp->SetCurrentItem(cpItemPtr->GetID());
 
-    OnSelChangeCp(wxCommandEvent());
+    OnSelChangeCp(wxCommandEvent_);
   }
 
   return true;
@@ -176,7 +176,7 @@ void CMtListView::OnSelChangeCp(wxCommandEvent &)
 
   m_cbGr->SetCurrentItem(grItemPtr->GetID());
 
-  OnSelChangeGr(wxCommandEvent());
+  OnSelChangeGr(wxCommandEvent_);
 }
 
 

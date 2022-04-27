@@ -42,9 +42,9 @@ static int GetInt(XmlRpcValue &val)
 {
   switch (val.getType())
   {
-    case XmlRpcValue::TypeInt :
+    case XmlRpcValue::Type::TypeInt :
       return (int) val;
-    case XmlRpcValue::TypeString :
+    case XmlRpcValue::Type::TypeString :
       return atoi(val);
     default :
       return 0;
@@ -56,11 +56,11 @@ static int GetDouble(XmlRpcValue &val)
 {
   switch (val.getType())
   {
-    case XmlRpcValue::TypeInt :
+    case XmlRpcValue::Type::TypeInt :
       return (double) val;
-    case XmlRpcValue::TypeString :
+    case XmlRpcValue::Type::TypeString :
       return atof(val);
-    case XmlRpcValue::TypeDouble :
+    case XmlRpcValue::Type::TypeDouble :
       return val;
     default :
       return 0;
@@ -179,6 +179,7 @@ bool CImportOnlineEntries::Import()
     XRCCTRL(*wizard, "ImportPlayers", wxCheckBox)->Enable(false);
 
     XRCCTRL(*wizard, "ImportRanking", wxCheckBox)->SetValue(false);
+    XRCCTRL(*wizard, "ImportRanking", wxCheckBox)->Enable(false);
     // But keep it enabled
 
     XRCCTRL(*wizard, "ImportEntries", wxCheckBox)->SetValue(false);
@@ -286,7 +287,7 @@ void CImportOnlineEntries::ConnectThreadImpl(const wxString &url, const wxString
     return;
   }
 
-  if (result.getType() != XmlRpcValue::TypeArray)
+  if (result.getType() != XmlRpcValue::Type::TypeArray)
   {
     infoSystem.Error(_("Could not read list of tournaments"));
     return;
@@ -299,7 +300,7 @@ void CImportOnlineEntries::ConnectThreadImpl(const wxString &url, const wxString
   {
     XmlRpcValue t;
 
-    if (result[idx]["Tournament"].getType() == XmlRpcValue::TypeStruct)
+    if (result[idx]["Tournament"].getType() == XmlRpcValue::Type::TypeStruct)
       t = result[idx]["Tournament"];
     else
       t = result[idx];
@@ -448,7 +449,8 @@ bool CImportOnlineEntries::ImportThreadRead()
   res &= xmlRpcClient.execute("onlineentries.listCompetitions", args, competitions);
   res &= xmlRpcClient.execute("onlineentries.listNations", args, nations);
   res &= xmlRpcClient.execute("onlineentries.listPlayers", args, players);
-  res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
+  // res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
+  rankings.initAsArray();
 
   if (!res)
   {
@@ -465,7 +467,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   for (int idx = 0; idx < competitions.size(); idx++)
   {
     XmlRpcValue val;
-    if (competitions[idx]["Competition"].getType() == XmlRpcValue::TypeStruct)
+    if (competitions[idx]["Competition"].getType() == XmlRpcValue::Type::TypeStruct)
       val = competitions[idx]["Competition"];
     else
       val = competitions[idx];
@@ -490,7 +492,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   {
     XmlRpcValue val;
     
-    if (nations[idx]["Nation"].getType() == XmlRpcValue::TypeStruct)
+    if (nations[idx]["Nation"].getType() == XmlRpcValue::Type::TypeStruct)
       val = nations[idx]["Nation"];
     else
       val = nations[idx];
@@ -538,12 +540,12 @@ bool CImportOnlineEntries::ImportThreadRead()
   {
     XmlRpcValue person, player, participant, registration;
 
-    if (players[idx]["Person"].getType() == XmlRpcValue::TypeStruct)
+    if (players[idx]["Person"].getType() == XmlRpcValue::Type::TypeStruct)
     {
       // CakePHP 2.x
       person = players[idx]["Person"];
       // ETTU vs. Veterans
-      if (person["Player"].getType() == XmlRpcValue::TypeStruct)
+      if (person["Player"].getType() == XmlRpcValue::Type::TypeStruct)
         player = person["Player"];
       else
         player = person;
@@ -556,7 +558,7 @@ bool CImportOnlineEntries::ImportThreadRead()
       // CakePHP 3.x
       person = players[idx]["person"];
       // ETTU vs. Veterans
-      if (person["player"].getType() == XmlRpcValue::TypeStruct)
+      if (person["player"].getType() == XmlRpcValue::Type::TypeStruct)
         player = person["player"];
       else
         player = person;
@@ -580,19 +582,19 @@ bool CImportOnlineEntries::ImportThreadRead()
       pl.comment = URLEncode(wxString::FromUTF8((const char *)registration["comment"]));
 
     // Unterschiede in Typ und Format vom Geburtsdatum
-    XmlRpcValue dob = person["dob"].getType() == XmlRpcValue::TypeStruct && person["dob"].hasMember("year") ? person["dob"]["year"] : person["dob"];
+    XmlRpcValue dob = person["dob"].getType() == XmlRpcValue::Type::TypeStruct && person["dob"].hasMember("year") ? person["dob"]["year"] : person["dob"];
 
     switch (dob.getType())
     {
-      case XmlRpcValue::TypeDateTime :
+      case XmlRpcValue::Type::TypeDateTime :
         pl.born = ((struct tm &) dob).tm_year;
         break;
 
-      case XmlRpcValue::TypeString :
+      case XmlRpcValue::Type::TypeString :
         pl.born = atoi(wxString::FromUTF8((const char *)dob).Left(4));
         break;
 
-      case XmlRpcValue::TypeInt :
+      case XmlRpcValue::Type::TypeInt :
         pl.born = GetInt(dob);
         break;
 
@@ -656,7 +658,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   {
     XmlRpcValue registration, participant;
 
-    if (players[idx]["Registration"].getType() == XmlRpcValue::TypeStruct)
+    if (players[idx]["Registration"].getType() == XmlRpcValue::Type::TypeStruct)
     {
       registration = players[idx]["Registration"];
       participant = players[idx]["Participant"];

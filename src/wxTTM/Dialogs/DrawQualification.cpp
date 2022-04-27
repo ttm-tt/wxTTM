@@ -70,7 +70,7 @@ void CDrawQualification::OnInitialUpdate()
   else
     cbCP->SetCurrentItem(cbCP->GetListItem(0));
 
-  OnSelChangeCP(wxCommandEvent());
+  OnSelChangeCP(wxCommandEvent_);
 }
 
 

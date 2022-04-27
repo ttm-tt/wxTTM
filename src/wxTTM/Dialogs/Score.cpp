@@ -34,6 +34,7 @@ BEGIN_EVENT_TABLE(CScore, CFormViewEx)
   EVT_RADIOBUTTON(XRCID("ThisGroup"), CScore::OnSelectMatch)
   EVT_RADIOBUTTON(XRCID("ScheduledMatches"), CScore::OnSelectMatch)
   EVT_BUTTON(XRCID("ResetPrinted"), CScore::OnResetPrinted)
+  EVT_BUTTON(XRCID("MarkPrinted"), CScore::OnMarkPrinted)
   EVT_BUTTON(XRCID("Print"), CFormViewEx::OnCommand)
 END_EVENT_TABLE()
 
@@ -193,7 +194,7 @@ bool CScore::Edit(va_list vaList)
 
   TransferDataToWindow();
   
-  OnSelectMatch(wxCommandEvent());
+  OnSelectMatch(wxCommandEvent_);
   
   return true;
 }
@@ -283,6 +284,18 @@ void CScore::OnKillFocus(wxFocusEvent &evt)
 // -----------------------------------------------------------------------
 void CScore::OnResetPrinted(wxCommandEvent &)
 {
+  DoSetPrinted(false);
+}
+
+
+void CScore::OnMarkPrinted(wxCommandEvent &)
+{
+  DoSetPrinted(true);
+}
+
+
+void CScore::DoSetPrinted(boolean f)
+{
   TransferDataFromWindow();
   
   TTDbse::instance()->GetDefaultConnection()->StartTransaction();
@@ -294,25 +307,25 @@ void CScore::OnResetPrinted(wxCommandEvent &)
       
     case 2 : // This Match
     {
-      MtStore().UpdateScorePrinted(mt.mtID, false);
+      MtStore().UpdateScorePrinted(mt.mtID, f);
       break;
     }
     
     case 3 : // This Round
     {
-      MtStore().UpdateScorePrintedForRound(gr.grID, mt.mtEvent.mtRound, false);
+      MtStore().UpdateScorePrintedForRound(gr.grID, mt.mtEvent.mtRound, f);
       break;
     }
     
     case 4 : // This Group
     {
-      MtStore().UpdateScorePrintedForGroup(gr.grID, false);
+      MtStore().UpdateScorePrintedForGroup(gr.grID, f);
       break;
     }
     
     case 5 : // Scheduled
     {
-      MtStore().UpdateScorePrintedScheduled(fromPlace, toPlace, false);
+      MtStore().UpdateScorePrintedScheduled(fromPlace, toPlace, f);
       break; 
     }
   }

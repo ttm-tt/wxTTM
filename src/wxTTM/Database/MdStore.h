@@ -23,12 +23,13 @@ struct MdRec
   short     mdMtPtsWin;  // Match points for a win
   short     mdMtPtsTie;  // Match points for a tie
   short     mdMtPtsLoss; // Match points for a loss
+  long      mpID;        // Match points calculation
 
   struct    MdList
   {
     long    mdPlayerA;   // Verweis auf Setzung A
     long    mdPlayerX;   // Verweis auf Setzunx X
-  } *mdList;
+  } *mdList = nullptr;
 
   MdRec() {memset(this, 0, sizeof(MdRec));}
  ~MdRec() {delete[] mdList;}
@@ -77,11 +78,8 @@ class  MdStore : public StoreObj, public MdRec
 
     bool  Next();
 
-    // Check auf cpName, ob WB existiert
+    // Check auf mdName, ob Modus existiert
     bool  InsertOrUpdate();
-
-  // Etwas API. Diese Funktionen aendern nicht den WB
-  public:
 };
 
 
@@ -117,6 +115,8 @@ inline  void  MdRec::ChangeSize(short newSize)
 inline  void  MdRec::SetPlayerA(short rd, short mt, long plA)
 {
   wxASSERT(mdList);
+  if (!mdList)
+    return;
 
   mdList[Matches() * (rd-1) + (mt-1)].mdPlayerA = plA;
 }
@@ -125,6 +125,8 @@ inline  void  MdRec::SetPlayerA(short rd, short mt, long plA)
 inline  void  MdRec::SetPlayerX(short rd, short mt, long plX)
 {
   wxASSERT(mdList);
+  if (!mdList)
+    return;
 
   mdList[Matches() * (rd-1) + (mt-1)].mdPlayerX = plX;
 }

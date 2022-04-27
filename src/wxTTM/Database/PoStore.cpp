@@ -320,7 +320,7 @@ bool PoStore::ReadFromProfile(Profile &profile, const wxString &section)
     return false;
 
   poID = 0;
-  wxStrncpy(poName, section == DEFAULT_SECTION ? "" : section, sizeof(poName) / sizeof(wxChar));
+  wxStrncpy(poName, section == DEFAULT_SECTION ? wxString() : section, sizeof(poName) / sizeof(wxChar));
 
   rrResults = profile.GetBool(section, PRF_PROPTIONS_RRRESULTS, 0);
   rrSignature = profile.GetBool(section, PRF_PROPTIONS_RRSIGNATURE, 0);

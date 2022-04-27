@@ -60,7 +60,7 @@ bool CTmListView::Edit(va_list vaList)
   {
     m_cbCp->SetCurrentItem(cpItemPtr->GetID());
 
-    OnSelChangeCp(wxCommandEvent());
+    OnSelChangeCp(wxCommandEvent_);
   }
   
   TransferDataToWindow();

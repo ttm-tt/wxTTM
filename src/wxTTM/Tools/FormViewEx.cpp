@@ -22,6 +22,13 @@ BEGIN_EVENT_TABLE(CFormViewEx, wxPanel)
 END_EVENT_TABLE()  
 
 // -----------------------------------------------------------------------
+// Definition of events
+wxCommandEvent      wxCommandEvent_;
+wxFocusEvent        wxFocusEvent_;
+wxListEvent         wxListEvent_;
+// wxInitDialogEvent   wxInitDialogEvent_;
+
+// -----------------------------------------------------------------------
 // CFormViewEx
 
 CFormViewEx::CFormViewEx(wxWindow * WXUNUSED(parent)) : wxPanel()

@@ -831,9 +831,9 @@ bool SyStore::AddOlympicTeamSystem2Players()
 	sy.syList[1].syPlayerA = 1;
 	sy.syList[1].syPlayerX = 1;
 
-	sy.syList[3].syType = CP_SINGLE;
-	sy.syList[3].syPlayerA = 2;
-	sy.syList[3].syPlayerX = 2;
+	sy.syList[2].syType = CP_SINGLE;
+	sy.syList[2].syPlayerA = 2;
+	sy.syList[2].syPlayerX = 2;
 
   return sy.InsertOrUpdate();
 }

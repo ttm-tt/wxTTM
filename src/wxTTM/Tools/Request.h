@@ -44,7 +44,8 @@ class CRequest
       STREC = 13,
       SYREC = 14,
       TMREC = 15,
-      UPREC = 16
+      UPREC = 16,
+      MPREC = 17
     } rec;
 
     long    id;

@@ -291,7 +291,7 @@ void CPlEvents::OnSelChangedEnteredEvents(wxListEvent &)
   if (m_grEntered->GetCount() > 0)
     m_grEntered->SetCurrentIndex(0);
 
-  OnSelChangedEnteredGroups(wxListEvent());
+  OnSelChangedEnteredGroups(wxListEvent_);
 }
 
 

@@ -59,7 +59,7 @@ void CGrPrintBase::OnInitialUpdate()
   m_options = XRCCTRL(*this, "ListOptions", wxComboBox);
 
   std::list<wxString> options = PoStore().List();
-  for each (wxString option in options)
+  for (wxString option : options)
   {
     m_options->AppendString(option);
   }
@@ -70,7 +70,7 @@ void CGrPrintBase::OnInitialUpdate()
   else
     m_options->Select(0);
 
-  OnOptionChange(wxCommandEvent());
+  OnOptionChange(wxCommandEvent_);
 }
 
 
@@ -403,9 +403,9 @@ void  CGrPrintBase::OnOptions(wxCommandEvent &)
         wxDialog *dlg = wxXmlResource::Get()->LoadDialog(CTT32App::instance()->GetTopWindow(), "EditableSelection");
         dlg->SetTitle(_("Enter Print Option Name"));
 
-        for each (wxString opt in options)
+        for (wxString option : options)
         {
-          XRCCTRL(*dlg, "Options", wxComboBox)->AppendString(opt);
+          XRCCTRL(*dlg, "Options", wxComboBox)->AppendString(option);
         }
 
         wxString name = XRCCTRL(*this, "ListOptions", wxComboBox)->GetValue();
@@ -444,7 +444,7 @@ void  CGrPrintBase::OnOptions(wxCommandEvent &)
     m_options->SetStringSelection(m_po.poName);
   }
 
-  OnOptionChange(wxCommandEvent());
+  OnOptionChange(wxCommandEvent_);
 }
 
 

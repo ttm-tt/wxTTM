@@ -27,7 +27,7 @@ bool NaRec::Read(const wxString &line)
   wxStringTokenizerEx tokens(line, ",;\t");
   wxString strName = tokens.GetNextToken().Strip(wxString::both);
   wxString strDesc = tokens.GetNextToken().Strip(wxString::both);
-  wxString strRegion = (tokens.HasMoreTokens() ? tokens.GetNextToken().Strip(wxString::both) : "");
+  wxString strRegion = (tokens.HasMoreTokens() ? tokens.GetNextToken().Strip(wxString::both).c_str() : wxEmptyString);
 
   if (!strName.IsEmpty() && !strDesc.IsEmpty())
   {

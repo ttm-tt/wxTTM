@@ -75,8 +75,8 @@ class  Connection
     void  RegisterStatement(Statement *stmtPtr);
 
     // SQL handles
-    SQLHENV   hEnv;  
-    SQLHDBC   hDbc;
+    SQLHENV   hEnv = SQL_NULL_HENV;  
+    SQLHDBC   hDbc = SQL_NULL_HDBC;
 
     // Connect string
     wxString  connectString;

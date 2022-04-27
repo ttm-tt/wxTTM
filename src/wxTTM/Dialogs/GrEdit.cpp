@@ -15,12 +15,14 @@
 #include "RkListStore.h"
 #include "StListStore.h"
 #include "GrListStore.h"
+#include "MpListStore.h"
 
 #include "GrTemplate.h"
 
 #include "CpItem.h"
 #include "MdItem.h"
 #include "SyItem.h"
+#include "MpItem.h"
 
 
 IMPLEMENT_DYNAMIC_CLASS(CGrEdit, CFormViewEx)
@@ -79,7 +81,7 @@ bool CGrEdit::Edit(va_list vaList)
     m_cbModus->AddListItem(skoItem);
     m_cbModus->AddListItem(ploItem);
   }
-  
+
   MdListStore  md;
   md.SelectAll();
   while (md.Next())
@@ -246,7 +248,9 @@ void CGrEdit::OnInitialUpdate()
   m_cbModus = XRCCTRL(*this, "GroupSystem", CComboBoxEx);
   m_cbSystem = XRCCTRL(*this, "TeamSystem", CComboBoxEx);	  
   
-  FindWindow("Stage")->SetValidator(CCharArrayValidator(gr.grStage, sizeof(gr.grStage) / sizeof(wxChar)));  std::list<wxString> stages = GrListStore().ListStages(CpRec());
+  FindWindow("Stage")->SetValidator(CCharArrayValidator(gr.grStage, sizeof(gr.grStage) / sizeof(wxChar)));  
+
+  std::list<wxString> stages = GrListStore().ListStages(CpRec());
   for (auto it = stages.cbegin(); it != stages.cend(); it++)
   {
     if (*it == "Qualification")
@@ -288,7 +292,7 @@ void CGrEdit::OnSelChangeStage(wxCommandEvent &)
       else if (m_cbModus->GetCount() > 3)
         m_cbModus->SetCurrentItem(m_cbModus->GetListItem(2));
 
-      OnSelChangeMd(wxCommandEvent());
+      OnSelChangeMd(wxCommandEvent_);
     }
   }
 

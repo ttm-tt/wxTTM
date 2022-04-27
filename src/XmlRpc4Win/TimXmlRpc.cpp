@@ -503,14 +503,14 @@ protected:
 void XmlRpcValue::invalidate()
 {
 	switch (_type) {
-		case TypeString:	free(u.asString); break;
-		case TypeDateTime:	delete u.asTime;	 break;
-		case TypeBase64:	delete u.asBinary; break;
-		case TypeArray:		delete u.asArray;	break;
-		case TypeStruct:	delete u.asStruct; break;
+		case Type::TypeString:	free(u.asString); break;
+		case Type::TypeDateTime:	delete u.asTime;	 break;
+		case Type::TypeBase64:	delete u.asBinary; break;
+		case Type::TypeArray:		delete u.asArray;	break;
+		case Type::TypeStruct:	delete u.asStruct; break;
 		default:			break;
 	}
-	_type = TypeInvalid;
+	_type = Type::TypeInvalid;
 	u.asBinary = 0;
 }
 
@@ -518,14 +518,14 @@ void XmlRpcValue::invalidate()
 // Type checking
 void XmlRpcValue::assertTypeOrInvalid(Type t)
 {
-	if (_type == TypeInvalid || _type == TypeNil) {
+	if (_type == Type::TypeInvalid || _type == Type::TypeNil) {
 		_type = t;
 		switch (_type) {		// Ensure there is a valid value for the type
-			case TypeString:	u.asString = _strdup(""); break;
-			case TypeDateTime:	u.asTime = new struct tm();		 break;
-			case TypeBase64:	u.asBinary = new BinaryData();	break;
-			case TypeArray:		u.asArray = new ValueArray();	 break;
-			case TypeStruct:	u.asStruct = new ValueStruct(); break;
+			case Type::TypeString:	u.asString = _strdup(""); break;
+			case Type::TypeDateTime:	u.asTime = new struct tm();		 break;
+			case Type::TypeBase64:	u.asBinary = new BinaryData();	break;
+			case Type::TypeArray:		u.asArray = new ValueArray();	 break;
+			case Type::TypeStruct:	u.asStruct = new ValueStruct(); break;
 			default:			u.asBinary = 0; break;
 		}
 	}
@@ -536,7 +536,7 @@ void XmlRpcValue::assertTypeOrInvalid(Type t)
 
 void XmlRpcValue::assertArray(int size) const
 {
-	if (_type != TypeArray)
+	if (_type != Type::TypeArray)
 		throw XmlRpcException("type error: expected an array");
 	else if (int(u.asArray->size()) < size)
 		throw XmlRpcException("range error: array index too large");
@@ -545,11 +545,11 @@ void XmlRpcValue::assertArray(int size) const
 
 void XmlRpcValue::assertArray(int size)
 {
-	if (_type == TypeInvalid) {
-		_type = TypeArray;
+	if (_type == Type::TypeInvalid) {
+		_type = Type::TypeArray;
 		u.asArray = new ValueArray(size);
 	}
-	else if (_type == TypeArray) {
+	else if (_type == Type::TypeArray) {
 		if (int(u.asArray->size()) < size) {
 			u.asArray->resize(size);
 		}
@@ -561,10 +561,10 @@ void XmlRpcValue::assertArray(int size)
 
 void XmlRpcValue::assertStruct()
 {
-	if (_type == TypeInvalid) {
-		_type = TypeStruct;
+	if (_type == Type::TypeInvalid) {
+		_type = Type::TypeStruct;
 		u.asStruct = new ValueStruct();
-	} else if (_type != TypeStruct)
+	} else if (_type != Type::TypeStruct)
 		throw XmlRpcException("type error: expected a struct");
 }
 
@@ -592,14 +592,14 @@ XmlRpcValue& XmlRpcValue::operator=(XmlRpcValue const& rhs)
 		invalidate();
 		_type = rhs._type;
 		switch (_type) {
-			case TypeBoolean:	u.asBool = rhs.u.asBool; break;
-			case TypeInt:		u.asInt = rhs.u.asInt; break;
-			case TypeDouble:	u.asDouble = rhs.u.asDouble; break;
-			case TypeDateTime:	u.asTime = new struct tm(*rhs.u.asTime); break;
-			case TypeString:	u.asString = _strdup(rhs.u.asString); break;
-			case TypeBase64:	u.asBinary = new BinaryData(*rhs.u.asBinary); break;
-			case TypeArray:		u.asArray = new ValueArray(*rhs.u.asArray); break;
-			case TypeStruct:	u.asStruct = new ValueStruct(*rhs.u.asStruct); break;
+			case Type::TypeBoolean:	u.asBool = rhs.u.asBool; break;
+			case Type::TypeInt:		u.asInt = rhs.u.asInt; break;
+			case Type::TypeDouble:	u.asDouble = rhs.u.asDouble; break;
+			case Type::TypeDateTime:	u.asTime = new struct tm(*rhs.u.asTime); break;
+			case Type::TypeString:	u.asString = _strdup(rhs.u.asString); break;
+			case Type::TypeBase64:	u.asBinary = new BinaryData(*rhs.u.asBinary); break;
+			case Type::TypeArray:		u.asArray = new ValueArray(*rhs.u.asArray); break;
+			case Type::TypeStruct:	u.asStruct = new ValueStruct(*rhs.u.asStruct); break;
 			default:			u.asBinary = 0; break;
 		}
 	}
@@ -688,17 +688,17 @@ bool XmlRpcValue::operator==(XmlRpcValue const& other) const
 		return false;
 
 	switch (_type) {
-		case TypeBoolean:	return ( !u.asBool && !other.u.asBool) ||
+		case Type::TypeBoolean:	return ( !u.asBool && !other.u.asBool) ||
 											( u.asBool && other.u.asBool);
-		case TypeInt:		return u.asInt == other.u.asInt;
-		case TypeDouble:	return std::abs(u.asDouble - other.u.asDouble) < std::numeric_limits<double>::epsilon();
-		case TypeDateTime:	return tmEq(*u.asTime, *other.u.asTime);
-		case TypeString:	return *u.asString == *other.u.asString;
-		case TypeBase64:	return *u.asBinary == *other.u.asBinary;
-		case TypeArray:		return *u.asArray == *other.u.asArray;
+		case Type::TypeInt:		return u.asInt == other.u.asInt;
+		case Type::TypeDouble:	return std::abs(u.asDouble - other.u.asDouble) < std::numeric_limits<double>::epsilon();
+		case Type::TypeDateTime:	return tmEq(*u.asTime, *other.u.asTime);
+		case Type::TypeString:	return *u.asString == *other.u.asString;
+		case Type::TypeBase64:	return *u.asBinary == *other.u.asBinary;
+		case Type::TypeArray:		return *u.asArray == *other.u.asArray;
 
 		// The map<>::operator== requires the definition of value< for kcc
-		case TypeStruct:	 //return *u.asStruct == *other.u.asStruct;
+		case Type::TypeStruct:	 //return *u.asStruct == *other.u.asStruct;
 			{
 				if (u.asStruct->size() != other.u.asStruct->size())
 					return false;
@@ -725,10 +725,10 @@ bool XmlRpcValue::operator==(XmlRpcValue const& other) const
 int XmlRpcValue::size() const
 {
 	switch (_type) {
-		case TypeString: return int(strlen(u.asString));
-		case TypeBase64: return int(u.asBinary->size());
-		case TypeArray:	return int(u.asArray->size());
-		case TypeStruct: return int(u.asStruct->size());
+		case Type::TypeString: return int(strlen(u.asString));
+		case Type::TypeBase64: return int(u.asBinary->size());
+		case Type::TypeArray:	return int(u.asArray->size());
+		case Type::TypeStruct: return int(u.asStruct->size());
 		default: break;
 	}
 
@@ -739,7 +739,7 @@ int XmlRpcValue::size() const
 // Checks for existence of struct member
 bool XmlRpcValue::hasMember(const std::string& name) const
 {
-	return _type == TypeStruct && u.asStruct->find(name) != u.asStruct->end();
+	return _type == Type::TypeStruct && u.asStruct->find(name) != u.asStruct->end();
 }
 	/* </Chris Morley> */
 
@@ -797,7 +797,7 @@ void XmlRpcValue::fromXml(const char* &s)
 		;	// good
 	else if (strieq(tag, "<value/>")) {
 		// Jeff Rasmussen claims that <value/> is valid XmlRpc. I think he's correct.
-		_type = TypeString;
+		_type = Type::TypeString;
 		u.asString = _strdup("");
 		return;
 	}
@@ -847,19 +847,19 @@ void XmlRpcValue::fromXml(const char* &s)
 		GobbleExpectedTag(s, STRUCT_ETAG);
 	}
 	else if (strieq(tag, "<string/>")) {
-		_type = TypeString;
+		_type = Type::TypeString;
 		u.asString = _strdup("");
 	}
 	else if (strieq(tag, "<nil/>")) {
-		_type = TypeNil;
+		_type = Type::TypeNil;
 	}
 	else if (strieq(tag, "<struct/>")) {
-		_type = TypeStruct;
+		_type = Type::TypeStruct;
 		u.asStruct = new ValueStruct;
 	}
 	else if (strieq(tag, VALUE_ETAG)) {	
 		// "If no type is indicated, the type is string."
-		_type = TypeString;
+		_type = Type::TypeString;
 		u.asString = _strdup("");
 		return;	// don't gobble VALUE_ETAG because we already did
 	}
@@ -875,16 +875,16 @@ void XmlRpcValue::fromXml(const char* &s)
 void XmlRpcValue::toXml(std::ostringstream &ostr) const
 {
 	switch (_type) {
-		case TypeBoolean:		return boolToXml(ostr);
-		case TypeInt:			return intToXml(ostr);
-		case TypeDouble:		return doubleToXml(ostr);
-		case TypeString:		return stringToXml(ostr);
-		case TypeDateTime:		return timeToXml(ostr);
-		case TypeBase64:		return binaryToXml(ostr);
-		case TypeArray:			return arrayToXml(ostr);
-		case TypeStruct:		return structToXml(ostr);
-		case TypeNil:			return nilToXml(ostr);
-		case TypeInvalid:		throw XmlRpcException("Undefined XmlRpc value");
+		case Type::TypeBoolean:		return boolToXml(ostr);
+		case Type::TypeInt:			return intToXml(ostr);
+		case Type::TypeDouble:		return doubleToXml(ostr);
+		case Type::TypeString:		return stringToXml(ostr);
+		case Type::TypeDateTime:		return timeToXml(ostr);
+		case Type::TypeBase64:		return binaryToXml(ostr);
+		case Type::TypeArray:			return arrayToXml(ostr);
+		case Type::TypeStruct:		return structToXml(ostr);
+		case Type::TypeNil:			return nilToXml(ostr);
+		case Type::TypeInvalid:		throw XmlRpcException("Undefined XmlRpc value");
 		default: break;
 	}
 }
@@ -893,12 +893,12 @@ void XmlRpcValue::toXml(std::ostringstream &ostr) const
 void XmlRpcValue::boolFromXml(const char* &s)
 {
 	if (*s == '0' && s[1] == '<') {
-		_type = TypeBoolean;
+		_type = Type::TypeBoolean;
 		u.asBool = false;
 		s++;
 	}
 	else if (*s == '1' && s[1] == '<') {
-		_type = TypeBoolean;
+		_type = Type::TypeBoolean;
 		u.asBool = true;
 		s++;
 	}
@@ -918,7 +918,7 @@ void XmlRpcValue::intFromXml(const char* &s)
 	long ivalue = strtol(s, &valueEnd, 10);
 	if (valueEnd == s)
 		throw XmlRpcException("Bad double");
-	_type = TypeInt;
+	_type = Type::TypeInt;
 	u.asInt = int(ivalue);
 	s = valueEnd;
 }
@@ -936,7 +936,7 @@ void XmlRpcValue::doubleFromXml(const char* &s)
 	double dvalue = strtod(s, &valueEnd);
 	if (valueEnd == s)
 		throw XmlRpcException("Bad double");
-	_type = TypeDouble;
+	_type = Type::TypeDouble;
 	u.asDouble = dvalue;
 	s = valueEnd;
 }
@@ -955,7 +955,7 @@ void XmlRpcValue::stringFromXml(const char* &s)
 	const char* valueEnd = strchr(s, '<');
 	if (valueEnd == NULL)
 		throw XmlRpcException("Bad string");
-	_type = TypeString;
+	_type = Type::TypeString;
 	u.asString = xmlDecode(s, valueEnd);
 	s = valueEnd;
 }
@@ -988,7 +988,7 @@ void XmlRpcValue::timeFromXml(const char* &s)
 
 	t.tm_wday = t.tm_yday = t.tm_isdst = -1;
 	t.tm_mon -= 1;
-	_type = TypeDateTime;
+	_type = Type::TypeDateTime;
 	u.asTime = new struct tm(t);
 	s = valueEnd;
 }
@@ -1012,7 +1012,7 @@ void XmlRpcValue::binaryFromXml(const char* &s)
 	if (valueEnd == NULL)
 		throw XmlRpcException("Bad base64");
 
-	_type = TypeBase64;
+	_type = Type::TypeBase64;
 	u.asBinary = new BinaryData();
 	// check whether base64 encodings can contain chars xml encodes...
 
@@ -1046,7 +1046,7 @@ void XmlRpcValue::arrayFromXml(const char* &s)
 {
 	char tag[128];
 
-	_type = TypeArray;
+	_type = Type::TypeArray;
 	u.asArray = new ValueArray;
 
 	GobbleTag(s, tag);
@@ -1083,7 +1083,7 @@ void XmlRpcValue::arrayToXml(std::ostringstream &ostr) const
 
 void XmlRpcValue::structFromXml(const char* &s)
 {
-	_type = TypeStruct;
+	_type = Type::TypeStruct;
 	u.asStruct = new ValueStruct;
 
 	size_t memberTagLen = strlen(MEMBER_TAG);
@@ -1177,14 +1177,14 @@ void XmlRpcValue::buildCall(const char* method, std::ostringstream &ostr) const
 {
 	ostr << "<?xml version=\"1.0\"?>\r\n";
 	ostr << "<methodCall><methodName>" << method << "</methodName>\r\n<params>";
-	if (getType() == XmlRpcValue::TypeArray)	{
+	if (getType() == XmlRpcValue::Type::TypeArray)	{
 		for (int i=0; i < size(); ++i) {
 			ostr << "<param>";
 			(*this)[i].toXml(ostr);
 			ostr << "</param>";
 		}
 	}
-	else if (getType() == XmlRpcValue::TypeInvalid) {
+	else if (getType() == XmlRpcValue::Type::TypeInvalid) {
 	}
 	else {
 		ostr << "<param>";
@@ -1520,7 +1520,7 @@ RETRY:
 	InternetSetStatusCallback(hHttpFile, myInternetCallback);
 
 	if (ignoreCertificateAuthority) {
-		DWORD dwFlags;
+		DWORD dwFlags = 0;
 		DWORD dwBuffLen = sizeof(dwFlags);
 
 		InternetQueryOption(hHttpFile, INTERNET_OPTION_SECURITY_FLAGS,
@@ -1640,7 +1640,7 @@ RETRY:
 		isFault = ! result.parseMethodResponse(buf);
 		if (isFault) {
 			XmlRpcValue possible = result["faultString"];
-			if (possible.getType() == XmlRpcValue::TypeString)
+			if (possible.getType() == XmlRpcValue::Type::TypeString)
 				errmsg = std::string(possible);
 			else errmsg = "unspecified error";
 		}

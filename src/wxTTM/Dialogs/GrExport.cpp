@@ -199,6 +199,6 @@ void CGrExport::OnInitialUpdate()
   cbCP->SetCurrentItem(cbCP->GetListItem(0));
   cbCP->SetCurrentItem(CTT32App::instance()->GetDefaultCP());    
   
-  OnSelChangeCp(wxCommandEvent());  
+  OnSelChangeCp(wxCommandEvent_);  
 }
 

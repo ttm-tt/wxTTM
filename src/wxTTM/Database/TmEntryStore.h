@@ -30,8 +30,8 @@ struct  TmTeam : public TmRec, public NaRec
 
 struct  TmGroup : public GrRec
 {
-  long    xxStID;
-  short   grPos;
+  long    xxStID = 0;
+  short   grPos = 0;
 
   void  SetGroup(const GrRec &gr, short pos);
 };
@@ -41,14 +41,14 @@ struct  TmEntry : public TmListRec
 {
   struct
   {
-    short  cpType;
+    short  cpType = CP_NONE;
     TmPlayer  pl;
     TmPlayer  bd;
     TmTeam    tm;
     TmGroup   gr;
   }  team;
 
-  double rankPts;
+  double rankPts = 0.;
 
   TmEntry() {memset(this, 0, sizeof(TmEntry));}
   TmEntry(const TmEntry &tm) {memcpy(this, &tm, sizeof(TmEntry));}

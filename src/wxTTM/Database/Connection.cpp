@@ -38,23 +38,23 @@ void  Connection::Close()
   // Commit();
   SQLRETURN ret;
 
-  if (hDbc != SQL_NULL_HANDLE)
+  if (hDbc != SQL_NULL_HDBC)
   {
     if ( (ret = SQLDisconnect(hDbc)) == SQL_ERROR ||
          (ret = SQLFreeHandle(SQL_HANDLE_DBC, hDbc)) == SQL_ERROR)
     {
-      throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, hDbc);
+      throw SQLException(__TFILE__, __LINE__, SQL_NULL_HDBC, hDbc);
     }
   }
 
-  hDbc = SQL_NULL_HANDLE;
+  hDbc = SQL_NULL_HDBC;
 }
 
 
 // Query if connection is closed
 bool  Connection::IsClosed() const
 {
-  return (hDbc == SQL_NULL_HANDLE);
+  return (hDbc == SQL_NULL_HDBC);
 }
 
 
@@ -81,16 +81,16 @@ bool  Connection::IsValid()
 // Create statement object
 Statement * Connection::CreateStatement()
 {
-  SQLHSTMT  hStmt = SQL_NULL_HANDLE;
+  SQLHSTMT  hStmt = SQL_NULL_HSTMT;
   SQLRETURN ret;
 
   if (!hDbc)
-    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, NULL);
+    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HENV, SQL_NULL_HDBC);
 
   // Allocate new handle
   ret = SQLAllocStmt(hDbc, &hStmt);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, hDbc);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HENV, hDbc);
 
   // Create new Statement object
   Statement  *stmtPtr = new Statement(hStmt, hDbc, hEnv);
@@ -104,17 +104,17 @@ Statement * Connection::CreateStatement()
 // Prepare a statement
 PreparedStatement * Connection::PrepareStatement(const wxString &str)
 {
-  SQLHSTMT  hStmt = SQL_NULL_HANDLE;
+  SQLHSTMT  hStmt = SQL_NULL_HSTMT;
   SQLRETURN ret;
 
   wxASSERT(hDbc);
 
   ret = SQLAllocStmt(hDbc, &hStmt);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, hDbc);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, SQL_NULL_HENV, hDbc);
 
   ret = SQLPrepare(hStmt, (SQLTCHAR *) str.wx_str(), SQL_NTS);
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
   {
     SQLException e(__TFILE__, __LINE__, hStmt, hDbc);
     SQLFreeStmt(hStmt, SQL_CLOSE);
@@ -167,10 +167,10 @@ void  Connection::Rollback()
 // Typeinfo einlesen
 bool  Connection::GetTypeInfo()
 {
-  if (hDbc == SQL_NULL_HANDLE)
+  if (hDbc == SQL_NULL_HDBC)
     return false;
 
-  SQLHSTMT  hStmt = SQL_NULL_HANDLE;
+  SQLHSTMT  hStmt = SQL_NULL_HSTMT;
   SQLRETURN ret;
 
   unsigned short  bExists;
@@ -178,7 +178,7 @@ bool  Connection::GetTypeInfo()
   typeInfoMap.clear();
 
   ret = SQLGetFunctions(hDbc, SQL_API_SQLGETTYPEINFO, &bExists);
-  if (ret == SQL_ERROR || !bExists)
+  if (SQL_FAILED(ret) || !bExists)
   {
     typeInfoMap.insert(TypeInfoMap::value_type(SQL_VARCHAR, "VARCHAR"));
     typeInfoMap.insert(TypeInfoMap::value_type(SQL_INTEGER, "INTEGER"));

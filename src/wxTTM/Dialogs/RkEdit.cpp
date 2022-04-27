@@ -300,7 +300,7 @@ void CRkEdit::OnEdit()
         break;
 
       m_listCtrl->SetCurrentIndex(idx);
-      OnUp(wxCommandEvent());
+      OnUp(wxCommandEvent_);
       m_listCtrl->SetCurrentIndex(--idx);
     }
 
@@ -317,7 +317,7 @@ void CRkEdit::OnEdit()
         break;
 
       m_listCtrl->SetCurrentIndex(idx);
-      OnDown(wxCommandEvent());
+      OnDown(wxCommandEvent_);
       m_listCtrl->SetCurrentIndex(++idx);
     }
   }

@@ -92,7 +92,7 @@ bool CRkListView::Edit(va_list vaList)
 
   TransferDataToWindow();
   
-  OnSelChangeCp(wxCommandEvent());
+  OnSelChangeCp(wxCommandEvent_);
   
   return true;
 }  

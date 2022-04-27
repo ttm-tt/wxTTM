@@ -61,7 +61,7 @@ bool PlRecImpExp::Read(const wxString &line)
   wxString strNa    = tokens.GetNextToken().Strip(wxString::both);
   wxString strExtID = tokens.GetNextToken().Strip(wxString::both);
   wxString strRankPts = tokens.GetNextToken().Strip(wxString::both);
-  wxString strComment = (tokens.HasMoreTokens() ? tokens.GetNextToken().Strip(wxString::both) : wxEmptyString);
+  wxString strComment = (tokens.HasMoreTokens() ? tokens.GetNextToken().Strip(wxString::both).c_str() : wxEmptyString);
   
   if (!strNr.IsEmpty() && *strNr.t_str() == '#')
     return false;

@@ -489,7 +489,7 @@ wxSize OvItem::GetToolTipSize(wxDC *pDC)
 }
 
 
-void  OvItem::DrawToolTip(wxDC *pDC, wxRect &rect)
+void  OvItem::DrawToolTip(wxDC *pDC, const wxRect &rect)
 {
   unsigned cW = pDC->GetTextExtent("M").GetWidth();
 

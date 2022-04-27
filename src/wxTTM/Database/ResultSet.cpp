@@ -27,8 +27,8 @@ bool  ResultSet::GetData(int nr, bool &data)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_BIT, &data, 0, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -39,8 +39,8 @@ bool  ResultSet::GetData(int nr, short &data)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_SSHORT, &data, 0, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -51,8 +51,8 @@ bool  ResultSet::GetData(int nr, long &data)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_SLONG, &data, 0, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -63,8 +63,8 @@ bool  ResultSet::GetData(int nr, double &data)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_DOUBLE, &data, 0, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -75,8 +75,8 @@ bool  ResultSet::GetData(int nr, wxChar * data, int len)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_TCHAR, data, len, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -87,8 +87,8 @@ bool  ResultSet::GetData(int nr, TIMESTAMP_STRUCT &data)
   SQLRETURN  ret;
 
   ret = SQLGetData(hStmt, nr, SQL_C_TIMESTAMP, &data, 0, &(nullData[0]));
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -102,7 +102,7 @@ bool  ResultSet::GetData(int nr, void *&data, size_t &len)
   ret = SQLGetData(hStmt, nr, SQL_C_BINARY, &tmp, 0, &(nullData[0]));
 
   // SQL_SUCCESS bedeutet, dass es kein Bild gibt
-  if (ret == SQL_SUCCESS)
+  if (SQL_FAILED(ret))
     return false;
 
   if (ret == SQL_SUCCESS_WITH_INFO)
@@ -112,8 +112,8 @@ bool  ResultSet::GetData(int nr, void *&data, size_t &len)
     ret = SQLGetData(hStmt, nr, SQL_C_BINARY, data, len, &nullData[0]);
   }
   
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
   
   return true;
 }
@@ -132,8 +132,8 @@ bool  ResultSet::BindCol(int nr, bool *dataPtr)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_BIT, dataPtr, 0, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
 
   return true;
@@ -145,8 +145,8 @@ bool  ResultSet::BindCol(int nr, short *dataPtr)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_SSHORT, dataPtr, 0, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -157,8 +157,8 @@ bool  ResultSet::BindCol(int nr, long *dataPtr)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_SLONG, dataPtr, 0, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -169,8 +169,8 @@ bool  ResultSet::BindCol(int nr, double *dataPtr)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_DOUBLE, dataPtr, 0, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -181,8 +181,8 @@ bool  ResultSet::BindCol(int nr, wxChar * dataPtr, int len)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_TCHAR, dataPtr, len, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -193,8 +193,8 @@ bool  ResultSet::BindCol(int nr, TIMESTAMP_STRUCT *dataPtr)
   SQLRETURN  ret;
 
   ret = SQLBindCol(hStmt, nr, SQL_C_TIMESTAMP, dataPtr, 0, &nullData[nr]);
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   return true;
 }
@@ -209,12 +209,15 @@ bool  ResultSet::WasNull(int nr)
 // Fetch Data
 bool  ResultSet::Next()
 {
+  if (hStmt == SQL_NULL_HSTMT)
+    return false;
+
   SQLRETURN  ret;
 
   ret = SQLFetch(hStmt);
 
-  if (ret == SQL_ERROR)
-    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HANDLE, SQL_NULL_HANDLE);
+  if (SQL_FAILED(ret))
+    throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
 
   if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
     return true;
@@ -235,7 +238,7 @@ int  ResultSet::GetColumnCount()
 
   ret = SQLNumResultCols(hStmt, &numOfCols);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return numOfCols;
@@ -252,7 +255,7 @@ wxString  ResultSet::GetColumnLabel(int col)
 
   ret = SQLColAttribute(hStmt, col, SQL_COLUMN_LABEL, label, 127, &len, &info);
 
-  if (ret == SQL_ERROR)
+  if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt);
 
   return wxString(label);

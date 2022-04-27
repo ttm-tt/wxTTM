@@ -945,7 +945,7 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Nationen: "abs[<naName>]"
   // Regionen: "abs[<naRegion>]"
 
-  set_col_name(lp, 1, "C");
+  set_col_name(lp, 1, wxString("C").char_str());
 
   for (std::map<DrawItemTeam *, int>::iterator it = colMapping.begin(); it != colMapping.end(); it++)
   {

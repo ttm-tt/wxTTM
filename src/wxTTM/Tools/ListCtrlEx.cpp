@@ -185,10 +185,13 @@ void CListCtrlEx::OnKeyDown(wxKeyEvent &evt)
 
     case WXK_INSERT :
     case WXK_DELETE :
+    {
       // INS u. DEL : Einfuegen u. Loeschen
-      GetEventHandler()->ProcessEvent(wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, nChar == WXK_INSERT ? IDC_ADD : IDC_DELETE));
+      wxCommandEvent evt(wxEVT_COMMAND_BUTTON_CLICKED, nChar == WXK_INSERT ? IDC_ADD : IDC_DELETE);
+      GetEventHandler()->ProcessEvent(evt);
 
       return;
+    }
   }
   
   // Was hier landet wurde nicht behandelt
@@ -286,7 +289,8 @@ void CListCtrlEx::OnLButtonDblClk(wxMouseEvent &evt)
   
   ListItem * itemPtr = GetListItem(idx);  
   
-  ProcessCommand(wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, itemPtr ? itemPtr->GetType() : IDC_EDIT));
+  wxCommandEvent cmd(wxEVT_COMMAND_BUTTON_CLICKED, itemPtr ? itemPtr->GetType() : IDC_EDIT);
+  ProcessCommand(cmd);
 }
 
 

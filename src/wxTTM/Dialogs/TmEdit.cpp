@@ -108,7 +108,7 @@ bool  CTmEdit::Edit(va_list vaList)
   
   TransferDataToWindow();
 
-  OnSelChangedNa(wxCommandEvent());  
+  OnSelChangedNa(wxCommandEvent_);  
 
   // Und jetzt noch die Spieler
   NtEntryStore  ntpl;
@@ -294,7 +294,7 @@ void CTmEdit::OnKillFocusName(wxFocusEvent &evt)
       wxStrcpy(tm.tmDesc, naItemPtr->na.naDesc);
       m_cbBox->SetCurrentItem(naItemPtr);
       
-      OnSelChangedNa(wxCommandEvent());
+      OnSelChangedNa(wxCommandEvent_);
       
       TransferDataToWindow();
     }
@@ -333,7 +333,7 @@ void CTmEdit::OnSelChangedNa(wxCommandEvent &)
     TransferDataToWindow();
   }
   
-  OnShowAll(wxCommandEvent());
+  OnShowAll(wxCommandEvent_);
 }
 
 

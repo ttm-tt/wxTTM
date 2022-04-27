@@ -9,12 +9,19 @@
 
 #include "GrStore.h"
 
+#include "MpListStore.h"
+#include "MpItem.h"
+
+#include "ComboBoxEx.h"
+
 #include "InfoSystem.h"
 #include "Request.h"
+
 
 IMPLEMENT_DYNAMIC_CLASS(CMdEdit, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CMdEdit, CFormViewEx)
+  EVT_COMBOBOX(XRCID("MatchPoints"), CMdEdit::OnSelChangeMp)
   EVT_BUTTON(XRCID("Automatic"), CMdEdit::OnMdEditAuto)  
   EVT_GRID_CELL_CHANGED(CMdEdit::OnGridCellChanged)
   // EVT_KILL_FOCUS(XRCID("Size"), CMdEdit::OnChangeMdEditSize)
@@ -23,7 +30,7 @@ END_EVENT_TABLE()
 
 // -----------------------------------------------------------------------
 // CMdEdit
-CMdEdit::CMdEdit(): CFormViewEx()
+CMdEdit::CMdEdit() : CFormViewEx()
 {
 }
 
@@ -43,6 +50,8 @@ bool  CMdEdit::Edit(va_list vaList)
     md.Next();
     
     md.Close();
+
+    m_cbMtPts->SetCurrentItem(md.mpID);
     
     short count = GrStore().CountGroups(md);
 
@@ -63,7 +72,8 @@ bool  CMdEdit::Edit(va_list vaList)
 
   TransferDataToWindow();
 
-  OnChangeMdEditSize(wxFocusEvent());
+  OnSelChangeMp(wxCommandEvent_);
+  OnChangeMdEditSize(wxFocusEvent_);
 
   // m_gridCtrl->AutoSize();
 
@@ -79,7 +89,16 @@ void CMdEdit::OnInitialUpdate()
 {
 	CFormViewEx::OnInitialUpdate();	
 	
+  m_cbMtPts = XRCCTRL(*this, "MatchPoints", CComboBoxEx);
 	m_gridCtrl = XRCCTRL(*this, "Modus", wxGrid);
+
+  m_cbMtPts->AddListItem(new MpItem(MpListStore()));
+
+  MpListStore mpList;
+  mpList.SelectAll();
+  while (mpList.Next())
+    m_cbMtPts->AddListItem(new MpItem(mpList));
+  mpList.Close();
 	
 	FindWindow("Name")->SetValidator(CCharArrayValidator(md.mdName, sizeof(md.mdName) / sizeof(wxChar)));
 	FindWindow("Description")->SetValidator(CCharArrayValidator(md.mdDesc, sizeof(md.mdDesc) / sizeof(wxChar)));
@@ -158,6 +177,8 @@ void  CMdEdit::OnOK()
     }
   }
 
+  md.mpID = m_cbMtPts->GetCurrentItem()->GetID();
+
   TTDbse::instance()->GetDefaultConnection()->StartTransaction();
 
   bool res;
@@ -173,6 +194,16 @@ void  CMdEdit::OnOK()
     TTDbse::instance()->GetDefaultConnection()->Rollback();
 
   CFormViewEx::OnOK();
+}
+
+
+void CMdEdit::OnSelChangeMp(wxCommandEvent &)
+{
+  bool hasMp = m_cbMtPts->GetCurrentItem()->GetID();
+
+	FindWindow("PtsWin")->Enable(!hasMp);
+	FindWindow("PtsTie")->Enable(!hasMp);
+	FindWindow("PtsLoss")->Enable(!hasMp);
 }
 
 
