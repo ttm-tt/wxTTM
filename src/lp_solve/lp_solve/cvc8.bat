@@ -5,7 +5,8 @@ REM This batch file compiles the lp_solve driver program with the Microsoft Visu
 set c=cl
 
 REM determine platform (win32/win64)
-echo main(){printf("SET PLATFORM=win%%d\n", (int) (sizeof(void *)*8));}>platform.c
+echo #include "stdio.h">platform.c
+echo void main(){printf("SET PLATFORM=win%%d\n", (int) (sizeof(void *)*8));}>>platform.c
 %c% /nologo platform.c /Feplatform.exe
 del platform.c
 platform.exe >platform.bat
