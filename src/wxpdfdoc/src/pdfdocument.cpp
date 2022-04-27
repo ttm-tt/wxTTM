@@ -20,6 +20,12 @@
 #include <wx/wx.h>
 #endif
 
+#include <wx/filesys.h>
+//#include <wx/filefn.h>
+//#include <wx/filename.h>
+#include <wx/uri.h>
+#include <wx/url.h>
+
 #include <wx/image.h>
 #include <wx/paper.h>
 #include <wx/wfstream.h>
@@ -77,6 +83,7 @@ wxPdfDocument::wxPdfDocument(int orientation, double pageWidth, double pageHeigh
 void
 wxPdfDocument::SetScaleFactor(const wxString& unit)
 {
+  m_userUnit = unit;
   // Scale factor
   if (unit == wxS("pt"))
   {
@@ -93,6 +100,7 @@ wxPdfDocument::SetScaleFactor(const wxString& unit)
   else // if (unit == "mm") or unknown
   {
     m_k = 72. / 25.4;
+    m_userUnit = "mm";
   }
 }
 
@@ -185,6 +193,7 @@ wxPdfDocument::Initialize(int orientation)
   m_colourFlag  = false;
   m_wsApply = false;
   m_ws = 0;
+  m_charSpacing = 0;
   m_textRenderMode = wxPDF_TEXT_RENDER_FILL;
 
   // Initialize image scale factor
@@ -235,6 +244,12 @@ wxPdfDocument::Initialize(int orientation)
   SetDisplayMode(wxPDF_ZOOM_FULLWIDTH);
   m_zoomFactor = 100.;
 
+  // Default layout mode
+  m_layoutMode = wxPDF_LAYOUT_CONTINUOUS;
+
+  // Default paper handling
+  m_paperHandling = wxPDF_PAPERHANDLING_DEFAULT;
+
   // Default viewer preferences
   m_viewerPrefs = 0;
 
@@ -259,6 +274,8 @@ wxPdfDocument::Initialize(int orientation)
 
   m_currentParser = NULL;
   m_currentSource = wxEmptyString;
+
+  m_isPdfA1 = false;
 
   m_translate = false;
 
@@ -502,6 +519,14 @@ wxPdfDocument::SetProtection(int permissions,
 {
   if (m_encryptor == NULL)
   {
+    // Check first whether PDF/A-1b conformance is enabled for this document
+    if (m_isPdfA1)
+    {
+      wxLogError(wxString(wxS("wxPdfDocument::SetProtection: ")) +
+                 wxString(_("Protection can't be enabled for PDF documents conforming to PDF/A-1b.")));
+      return;
+    }
+
     int revision = (keyLength > 0) ? 3 : 2;
     switch (encryptionMethod)
     {
@@ -911,19 +936,19 @@ wxPdfDocument::GetFontSize() const
 }
 
 double
-wxPdfDocument::GetStringWidth(const wxString& s)
+wxPdfDocument::GetStringWidth(const wxString& s, double charSpacing)
 {
   wxString voText = ApplyVisualOrdering(s);
-  return DoGetStringWidth(voText);
+  return DoGetStringWidth(voText, charSpacing);
 }
 
 double
-wxPdfDocument::DoGetStringWidth(const wxString& s)
+wxPdfDocument::DoGetStringWidth(const wxString& s, double charSpacing)
 {
   double w = 0;
   if (m_currentFont != 0)
   {
-    w = m_currentFont->GetStringWidth(s, m_kerning) * m_fontSize;
+    w = m_currentFont->GetStringWidth(s, m_kerning, charSpacing / m_fontSize) * m_fontSize;
   }
   return w;
 }
@@ -1114,7 +1139,7 @@ wxPdfDocument::DoCell(double w, double h, const wxString& txt, int border, int l
 
   if (txt.Length() > 0)
   {
-    double width = DoGetStringWidth(txt);
+    double width = DoGetStringWidth(txt, m_charSpacing);
     double dx;
     if (align == wxPDF_ALIGN_RIGHT)
     {
@@ -1238,7 +1263,7 @@ wxPdfDocument::MultiCell(double w, double h, const wxString& txt, int border, in
   double ls = 0;
   int ns = 0;
   int nl = 1;
-  wxChar c;
+  wxUniChar c;
   while (i < nb)
   {
     // Get next character
@@ -1274,7 +1299,7 @@ wxPdfDocument::MultiCell(double w, double h, const wxString& txt, int border, in
       ls = len;
       ns++;
     }
-    len = DoGetStringWidth(s.SubString(j, i));
+    len = DoGetStringWidth(s.SubString(j, i), m_charSpacing);
 
     if (len > wmax)
     {
@@ -1363,7 +1388,7 @@ wxPdfDocument::LineCount(double w, const wxString& txt)
   int j = 0;
   double len = 0;
   int nl = 1;
-  wxChar c;
+  wxUniChar c;
   while (i < nb)
   {
     // Get next character
@@ -1382,7 +1407,7 @@ wxPdfDocument::LineCount(double w, const wxString& txt)
     {
       sep = i;
     }
-    len = DoGetStringWidth(s.SubString(j, i));
+    len = DoGetStringWidth(s.SubString(j, i), m_charSpacing);
 
     if (len > wmax)
     {
@@ -1470,7 +1495,7 @@ wxPdfDocument::WriteCell(double h, const wxString& txt, int border, int fill, co
   // handle single space character
   if ((nb == 1) && s[0] == wxS(' '))
   {
-    m_x += DoGetStringWidth(s);
+    m_x += DoGetStringWidth(s, m_charSpacing);
     return;
   }
 
@@ -1485,7 +1510,7 @@ wxPdfDocument::WriteCell(double h, const wxString& txt, int border, int fill, co
   int j = 0;
   double len=0;
   int nl = 1;
-  wxChar c;
+  wxUniChar c;
   while (i < nb)
   {
     // Get next character
@@ -1511,7 +1536,7 @@ wxPdfDocument::WriteCell(double h, const wxString& txt, int border, int fill, co
     {
       sep = i;
     }
-    len = DoGetStringWidth(s.SubString(j, i));
+    len = DoGetStringWidth(s.SubString(j, i), m_charSpacing);
     if (len > wmax)
     {
       // Automatic line break
@@ -1641,10 +1666,26 @@ wxPdfDocument::WriteGlyphArray(wxPdfArrayDouble& x, wxPdfArrayDouble& y, wxPdfAr
 }
 
 wxSize
-wxPdfDocument::GetImageSize(const wxString& file, const wxString& mimeType)
+wxPdfDocument::GetImageSize(const wxString& fileName, const wxString& mimeType)
 {
   wxSize imageSize(0, 0);
   wxImage image;
+
+  wxFileSystem fs;
+  wxString fileURL = fileName;
+  wxURI uri(fileName);
+  if (!uri.HasScheme())
+  {
+    fileURL = wxFileSystem::FileNameToURL(fileName);
+  }
+  wxFSFile* imageFile = fs.OpenFile(fileURL);
+  if (imageFile != NULL)
+  {
+    wxString mimeType = imageFile->GetMimeType();
+    image.LoadFile(*imageFile->GetStream(), mimeType);
+    delete imageFile;
+  }
+#if 0
   if (mimeType.IsEmpty())
   {
     // Auto detect image type
@@ -1655,13 +1696,10 @@ wxPdfDocument::GetImageSize(const wxString& file, const wxString& mimeType)
     // Use mimetype as specified
     image.LoadFile(file, mimeType);
   }
+#endif
   if (image.IsOk())
   {
-#if wxCHECK_VERSION(2,9,0)
     imageSize = image.GetSize();
-#else
-    imageSize.Set(image.GetWidth(), image.GetHeight());
-#endif
   }
   return imageSize;
 }
@@ -2057,6 +2095,10 @@ wxPdfDocument::SetViewerPreferences(int preferences)
   {
     m_PDFVersion = wxS("1.4");
   }
+  if (((m_viewerPrefs & wxPDF_VIEWER_NOPRINTSCALING) != 0) && (m_PDFVersion < wxS("1.6")))
+  {
+    m_PDFVersion = wxS("1.6");
+  }
 }
 
 void
@@ -2230,6 +2272,27 @@ wxPdfDocument::SetDisplayMode(wxPdfZoom zoom, wxPdfLayout layout, double zoomFac
 }
 
 void
+wxPdfDocument::SetPaperHandling(wxPdfPaperHandling paperHandling)
+{
+  switch (paperHandling)
+  {
+    case wxPDF_PAPERHANDLING_SIMPLEX:
+    case wxPDF_PAPERHANDLING_DUPLEX_FLIP_SHORT_EDGE:
+    case wxPDF_PAPERHANDLING_DUPLEX_FLIP_LONG_EDGE:
+      m_paperHandling = paperHandling;
+      if (m_PDFVersion < wxS("1.7"))
+      {
+        m_PDFVersion = wxS("1.7");
+      }
+      break;
+    case wxPDF_PAPERHANDLING_DEFAULT:
+    default:
+      m_paperHandling = wxPDF_PAPERHANDLING_DEFAULT;
+      break;
+  }
+}
+
+void
 wxPdfDocument::Close()
 {
   // Terminate document
@@ -2377,6 +2440,27 @@ wxPdfDocument::AttachFile(const wxString& fileName, const wxString& attachName, 
   return ok;
 }
 
+void
+wxPdfDocument::SetPdfA1Conformance(bool enable)
+{
+  if (enable)
+  {
+    if (!m_encrypted)
+    {
+      m_isPdfA1 = enable;
+    }
+    else
+    {
+      wxLogError(wxString(wxS("wxPdfDocument::SetPdfA1Conformance: ")) +
+                 wxString(_("PDF/A-1 conformance can't be enabled for protected PDF documents.")));
+    }
+  }
+  else
+  {
+    m_isPdfA1 = enable;
+  }
+}
+
 // ---
 
 void
@@ -2447,6 +2531,75 @@ wxPdfDocument::AddPattern(const wxString& patternName, const wxImage& image, dou
       {
         wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
                    wxString::Format(_("Invalid width (%.1f) and/or height (%.1f)."), width, height));
+      }
+    }
+  }
+  return isValid;
+}
+
+bool
+wxPdfDocument::AddPattern(const wxString& patternName, int templateId, double width, double height)
+{
+  bool isValid = true;
+  wxPdfPatternMap::iterator patternIter = m_patterns->find(patternName);
+  if (patternIter == m_patterns->end())
+  {
+    wxPdfTemplatesMap::iterator templateIter = m_templates->find(templateId);
+
+    if (templateIter != m_templates->end() && width > 0 && height > 0)
+    {
+
+      // Register new pattern
+      wxPdfPattern* pattern;
+      int i = (int)m_patterns->size() + 1;
+      pattern = new wxPdfPattern(i, width, height, templateId);
+      (*m_patterns)[patternName] = pattern;
+    }
+    else
+    {
+      isValid = false;
+      if (templateIter == m_templates->end())
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString(_("Invalid template id.")));
+      }
+      else
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString::Format(_("Invalid width (%.1f) and/or height (%.1f)."), width, height));
+      }
+    }
+  }
+  return isValid;
+}
+
+bool
+wxPdfDocument::AddPattern(const wxString& patternName, wxPdfPatternStyle patternStyle, double width, double height, const wxColour& drawColour, const wxColour& fillColour)
+{
+  bool isValid = true;
+  wxPdfPatternMap::iterator patternIter = m_patterns->find(patternName);
+  if (patternIter == m_patterns->end())
+  {
+    if (patternStyle >= wxPDF_PATTERNSTYLE_FIRST_HATCH && patternStyle <= wxPDF_PATTERNSTYLE_LAST_HATCH && width > 0 && height > 0)
+    {
+      // Register new pattern
+      wxPdfPattern* pattern;
+      int i = (int) m_patterns->size() + 1;
+      pattern = new wxPdfPattern(i, width, height, patternStyle, drawColour, fillColour);
+      (*m_patterns)[patternName] = pattern;
+    }
+    else
+    {
+      isValid = false;
+      if (!(patternStyle >= wxPDF_PATTERNSTYLE_FIRST_HATCH && patternStyle <= wxPDF_PATTERNSTYLE_LAST_HATCH))
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString(_("Invalid pattern style.")));
+      }
+      if (width <= 0 || height <= 0)
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString::Format(_("Invalid width (%.1f) and/or height (%.1f)."), width, height));
       }
     }
   }
@@ -2528,6 +2681,10 @@ wxPdfDocument::SetDrawPattern(const wxString& name)
     if (m_page > 0)
     {
       OutAscii(m_drawColour.GetColour(true));
+    }
+    if (m_inTemplate)
+    {
+      (*(m_currentTemplate->m_patterns))[pattern->first] = pattern->second;
     }
   }
   else
@@ -2623,6 +2780,10 @@ wxPdfDocument::SetFillPattern(const wxString& name)
     if (m_page > 0)
     {
       OutAscii(m_fillColour.GetColour(false));
+    }
+    if (m_inTemplate)
+    {
+      (*(m_currentTemplate->m_patterns))[pattern->first] = pattern->second;
     }
   }
   else
