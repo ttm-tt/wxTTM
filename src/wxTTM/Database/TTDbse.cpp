@@ -464,6 +464,7 @@ bool  TTDbse::CreateTables()
   PsStore::CreateTable();
   PlStore::CreateTable();
   SyStore::CreateTable();
+  MpStore::CreateTable();
   MdStore::CreateTable();
   LtStore::CreateTable();
   NtStore::CreateTable();
@@ -479,6 +480,7 @@ bool  TTDbse::CreateTables()
   PoStore::CreateTable();
 
   // Create Constraints
+  MpStore::CreateConstraints();
   MdStore::CreateConstraints();
   SyStore::CreateConstraints();
   PlStore::CreateConstraints();
@@ -502,6 +504,7 @@ bool  TTDbse::CreateTables()
   NtListStore::CreateView();
   TmListStore::CreateView();
   SyListStore::CreateView();
+  MpListStore::CreateView();
   MdListStore::CreateView();
   GrListStore::CreateView();
   StListStore::CreateView();
