@@ -53,8 +53,20 @@ bool  NmItem::AddPlayer(const LtEntry &pl)
     }
     else if (!nm.ltB)
     {
-      nm.team.bd.SetPlayer(pl);
-      nm.ltB = pl.ltID;
+      // In case if mixed put the girl down
+      if (nm.team.pl.psSex == SEX_FEMALE && pl.psSex == SEX_MALE)
+      {
+        nm.team.bd = nm.team.pl;
+        nm.ltB = nm.ltA;
+
+        nm.team.pl.SetPlayer(pl);
+        nm.ltA = pl.ltID;
+      }
+      else
+      {
+        nm.team.bd.SetPlayer(pl);
+        nm.ltB = pl.ltID;
+      }
     }
     else
       return false;

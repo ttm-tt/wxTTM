@@ -822,7 +822,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   // Correction for special systems
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
-  
+
   if ( wxStrcmp(sy.syName, wxT("OTS")) == 0 )
     sySingles = 3;
 	else if ( wxStrcmp(sy.syName, wxT("ETS")) == 0 )
@@ -1046,31 +1046,33 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 								regGroup.right, regGroup.bottom);
 	
   // Jetzt den Rahmen drucken
-  for (int singles = 0; singles < sySingles; singles++)
-  {
-    const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
-    wxChar str[4];
+	// If the first match is a double we print doubles first
+	bool wantsDoublesFirst = sy.syList[0].syType == CP_DOUBLE;
+	for (int singles = 0; singles < sySingles; singles++)
+	{
+		const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+		wxChar str[4];
     
-    CRect reg = regGroup;
-    reg.top = regGroup.bottom + singles * heightBot;
-    reg.bottom = reg.top + heightBot;
+		CRect reg = regGroup;
+		reg.top = regGroup.bottom + ((wantsDoublesFirst ? syDoubles : 0) * 1.7 * heightBot) + (singles * heightBot);
+		reg.bottom = reg.top + heightBot;
     
-    CRect regA = reg;
-    regA.right = regA.left + WIDTH_AX;
+		CRect regA = reg;
+		regA.right = regA.left + WIDTH_AX;
     
-    CRect regNameA = reg;
-    regNameA.left = regA.right;
-    regNameA.right = reg.left + reg.GetWidth() / 2;
+		CRect regNameA = reg;
+		regNameA.left = regA.right;
+		regNameA.right = reg.left + reg.GetWidth() / 2;
     
-    CRect regX = reg;
-    regX.left = regNameA.right;
-    regX.right = regX.left + WIDTH_AX;
+		CRect regX = reg;
+		regX.left = regNameA.right;
+		regX.right = regX.left + WIDTH_AX;
     
-    CRect regNameX = reg;
-    regNameX.left = regX.right;
+		CRect regNameX = reg;
+		regNameX.left = regX.right;
     
-    // Die horizontale Trennlinie
-    printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
+		// Die horizontale Trennlinie
+		printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
 		if (sySingles < 4)
 			wxSprintf(str, "%s", alpha[singles]);
@@ -1088,49 +1090,48 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	}
 	
 	for (int doubles = 0; doubles < syDoubles; doubles++)
-  {
-    wxChar str[6];
+	{
+		wxChar str[6];
     
-    CRect reg = regGroup;
-    reg.top = regGroup.bottom + sySingles * heightBot + 
-              (1.7 * doubles * heightBot);
-    reg.bottom = reg.top + 1.7 * heightBot;
+		CRect reg = regGroup;
+		reg.top = regGroup.bottom + ((wantsDoublesFirst ? 0 : sySingles) * heightBot) + (doubles * 1.7 * heightBot);
+		reg.bottom = reg.top + 1.7 * heightBot;
     
-    CRect regA = reg;
-    regA.right = regA.left + WIDTH_AX;
+		CRect regA = reg;
+		regA.right = regA.left + WIDTH_AX;
     
-    CRect regNameA = reg;
-    regNameA.left = regA.right;
-    regNameA.right = reg.left + reg.GetWidth() / 2;
+		CRect regNameA = reg;
+		regNameA.left = regA.right;
+		regNameA.right = reg.left + reg.GetWidth() / 2;
     
-    CRect regX = reg;
-    regX.left = regNameA.right;
-    regX.right = regX.left + WIDTH_AX;
+		CRect regX = reg;
+		regX.left = regNameA.right;
+		regX.right = regX.left + WIDTH_AX;
     
-    CRect regNameX = reg;
-    regNameX.left = regX.right;
+		CRect regNameX = reg;
+		regNameX.left = regX.right;
     
-    // Die horizontale Trennlinie
-    printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
+		// Die horizontale Trennlinie
+		printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
- 	  if (wxStrcmp(sy.syName, "OTS") == 0)
- 	    wxSprintf(str, "C\nA/B");
-    else if (syDoubles > 1)
- 	    wxSprintf(str, "DA%i", doubles+1);
- 	  else
- 	    wxSprintf(str, "DA");
+ 		if (wxStrcmp(sy.syName, "OTS") == 0)
+ 			wxSprintf(str, "C\nA/B");
+		else if (syDoubles > 1)
+ 			wxSprintf(str, "DA%i", doubles+1);
+ 		else
+ 			wxSprintf(str, "DA");
 
 		PrintStringCentered(str, regA);
 
-    if (syDoubles > 1)      
-		  wxSprintf(str, "DX%i", doubles+1);
- 	  else if (wxStrcmp(sy.syName, "OTS") == 0)
- 	    wxSprintf(str, "Z\nX/Y");
+		if (syDoubles > 1)      
+			wxSprintf(str, "DX%i", doubles+1);
+ 		else if (wxStrcmp(sy.syName, "OTS") == 0)
+ 			wxSprintf(str, "Z\nX/Y");
 		else
-		  wxSprintf(str, "DX"); 		 
+			wxSprintf(str, "DX"); 		 
 
-		PrintStringCentered(str, regX);      
-  }
+		PrintStringCentered(str, regX);     
+	}
 
 	// Jetzt jede einzelne Meldung drucken.
 	NmEntryStore nmA(connPtr);
@@ -1144,7 +1145,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	  if (nmA.team.cpType ==  CP_SINGLE)
 	  {
 	    CRect reg = regGroup;
-	    reg.top = regGroup.bottom + (nmA.nmNr-1) * heightBot;
+	    reg.top = regGroup.bottom + (wantsDoublesFirst ? syDoubles : 0) * 1.7 * heightBot + ((nmA.nmNr - 1) * heightBot);
 	    reg.bottom = reg.top + heightBot;
 
 		  CRect regA = reg;
@@ -1166,8 +1167,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		else
 		{
 	    CRect reg = regGroup;
-	    reg.top = regGroup.bottom + sySingles * heightBot + 
-	              1.7 * (nmA.nmNr-1) * heightBot;
+	    reg.top = regGroup.bottom + (wantsDoublesFirst ? 0 : sySingles) * heightBot + (nmA.nmNr-1) * 1.7 * heightBot;
 	    reg.bottom = reg.top + 1.7 * heightBot;
 
 		  CRect regA = reg;
@@ -1201,7 +1201,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	  if (nmX.team.cpType == CP_SINGLE)
 	  {
 	    CRect reg = regGroup;
-	    reg.top = regGroup.bottom + (nmX.nmNr-1) * heightBot;
+	    reg.top = regGroup.bottom + (wantsDoublesFirst ? syDoubles : 0) * 1.7 * heightBot + ((nmX.nmNr - 1) * heightBot);
 	    reg.bottom = reg.top + heightBot;
 
 		  CRect regA = reg;
@@ -1223,8 +1223,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		else
 		{
 	    CRect reg = regGroup;
-	    reg.top = regGroup.bottom + sySingles * heightBot + 
-	              1.7 * (nmX.nmNr-1) * heightBot;
+	    reg.top = regGroup.bottom + (wantsDoublesFirst ? 0 : sySingles) * heightBot + (nmX.nmNr-1) * 1.7 * heightBot;
 	    reg.bottom = reg.top + 1.7 * heightBot;
 
 		  CRect regA = reg;

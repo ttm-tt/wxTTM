@@ -376,7 +376,10 @@ bool  MdStore::CreateConstraints()
 
 bool  MdStore::UpdateConstraints(long version)
 {
-  return MdStore::CreateConstraints();
+  if (version < 164)
+    return MdStore::CreateConstraints();
+
+  return true;
 }
 
 

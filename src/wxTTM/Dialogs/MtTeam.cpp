@@ -317,9 +317,9 @@ void CMtTeam::OnWalkOver(int ax)
   mtList->Enable(m_woa == 0 && m_wox == 0);
   
   if (m_woa)
-    mt.mtResX = (sy.syMatches + 1) / 2;
+    mt.mtResX = sy.syComplete ? sy.syMatches : (sy.syMatches + 1) / 2;
   else if (m_wox)
-    mt.mtResA = (sy.syMatches + 1) / 2;
+    mt.mtResA = sy.syComplete ? sy.syMatches : (sy.syMatches + 1) / 2;
   else
     mt.mtResA = mt.mtResX = 0;
     
@@ -368,6 +368,8 @@ void CMtTeam::OnNomination(long tmID, int ax)
     CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditOTS"), mt.mtID, tmID, ax);
   else if (wxStrcmp(sy.syName, wxT("ETS")) == 0)
     CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditETS"), mt.mtID, tmID, ax);
+  else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
+    CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditXTS"), mt.mtID, tmID, ax);
   else
     CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEdit"), mt.mtID, tmID, ax);
 }

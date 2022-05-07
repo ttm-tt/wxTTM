@@ -12,14 +12,51 @@
 class  Statement;
 class  ResultSet;
 
+struct SyRec;
+
+// Definition of one team match
+// Define it here so we can access the list in SyStore and SyListStore as well
+struct  SyMatchRec
+{
+  long   syID;      // Foreign key
+  short  syNr;      // Laufende Nr
+  short  syType;    // Single / Double
+  long   syPlayerA; // Verweis auf Setzung A
+  long   syPlayerX; // Verweis auf Setzung X  
+
+  SyMatchRec()  {Init();}
+  
+  void  Init()  {memset(this, 0, sizeof(SyMatchRec));}
+};
+
+
+class  SyMatchStore : public StoreObj, public SyMatchRec
+{
+  public:
+    static  bool  CreateTable();
+    static  bool  UpdateTable(long version);
+
+    static  bool  CreateConstraints();
+    static  bool  UpdateConstraints(long version);
+
+    SyMatchStore(Connection *connPtr = 0) : StoreObj(connPtr) {}
+
+    virtual void  Init();
+
+    bool  Select(long id);
+    bool  Insert(SyRec *);
+    bool  Remove(long id);
+};
+
+
 // Tabellendaten in eigene Struktur
 struct SyRec
 {
   long      syID;        // Unique ID
   wxChar    syName[9];   // Short name ("COR")
   wxChar    syDesc[65];  // Full description ("Cobillon Cup")
-  short     sySingles;   // Number of Singles matches
-  short     syDoubles;   // Number of Doubles matches
+  short     sySingles;   // Number of singles matches
+  short     syDoubles;   // Number of doubles matches
   short     syMatches;   // Number of matches
   short     syComplete;  // Complete all matches
 

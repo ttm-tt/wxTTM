@@ -54,40 +54,6 @@ void SyRec::ChangeSize(int mt)
 }
 
 
-// Abspeichern eines einzelnen Spieles
-struct  SyMatchRec
-{
-  long   syID;      // Foreign key
-  short  syNr;      // Laufende Nr
-  short  syType;    // Single / Double
-  long   syPlayerA; // Verweis auf Setzung A
-  long   syPlayerX; // Verweis auf Setzung X  
-
-  SyMatchRec()  {Init();}
-  
-  void  Init()  {memset(this, 0, sizeof(SyMatchRec));}
-};
-
-
-class  SyMatchStore : public StoreObj, public SyMatchRec
-{
-  public:
-    static  bool  CreateTable();
-    static  bool  UpdateTable(long version);
-
-    static  bool  CreateConstraints();
-    static  bool  UpdateConstraints(long version);
-
-    SyMatchStore(Connection *connPtr = 0) :StoreObj(connPtr) {}
-
-    virtual void  Init();
-
-    bool  Select(long id);
-    bool  Insert(SyRec *);
-    bool  Remove(long id);
-};
-
-
 void  SyMatchStore::Init()
 {
   SyMatchRec::Init();

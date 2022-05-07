@@ -33,6 +33,8 @@ class  SyListStore : public StoreObj, public SyListRec
 
     virtual void  Init();
 
+    bool  Next();
+
   // API: Wettbewerbe auswaehlen
   public:
     bool  SelectAll();                  // Alle Spielsysteme

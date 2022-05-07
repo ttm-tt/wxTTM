@@ -551,6 +551,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\MtUnscheduled.cpp" />
     <ClCompile Include="Dialogs\NmEditETS.cpp" />
     <ClCompile Include="Dialogs\NmEditOTS.cpp" />
+    <ClCompile Include="Dialogs\NmEditXTS.cpp" />
     <ClCompile Include="Dialogs\OvListBook.cpp" />
     <ClCompile Include="Dialogs\PlHistEvents.cpp" />
     <ClCompile Include="Dialogs\PlHistView.cpp" />
@@ -726,6 +727,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\MtUnscheduled.h" />
     <ClInclude Include="Dialogs\NmEditETS.h" />
     <ClInclude Include="Dialogs\NmEditOTS.h" />
+    <ClInclude Include="Dialogs\NmEditXTS.h" />
     <ClInclude Include="Dialogs\OvListBook.h" />
     <ClInclude Include="Dialogs\PlHistEvents.h" />
     <ClInclude Include="Dialogs\PlHistView.h" />
