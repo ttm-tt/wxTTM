@@ -51,8 +51,6 @@ bool  CMdEdit::Edit(va_list vaList)
     
     md.Close();
 
-    m_cbMtPts->SetCurrentItem(md.mpID);
-    
     short count = GrStore().CountGroups(md);
 
     FindWindow("Size")->Enable(false);
@@ -67,6 +65,8 @@ bool  CMdEdit::Edit(va_list vaList)
     md.mdMtPtsLoss = 1;
   }
 
+  m_cbMtPts->SetCurrentItem(md.mpID);
+    
   // GridCtrl aufziehen und Daten ausgeben
   m_gridCtrl->CreateGrid(md.Rounds(), md.Matches());
 
