@@ -25,7 +25,6 @@
 
 #include  <stdlib.h>
 
-#include  <strstream>
 #include  <iomanip>
 
 #undef _

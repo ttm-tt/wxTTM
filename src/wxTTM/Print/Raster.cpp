@@ -25,7 +25,6 @@
 #include  <stdlib.h>
 #include  <io.h>
 
-#include  <strstream>
 #include  <iomanip>
 #include  <algorithm>
 
