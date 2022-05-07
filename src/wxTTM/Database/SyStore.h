@@ -25,7 +25,7 @@ struct  SyMatchRec
   long   syPlayerX; // Verweis auf Setzung X  
 
   SyMatchRec()  {Init();}
-  
+
   void  Init()  {memset(this, 0, sizeof(SyMatchRec));}
 };
 
@@ -65,10 +65,12 @@ struct SyRec
     short   syType;      // Typ (Single / Double)
     long    syPlayerA;   // Verweis auf Setzung A
     long    syPlayerX;   // Verweis auf Setzunx X
-  } *syList;
+  } *syList = nullptr;
 
   SyRec() {memset(this, 0, sizeof(SyRec));}
- ~SyRec() {delete[] syList;}
+ ~SyRec() {delete[] syList; syList = nullptr;}
+
+  SyRec & operator=(const SyRec &sy);
  
   void  ChangeSize(int mt);
 };

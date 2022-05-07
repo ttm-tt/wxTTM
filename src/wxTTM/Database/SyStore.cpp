@@ -20,6 +20,27 @@
 
 
 // -----------------------------------------------------------------------
+SyRec& SyRec::operator=(const SyRec& sy)
+{
+  syID = sy.syID;
+  wxStrcpy(syName, sy.syName);
+  wxStrcpy(syDesc, sy.syDesc);
+  sySingles = sy.sySingles;
+  syDoubles = sy.syDoubles;
+  syMatches = sy.syMatches;
+  syComplete = sy.syComplete;
+  syList = nullptr;
+
+  if (sy.syList)
+  {
+    syList = new SyList[sy.syMatches];
+    for (int idx = 0; idx < sy.syMatches; ++idx)
+      syList[idx] = sy.syList[idx];
+  }
+
+  return *this;
+}
+
 void SyRec::ChangeSize(int mt)
 {
   if (mt == 0)

@@ -354,7 +354,7 @@ bool  TTDbse::CreateRoles()
   wxString admins;
   
   DWORD cbName = MAX_PATH-1, cbDomainName = MAX_PATH-1;
-  TCHAR builtinUsers[MAX_PATH], builtinPowerUsers[256], builtinAdmins[256], domainName[MAX_PATH];
+  TCHAR builtinUsers[MAX_PATH], builtinPowerUsers[MAX_PATH], builtinAdmins[MAX_PATH], domainName[MAX_PATH];
   SID_NAME_USE peUse;
   
   PSID sid = NULL;

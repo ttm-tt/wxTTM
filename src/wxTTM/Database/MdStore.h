@@ -34,6 +34,8 @@ struct MdRec
   MdRec() {memset(this, 0, sizeof(MdRec));}
  ~MdRec() {delete[] mdList;}
 
+  MdRec & operator=(const MdRec &);
+
   void    Init() {delete[] mdList; memset(this, 0, sizeof(MdRec));}
 
   short   Rounds() const  {return mdSize == 0 || mdSize & 0x1 ? mdSize : mdSize - 1;}
@@ -45,9 +47,31 @@ struct MdRec
   void  ChangeSize(short newSize);
   void  SetPlayerA(short rd, short mt, long plA);
   void  SetPlayerX(short rd, short mt, long plX);
-  
-  MdRec & operator=(const MdRec &rVal);
 };
+
+
+inline MdRec& MdRec::operator=(const MdRec& md)
+{
+  mdID = md.mdID;
+  wxStrcpy(mdName, md.mdName);
+  wxStrcpy(mdDesc, md.mdDesc);
+  mdSize = md.mdSize;
+  mdMtPtsWin = md.mdMtPtsWin;
+  mdMtPtsTie = md.mdMtPtsTie;
+  mdMtPtsLoss = md.mdMtPtsLoss;
+  mpID = md.mpID;
+
+  mdList = nullptr;
+
+  if (md.mdList)
+  {
+    mdList = new MdList[md.mdSize];
+    for (int idx = 0; idx < md.mdSize; ++idx)
+      mdList[idx] = md.mdList[idx];
+  }
+
+  return *this;
+}
 
 
 // Sicht auf Tabelle allein
@@ -131,29 +155,4 @@ inline  void  MdRec::SetPlayerX(short rd, short mt, long plX)
   mdList[Matches() * (rd-1) + (mt-1)].mdPlayerX = plX;
 }
 
-
-inline MdRec & MdRec::operator=(const MdRec &rVal)
-{
-  if (this == &rVal)
-    return *this;
-    
-  mdID = rVal.mdID;
-  wxStrcpy(mdName, rVal.mdName);
-  wxStrcpy(mdDesc, rVal.mdDesc);  
-    
-  if (rVal.mdList == 0 || rVal.mdSize == 0)
-  {
-    delete[] mdList;
-    mdList = 0;
-    
-    mdSize = rVal.mdSize;
-  }
-  else
-  {    
-    ChangeSize(rVal.mdSize);
-    memcpy(mdList, rVal.mdList, Rounds() * Matches() * sizeof(MdList));
-  }
-  
-  return *this;
-}
 #endif

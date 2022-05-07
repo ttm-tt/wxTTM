@@ -468,7 +468,7 @@ bool MpStore::Update()
   PreparedStatement *stmtPtr = 0;
 
   wxString str = "UPDATE MpRec "
-                    "SET mpName = ?, mpDesc = ?, mpCount = ? "
+                    "SET mpName = ?, mpDesc = ? "
                     "WHERE mpID = ?";
 
   try
@@ -479,8 +479,7 @@ bool MpStore::Update()
 
     stmtPtr->SetData(1, mpName);
     stmtPtr->SetData(2, mpDesc);
-    stmtPtr->SetData(3, &mpCount);
-    stmtPtr->SetData(4, &mpID);
+    stmtPtr->SetData(3, &mpID);
 
     stmtPtr->Execute();    
   }

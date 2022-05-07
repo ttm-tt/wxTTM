@@ -19,12 +19,33 @@ struct MpRec
 
   MpRec() { Init(); }
  ~MpRec() { delete[] mpList; }
+  MpRec & operator=(const MpRec &);
 
   void Init() { delete[] mpList; memset(this, 0, sizeof(MpRec)); }
 
   void ChangeCount(int mt);
 
 };
+
+
+inline MpRec& MpRec::operator=(const MpRec& mp)
+{
+  mpID = mp.mpID;
+  wxStrcpy(mpName, mp.mpName);
+  wxStrcpy(mpDesc, mp.mpDesc);
+  mpCount = mp.mpCount;
+  mpList = nullptr;
+
+  if (mp.mpList)
+  {
+    mpList = new MpItem[mp.mpCount];
+
+    for (int idx = 0; idx < mp.mpCount; ++idx)
+      mpList[idx] = mp.mpList[idx];
+  }
+
+  return *this;
+}
 
 
 class MpStore : public StoreObj, public MpRec

@@ -134,6 +134,10 @@ bool  StoreObj::Next()
     m_read = false;
   }
 
+  if (m_res && !m_read)
+    Close();
+
+
   return m_read;
 }
 
