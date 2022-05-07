@@ -74,6 +74,7 @@ void CMpEdit::OnInitialUpdate()
 void CMpEdit::OnOK()
 {
   TransferDataFromWindow();
+  ReadGridCtrl();
 
   TTDbse::instance()->GetDefaultConnection()->StartTransaction();
 
