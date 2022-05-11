@@ -50,6 +50,33 @@ char * strskip(char *str, char *tok)
 }
 
 
+wxChar * wxstrstrip(wxChar *string, int flag)
+{
+  if (!string || !string[0])
+    return string;
+
+  wxChar *str = wxStrdup(string);
+  int  len  = wxStrlen(str);
+
+  wxChar *start = str;      // Erstes Zeichen
+  wxChar *end = str + len;  // Abschliessende '\0'
+
+  if (flag & STRIP_BEGIN)
+    while (*start == BLANK)
+      start++;
+
+  if (flag & STRIP_END)
+    while (end > start && *(end-1) == BLANK)
+      end--;
+
+  *end = '\0';
+  wxStrcpy(string, start);
+  free(str);
+
+  return string;   // war 'str'
+}
+
+
 
 // Translate tok to rpl
 char *strtrans(char *str, char *tok, char *rpl)

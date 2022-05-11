@@ -9,6 +9,7 @@ enum
   STRIP_END   = 2
 };
 
+wxChar * wxstrstrip(wxChar *string, int flag);
 char * strstrip(char *string, int flag);
 char * strskip(char *str, char *tok);
 char *strtrans(char *str, char *tok, char *rpl);
