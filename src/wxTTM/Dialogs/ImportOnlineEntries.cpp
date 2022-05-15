@@ -443,6 +443,8 @@ bool CImportOnlineEntries::ImportThreadRead()
   XmlRpcValue nations;
   XmlRpcValue players;
   XmlRpcValue rankings;
+  
+  // rankings.initAsArray();
 
   bool res = true;
 
@@ -450,7 +452,6 @@ bool CImportOnlineEntries::ImportThreadRead()
   res &= xmlRpcClient.execute("onlineentries.listNations", args, nations);
   res &= xmlRpcClient.execute("onlineentries.listPlayers", args, players);
   res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
-  rankings.initAsArray();
 
   if (!res)
   {
