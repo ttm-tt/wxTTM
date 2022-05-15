@@ -449,7 +449,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   res &= xmlRpcClient.execute("onlineentries.listCompetitions", args, competitions);
   res &= xmlRpcClient.execute("onlineentries.listNations", args, nations);
   res &= xmlRpcClient.execute("onlineentries.listPlayers", args, players);
-  // res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
+  res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
   rankings.initAsArray();
 
   if (!res)
