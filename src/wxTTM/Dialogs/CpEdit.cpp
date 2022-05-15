@@ -90,6 +90,12 @@ void CCpEdit::OnSelectType(wxCommandEvent &)
   switch (cp.cpType)
   {
     case CP_SINGLE :
+      FindWindow("SexMale")->Enable(true);
+      FindWindow("SexFemale")->Enable(true);
+      FindWindow("SexMixed")->Enable(true);
+
+      break;
+
     case CP_DOUBLE :
       if (cp.cpSex != SEX_MALE && cp.cpSex != SEX_FEMALE)
         cp.cpSex = SEX_MALE;
