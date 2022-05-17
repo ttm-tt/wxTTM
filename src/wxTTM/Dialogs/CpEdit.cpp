@@ -172,6 +172,13 @@ void  CCpEdit::OnOK()
 {
   TransferDataFromWindow();
 
+  if (cp.cpType == CP_TEAM)
+  {
+    ListItem *itemPtr = m_cbSystem->GetCurrentItem();
+    if (itemPtr)
+      cp.syID = itemPtr->GetID();
+  }
+
   bool res = false;
 
   TTDbse::instance()->GetDefaultConnection()->StartTransaction();
