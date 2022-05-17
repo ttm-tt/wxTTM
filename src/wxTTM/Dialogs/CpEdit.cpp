@@ -49,7 +49,7 @@ bool  CCpEdit::Edit(va_list vaList)
     cp.cpType = CP_SINGLE;
     cp.cpSex  = SEX_MALE;
   }
-    
+
   m_cbSystem->AddListItem(new SyItem(SyListRec()));
   SyListStore  sy;
   sy.SelectAll();
@@ -63,7 +63,7 @@ bool  CCpEdit::Edit(va_list vaList)
     FindWindow("SexMale")->Enable(false);
     FindWindow("SexFemale")->Enable(false);
     FindWindow("SexMixed")->Enable(false);
-    
+
     FindWindow("TypeSingle")->Enable(false);
     FindWindow("TypeDouble")->Enable(false);
     FindWindow("TypeMixed")->Enable(false);
@@ -133,33 +133,33 @@ void CCpEdit::OnSelectType(wxCommandEvent &)
 }
 
 
-void CCpEdit::OnInitialUpdate() 
+void CCpEdit::OnInitialUpdate()
 {
-	CFormViewEx::OnInitialUpdate();	
-	
-	FindWindow("Name")->SetValidator(CCharArrayValidator(cp.cpName, sizeof(cp.cpName) / sizeof(wxChar)));
-	FindWindow("Description")->SetValidator(CCharArrayValidator(cp.cpDesc, sizeof(cp.cpDesc) / sizeof(wxChar)));
-	FindWindow("Category")->SetValidator(CCharArrayValidator(cp.cpCategory, sizeof(cp.cpCategory) / sizeof(wxChar)));
+  CFormViewEx::OnInitialUpdate();
+
+  FindWindow("Name")->SetValidator(CCharArrayValidator(cp.cpName, sizeof(cp.cpName) / sizeof(wxChar)));
+  FindWindow("Description")->SetValidator(CCharArrayValidator(cp.cpDesc, sizeof(cp.cpDesc) / sizeof(wxChar)));
+  FindWindow("Category")->SetValidator(CCharArrayValidator(cp.cpCategory, sizeof(cp.cpCategory) / sizeof(wxChar)));
 
   FindWindow("BestOf")->SetValidator(CShortValidator(&cp.cpBestOf));
-	
-  m_cbSystem = XRCCTRL(*this, "TeamSystem", CComboBoxEx);	  
+
+  m_cbSystem = XRCCTRL(*this, "TeamSystem", CComboBoxEx);
 
   FindWindow("TypeSingle")->SetValidator(CEnumValidator(&cp.cpType, CP_SINGLE));
-	FindWindow("TypeDouble")->SetValidator(CEnumValidator(&cp.cpType, CP_DOUBLE));
-	FindWindow("TypeMixed")->SetValidator(CEnumValidator(&cp.cpType, CP_MIXED));
-	FindWindow("TypeTeam")->SetValidator(CEnumValidator(&cp.cpType, CP_TEAM));
-	
-	FindWindow("SexMale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MALE));
-	FindWindow("SexFemale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_FEMALE));
-	FindWindow("SexMixed")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MIXED));
+  FindWindow("TypeDouble")->SetValidator(CEnumValidator(&cp.cpType, CP_DOUBLE));
+  FindWindow("TypeMixed")->SetValidator(CEnumValidator(&cp.cpType, CP_MIXED));
+  FindWindow("TypeTeam")->SetValidator(CEnumValidator(&cp.cpType, CP_TEAM));
+
+  FindWindow("SexMale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MALE));
+  FindWindow("SexFemale")->SetValidator(CEnumValidator(&cp.cpSex, SEX_FEMALE));
+  FindWindow("SexMixed")->SetValidator(CEnumValidator(&cp.cpSex, SEX_MIXED));
 
   FindWindow("Year")->SetValidator(CLongValidator(&cp.cpYear, true));
-	
-	if (CTT32App::instance()->GetType() == TT_SCI)
-	  XRCCTRL(*this, "OrAfter", wxStaticText)->SetLabel(_("or before"));
-	else
-	  XRCCTRL(*this, "OrAfter", wxStaticText)->SetLabel(_("or after"));
+
+  if (CTT32App::instance()->GetType() == TT_SCI)
+    XRCCTRL(*this, "OrAfter", wxStaticText)->SetLabel(_("or before"));
+  else
+    XRCCTRL(*this, "OrAfter", wxStaticText)->SetLabel(_("or after"));
 
   FindWindow("PtsToWin")->SetValidator(CShortValidator(&cp.cpPtsToWin));
   FindWindow("PtsToWinLast")->SetValidator(CShortValidator(&cp.cpPtsToWinLast));
