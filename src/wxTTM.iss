@@ -5,10 +5,10 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 22.01
+AppVerName=TTM 22.05
 AppPublisher=Christoph Theis
 AppMutex=TTM
-DefaultDirName={pf}\TTM
+DefaultDirName={autopf}\TTM
 DefaultGroupName=TTM
 OutputDir=Output
 OutputBaseFilename=setup
@@ -96,12 +96,12 @@ de.SelectLicenseFile=Lizenzdatei Auswählen
 
 
 [Types]
-Name: full; Description: {cm:ProgramandDatabase}; Check: isAdminLoggedOn And IsWin64()
+Name: full; Description: {cm:ProgramandDatabase}; Check: isAdminInstallMode And IsWin64()
 Name: client; Description: {cm:ProgramOnly}
 
 [Components]
 Name: Client; Description: Program files; Types: full client; Flags: fixed
-Name: Database; Description: Program and Database; Types: full; Check: isAdminLoggedOn
+Name: Database; Description: Program and Database; Types: full; Check: isAdminInstallMode
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}:
@@ -123,9 +123,9 @@ Source: src\Resources\ttm.xrc; DestDir: {app}; Flags: ignoreversion
 ;Source: "Output\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "Output\UserManual105de.pdf"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "Output\Manual.pdf"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: src\Reports\x86\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sharedfile regserver; Check: isAdminLoggedOn and not Is64BitInstallMode()
-Source: src\Reports\x64\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sharedfile regserver; Check: isAdminLoggedOn and Is64BitInstallMode()
-;Source: src\Reports\ReportMan.ocx.manifest; DestDir: {sys}; Check: isAdminLoggedOn
+Source: src\Reports\x86\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sharedfile regserver; Check: isAdminInstallMode and not Is64BitInstallMode()
+Source: src\Reports\x64\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sharedfile regserver; Check: isAdminInstallMode and Is64BitInstallMode()
+;Source: src\Reports\ReportMan.ocx.manifest; DestDir: {sys}; Check: isAdminInstallMode
 Source: src\Reports\Playerlist.rep; DestDir: {app}; Flags: ignoreversion
 ;Source: src\Reports\PlayerlistPerName.rep; DestDir: {app}; Flags: ignoreversion
 ;Source: src\Reports\PlayerlistPerNumber.rep; DestDir: {app}; Flags: ignoreversion
@@ -199,7 +199,7 @@ Filename: {tmp}\x64\SQLEXPR_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENS
 ; Berechtigungen setzen
 Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername}\SQLServerMSSQLUser${computername}$MSSQLSERVER:C"; Flags: runascurrentuser hidewizard skipifdoesntexist; StatusMsg: Set access rights; Components: database
 ; Geht leider nicht, weil es z.B. im deutschen "Benutzer" heisst.
-;Filename: "{sys}\cacls.exe"; Parameters: """{code:GetIniDir}\TT32.ini"" /E /G ""Users"":C"; Flags: hidewizard skipifdoesntexist; Components: client; Check: isAdminLoggedOn
+;Filename: "{sys}\cacls.exe"; Parameters: """{code:GetIniDir}\TT32.ini"" /E /G ""Users"":C"; Flags: hidewizard skipifdoesntexist; Components: client; Check: isAdminInstallMode
 
 
 [Code]
@@ -226,7 +226,7 @@ begin
   begin
     Result := ExpandConstant('{app}');
   end
-  else if ( isAdminLoggedOn OR FileExists(ExpandConstant( '{commonappdata}\TTM\TT32.ini' )) ) then
+  else if ( isAdminInstallMode OR FileExists(ExpandConstant( '{commonappdata}\TTM\TT32.ini' )) ) then
   begin
     CreateDir(ExpandConstant('{commonappdata}\TTM'));
     Result := ExpandConstant('{commonappdata}\TTM');
@@ -366,7 +366,7 @@ function NeedsLicense() : Boolean;
 begin
   Result := false;
 
-  if (IsComponentSelected('Database') or FileExists(GetIniDir('') + '\License.ini')) then
+  if (WizardIsComponentSelected('Database') or FileExists(GetIniDir('') + '\License.ini')) then
   begin
     {Ich weiss nicht, wie man bei GetDateTimeString('yyyymmdd', ...) verhindern kann, dass ein Seperator verwendet wird}
     currentDate := GetDateTimeString('yyyy', #0, #0) + GetDateTimeString('mm', #0, #0) + GetDateTimeString('dd', #0, #0);
