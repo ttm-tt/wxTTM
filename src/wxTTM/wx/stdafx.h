@@ -71,7 +71,9 @@
 #endif
 
 inline short _strtos(const wxString &str) {return (short) _ttoi(str.t_str());}
+inline int _strtoi(const wxString &str) {return _ttoi(str.t_str());}
 inline long _strtol(const wxString &str) {return _ttol(str.t_str());}
+inline float _strtof(const wxString &str) {return _ttof(str.t_str());}
 
 
 BEGIN_DECLARE_EVENT_TYPES()

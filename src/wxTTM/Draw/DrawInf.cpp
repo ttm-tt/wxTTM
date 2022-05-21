@@ -216,6 +216,9 @@ DrawItemTeam * DrawListTeam::GetFirst(int stg, int sec)
 
 int DrawListTeam::Count(int stage)
 {
+  if (stage == 0)
+    return Count();
+
   int  count = 0;
 
   for (DrawList::iterator it = begin(); it != end(); it++)
@@ -230,6 +233,9 @@ int DrawListTeam::Count(int stage)
 
 int  DrawListTeam::Count(int stage, int sec)
 {
+  if (stage == 0 && sec == 0)
+    return Count();
+
   int  count = 0;
 
   for (DrawList::iterator it = begin(); it != end(); it++)

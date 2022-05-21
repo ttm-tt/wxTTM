@@ -51,8 +51,8 @@
 #   include <string>
 
     // Mapping von ID auf Name von Gruppe / Nation
-    static std::map<long, std::string, std::less<long> > grList;
-    static std::map<long, std::string, std::less<long> > naList;
+    static std::map<long, wxString, std::less<long> > grList;
+    static std::map<long, wxString, std::less<long> > naList;
   
     static FILE *file;
 # endif

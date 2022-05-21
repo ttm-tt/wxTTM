@@ -9,7 +9,7 @@
 
 #include "CpListStore.h"
 #include "CpItem.h"
-#include  "GrItem.h"
+#include "GrItem.h"
 #include "DrawCP.h"
 #include "DrawLP.h"
 #include "DrawCSD.h"
@@ -334,6 +334,10 @@ void CDrawChampionship::OnSelChangeCP(wxCommandEvent &)
 
   // CSD: Quali kann leer sein
   if (what == 2)
+    cbFromStage->Append("");
+
+  // Dto Campionship
+  if (what == Championship)
     cbFromStage->Append("");
 
   std::list<wxString> stages = GrListStore().ListStages( ((CpItem *) cbCP->GetCurrentItem())->cp );

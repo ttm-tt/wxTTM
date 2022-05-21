@@ -41,8 +41,8 @@
 #include <string>
 
 // Mapping von ID auf Name von Gruppe / Nation
-static std::map<long, std::string, std::less<long> > grList;
-static std::map<long, std::string, std::less<long> > naList;
+static std::map<long, wxString, std::less<long> > grList;
+static std::map<long, wxString, std::less<long> > naList;
 
 #ifdef DEBUG  
     static FILE *file;
@@ -98,16 +98,19 @@ bool DrawLP::ReadGroups()
   # endif
 
   GrStore  gr(connPtr);
-  GrStore *pgr = new GrStore[gr.CountGroups(cp, fromStage)];
+  GrStore *pgr = new GrStore[fromStage.IsEmpty() ? 0 : gr.CountGroups(cp, fromStage)];
   int idx = 0;
 
-  gr.SelectAll(cp, fromStage);
-
-  while (gr.Next())
+  if (!fromStage.IsEmpty())
   {
-    pgr[idx++] = gr;
+    gr.SelectAll(cp, fromStage);
+
+    while (gr.Next())
+    {
+      pgr[idx++] = gr;
     
-    grList.insert(std::map<long, wxString, std::less<long> >::value_type(gr.grID, wxString(gr.grName)));  
+      grList.insert(std::map<long, wxString, std::less<long> >::value_type(gr.grID, wxString(gr.grName)));  
+    }
   }
   
   grList.insert(std::map<long, std::string, std::less<long> >::value_type(0, std::string("BYE")));  
@@ -331,6 +334,9 @@ bool DrawLP::ReadRanking()
   if (rkChoice == None)
     return true;
 
+  // Ein Wettbewerb ohne DE wird wie ein Wettbewerb nur mit DE behandelt
+  bool quAsDE = (RkListStore(connPtr).CountDirectEntries(cp, NaRec()) == 0);
+
   // Map mit dem Abschneiden der vorigen Runde
   std::map<long, int> fromGroupMap;
   std::map<long, int> fromPosMap;
@@ -377,16 +383,20 @@ bool DrawLP::ReadRanking()
   {
     // Int'l ranking used, players not finishing first will be replaced with winners
     RkEntryStore rk(connPtr);
+
     rk.SelectByCp(cp);
     while (rk.Next())
     {
-      // Neither int'l rank nor ranking points
-      if (rk.rk.rkIntlRank == 0 && rk.rankPts == 0)
+      // Either DE or we treat QU as DE
+      if (!quAsDE && !rk.rk.rkDirectEntry)
         continue;
 
       DrawItemTeam *itemTMP = new DrawItemTeam(rk);
 
       listTMP.AddItem(itemTMP);
+
+      if (!listNA.GetTeam(rk.rk.tmID))
+        listNA.AddTeam(rk);
     }
   }
   else if (rkChoice == Groups)
@@ -412,17 +422,10 @@ bool DrawLP::ReadRanking()
           continue;
 
         if (!listNA.GetTeam(rk.rk.tmID))
-        {
-          DrawItemTeam *itTM = listNA.AddTeam(rk);
-          itTM->lastPos = 0;
-          itTM->rkDirectEntry = 1;
-        }
+          listNA.AddTeam(rk);
 
-        DrawItemTeam *itemTM = new DrawItemTeam(rk);
-        itemTM->rkDirectEntry = 1; 
-        itemTM->lastGroup = 0;
-        itemTM->lastPos = 1;
-        listTMP.AddItem(itemTM);        
+        DrawItemTeam *itemTMP = new DrawItemTeam(rk);
+        listTMP.AddItem(itemTMP);        
       }
 
       rank = listTMP.Count();
@@ -475,20 +478,14 @@ bool DrawLP::ReadRanking()
       if (ta->rkDirectEntry != tb->rkDirectEntry)
         return ta->rkDirectEntry ? true : false;
 
-      // If both are DE take rkPts
-      if (ta->rkDirectEntry)
-         return ta->rankPts > tb->rankPts;
-
-      // Dann Int'l (faked) ranking
-      if (ta->rkIntlRank != tb->rkIntlRank)
-        return ta->rkIntlRank < tb->rkIntlRank;
-
-      // Bei gleichem Int'l Ranking zaehlen die Punkte
-      if (ta->rkIntlRank == tb->rkIntlRank)
-        return ta->rankPts > tb->rankPts;
-
       // Ranking 0 immer nach hinten sortieren
-      return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+      if (ta->rkIntlRank)
+        return tb->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : true;
+
+      if (tb->rkIntlRank)
+        return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+        
+      return ta->rankPts > tb->rankPts;
     }
   );
 
@@ -549,13 +546,14 @@ bool DrawLP::ReadRanking()
       const DrawItemTeam *ta = (const DrawItemTeam *)a;
       const DrawItemTeam *tb = (const DrawItemTeam *)b;
 
-      // Bei gleichem Int'l Ranking zaehlen die Punkte
-      // Kann hier aber nicht mehr passieren
-      if (ta->rkIntlRank == tb->rkIntlRank)
-        return ta->rankPts > tb->rankPts;
-
       // Ranking 0 immer nach hinten sortieren
-      return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+      if (ta->rkIntlRank)
+        return tb->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : true;
+
+      if (tb->rkIntlRank)
+        return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+        
+      return ta->rankPts > tb->rankPts;
     }
   );
 
@@ -794,7 +792,9 @@ void __WINAPI writeLogHandler(lprec *lp, void *userData, char *buf)
     wxString tmp(buf);
     tmp.Replace("\n", "\r\n", true);
 
-    ((wxZipOutputStream *) userData)->WriteAll(tmp, tmp.Length());
+    const char * str = tmp.ToStdString().c_str();
+
+    ((wxZipOutputStream *) userData)->WriteAll(str, tmp.Length());
   }
 }
 
@@ -1200,7 +1200,7 @@ bool DrawLP::DrawSection(int stg, int sec)
             
           // total is the number of real entries. They are ranked 1..n, so total is also
           // the highest rank position
-          if (itemTM->rkIntlRank <= total - listBY.Count())
+          if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - listBY.Count())
             continue;
 
           colvec[j] = colMapping[itemTM];
@@ -1793,6 +1793,11 @@ bool DrawLP::DrawThem(GrStore &gr)
     itemBye->pos[1] = 1;          // allgemeines init hier
   }
 
+  // And make sure everyone in the list will be drawn
+  for  (auto itNA : listNA)
+    for (auto itTM : ((DrawItemNation *) itNA)->teams)
+      ((DrawItemTeam *) itTM)->pos[1] = 1;
+
   lastStage = ld2(gr.grSize);
 
   for (int stg = 1; stg <= lastStage; stg++)
@@ -1905,8 +1910,6 @@ bool DrawLP::DrawImpl(long seed)
     return false;
   }
 
-  totalNA = listNA.Count(1, 1);
-
   // Int'l Ranking einlesen
   if (!ReadRanking())
   {
@@ -1915,6 +1918,8 @@ bool DrawLP::DrawImpl(long seed)
 #endif      
     return false;       // ... nicht erfolgreich
   }
+
+  totalNA = listNA.Count(0, 0);
 
   // Spieler zaehlen und Groesse der Gruppe pruefen
   if (gr.grSize < totalNA)

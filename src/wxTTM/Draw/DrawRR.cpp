@@ -29,8 +29,8 @@
 #include  <string>
 
 // Mapping von ID auf Name von Gruppe / Nation
-static std::map<long, std::string, std::less<long> > grList;
-static std::map<long, std::string, std::less<long> > naList;
+static std::map<long, wxString, std::less<long> > grList;
+static std::map<long, wxString, std::less<long> > naList;
 
 // Map, in welcher Gruppe der Sieger einer Vorrundengruppe ist
 static std::map<long, int> quMap;
@@ -375,7 +375,13 @@ bool DrawRR::ReadRanking()
         return ta->rankPts > tb->rankPts;
 
       // Ranking 0 immer nach hinten sortieren
-      return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+      if (ta->rkIntlRank)
+        return tb->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : true;
+
+      if (tb->rkIntlRank)
+        return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+        
+      return ta->rankPts > tb->rankPts;
     }
   );
 
@@ -434,12 +440,17 @@ bool DrawRR::ReadRanking()
       const DrawItemTeam *tb = (const DrawItemTeam *)b;
 
       // Bei gleichem Int'l Ranking zaehlen die Punkte
-      // Kann hier aber nicht mehr passieren
       if (ta->rkIntlRank == tb->rkIntlRank)
         return ta->rankPts > tb->rankPts;
 
       // Ranking 0 immer nach hinten sortieren
-      return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+      if (ta->rkIntlRank)
+        return tb->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : true;
+
+      if (tb->rkIntlRank)
+        return ta->rkIntlRank ? ta->rkIntlRank < tb->rkIntlRank : false;
+        
+      return ta->rankPts > tb->rankPts;
     }
   );
 
