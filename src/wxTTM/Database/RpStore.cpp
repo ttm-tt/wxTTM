@@ -327,7 +327,7 @@ bool RpStore::Import(wxTextBuffer &is)
 
       rp.plID = pl.plID;
       rp.rpYear = _strtol(strAge);
-      rp.rpRankPts = atof(strPts);
+      rp.rpRankPts = _strtof(strPts);
       commit &= rp.Insert();
     }
 

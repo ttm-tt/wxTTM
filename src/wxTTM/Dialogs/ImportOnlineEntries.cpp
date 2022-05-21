@@ -270,7 +270,7 @@ unsigned CImportOnlineEntries::ConnectThread(void *args)
 
 void CImportOnlineEntries::ConnectThreadImpl(const wxString &url, const wxString &user, const wxString &pwd)
 {
-  if (!xmlRpcClient.connect(url.ToStdString().c_str(), user.IsEmpty() ? NULL : user.ToStdString().c_str(), pwd.IsEmpty() ? NULL : pwd.ToStdString().c_str()))
+  if (!xmlRpcClient.connect(url, user.IsEmpty() ? NULL : (const char *) user, pwd.IsEmpty() ? NULL : (const char *) pwd))
   {
     return;
   }
@@ -592,7 +592,7 @@ bool CImportOnlineEntries::ImportThreadRead()
         break;
 
       case XmlRpcValue::Type::TypeString :
-        pl.born = _strtoi(wxString::FromUTF8((const char *)dob).Left(4));
+        pl.born = atoi(wxString::FromUTF8((const char *)dob).Left(4));
         break;
 
       case XmlRpcValue::Type::TypeInt :
@@ -612,7 +612,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     {
       wxString key = pl.externID;
       if (existingPlMap.find(key) == existingPlMap.end())
-        key = wxString::Format("%s, %s (%s)", pl.lastName.wx_str(), pl.firstName.wx_str(), pl.naName.wx_str());
+        key = wxString::Format("%s, %s (%s)", (const char *) pl.lastName, (const char *) pl.firstName, (const char *) pl.naName);
       if (existingPlMap.find(key) != existingPlMap.end())
         pl.startNr = existingPlMap[key].plNr;
     }
