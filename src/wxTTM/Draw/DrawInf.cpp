@@ -233,8 +233,8 @@ int DrawListTeam::Count(int stage)
 
 int  DrawListTeam::Count(int stage, int sec)
 {
-  if (stage == 0 && sec == 0)
-    return Count();
+  if (sec == 0)
+    return Count(stage);
 
   int  count = 0;
 
