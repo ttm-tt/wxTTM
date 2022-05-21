@@ -1979,29 +1979,29 @@ void CTT32App::ReadLicense(const wxString &name)
   // Licensee und expire
   if (wxFile::Exists(name))
   {
-    char tmpLicensee[256];
-    char tmpExpires[256];
-    char buffer[512];
-    char code[64];
+    wxChar tmpLicensee[256];
+    wxChar tmpExpires[256];
+    wxChar buffer[512];
+    wxChar code[64];
 
-    GetPrivateProfileStringA("License", "licensee", "", tmpLicensee, sizeof(tmpLicensee), name);
-    GetPrivateProfileStringA("License", "expires", "", tmpExpires, sizeof(tmpExpires), name);
-    GetPrivateProfileStringA("License", "code", "", code, sizeof(code), name);
+    GetPrivateProfileString(wxT("License"), wxT("licensee"), wxEmptyString, tmpLicensee, sizeof(tmpLicensee) / sizeof(tmpLicensee[0]), name);
+    GetPrivateProfileString(wxT("License"), wxT("expires"), wxEmptyString, tmpExpires, sizeof(tmpExpires) / sizeof(tmpExpires[0]), name);
+    GetPrivateProfileString(wxT("License"), wxT("code"), wxEmptyString, code, sizeof(code) / sizeof(code[0]), name);
 
-    strcpy(buffer, tmpLicensee);
-    strcat(buffer, tmpExpires);
+    wxStrcpy(buffer, tmpLicensee);
+    wxStrcat(buffer, tmpExpires);
 
-    if (crypt(buffer) == atol(code))
+    if (crypt(wxString(buffer).ToStdString().c_str()) == _strtol(code))
     {
       licensee = tmpLicensee;
       expire  = tmpExpires;
 
-      defaultType = GetPrivateProfileIntA("Defaults", "Type", TT_REGULAR, name);
-      defaultTable = GetPrivateProfileIntA("Defaults", "Table", -1, name);
+      defaultType = GetPrivateProfileInt(wxT("Defaults"), wxT("Type"), TT_REGULAR, name.wx_str());
+      defaultTable = GetPrivateProfileInt(wxT("Defaults"), wxT("Table"), -1, name.wx_str());
       if (defaultTable == -1)
-        defaultTable = GetPrivateProfileIntA("Defaults", "TableMode", -1, name);
+        defaultTable = GetPrivateProfileInt(wxT("Defaults"), wxT("TableMode"), -1, name.wx_str());
       if (defaultTable == -1)
-        defaultTable = GetPrivateProfileIntA("Defaults", "GroupMode", -1, name);
+        defaultTable = GetPrivateProfileInt(wxT("Defaults"), wxT("GroupMode"), -1, name.wx_str());
       if (defaultTable == -1)
         defaultTable = TT_ITTF;
     }
