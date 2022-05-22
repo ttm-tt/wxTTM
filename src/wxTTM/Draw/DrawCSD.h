@@ -54,15 +54,15 @@ class  DrawCSD
     Connection *connPtr;
     GrStore *pgr;
     
-    int de;   // Number direct entries
-    int qu;   // Number qualifiers
-    int dde;  // Diff direct entrices upper - lower half
-    int dtn;  // Diff all entries upper - lower half
-    int deSec;  // Number direct entries in stage
-    int quSec;  // Number qualifiers in stage
+    int de = 0;     // Number direct entries
+    int qu= 0;      // Number qualifiers
+    int dde = 0;    // Diff direct entrices upper - lower half
+    int dtn = 0;    // Diff all entries upper - lower half
+    int deSec = 0;  // Number direct entries in stage
+    int quSec = 0;  // Number qualifiers in stage
     
-    int sizeDGroup;  // Entries in competition proper
-    int nofQGroups;  // Number of Q-Groups    
+    int sizeDGroup = 0;  // Entries in competition proper
+    int nofQGroups = 0;  // Number of Q-Groups    
 };
 
 

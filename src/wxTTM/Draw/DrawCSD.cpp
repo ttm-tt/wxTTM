@@ -196,6 +196,7 @@ bool  DrawCSD::Draw(const CpRec &cp, wxString deStage, wxString quStage, int see
   {
     DrawItemTeam *itemQG = new DrawItemTeam(TmListRec());
     itemQG->rkDirectEntry = 1;
+    itemQG->pos[1] = 1;
     listQG.AddItem(itemQG);
   }
 
@@ -209,6 +210,7 @@ bool  DrawCSD::Draw(const CpRec &cp, wxString deStage, wxString quStage, int see
     {
       DrawItemTeam *itemQG = new DrawItemTeam(TmListRec());
       itemQG->rkDirectEntry = 1;
+      itemQG->pos[1] = 1;
       listQG.AddItem(itemQG);
     }
   }
@@ -218,6 +220,7 @@ bool  DrawCSD::Draw(const CpRec &cp, wxString deStage, wxString quStage, int see
   {
     DrawItemTeam *itemBY = new DrawItemTeam(TmListRec());
     itemBY->rkDirectEntry = 1;
+    itemBY->pos[1] = 1;
     listBY.AddItem(itemBY);
   }
   
@@ -298,7 +301,6 @@ bool  DrawCSD::Draw(const CpRec &cp, wxString deStage, wxString quStage, int see
         itemBY->pos[lastStage + 2] = -1;
     }
   
-      
     if ( !DrawThem(lastStage + 2, lastQStage + 1, lastQStage + 1) )
       return false;
   }
@@ -462,13 +464,6 @@ bool  DrawCSD::DrawSection(int stg, int sec, int lastStage)
   // weil hier direct entries und qualifiers in der Stufe bekannt sind
   int qgCount = listQG.Count(stg, sec);
   int byCount = listBY.Count(stg, sec);
-  
-  // Besonderheit erste Stufe: pos[1] ist u.U. 0
-  if (stg == 1)
-  {
-    qgCount += listQG.Count(1, 0);
-    byCount += listBY.Count(1, 0);
-  }
   
   int count = deSec + qgCount + byCount;
   int deCount = count;
