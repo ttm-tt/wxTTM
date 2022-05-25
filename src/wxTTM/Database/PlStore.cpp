@@ -705,7 +705,16 @@ bool  PlStore::InsertOrUpdate()
 {
   PlStore pl(GetConnectionPtr());
   
-  if (plExtID && *plExtID)
+  // First search for plNr
+  if (plNr)
+  {
+      pl.SelectByNr(plNr);
+      pl.Next();
+      pl.Close();
+  }
+
+  // I none found but we have plExtID (which may not be unique, son don't look for it first)
+  if (!pl.plID && *plExtID)
   {
     pl.SelectByExtId(plExtID);
     
@@ -713,13 +722,6 @@ bool  PlStore::InsertOrUpdate()
     pl.Close();
   }
   
-  if (!pl.plID && plNr)
-  {
-    pl.SelectByNr(plNr);
-    pl.Next();
-    pl.Close();
-  }
-    
   if (pl.plID)
   {
     plID = pl.plID;
@@ -732,6 +734,10 @@ bool  PlStore::InsertOrUpdate()
     // Startnummer uebernehmen, wenn sie nicht explizit gesetzt war
     if (!plNr && pl.plNr)
       plNr = pl.plNr;
+
+    // Dto. plExtID, we don't have it 
+    if (!*plExtID && *pl.plExtID)
+        wxStrcpy(plExtID, pl.plExtID);
     
     return Update();
   }
