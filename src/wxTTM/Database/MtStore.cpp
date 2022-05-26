@@ -3014,6 +3014,7 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
         
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
+    //  A line spans several records so we have to clear it each time we add it to the output
     wxString line;
     long grID = (*it);
 
@@ -3100,7 +3101,10 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
         
         set = 0;
         
-        os.AddLine(line);
+        if (!line.IsEmpty())
+          os.AddLine(line);
+        // Explicitely clear the line
+        line.Clear();
         
         line << cpName << ";" << grName << ";" 
             << mtRound << ";" << mtMatch << ";" << mtMS << ";" 
@@ -3128,6 +3132,8 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
       line << "X;";          
 
     os.AddLine(line);
+    // Explicitely clear the line
+    line.Clear();
     
     delete resPtr;
     delete stmtPtr;
