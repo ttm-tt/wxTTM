@@ -131,7 +131,7 @@ bool  MtSetStore::CreateTable()
     "mtResX      "+SMALLINT+"     NOT NULL,  "
     "CONSTRAINT mtSetKey PRIMARY KEY (mtID, mtMS, mtSet) "
 
-	  ")";
+    ")";
 
   try
   {
@@ -319,7 +319,7 @@ bool  MtMatchStore::CreateTable()
     "mtInjuredX      "+SMALLINT+"     NOT NULL DEFAULT 0, "
     // "mtNotPlayed "+SMALLINT+"     DEFAULT 0, "
     "CONSTRAINT mtMatchKey PRIMARY KEY (mtID, mtMS) "
-	  ")";
+    ")";
 
   try
   {
@@ -615,7 +615,7 @@ bool  MtStore::CreateTable()
     "mtResX          "+SMALLINT+"     NOT NULL DEFAULT 0, "
     "mtTimestamp     "+TIMESTAMP+"    DEFAULT GETUTCDATE()"
     "CONSTRAINT mtIdKey PRIMARY KEY (mtID)   "
-	  ")";
+    ")";
 
   try
   {
@@ -1091,7 +1091,7 @@ bool  MtStore::UpdateStoredProcedure(long version)
         " DECLARE mtCheckedCursor CURSOR LOCAL FOR \n"
         "   (SELECT inserted.mtNr \n"
         "      FROM inserted LEFT OUTER JOIN deleted ON inserted.mtID = deleted.mtID \n"
-	      "     WHERE inserted.mtChecked <> deleted.mtChecked) \n"
+        "     WHERE inserted.mtChecked <> deleted.mtChecked) \n"
         " OPEN mtCheckedCursor \n"
         " FETCH NEXT FROM mtCheckedCursor INTO @mtNr \n"
         " WHILE (@@FETCH_STATUS = 0) \n"
@@ -3691,14 +3691,14 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
 {
   /*
     Format Individual
-    ID	date_time	event	rnd	match	player_id_a	assoc_a	player_id_b	assoc_b	player_id_x	assoc_x	player_id_y	assoc_y	
-    g1_a	g1_x	g2_a	g2_x	g3_a	g3_x	g4_a	g4_x	g5_a	g5_x	g6_a	g6_x	g7_a	g7_x	
-    res_a	res_x	wo_a	wo_x	yr	type
+    ID  date_time  event  rnd  match  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
+    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x  
+    res_a  res_x  wo_a  wo_x  yr  type
  
     Format Team
-    ID	date_time	event	group_	stage	rnd	match_no	match_	player_id_a	assoc_a	player_id_b	assoc_b	player_id_x	assoc_x	player_id_y	assoc_y	
-    g1_a	g1_x	g2_a	g2_x	g3_a	g3_x	g4_a	g4_x	g5_a	g5_x	g6_a	g6_x	g7_a	g7_x	
-    res_a	res_x	wo_a	wo_x	res_team_a	res_team_x	yr	type
+    ID  date_time  event  group_  stage  rnd  match_no  match_  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
+    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x  
+    res_a  res_x  wo_a  wo_x  res_team_a  res_team_x  yr  type
   */
 
   Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
