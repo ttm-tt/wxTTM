@@ -334,8 +334,8 @@ bool DrawLP::ReadRanking()
   if (rkChoice == None)
     return true;
 
-  // Ein Wettbewerb ohne DE wird wie ein Wettbewerb nur mit DE behandelt
-  bool quAsDE = (RkListStore(connPtr).CountDirectEntries(cp, NaRec()) == 0);
+  // Ein Wettbewerb ohne DE wird wie ein Wettbewerb nur mit DE behandelt wenn wir keine Q-Groups haben
+  bool quAsDE = fromStage.IsEmpty() && (RkListStore(connPtr).CountDirectEntries(cp, NaRec()) == 0);
 
   // Map mit dem Abschneiden der vorigen Runde
   std::map<long, int> fromGroupMap;
