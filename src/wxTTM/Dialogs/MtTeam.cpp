@@ -317,9 +317,9 @@ void CMtTeam::OnWalkOver(int ax)
   mtList->Enable(m_woa == 0 && m_wox == 0);
   
   if (m_woa)
-    mt.mtResX = sy.syComplete ? sy.syMatches : (sy.syMatches + 1) / 2;
+    mt.mtResX = (sy.syComplete && (gr.grModus == MOD_RR)) ? sy.syMatches : (sy.syMatches + 1) / 2;
   else if (m_wox)
-    mt.mtResA = sy.syComplete ? sy.syMatches : (sy.syMatches + 1) / 2;
+    mt.mtResA = (sy.syComplete && (gr.grModus == MOD_RR)) ? sy.syMatches : (sy.syMatches + 1) / 2;
   else
     mt.mtResA = mt.mtResX = 0;
     
@@ -409,7 +409,7 @@ void  CMtTeam::OnEdit()
     
   long  idx = mtList->GetCurrentIndex();
   
-  if ( sy.syComplete == 0 && mt.QryWinnerAX() && 
+  if ( (sy.syComplete == 0 || (gr.grModus != MOD_RR)) && mt.QryWinnerAX() &&
        (mt.mtResA + mt.mtResX) <= idx )
   {
     infoSystem.Information(_("Team match is already finished."));
@@ -495,7 +495,7 @@ void CMtTeam::OnUpdate(CRequest *reqPtr)
             MtItem *itemPtr = (MtItem *) mtList->GetListItem(mtMatch.mtMS - 1);
             itemPtr->SetResult(mtMatch.mtResA, mtMatch.mtResX);
 
-            if ( !sy.syComplete && (2 * resA > mt.mtMatches || 2 * resX > mt.mtMatches) )
+            if ( (!sy.syComplete || (gr.grModus != MOD_RR)) && (2 * resA > mt.mtMatches || 2 * resX > mt.mtMatches))
               itemPtr->SetForeground(*wxRED);
             else
               itemPtr->SetForeground(wxNullColour);
