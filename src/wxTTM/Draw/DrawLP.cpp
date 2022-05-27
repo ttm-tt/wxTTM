@@ -296,6 +296,28 @@ bool DrawLP::ReadMatches()
 }
 
 
+// Direct entries
+bool DrawLP::ReadDirectEntries()
+{
+  // Int'l ranking used, players not finishing first will be replaced with winners
+  RkEntryStore rk(connPtr);
+
+  rk.SelectByCp(cp);
+  while (rk.Next())
+  {
+    // Only direct entries
+    if (!rk.rk.rkDirectEntry)
+      continue;
+
+    DrawItemTeam *itemTM = listNA.AddTeam(rk);
+    itemTM->pos[1] = 1;
+    // And treat them as group winner
+    itemTM->lastPos = 1;
+  }
+
+  return true;
+}
+
 bool DrawLP::ReadRegions()
 {
   // Initialize mapping fuer listRG
@@ -333,9 +355,6 @@ bool DrawLP::ReadRanking()
   // Do we use a ranking at all?
   if (rkChoice == None)
     return true;
-
-  // Ein Wettbewerb ohne DE wird wie ein Wettbewerb nur mit DE behandelt wenn wir keine Q-Groups haben
-  bool quAsDE = fromStage.IsEmpty() && (RkListStore(connPtr).CountDirectEntries(cp, NaRec()) == 0);
 
   // Map mit dem Abschneiden der vorigen Runde
   std::map<long, int> fromGroupMap;
@@ -387,16 +406,14 @@ bool DrawLP::ReadRanking()
     rk.SelectByCp(cp);
     while (rk.Next())
     {
-      // Either DE or we treat QU as DE
-      if (!quAsDE && !rk.rk.rkDirectEntry)
-        continue;
-
+      // If we use WR then we don't care if the ranked player was a DE or QU:
+      // If we don't have DE and do not use Groups, then take WR.
+      // Or we have DE and the top seeds are DE and we don't care about QU
       DrawItemTeam *itemTMP = new DrawItemTeam(rk);
 
-      listTMP.AddItem(itemTMP);
-
-      if (!listNA.GetTeam(rk.rk.tmID))
-        listNA.AddTeam(rk);
+      // Only those we have
+      if (listNA.GetTeam(rk))
+        listTMP.AddItem(itemTMP);
     }
   }
   else if (rkChoice == Groups)
@@ -413,17 +430,6 @@ bool DrawLP::ReadRanking()
       rk.SelectByCp(cp);
       while (rk.Next())
       {
-        // Only DE
-        if (!rk.rk.rkDirectEntry)
-          continue;
-
-        // Test if entry is in list (should not be)
-        if (fromGroupMap.find(rk.rk.tmID) != fromGroupMap.end())
-          continue;
-
-        if (!listNA.GetTeam(rk.rk.tmID))
-          listNA.AddTeam(rk);
-
         DrawItemTeam *itemTMP = new DrawItemTeam(rk);
         listTMP.AddItem(itemTMP);        
       }
@@ -607,18 +613,6 @@ bool DrawLP::ReadSeeding(GrStore &gr)
     }
             
     DrawItemTeam  *itemTM = listNA.GetTeam(st.st.tmID);
-    
-    if (itemTM == 0)
-    {
-      // Gyula special: Gesetzte Mannschaften muessen nicht
-      // aus der Quali kommen. Sie werden dann wie Gruppenerste
-      // (und direct entries) behandelt.
-      itemTM = listNA.AddTeam(st);
-      itemTM->lastPos = 1;
-      itemTM->rkDirectEntry = 1;
-      
-      ++totalDE;
-    }
     
     if (itemTM)
     {
@@ -1885,6 +1879,16 @@ bool DrawLP::DrawImpl(long seed)
     fclose(file);
 #endif      
     return false;       // ... nicht erfolgreich
+  }
+
+  // And direct entries
+  if (!koCons && !ReadDirectEntries())
+  {
+#ifdef DEBUG
+    fclose(file);
+#endif      
+
+    return false;
   }
 
   if (!ReadRegions())

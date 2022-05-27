@@ -58,6 +58,7 @@ class DrawLP
   private:
     bool  ReadGroups();                // Einlesen der Gruppen der ersten Stufe 
     bool  ReadMatches();               // Alternativ einlesen der Verlierer der ersten Stufe KO
+    bool  ReadDirectEntries();         // Einlesen direct entries
     bool  ReadRegions();
     bool  ReadRanking();               // Einlesen des Ranking
     bool  ReadSeeding(GrStore &);      // Einlesen der Setzung
