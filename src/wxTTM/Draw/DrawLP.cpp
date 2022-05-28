@@ -409,6 +409,11 @@ bool DrawLP::ReadRanking()
       // If we use WR then we don't care if the ranked player was a DE or QU:
       // If we don't have DE and do not use Groups, then take WR.
       // Or we have DE and the top seeds are DE and we don't care about QU
+      //
+      // But: we ignore entries without rank
+      if (rk.rk.rkIntlRank == 0)
+        continue;
+
       DrawItemTeam *itemTMP = new DrawItemTeam(rk);
 
       // Only those we have
@@ -1139,7 +1144,7 @@ bool DrawLP::DrawSection(int stg, int sec)
     int count = 0;
     int byes = 0;
     int de = 0;
-    int total = listNA.Count(1, 1);
+    int total = listNA.Count(stg, sec);
 
     for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
     {
@@ -1164,7 +1169,13 @@ bool DrawLP::DrawSection(int stg, int sec)
         // All DE must go into the list, they'll get the least ranked 2nd if no byes are left
         // To find the highest ranked QU we look at all QU,not only those who won their group.
         // Which means even 2nd could get a bye in first round
-        if (rkChoice != None && !itemTM->IsBye() && !itemTM->rkDirectEntry && itemTM->rkIntlRank > listBY.Count())
+        //
+        //  Don't care
+        if (rkChoice == None)
+          continue;
+
+        // Not a bye, but no or too low intl rank
+        if (!itemTM->IsBye() && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count()))
           continue;
 
         colvec[j] = colMapping[itemTM];
