@@ -69,7 +69,7 @@ class  PlStore : public StoreObj, public PlRec
 
     bool  Insert();
     bool  Update();
-    bool  Remove(long id = 0);
+    bool  Remove(long id = 0, bool force = false);
 
     // Check auf cpName, ob WB existiert
     bool  InsertOrUpdate();

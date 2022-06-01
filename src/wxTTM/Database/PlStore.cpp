@@ -639,7 +639,7 @@ bool  PlStore::Update()
 }
 
 
-bool  PlStore::Remove(long id)
+bool  PlStore::Remove(long id, bool force)
 {
   // ID-Check
   if (!id)
@@ -658,7 +658,7 @@ bool  PlStore::Remove(long id)
     pl.Close();
   }
 
-  if (pl.plDeleted)
+  if (pl.plDeleted || force)
     return PsStore(GetConnectionPtr()).Remove(pl.psID);
 
   // Als erstes aus allen CP austragen
