@@ -107,26 +107,28 @@ bool  CNmEditXTS::Edit(va_list vaList)
   if (syDoubles)
     nmList->SetItemHeight(1.5);
 
-  const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
-  wxChar str[6];
-    
-  for (int nmDouble = 1; nmDouble <= syDoubles; nmDouble++)
-  {
-    wxSprintf(str, "D%c", ax < 0 ? 'A' : 'X');
+	const wxChar *xts[][4] = 
+	{
+		{wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1")},
+		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1")}
+	};
 
-    NmItem *itemPtr = new NmItem(str, false);
-    itemPtr->nm.team.cpType = CP_DOUBLE;
-    itemPtr->nm.nmNr = nmDouble;
-    itemPtr->nm.mtID = mt.mtID;
-    itemPtr->nm.tmID = tm.tmID;
-    itemPtr->SetType(IDC_DELETE);
+  wxString str;
     
-    nmList->AddListItem(itemPtr);
-  }
+  str = ax ? "X-B1\nA-G1" : "A-B1\nA-G1";
+
+  NmItem *itemPtr = new NmItem(str, false);
+  itemPtr->nm.team.cpType = CP_DOUBLE;
+  itemPtr->nm.nmNr = 1;
+  itemPtr->nm.mtID = mt.mtID;
+  itemPtr->nm.tmID = tm.tmID;
+  itemPtr->SetType(IDC_DELETE);
+    
+  nmList->AddListItem(itemPtr);
 
   for (int nmSingle = 1; nmSingle <= sySingles; nmSingle++)
   {
-    wxSprintf(str, "%c%d", ax < 0 ? 'A' : 'X', nmSingle);
+    str = xts[ax ? 1 : 0][nmSingle - 1];
 
     NmItem *itemPtr = new NmItem(str, false);
     itemPtr->nm.team.cpType = CP_SINGLE;
@@ -142,10 +144,6 @@ bool  CNmEditXTS::Edit(va_list vaList)
   nm.SelectByMtTm(mt, tm);
   while (nm.Next())
   {
-    if (nm.team.cpType == CP_SINGLE && nm.nmNr > sySingles ||
-        nm.team.cpType == CP_DOUBLE && nm.nmNr > syDoubles)
-      continue;
-      
     long idx = (nm.team.cpType == CP_DOUBLE ? nm.nmNr : syDoubles + nm.nmNr);
     NmItem *itemPtr = (NmItem *) nmList->GetListItem(idx-1);
     wxASSERT(itemPtr);
