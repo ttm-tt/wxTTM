@@ -94,6 +94,7 @@ class  SyStore : public StoreObj, public SyRec
     static  bool  AddOlympicTeamSystem();
     static  bool  AddOlympicTeamSystem2Players();
     static  bool  AddECTeamSystem();
+    static  bool  AddMixedTeamSystem();
 
   public:
     SyStore(Connection * = 0);  // Defaultkonstruktor
