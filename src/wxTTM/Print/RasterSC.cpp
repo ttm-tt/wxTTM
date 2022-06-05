@@ -823,10 +823,12 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
 
-  if ( wxStrcmp(sy.syName, wxT("OTS")) == 0 )
+  if (wxStrcmp(sy.syName, wxT("OTS")) == 0)
     sySingles = 3;
-	else if ( wxStrcmp(sy.syName, wxT("ETS")) == 0 )
+	else if (wxStrcmp(sy.syName, wxT("ETS")) == 0)
 	  sySingles = 4;
+	else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
+		sySingles = 2;
   
   short textFont =  sy.syMatches + sySingles + syDoubles > 12 ?
                     printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL) :
@@ -841,7 +843,16 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	int cW = printer->cW;
 
 	double width = 1. * printer->width / (2 * (mt.mt.mtBestOf +1));
-	const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
+	const wxChar *alpha[][3] = 
+	{
+		{wxT("A"), wxT("B"), wxT("C")},
+		{wxT("X"), wxT("Y"), wxT("Z")}
+	};
+	const wxChar *xts[][4] = 
+	{
+		{wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1")},
+		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1")}
+	};
 
 	// Insgesamt gibt es ??? Gruppen
 	CRect  regGroup;
@@ -1048,11 +1059,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   // Jetzt den Rahmen drucken
 	// If the first match is a double we print doubles first
 	bool wantsDoublesFirst = sy.syList[0].syType == CP_DOUBLE;
-	for (int singles = 0; singles < sySingles; singles++)
+	for (int singles = 0; singles < sySingles; ++singles)
 	{
-		const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
-		wxChar str[4];
-    
+	  wxString str;
+
 		CRect reg = regGroup;
 		reg.top = regGroup.bottom + ((wantsDoublesFirst ? syDoubles : 0) * 1.7 * heightBot) + (singles * heightBot);
 		reg.bottom = reg.top + heightBot;
@@ -1074,24 +1084,28 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		// Die horizontale Trennlinie
 		printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
-		if (sySingles < 4)
-			wxSprintf(str, "%s", alpha[singles]);
+		if (wxStrcmp(sy.syName, "XTS") == 0)
+			str = xts[0][singles];
+		else if (sySingles < 4)
+			str = alpha[0][singles];
 		else
-			wxSprintf(str, "A%i", singles+1);
+			str = wxString::Format("A%i", singles+1);
 
 		PrintStringCentered(str, regA);
 
-		if (sySingles < 4)
-			wxSprintf(str, "%s", alpha[singles+3]);
+		if (wxStrcmp(sy.syName, "XTS") == 0)
+			str = xts[1][singles];
+		else if (sySingles < 4)
+			str = alpha[1][singles];
 		else
-			wxSprintf(str, "X%i", singles+1);
+			str = wxString::Format("X%i", singles+1);
 
 		PrintStringCentered(str, regX);
 	}
 	
-	for (int doubles = 0; doubles < syDoubles; doubles++)
+	for (int doubles = 0; doubles < syDoubles; ++doubles)
 	{
-		wxChar str[6];
+		wxString str;
     
 		CRect reg = regGroup;
 		reg.top = regGroup.bottom + ((wantsDoublesFirst ? 0 : sySingles) * heightBot) + (doubles * 1.7 * heightBot);
@@ -1115,20 +1129,24 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
  		if (wxStrcmp(sy.syName, "OTS") == 0)
- 			wxSprintf(str, "C\nA/B");
+ 			str = "C\nA/B";
+		else if (wxStrcmp(sy.syName, "XTS") == 0)
+			str = "A-B1\nA-G1";
 		else if (syDoubles > 1)
- 			wxSprintf(str, "DA%i", doubles+1);
+ 			str = wxString::Format("DA%i", doubles+1);
  		else
- 			wxSprintf(str, "DA");
+ 			str = "DA";
 
 		PrintStringCentered(str, regA);
 
-		if (syDoubles > 1)      
-			wxSprintf(str, "DX%i", doubles+1);
- 		else if (wxStrcmp(sy.syName, "OTS") == 0)
- 			wxSprintf(str, "Z\nX/Y");
+ 		if (wxStrcmp(sy.syName, "OTS") == 0)
+ 			str = "Z\nX/Y";
+		else if (wxStrcmp(sy.syName, "XTS") == 0)
+			str = "X-B1\nX-G1";
+		else if (syDoubles > 1)      
+			str = wxString::Format("DX%i", doubles+1);
 		else
-			wxSprintf(str, "DX"); 		 
+			str = "DX";
 
 		PrintStringCentered(str, regX);     
 	}
@@ -1277,6 +1295,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
               
 	offsetY = regGroup.bottom;
 
+	// Undo the correction, in XTS we need all of them
+	if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
+		sySingles = sy.sySingles;
+
 	// --- Naechste Gruppe: Liste der Spiele ---
 	regGroup.top = offsetY + 0.5 * heightTop;
 	regGroup.bottom = regGroup.top + heightTop;
@@ -1368,8 +1390,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	  MtEntry &mtmt = *(*it);	  
 	  
 		// Die Ausgaben vorbereiten...
-		wxChar  strA[12];
-		wxChar  strX[12];
+		wxString  strA;
+		wxString  strX;
 
 		if (mtmt.tmA.team.cpType == CP_SINGLE)
 		{
@@ -1378,63 +1400,76 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			if (mtmt.nmAnmNr > sySingles) 
 			{
 				if (wxStrcmp(sy.syName, "OTS") == 0) 
-			    wxSprintf(strA, "A/B"); // wxSprintf(strA, "A/B\nn.i.D.");
+			    strA = "A/B"; // wxSprintf(strA, "A/B\nn.i.D.");
 				else if (wxStrcmp(sy.syName, "ETS") == 0)
-				  wxSprintf(strA, "A%d/A4", mtmt.nmAnmNr == 5 ? 1 : 2);
+				  strA = wxString::Format("A%d/A4", mtmt.nmAnmNr == 5 ? 1 : 2);
 				else
-				  wxSprintf(strA, "");
+				  strA = "";
+			}
+			else if (wxStrcmp(sy.syName, "XTS") == 0)
+			{
+				strA = xts[0][mtmt.nmAnmNr - 1];
 			}
 			else if (sySingles < 4)
 			{
         if (mtmt.nmAnmNr > 0)
-				  wxSprintf(strA, "%s", alpha[mtmt.nmAnmNr-1]);
+				  strA = alpha[0][mtmt.nmAnmNr-1];
         else
-          wxSprintf(strA, "");
+          strA = "";
 			}
 			else
 			{
-				wxSprintf(strA, "A%i", mtmt.nmAnmNr);
+				strA = wxString::Format("A%i", mtmt.nmAnmNr);
 			}
 
 			if (mtmt.nmXnmNr > sySingles)
 			{
 				if (wxStrcmp(sy.syName, "OTS") == 0) 
-          wxSprintf(strX, "X/Y"); // wxSprintf(strX, "X/Y\nn.i.D.");
+          strX = "X/Y"; // wxSprintf(strX, "X/Y\nn.i.D.");
 				else if (wxStrcmp(sy.syName, "ETS") == 0)
-				  wxSprintf(strX, "X%d/X4", mtmt.nmXnmNr == 5 ? 1 : 2);
+				  strX = wxString::Format("X%d/X4", mtmt.nmXnmNr == 5 ? 1 : 2);
 				else
-				  wxSprintf(strA, "");
+				  strX = "";
+			}
+			else if (wxStrcmp(sy.syName, "XTS") == 0)
+			{
+				strX = xts[1][mtmt.nmXnmNr - 1];
 			}
 			else if (sySingles < 4)
 			{
         if (mtmt.nmXnmNr > 0)
-				  wxSprintf(strX, "%s", alpha[mtmt.nmXnmNr+2]);
+				  strX = alpha[1][mtmt.nmXnmNr];
         else
-          wxSprintf(strX, "");
+          strX = "";
 			}
 			else
 			{
-				wxSprintf(strX, "X%i", mtmt.nmXnmNr);
+				strX = wxString::Format("X%i", mtmt.nmXnmNr);
 			}
 		}
 		else
 		{
 			regGroup.bottom += 1.7 * heightMatches;
 
-      if (syDoubles > 1)
-      {
-			  wxSprintf(strA, "DA%i", mtmt.nmAnmNr);
-			  wxSprintf(strX, "DX%i", mtmt.nmXnmNr);
-			}
-			else if (wxStrcmp(sy.syName, "OTS") == 0)
+			if (wxStrcmp(sy.syName, "OTS") == 0)
 			{
-			  wxSprintf(strA, "C\nA/B");
-			  wxSprintf(strX, "Z\nX/Y");
+			  strA = "C\nA/B";
+			  strX = "Z\nX/Y";
+			}
+			else if (wxStrcmp(sy.syName, "XTS") == 0)
+			{
+				strA = "A-B1\nA-G1";
+				strX = "X-B1\nX-G1";
+			}
+      else if (syDoubles > 1)
+      {
+			  strA = wxString::Format("DA%i", mtmt.nmAnmNr);
+			  strX = wxString::Format("DX%i", mtmt.nmXnmNr);
 			}
 			else
 			{
-			  wxSprintf(strA, "DA");
-			  wxSprintf(strX, "DX");
+			  strA = "DA";
+			  strX = "DX";
 			}
 		}
 
