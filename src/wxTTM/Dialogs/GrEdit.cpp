@@ -615,11 +615,11 @@ void  CGrEdit::OnTemplate(wxCommandEvent &)
 
     if ( cgs->numeric == 2 )
       tmp = "%c";
-    else if ( (cgs->start + cgs->count) < 10 )
+    else if ( (cgs->start + cgs->count - 1) < 10 )
     {
       tmp = "%01i";
     }
-    else if ( (cgs->start + cgs->count) < 100 )
+    else if ( (cgs->start + cgs->count - 1) < 100 )
     {
       tmp = "%02i";
     }
