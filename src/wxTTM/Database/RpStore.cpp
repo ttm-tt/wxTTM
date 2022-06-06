@@ -58,7 +58,7 @@ bool RpStore::CreateTable()
 
   try
   {
-    tmp->ExecuteUpdate(sql = "CREATE INDEX rpPlID ON RpREc (plID)");
+    tmp->ExecuteUpdate(sql = "CREATE INDEX rpPlID ON RpRec (plID)");
     tmp->ExecuteUpdate(sql = "CREATE UNIQUE INDEX rpYearKey ON RpRec (plID, rpYear)");
   }
   catch (SQLException &e)
