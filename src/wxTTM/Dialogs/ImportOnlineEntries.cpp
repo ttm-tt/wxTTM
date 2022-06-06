@@ -12,6 +12,7 @@
 #include "CpStore.h"
 #include "RpStore.h"
 #include "LtStore.h"
+#include "TmStore.h"
 
 #include "ComboBoxEx.h"
 #include "ListItem.h"
@@ -984,14 +985,23 @@ void CImportOnlineEntries::ClearTournament()
   std::vector<int> idList;
 
   {
+    TmStore tm(conn);
+    tm.SelectAll();
+    while (tm.Next())
+      idList.push_back(tm.tmID);
+    tm.Close();
+
+    for (auto it : idList)
+      tm.Remove(it);
+
     PlStore pl(conn);
     pl.SelectAll();
     while (pl.Next())
       idList.push_back(pl.plID);
     pl.Close();
   
-    for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
-      pl.Remove(*it);
+    for (auto it : idList)
+      pl.Remove(it, true);
 
     idList.clear();
 
@@ -1001,8 +1011,8 @@ void CImportOnlineEntries::ClearTournament()
       idList.push_back(up.upID);
     up.Close();
 
-    for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
-      up.Remove(*it);
+    for (auto it : idList)
+      up.Remove(it);
 
     idList.clear();
   
@@ -1011,8 +1021,8 @@ void CImportOnlineEntries::ClearTournament()
     while (na.Next())
       idList.push_back(na.naID);
 
-    for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
-      na.Remove(*it);
+    for (auto it : idList)
+      na.Remove(it);
 
     idList.clear();
 
@@ -1021,10 +1031,12 @@ void CImportOnlineEntries::ClearTournament()
     while (cp.Next())
       idList.push_back(cp.cpID);
 
-    for (std::vector<int>::iterator it = idList.begin(); it != idList.end(); it++)
-      cp.Remove(*it);
+    for (auto it : idList)
+      cp.Remove(it);
 
     idList.clear();
+
+
   }
 
   delete conn;
