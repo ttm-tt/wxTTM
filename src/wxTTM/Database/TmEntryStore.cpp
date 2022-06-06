@@ -144,7 +144,7 @@ bool  TmEntryStore::CreateView()
           "            tmID, cpID, tmnaID, tmTimestamp)                     "
           "  AS SELECT PlRec.plID, plNr, psLast, psFirst, psSex,            "
           "            NaRec.naID, naName, naDesc, naRegion, plExtID, plRankPts,      "
-          "            ISNULL((SELECT rpRankPts FROM RpRec rp WHERE rp.plID = PlRec.plID AND rp.rpYear = CpRec.cpYear), PlRec.plRankPts) AS ltRankPts, "
+          "            ISNULL((SELECT TOP 1 rpRankPts FROM RpRec rp WHERE rp.plID = PlRec.plID AND rp.rpYear <= CpRec.cpYear ORDER BY rp.rpYear DESC ), PlRec.plRankPts) AS ltRankPts, "
           "            NtRec.ntNr, TmRec.tmID, TmRec.cpID, RkRec.naID, tmTimestamp      "
           "    FROM TmRec INNER JOIN NtRec ON TmRec.tmID = NtRec.tmID       "
           "               INNER JOIN LtRec ON NtRec.ltID = LtRec.ltID       "
