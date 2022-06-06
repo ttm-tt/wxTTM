@@ -84,25 +84,6 @@ bool CRpEdit::Edit(va_list vaList)
   pl.Close();
 
   std::map<short, float> years;
-  CpStore cp;
-  cp.SelectAll();
-  while (cp.Next())
-  {
-    if (cp.cpYear > 0)
-    {
-      if (CTT32App::instance()->GetType() == TT_SCI)
-      {
-        if (cp.cpYear >= pl.psBirthday)
-          years[cp.cpYear] = 0.;
-      }
-      else
-      {
-        if (cp.cpYear <= pl.psBirthday)
-          years[cp.cpYear] = 0.;
-      }
-    }
-  }
-  cp.Close();
 
   RpStore rp;
   rp.SelectByPl(plID);
