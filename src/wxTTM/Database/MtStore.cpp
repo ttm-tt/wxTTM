@@ -4101,8 +4101,8 @@ bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<
     resPtr->BindCol(4, &mtMatch);
     resPtr->BindCol(5, &mtDateTime);
     resPtr->BindCol(6, &mtTable);
-    resPtr->BindCol(6, &mtUmpire);
-    resPtr->BindCol(7, &mtUmpire2);
+    resPtr->BindCol(7, &mtUmpire);
+    resPtr->BindCol(8, &mtUmpire2);
 
     mtTable = 0;
     mtUmpire = 0;
