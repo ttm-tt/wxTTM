@@ -4034,10 +4034,10 @@ bool  MtStore::ImportSchedule(wxTextBuffer &is)
 
     mtPlace.mtTable = _strtos(strMtTable);
 
-    mt.mtUmpire = strMtUmpire.IsEmpty() ? 0 : _strtos(strMtUmpire);
-    mt.mtUmpire2 = strMtUmpire2.IsEmpty() ? 0 : _strtos(strMtUmpire2);
+    short umpire = strMtUmpire.IsEmpty() ? 0 : _strtos(strMtUmpire);
+    short umpire2 = strMtUmpire2.IsEmpty() ? 0 : _strtos(strMtUmpire2);
 
-    mt.UpdateScheduleMatch(mtEvent, mtPlace, 0, 0);
+    mt.UpdateScheduleMatch(mtEvent, mtPlace, umpire, umpire2);
   }
   } // end HACK ]
 
