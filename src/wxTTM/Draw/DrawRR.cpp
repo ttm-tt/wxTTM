@@ -528,6 +528,7 @@ bool DrawRR::ReadSeeding(int *counts)
       DrawItemTeam  *itemTM = listNA.GetTeam(st.tmID);
       if (itemTM)
       {
+        itemTM->seeded = true;
         itemTM->pos[0] = g+1;
         itemTM->pos[1] = st.stNr;
         counts[g]++;
@@ -777,6 +778,7 @@ bool DrawRR::DrawRanking(int *counts)
   std::map<long, int> currentRG;  // Anzahl bereits gesetzter per Region
   std::vector<std::map<long, int>> currentGroupNA;
   std::vector<std::map<long, int>> currentGroupRG;
+  std::vector<DrawItemTeam *> lastTeams(groups);
 
   for (int i = 0; i < groups; i++)
   {
@@ -818,6 +820,7 @@ bool DrawRR::DrawRanking(int *counts)
     int expected = currentSeed / groups;                  // How many may be in the group
     int expectedNA = currentNA[naID] / groups;            // How many of this nation may be in the group
     int expectedRG = currentRG[idMapping[naID]] / groups; // How many of this region may be in the group
+    int candidate = -1;
 
     bool found = false;
 
@@ -834,14 +837,18 @@ bool DrawRR::DrawRanking(int *counts)
       }
       else
       {
-        // Vowrwaerts, stop wenn wir dann groups erreichen
+        // Vorwwaerts, stop wenn wir dann groups erreichen
         if (++i == groups)
           break;
       }
 
       // Bedingung: 
+      //   Anzahl in Gruppe <= grSize
       //   Anzahl in Gruppe <= expected
       //   Anzahl Nation in Gruppe < expectedNA
+      if (counts[i] == pgr[i].grSize)
+        continue;
+
       if (counts[i] > expected)
         continue;
 
@@ -852,20 +859,7 @@ bool DrawRR::DrawRanking(int *counts)
         continue;
 
       found = true;
-
-      // Put into group
-      counts[i]++;
-      currentSeed++;
-      currentNA[naID]++;
-      currentRG[idMapping[naID]]++;
-      currentGroupNA[i][naID]++;
-      currentGroupRG[i][idMapping[naID]]++;
-
-      itemTM->pos[0] = i + 1;      // Group Nr
-      itemTM->pos[1] = counts[i];  // Group Pos
-        
-      if (itemTM->lastPos == 1)
-        quMap[itemTM->lastGroup] = itemTM->pos[0];
+      break;
     }
 
     // Falls nicht gefunden muessen in eine Gruppe, die schon genug Spieler haben, einer mehr rein
@@ -889,6 +883,7 @@ bool DrawRR::DrawRanking(int *counts)
       // Bedingung: 
       //   Anzahl in Gruppe <= expected
       //   Anzahl Nation in Gruppe < expectedNA
+      //   Anzahl in Gruppe <= grSize
       if (counts[i] > (expected + 1))
         continue;
 
@@ -898,21 +893,119 @@ bool DrawRR::DrawRanking(int *counts)
       if (currentGroupRG[i][idMapping[naID]] > expectedNA)
         continue;
 
-      found = true;
+      if (counts[i] == pgr[i].grSize)
+      {
+        // If not the same country, it might be a candidate
+        // It was the last one added (or so) so it has a low enough ranking
+        // Check for lastTeams[i] is not necessary, this group is full so someone has been added recenty
+        // But check if that was not a seeded entry! we use a special flag to test, because after the entry
+        // is processed it looks like a seeded one.
+        if (candidate == -1 && lastTeams[i] && !lastTeams[i]->seeded && lastTeams[i]->tm.naID != itemTM->tm.naID)
+          candidate = i;
 
-      // Put into group
-      counts[i]++;
-      currentSeed++;
+        continue;
+      }
+
+      found = true;
+      break;
+    }
+
+    // If we didn't find a solution, but have a candidate:
+    // swap the players ...
+    if (!found && candidate != -1)
+    {
+      // Update counters as if we have found a team at candidate position
       currentNA[naID]++;
       currentRG[idMapping[naID]]++;
-      currentGroupNA[i][naID]++;
-      currentGroupRG[i][idMapping[naID]]++;
+      currentGroupNA[candidate][naID]++;
+      currentGroupRG[candidate][idMapping[naID]]++;
 
-      itemTM->pos[0] = i + 1;      // Group Nr
-      itemTM->pos[1] = counts[i];  // Group pos
-
+      itemTM->pos[0] = candidate + 1;      // Group Nr
+      itemTM->pos[1] = counts[candidate];  // Group Pos
+        
       if (itemTM->lastPos == 1)
         quMap[itemTM->lastGroup] = itemTM->pos[0];
+
+      // Swap the teams
+      DrawItemTeam *itemTM2 = itemTM;
+      itemTM = lastTeams[candidate];
+      lastTeams[candidate] = itemTM2;
+      naID = itemTM->tm.naID;
+
+      // And decrement the counter incremented by the candidate
+      currentNA[naID]--;
+      currentRG[idMapping[naID]]--;
+      currentGroupNA[candidate][naID]--;
+      currentGroupRG[candidate][idMapping[naID]]--;
+
+      expectedNA = currentNA[naID] / groups;            // How many of this nation may be in the group
+      expectedRG = currentRG[idMapping[naID]] / groups; // How many of this region may be in the group
+    }
+
+    // ... and try with the candidate, same direction as the original run
+    while (!found)
+    {
+      // Reihenfolge von Increment / Decrement ist wichtig
+      if (expected % 2)
+      {
+        // Rueckwaerts, stop wenn wir bereits bei 0 sind
+        if (i-- == 0)
+          break;
+      }
+      else
+      {
+        // Vorwwaerts, stop wenn wir dann groups erreichen
+        if (++i == groups)
+          break;
+      }
+
+      // Bedingung: 
+      //   Anzahl in Gruppe <= grSize
+      //   Anzahl in Gruppe <= expected
+      //   Anzahl Nation in Gruppe < expectedNA
+      if (counts[i] == pgr[i].grSize)
+        continue;
+
+      if (counts[i] > expected)
+        continue;
+
+      if (currentGroupNA[i][naID] > expectedNA)
+        continue;
+
+      if (currentGroupRG[i][idMapping[naID]] > expectedRG)
+        continue;
+
+      found = true;
+      break;
+    }
+
+    // And finally any group with a free place, going in original direction
+    // Starting at the beginning of this run we expect to find first non-full group where we stopped
+    if (!found)
+    {
+      i = (expected % 2) ? groups : -1;
+      while (!found)
+      {
+        // Reihenfolge von Increment / Decrement ist wichtig
+        if ((expected) % 2)
+        {
+          // Rueckwaerts, stop wenn wir bereits bei 0 sind
+          if (i-- == 0)
+            break;
+        }
+        else
+        {
+          // Vowrwaerts, stop wenn wir dann groups erreichen
+          if (++i == groups)
+            break;
+        }
+
+        if (counts[i] == pgr[i].grSize)
+          continue;
+
+        found = true;
+        break;
+      }
     }
 
     if (!found)
@@ -920,6 +1013,21 @@ bool DrawRR::DrawRanking(int *counts)
       infoSystem.Error(_("Could not find solution to draw ranked entries"));
       return false;
     }
+
+    // Put into group
+    counts[i]++;
+    currentSeed++;
+    currentNA[naID]++;
+    currentRG[idMapping[naID]]++;
+    currentGroupNA[i][naID]++;
+    currentGroupRG[i][idMapping[naID]]++;
+    lastTeams[i] = itemTM;
+
+    itemTM->pos[0] = i + 1;      // Group Nr
+    itemTM->pos[1] = counts[i];  // Group Pos
+        
+    if (itemTM->lastPos == 1)
+      quMap[itemTM->lastGroup] = itemTM->pos[0];
   }
    
   return true;
@@ -976,7 +1084,7 @@ bool DrawRR::DrawThem(int *counts)
         if (step == 1 && itemTM->lastPos != 1)
           continue;
 
-        // Solange suchen, bis ein Nation zugewiesen werden kann
+        // Solange suchen, bis eine Nation zugewiesen werden kann
         int i;   // Dient auch als Abbruchbedingung
         for (i = 0; i < groups; i++)
         {
@@ -1095,7 +1203,7 @@ bool DrawRR::DrawThem(int *counts)
     // Gruppen, die schon max haben, mit weiteren Spielern auffuellen, 
     // wenn sie groesser sind als der Rest: Wenn in eine Gruppe mehrere
     // Spieler einer Region kommen sollen, dann nach Moeglichkeit in eine
-    // grosser (5-er) Gruppe und nicht in eine kleine (3-er) Gruppe.
+    // grosse (5-er) Gruppe und nicht in eine kleine (3-er) Gruppe.
     for (int i = 0; i < groups; i++)
     {
       if (tmpCounts[i] >= max && remaining && pgr[i].grSize > pgr[groups-1].grSize)
@@ -1601,7 +1709,7 @@ bool DrawRR::DrawImpl()
 
     file = wxFopen(fname, "w");
     wxFprintf(file, "Seed: %ld\n", (long) ct);
-  # endif
+  #endif
 
   // Vereinfachtes Verfahren: Teams der Nationen werden nacheinander auf
   // die Gruppen verteilt; es gibt eine Loesung, aber nicht alle Loesungen
