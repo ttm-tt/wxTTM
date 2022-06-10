@@ -11,7 +11,7 @@
 
 
 // Abstand zwischen den Raendern des Rechtecks zum Text
-unsigned  ListItem::offset = 2;
+unsigned  ListItem::offset = 4;
 
 // naNameWidth startet mit 2, bei jedem Listeneintrag wird aber ermittelt, 
 // ob ein Nationenkuerzel nicht breiter ist. Irgendwann ist naNameWidth
