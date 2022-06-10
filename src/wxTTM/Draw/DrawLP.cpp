@@ -609,6 +609,7 @@ bool DrawLP::ReadSeeding(GrStore &gr)
       DrawItemTeam *itemBY = new DrawItemTeam();
       listBY.push_back(itemBY);
        
+      itemBY->seeded = true;
       itemBY->pos[0] = st.st.stNr;
 
       for (int stg = 1, sec = gr.grSize; sec; stg++, sec /= 2)
@@ -621,6 +622,7 @@ bool DrawLP::ReadSeeding(GrStore &gr)
     
     if (itemTM)
     {
+      itemTM->seeded = true;
       itemTM->pos[0] = st.st.stNr;
 
       for (int stg = 1, sec = gr.grSize; sec; stg++, sec /= 2)

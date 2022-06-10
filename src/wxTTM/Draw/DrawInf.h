@@ -109,7 +109,7 @@ class  DrawItemTeam : public DrawItem
     DrawItemTeam(const RkEntry &);
    ~DrawItemTeam();
 
-    bool IsSeeded(int stg)    {return pos[stg] != 0;}       // Spieler ist gesetzt
+    bool IsSeeded(int stg)    {return pos[stg] != 0;}       // Spieler ist gesetzt (oder andere aus der Gruppe sind es)
     bool IsBye()              {return tm.tmID == 0;}        // Spieler ist ein Freilos
 
     // Variablen zur Verwaltung
@@ -125,6 +125,7 @@ class  DrawItemTeam : public DrawItem
     int    rkNatlRank;         // Nationales ranking
     int    rkIntlRank;         // Internationalies Ranking
     double rankPts;            // Ranking points
+    bool   seeded = false;     // Mark for seeded entry
     
     bool  mask;
     
