@@ -700,55 +700,7 @@ bool  PlStore::Remove(long id, bool force)
 }
 
 
-// Check auf plExtID / plNr, ob WB existiert
-bool  PlStore::InsertOrUpdate()
-{
-  PlStore pl(GetConnectionPtr());
-  
-  // First search for plNr
-  if (plNr)
-  {
-      pl.SelectByNr(plNr);
-      pl.Next();
-      pl.Close();
-  }
-
-  // I none found but we have plExtID (which may not be unique, son don't look for it first)
-  if (!pl.plID && *plExtID)
-  {
-    pl.SelectByExtId(plExtID);
-    
-    pl.Next();
-    pl.Close();
-  }
-  
-  if (pl.plID)
-  {
-    plID = pl.plID;
-    
-    // psID gibt es unnoetigerweise doppelt, einmal in PsRec, einmal in PlRec.
-    // Einfach rauswerfen will ich aber noch nicht.
-    PlRec::psID = pl.PlRec::psID;
-    PsRec::psID = pl.PsRec::psID;
-
-    // Startnummer uebernehmen, wenn sie nicht explizit gesetzt war
-    if (!plNr && pl.plNr)
-      plNr = pl.plNr;
-
-    // Dto. plExtID, we don't have it 
-    if (!*plExtID && *pl.plExtID)
-        wxStrcpy(plExtID, pl.plExtID);
-    
-    return Update();
-  }
-  else
-  {
-    return Insert();
-  }
-}
-
-
-bool PlStore::Undelete(long id)
+bool PlStore::Restore(long id)
 {
   if (!id)
     id = plID;
@@ -798,6 +750,54 @@ bool PlStore::Undelete(long id)
   CTT32App::NotifyChange(update);
 
   return true;
+}
+
+
+// Check auf plExtID / plNr, ob WB existiert
+bool  PlStore::InsertOrUpdate()
+{
+  PlStore pl(GetConnectionPtr());
+  
+  // First search for plNr
+  if (plNr)
+  {
+      pl.SelectByNr(plNr);
+      pl.Next();
+      pl.Close();
+  }
+
+  // I none found but we have plExtID (which may not be unique, son don't look for it first)
+  if (!pl.plID && *plExtID)
+  {
+    pl.SelectByExtId(plExtID);
+    
+    pl.Next();
+    pl.Close();
+  }
+  
+  if (pl.plID)
+  {
+    plID = pl.plID;
+    
+    // psID gibt es unnoetigerweise doppelt, einmal in PsRec, einmal in PlRec.
+    // Einfach rauswerfen will ich aber noch nicht.
+    PlRec::psID = pl.PlRec::psID;
+    PsRec::psID = pl.PsRec::psID;
+
+    // Startnummer uebernehmen, wenn sie nicht explizit gesetzt war
+    if (!plNr && pl.plNr)
+      plNr = pl.plNr;
+
+    // Dto. plExtID, we don't have it 
+    if (!*plExtID && *pl.plExtID)
+        wxStrcpy(plExtID, pl.plExtID);
+    
+    return Update();
+  }
+  else
+  {
+    return Insert();
+  }
 }
 
 

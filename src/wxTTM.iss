@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 22.05.01
+AppVerName=TTM 22.06
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={autopf}\TTM
 DefaultGroupName=TTM
 OutputDir=Output
-OutputBaseFilename=setup
+OutputBaseFilename=install
 ; SourceDir=F:\user\ChT\wxTTM
 SourceDir=..
 ; Logging
