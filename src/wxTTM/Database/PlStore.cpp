@@ -748,6 +748,59 @@ bool  PlStore::InsertOrUpdate()
 }
 
 
+bool PlStore::Undelete(long id)
+{
+  if (!id)
+    id = plID;
+
+  if (!id)
+    return true;
+  
+  PlStore pl(GetConnectionPtr());
+  if (plID == id)
+    pl = *this;
+  else
+  {
+    pl.SelectById(id);
+    pl.Next();
+    pl.Close();
+  }
+
+  wxString str = "UPDATE PlRec SET plDeleted = 0 WHERE plID = ?";
+
+  PreparedStatement *stmtPtr = nullptr;
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->PrepareStatement(str);
+    if (!stmtPtr)
+      return false;
+
+    stmtPtr->SetData(1, &id);
+    stmtPtr->Execute();
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);    
+    delete stmtPtr;
+    
+    return false;
+  }
+
+  delete stmtPtr;
+
+  // Notify Views
+  CRequest update;
+  update.type = CRequest::UPDATE;
+  update.rec  = CRequest::PLREC;
+  update.id   = id;
+
+  CTT32App::NotifyChange(update);
+
+  return true;
+}
+
+
 bool  PlStore::InsertNote(const wxString &note)
 {
   PsStore ps(*this, GetConnectionPtr());

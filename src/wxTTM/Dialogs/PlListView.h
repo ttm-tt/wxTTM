@@ -38,10 +38,12 @@ class CPlListView : public CFormViewEx
   // Event handler
   private:
 	  void OnPlEditEvents(wxCommandEvent &);
+    void OnUndelete(wxCommandEvent &);
+    void OnHistory(wxCommandEvent &);
     void OnNotes(wxCommandEvent &);
     void OnClone(wxCommandEvent &);
-    void OnHistory(wxCommandEvent &);
     void OnEventHistory(wxCommandEvent &);
+
     void OnChildClose(wxCloseEvent &);
 
   private:

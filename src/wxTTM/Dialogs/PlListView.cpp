@@ -27,6 +27,7 @@ IMPLEMENT_DYNAMIC_CLASS(CPlListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CPlListView, CFormViewEx)
   EVT_BUTTON(IDC_EVENTS, CPlListView::OnPlEditEvents)
+  EVT_BUTTON(XRCID("Undelete"), CPlListView::OnUndelete)
   EVT_BUTTON(XRCID("Notes"), CPlListView::OnNotes)
   EVT_BUTTON(XRCID("Clone"), CPlListView::OnClone)
   EVT_BUTTON(XRCID("History"), CPlListView::OnHistory)
@@ -233,6 +234,30 @@ void  CPlListView::OnDelete()
         else
           TTDbse::instance()->GetDefaultConnection()->Rollback();
       }
+    }
+  }
+}
+
+
+void CPlListView::OnUndelete(wxCommandEvent&)
+{
+  bool doIt = true;
+
+  for (int idx = m_listCtrl->GetItemCount(); doIt && idx--; )
+  {
+    if (m_listCtrl->IsSelected(idx))
+    {
+      PlItem *itemPtr = (PlItem *) m_listCtrl->GetListItem(idx);
+
+      if (!itemPtr)
+        continue;
+
+      PlStore pl;
+      pl.SelectById(itemPtr->pl.plID);
+      pl.Next();
+      pl.Close();
+
+      pl.Undelete();
     }
   }
 }
