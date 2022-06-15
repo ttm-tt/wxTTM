@@ -27,7 +27,7 @@ bool  LtListStore::CreateView()
 
   wxString  str = "CREATE VIEW LtList AS "
                      "SELECT LtRec.ltID, LtRec.plID, LtRec.cpID, LtRec.ltTimestamp,  "
-                     "       ISNULL((SELECT rpRankPts FROM RpRec rp WHERE rp.plID = LtRec.plID AND rpYear = CpRec.cpYear), PlRec.plRankPts) AS ltRankPts "
+                     "       ISNULL((SELECT TOP 1 rpRankPts FROM RpRec rp WHERE rp.plID = LtRec.plID AND rpYear <= CpRec.cpYear ORDER BY rpYear DESC), PlRec.plRankPts) AS ltRankPts "
                      "FROM LtRec INNER JOIN CpRec ON LtRec.cpID = CpRec.cpID INNER JOIN PlRec ON LtRec.plID = PlRec.plID ";
 
   try
