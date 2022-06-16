@@ -882,20 +882,20 @@ bool SyStore::AddMixedTeamSystem()
 	sy.syList[0].syPlayerX = 1;
 
 	sy.syList[1].syType = CP_SINGLE;
-	sy.syList[1].syPlayerA = 4;
-	sy.syList[1].syPlayerX = 4;
+	sy.syList[1].syPlayerA = 1;
+	sy.syList[1].syPlayerX = 1;
 
 	sy.syList[2].syType = CP_SINGLE;
-	sy.syList[2].syPlayerA = 3;
-	sy.syList[2].syPlayerX = 3;
+	sy.syList[2].syPlayerA = 2;
+	sy.syList[2].syPlayerX = 2;
 
 	sy.syList[3].syType = CP_SINGLE;
-	sy.syList[3].syPlayerA = 2;
-	sy.syList[3].syPlayerX = 2;
+	sy.syList[3].syPlayerA = 3;
+	sy.syList[3].syPlayerX = 3;
 
 	sy.syList[4].syType = CP_SINGLE;
-	sy.syList[4].syPlayerA = 1;
-	sy.syList[4].syPlayerX = 1;
+	sy.syList[4].syPlayerA = 4;
+	sy.syList[4].syPlayerX = 4;
 
   return sy.InsertOrUpdate();
 }

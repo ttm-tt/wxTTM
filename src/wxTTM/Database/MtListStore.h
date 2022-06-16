@@ -24,6 +24,7 @@ struct  MtListRec : public MtRec
   short    grQualRounds;
   short    grNofRounds;
   short    grNofMatches;
+  short    syComplete;
   wxChar   cpName[9];
   wxChar   grName[9];
   
@@ -55,6 +56,7 @@ class  MtListStore : public StoreObj, public MtListRec
     MtListStore(Connection *connPtr = 0);
 
     virtual void  Init();
+    virtual bool  Next();
 
   public:
     bool  SelectByGr(const GrRec &gr);

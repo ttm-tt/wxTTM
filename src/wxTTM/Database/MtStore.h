@@ -173,6 +173,8 @@ struct  MtRec
   long   xxAstID;
   long   xxXstID;
 
+  bool   mtComplete;
+
   MtRec();
   MtRec(const MtRec &rec);
   MtRec & operator=(const MtRec &);

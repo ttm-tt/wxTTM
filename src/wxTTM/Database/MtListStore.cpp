@@ -23,8 +23,6 @@ bool  MtListStore::CreateView()
 
   wxString  str;
   
-  // TODO: mtWalkOverA, mtWalkOverX beruecksichtigen
-
   try
   {
     str = "CREATE VIEW MtList                                                "
@@ -34,6 +32,7 @@ bool  MtListStore::CreateView()
           "  mtPrinted, mtChecked, mtTimestamp,                              "
           "  cpID, cpName, cpType, grName, grModus, grSize, grWinner,        "
           "  grQualRounds, grNofRounds, grNofMatches,                        "
+          "  syComplete,                                                     "
           "  mtResA, mtResX, mtSetsA, mtSetsX, mtBallsA, mtBallsX, mtReverse, "
           "  mtWalkOverA, mtWalkOverX,                                       "
           "  mtInjuredA, mtInjuredX,                                         "
@@ -56,6 +55,7 @@ bool  MtListStore::CreateView()
           "     FROM MtRec mt                                                "
           "          INNER JOIN GrRec gr ON mt.grID = gr.grID                "
           "          INNER JOIN CpRec cp ON gr.cpID = cp.cpID                "
+          "          LEFT OUTER JOIN SyRec sy ON gr.syID = sy.syID           "
           "          LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID          "
           "          LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID          "
           "          LEFT OUTER JOIN MtMatch ON mt.mtID = MtMatch.mtID       "
@@ -108,6 +108,16 @@ MtListStore::MtListStore(Connection *ptr)
 void  MtListStore::Init()
 {
   MtListRec::Init();
+}
+
+
+bool  MtListStore::Next()
+{
+  if (!StoreObj::Next())
+    return false;
+
+  // When all team matches have to be played and we are in a RR group, set the flag in MtRec
+  mtComplete = syComplete && cpType == 4 && grModus == 1;
 }
 
 
@@ -534,6 +544,7 @@ wxString  MtListStore::SelectString() const
         "       mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX, "
         "       cpName, cpType, grName, grModus, grSize, grWinner,    "
         "       grQualRounds, grNofRounds, grNofMatches,              "
+        "       syComplete,                                           "
         "       tmA, tmX, xxA.stID, xxX.stID,                         "
         "       mtMatches, mtBestOf, mtUmpire, mtUmpire2,             "
         "       mtPrinted, mtChecked   "
@@ -589,6 +600,8 @@ bool  MtListStore::BindRec()
   BindCol(++col, &grQualRounds);
   BindCol(++col, &grNofRounds);
   BindCol(++col, &grNofMatches);
+
+  BindCol(++col, &syComplete);
 
   BindCol(++col, &tmA);
   BindCol(++col, &tmX);

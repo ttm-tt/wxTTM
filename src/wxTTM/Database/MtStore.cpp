@@ -71,17 +71,33 @@ short  MtRec::QryWinnerAX() const
   if (mtWalkOverX)
     return (mtWalkOverA ? 0 : +1);
 
-  // Sieger eines Spieles
-  if (mtResA * 2 > (mtMatches > 1 && mtEvent.mtMS == 0 ? mtMatches : mtBestOf))
-    return +1;
-  else if (mtResX * 2 > (mtMatches > 1 && mtEvent.mtMS == 0 ? mtMatches : mtBestOf))
-    return -1;
-
   // Freilose (bei zweien gewinnt das obere)
   if (IsXBye())
     return +1;
   else if (IsABye())
     return -1;
+
+  // Sieger eines Spieles
+  if (mtComplete)
+  {
+    // All matches must be played
+    if ((mtResA + mtResX) < mtMatches)
+      return 0;
+
+    if (mtResA > mtResX)
+      return +1;
+    else if (mtResX > mtResA)
+      return -1;
+    else
+      return 0;
+  }
+  else
+  {
+    if (mtResA * 2 > (mtMatches > 1 && mtEvent.mtMS == 0 ? mtMatches : mtBestOf))
+      return +1;
+    else if (mtResX * 2 > (mtMatches > 1 && mtEvent.mtMS == 0 ? mtMatches : mtBestOf))
+      return -1;
+  }
 
   // Sonstige Zweifelsfaelle
   return 0;
