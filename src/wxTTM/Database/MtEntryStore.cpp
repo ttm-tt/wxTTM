@@ -410,7 +410,7 @@ bool MtEntryStore::SelectUnscheduled(short cpType, long cpID, long grID)
 
   sql += 
     " WHERE tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL "
-    "   AND mtDateTime IS NOT NULL "
+    // "   AND mtDateTime IS NOT NULL "
     "   AND (mtTable IS NULL OR mtTable = 0) "
     "   AND (gr.grNofRounds = 0 OR mt.mtRound <= gr.grNofRounds) "
     "   AND cp.cpType = " + ltostr(cpType)

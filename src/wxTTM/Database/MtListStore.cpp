@@ -47,6 +47,7 @@ bool  MtListStore::CreateView()
           "          cp.cpID, cp.cpName, cp.cpType,                          "
           "          gr.grName, gr.grModus, gr.grSize, gr.grWinner,          "
           "          gr.grQualRounds, gr.grNofRounds, gr.grNofMatches,       "
+          "          sy.syComplete,                                          "
           "          mt.mtResA, mt.mtResX, mtMatch.mtResA, MtMatch.mtResX,   "
           "          MtSet.mtResA, MtSet.mtResX, mt.mtReverse,               "
           "          mt.mtWalkOverA, mt.mtWalkOverX,                         "
@@ -118,6 +119,7 @@ bool  MtListStore::Next()
 
   // When all team matches have to be played and we are in a RR group, set the flag in MtRec
   mtComplete = syComplete && cpType == 4 && grModus == 1;
+  return true;
 }
 
 
