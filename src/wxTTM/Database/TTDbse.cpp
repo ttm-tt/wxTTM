@@ -400,6 +400,7 @@ bool  TTDbse::CreateRoles()
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX) TO ttm_results");    
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE On StRec (stNoCons) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON IdRec (idLast) TO ttm_results");
+    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON GrRec (grPrinted) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT INSERT, DELETE ON NmSingle TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT INSERT, DELETE ON NmDouble TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT INSERT, DELETE ON NmRec TO ttm_results");
