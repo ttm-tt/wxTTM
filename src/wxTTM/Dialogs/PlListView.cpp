@@ -27,7 +27,7 @@ IMPLEMENT_DYNAMIC_CLASS(CPlListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CPlListView, CFormViewEx)
   EVT_BUTTON(IDC_EVENTS, CPlListView::OnPlEditEvents)
-  EVT_BUTTON(XRCID("Undelete"), CPlListView::OnRestore)
+  EVT_BUTTON(XRCID("Restore"), CPlListView::OnRestore)
   EVT_BUTTON(XRCID("Notes"), CPlListView::OnNotes)
   EVT_BUTTON(XRCID("Clone"), CPlListView::OnClone)
   EVT_BUTTON(XRCID("History"), CPlListView::OnHistory)
