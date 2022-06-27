@@ -1129,11 +1129,16 @@ bool LtStore::RemoveFromDoubles(wxTextBuffer &is)
 
     PlStore pl(connPtr);
     pl.SelectByExtId(strPl);
-    if (!pl.WasOK())
+    if (!pl.Next() || !pl.WasOK())
     {
       pl.Close();
-      CTT32App::ProgressBarStep();
-      continue;
+      pl.SelectByNr(_strtol(strPl));
+      if (!pl.Next() || !pl.WasOK())
+      {
+        pl.Close();
+        CTT32App::ProgressBarStep();
+        continue;
+      }
     }
 
     pl.Close();
