@@ -105,7 +105,7 @@ int  RasterRR::Print(CpRec &cp_, GrRec &gr_,
 
   TbSort::Sort(gr, cp.cpType, tbList, mtList);
 #else
-  TbEntryStore tb;
+  TbEntryStore tb(connPtr);
   tb.SelectByGr(gr, cp.cpType);
   while (tb.Next())
     tbList.push_back(new TbItem(tb));
