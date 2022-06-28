@@ -902,7 +902,7 @@ bool  StStore::Import(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#POSITIONS", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.wx_str()))
       return false;
   }
 

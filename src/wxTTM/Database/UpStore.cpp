@@ -636,7 +636,7 @@ bool  UpStore::Import(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#UMPIRES", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#UMPIRES"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#UMPIRES"), line.wx_str()))
       return false;
   }
 

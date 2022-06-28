@@ -2644,7 +2644,7 @@ bool  GrStore::Import(wxTextBuffer &is)
   if (!CheckImportHeader(line, "#GROUPS", version))
   {
     is.Close();
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#GROUPS"), line.wx_str()))
       return false;
   }
 

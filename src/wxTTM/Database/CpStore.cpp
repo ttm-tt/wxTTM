@@ -682,7 +682,7 @@ bool  CpStore::Import(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#EVENTS", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#EVENTS"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#EVENTS"), line.wx_str()))
       return false;
   }
 

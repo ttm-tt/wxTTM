@@ -3885,7 +3885,7 @@ bool  MtStore::ImportSchedule(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#SCHEDULES", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#SCHEDULES"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#SCHEDULES"), line.wx_str()))
       return false;
   }
 
