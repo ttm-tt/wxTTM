@@ -571,7 +571,16 @@ bool DrawLP::ReadRanking()
   // Neu ranken
   rank = 0;
   for (auto it : listIRK)
-    ((DrawItemTeam *) it)->rkIntlRank = ++rank;
+  {
+    DrawItemTeam* itemTM = (DrawItemTeam *) it;
+
+    if (fromPos == 1 && itemTM->lastGroup && itemTM->lastPos > 1 && itemTM->rkIntlRank > 0 && rank < grList.size())
+    {
+      infoSystem.Information(wxString::Format("Entry ranked %d did not win the group %s", (rank + 1), grList[fromGroupMap[itemTM->tm.tmID]]));
+    }
+
+    itemTM->rkIntlRank = ++rank;
+  }
 
   // Nat'l Rank sortieren: Nat'l richtet sich nach Int'l, also nach Int'l sortieren und dann neues Nat'l setzen
   for (auto it : listNRK)
