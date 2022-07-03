@@ -537,7 +537,8 @@ bool LtStore::Import(wxTextBuffer &is)
   {
     CTT32App::ProgressBarStep();
 
-    if (line.GetChar(0) == '#')
+    // Comments start with '#'
+    if (line.StartsWith("#"))
       continue;
 
     wxStringTokenizerEx tokens(line, ",;\t");
@@ -549,9 +550,6 @@ bool LtStore::Import(wxTextBuffer &is)
     // char *strPl = strtok(NULL, ",;\t");
 
     if (strCp.IsEmpty() || strPl.IsEmpty())
-      continue;
-      
-    if (*strCp.t_str() == '#')
       continue;
       
     bool commit = false;
@@ -569,7 +567,7 @@ bool LtStore::Import(wxTextBuffer &is)
         // Damit beim naechsten mal nicht nocheinmal gesucht wird 
         // und vor allem damit es keine weitere Fehlermeldung gibt.
         wxStrncpy(cp.cpName, strCp, sizeof(cp.cpName) / sizeof(wxChar));
-        cp.cpName[sizeof(cp.cpName) - 1] = 0;
+        cp.cpName[sizeof(cp.cpName) / sizeof(wxChar) - 1] = 0;
       }
     }
     
