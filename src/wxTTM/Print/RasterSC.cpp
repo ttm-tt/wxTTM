@@ -1438,7 +1438,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			else if (sySingles < 4)
 			{
         if (mtmt.nmXnmNr > 0)
-				  strX = alpha[1][mtmt.nmXnmNr];
+				  strX = alpha[1][mtmt.nmXnmNr - 1];
         else
           strX = "";
 			}
