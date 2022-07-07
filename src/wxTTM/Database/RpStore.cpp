@@ -269,7 +269,7 @@ bool RpStore::Import(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#RANKINGPOINTS", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RANKINGPOINTS"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#RANKINGPOINTS"), line.wx_str()))
       return false;
   }
 
