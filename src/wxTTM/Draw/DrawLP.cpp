@@ -503,7 +503,7 @@ bool DrawLP::ReadRanking()
   );
 
   // Neu ranken
-  int rank = 0;
+  size_t rank = 0;
   for (auto it : listTMP)
     ((DrawItemTeam *)it)->rkIntlRank = ++rank;
 
@@ -1153,11 +1153,11 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Freilose gegen die (top) Spieler
   if (true)
   {
-    int j = 0;  // count
-    int count = 0;
+    int j = 0;      // idx
+    int count = 0;  // number of entries which should play against a bye
     int byes = 0;
     int de = 0;
-    int total = listNA.Count(stg, sec);
+    int total = listNA.Count(1, 1);
 
     for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
     {
@@ -1187,8 +1187,8 @@ bool DrawLP::DrawSection(int stg, int sec)
         if (rkChoice == None)
           continue;
 
-        // Not a bye, but no or too low intl rank
-        if (!itemTM->IsBye() && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count()))
+        // Not a bye,not a DE, but no or too low intl rank
+        if (!itemTM->IsBye() && !itemTM->rkDirectEntry && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count(stg, sec)))
           continue;
 
         colvec[j] = colMapping[itemTM];
@@ -1206,7 +1206,7 @@ bool DrawLP::DrawSection(int stg, int sec)
         j++;
       }
 
-      while (byes < de)
+      if (byes < de)
       {
         // Add the lowest ranked 2nd to play against DE, i.e. as if they were byes
         for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
@@ -1218,7 +1218,7 @@ bool DrawLP::DrawSection(int stg, int sec)
             
           // total is the number of real entries. They are ranked 1..n, so total is also
           // the highest rank position
-          if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - listBY.Count())
+          if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - (totalDE - listBY.Count()))
             continue;
 
           colvec[j] = colMapping[itemTM];
