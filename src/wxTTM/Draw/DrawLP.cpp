@@ -309,6 +309,8 @@ bool DrawLP::ReadDirectEntries()
     if (!rk.rk.rkDirectEntry)
       continue;
 
+    ++totalDE;
+
     DrawItemTeam *itemTM = listNA.AddTeam(rk);
     itemTM->pos[1] = 1;
     // And treat them as group winner
@@ -1237,8 +1239,8 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Int'l Ranking verteilen, wenn nicht gesetzt
   if (true)
   {    
-    // Only with ranking. "Groups" requires snake system in the previous stage and no DE
-    if (rkChoice == World || rkChoice == Groups && totalDE == 0)
+    // Only with ranking. "Groups" requires snake system in the previous stage
+    if (rkChoice == World || rkChoice == Groups)
     {
       // pos points to the end of the faction, i.e. 1, 2, 4, 8, 16, ...
       // But only as far as half of max with IRK.
@@ -1310,8 +1312,10 @@ bool DrawLP::DrawSection(int stg, int sec)
   // Kopie von oben, aber bezogen auf nat'l rank und ohne fixe Positionen
   if (true)
   {
-    // Only with ranking. "Groups" requires snake system in the previous stage and no DE
-    if (rkChoice == World || rkChoice == Groups && totalDE == 0)
+    // regardless which type we use, we have the restriction that 2nd are not free to choose,
+    // so we do it only for direct entries, and only if there are non-seeded ones
+    // And in general, distribting associations is an optimization goal
+    if ((rkChoice == World || rkChoice == Groups) && totalDE > 0)
     {
       for (auto it : listNRK)
       {
@@ -1326,6 +1330,8 @@ bool DrawLP::DrawSection(int stg, int sec)
           memset(rowvec, 0, cols * sizeof(REAL));
 
           int j = 0;
+          bool hasUnseededDE = false;
+
           for (auto it : list)
           {
             DrawItemTeam *itemTM = (DrawItemTeam *) it;
@@ -1335,6 +1341,11 @@ bool DrawLP::DrawSection(int stg, int sec)
             // List ist nach nat'l rank sortiert
             if (itemTM->rkNatlRank > pos)
               break;
+
+            if (rkChoice == Groups && !itemTM->rkDirectEntry)
+              break;
+
+            hasUnseededDE |= !itemTM->IsSeeded(stg + 1);
 
             colvec[j] = colMapping[itemTM];
             rowvec[j] = 1;
@@ -1347,7 +1358,7 @@ bool DrawLP::DrawSection(int stg, int sec)
 
           // Wenn es mehr als einen gibt, gleichmaessig verteilen
           // Ansonsten ist es egal, wohin er rutscht
-          if (j > 1)
+          if (j > 1 && hasUnseededDE)
           {
             if (j % 2)
             {
