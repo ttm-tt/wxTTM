@@ -576,7 +576,8 @@ bool DrawLP::ReadRanking()
   {
     DrawItemTeam* itemTM = (DrawItemTeam *) it;
 
-    if (fromPos == 1 && itemTM->lastGroup && itemTM->lastPos > 1 && itemTM->rkIntlRank > 0 && rank < grList.size())
+    // grList contains the dest group as first item, correct for it
+    if (fromPos == 1 && itemTM->lastGroup && itemTM->lastPos > 1 && itemTM->rkIntlRank > 0 && rank < totalDE + grList.size() - 1)
     {
       infoSystem.Information(wxString::Format("Entry ranked %d did not win the group %s", (rank + 1), grList[fromGroupMap[itemTM->tm.tmID]]));
     }
@@ -1188,7 +1189,8 @@ bool DrawLP::DrawSection(int stg, int sec)
           continue;
 
         // Not a bye,not a DE, but no or too low intl rank
-        if (!itemTM->IsBye() && !itemTM->rkDirectEntry && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count(stg, sec)))
+        // We need the total count here, nut just in this sec
+        if (!itemTM->IsBye() && !itemTM->rkDirectEntry && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count()))
           continue;
 
         colvec[j] = colMapping[itemTM];
@@ -1216,8 +1218,9 @@ bool DrawLP::DrawSection(int stg, int sec)
           if (itemTM->IsBye())
             continue;
             
-          // total is the number of real entries. They are ranked 1..n, so total is also
-          // the highest rank position
+          // total is the number of real entries. They are ranked 1..n, so total is also the highest rank position
+          // Lowest ranked who has to play against a DE
+          // We need the total number of byes here, not only number is this sec
           if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - (totalDE - listBY.Count()))
             continue;
 
