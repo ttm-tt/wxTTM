@@ -401,7 +401,7 @@ void  CMtRes::OnOK()
         return;
       }
     }
-    if (mtMatch.mtResA > mt.mtResX)
+    if (mtMatch.mtResA > mtMatch.mtResX)
     {
       // A hat gewonnen, aber wer hat das w/o
       if (mtMatch.mtWalkOverA || mtMatch.mtInjuredA || mtMatch.mtDisqualifiedA)
