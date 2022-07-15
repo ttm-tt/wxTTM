@@ -69,8 +69,6 @@ class CSetValidator : public wxValidator
       text = ((wxTextCtrl *) m_validatorWindow)->GetValue();
         
       if ( !ConvertFromText(text, *m_mtResA, *m_mtResX, m_ptsToWin, m_ptsAhead) ||
-           (std::max(*m_mtResA, *m_mtResX) < m_ptsToWin)    ||  
-           (abs(*m_mtResA - *m_mtResX) < m_ptsAhead)            ||
            (std::max(*m_mtResA, *m_mtResX) > m_ptsToWin) && (abs(*m_mtResA - *m_mtResX) > m_ptsAhead)
          )
       { 
