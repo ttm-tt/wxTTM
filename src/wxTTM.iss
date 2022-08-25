@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 22.08
+AppVerName=TTM 22.08.01
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={autopf}\TTM
@@ -20,7 +20,7 @@ SourceDir=..
 ; Man braucht admin-Rechte, um ReportMan.ocx registrieren zu koennen
 ; PrivilegesRequired=none
 ; Mindestens Windows 7
-MinVersion=6.1
+MinVersion=6.1sp1
 
 ; 64 Bit Version auf 64 Bit Windows installieren, setzt Is64BitInstallMode Variable
 ; ArchitecturesInstallIn64BitMode=x64
