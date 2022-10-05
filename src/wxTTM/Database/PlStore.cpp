@@ -40,6 +40,10 @@ struct PlRecImpExp : public PlRec
 
 bool PlRecImpExp::Read(const wxString &line)
 {
+  // Ignore comments
+  if (line.StartsWith("#"))
+    return false;
+
   // Das erste Zeichen aus ",;\t" ist das Trennzeichen
   // Es kann naemlich vorkommen, dass ";" das Trennzeichen
   // ist, aber dennoch "," in den Strings vorkommen. 
@@ -63,7 +67,8 @@ bool PlRecImpExp::Read(const wxString &line)
   wxString strRankPts = tokens.GetNextToken().Strip(wxString::both);
   wxString strComment = (tokens.HasMoreTokens() ? tokens.GetNextToken().Strip(wxString::both).c_str() : wxEmptyString);
   
-  if (!strNr.IsEmpty() && *strNr.t_str() == '#')
+  // If both, family and given name, are empty, skip
+  if (strNr.IsEmpty() && strLast.IsEmpty() && strFirst.IsEmpty())
     return false;
 
   // Wenn der Vorname leer ist und der Nachname Leerzeichenenthaelt, 
@@ -81,7 +86,7 @@ bool PlRecImpExp::Read(const wxString &line)
       wxString tmp = tokens.NextToken();
       if (tmp.IsEmpty())
         continue;
-      else if (strLast.IsEmpty())
+      else if (strLast.IsEmpty() && wxIsupper(tmp.GetChar(1)))
         strLast = tmp;
       else if (tmp.Length() == 1 || wxIsupper(tmp.GetChar(1)))
       {
@@ -113,7 +118,7 @@ bool PlRecImpExp::Read(const wxString &line)
     }
   }
   
-  if (!strNr.IsEmpty() && !strLast.IsEmpty() && !strSex.IsEmpty())
+  if (!strLast.IsEmpty() && !strSex.IsEmpty())
   {
     Init();
 
