@@ -126,6 +126,7 @@ class  DrawItemTeam : public DrawItem
     int    rkIntlRank;         // Internationalies Ranking
     double rankPts;            // Ranking points
     bool   seeded = false;     // Mark for seeded entry
+    bool   hasRanking = false; // Flag if the entry has int'l ranking
     
     bool  mask;
     

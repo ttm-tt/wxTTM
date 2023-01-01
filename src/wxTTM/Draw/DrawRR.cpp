@@ -388,7 +388,10 @@ bool DrawRR::ReadRanking()
  // Neu ranken
   int rank = 0;
   for (auto it : listTMP)
-    ((DrawItemTeam *)it)->rkIntlRank = ++rank;
+  {
+    ((DrawItemTeam*)it)->hasRanking = ((DrawItemTeam*)it)->rkIntlRank > 0;
+    ((DrawItemTeam*)it)->rkIntlRank = ++rank;
+  }
 
   // Ranking der Reihe nach durchgehen und durch den Sieger der Vorrundengruppe ersetzen
   for (auto it : listTMP)
@@ -427,6 +430,7 @@ bool DrawRR::ReadRanking()
     // Ranking und Punkte uebernehmen
     itemTM->rkIntlRank = itTMP->rkIntlRank;
     itemTM->rankPts = itTMP->rankPts;
+    itemTM->hasRanking = itTMP->hasRanking;
 
     listIRK.Add(itemTM);  // Liste aller Spieler
   }
@@ -457,7 +461,7 @@ bool DrawRR::ReadRanking()
   // Neu ranken
   rank = 0;
   for (auto it : listIRK)
-    ((DrawItemTeam *)it)->rkIntlRank = ++rank;
+    ((DrawItemTeam*)it)->rkIntlRank = ++rank;
 
   return true;
 }
@@ -921,7 +925,8 @@ bool DrawRR::DrawRanking(int *counts)
       currentGroupRG[candidate][idMapping[naID]]++;
 
       itemTM->pos[0] = candidate + 1;      // Group Nr
-      itemTM->pos[1] = counts[candidate];  // Group Pos
+      if (itemTM->hasRanking)
+        itemTM->pos[1] = counts[candidate];  // Group Pos
         
       if (itemTM->lastPos == 1)
         quMap[itemTM->lastGroup] = itemTM->pos[0];
@@ -1024,7 +1029,8 @@ bool DrawRR::DrawRanking(int *counts)
     lastTeams[i] = itemTM;
 
     itemTM->pos[0] = i + 1;      // Group Nr
-    itemTM->pos[1] = counts[i];  // Group Pos
+    if (itemTM->hasRanking)
+      itemTM->pos[1] = counts[i];  // Group Pos
         
     if (itemTM->lastPos == 1)
       quMap[itemTM->lastGroup] = itemTM->pos[0];

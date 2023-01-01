@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 22.08.01
+AppVerName=TTM 23.01
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={autopf}\TTM
