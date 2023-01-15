@@ -65,8 +65,8 @@ inline MdRec& MdRec::operator=(const MdRec& md)
 
   if (md.mdList)
   {
-    mdList = new MdList[md.mdSize];
-    for (int idx = 0; idx < md.mdSize; ++idx)
+    mdList = new MdList[md.Rounds() * md.Matches()];
+    for (int idx = 0; idx < md.Rounds() * md.Matches(); ++idx)
       mdList[idx] = md.mdList[idx];
   }
 
