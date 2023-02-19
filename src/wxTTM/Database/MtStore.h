@@ -143,6 +143,7 @@ struct  MtRec
     short  mtRound;  // Runde
     short  mtMatch;  // Spiel in Runde
     short  mtChance; // DKO: Trostrunde
+    short  mtLeg;    // Leg (Homr, Away, Golden Match, ...)
     short  mtMS;     // Mannschaftsspiel
   } mtEvent;
 

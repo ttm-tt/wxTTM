@@ -94,8 +94,9 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("DrawFromKOMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("DrawCSDMenuItem"), CMainFrame::OnMenuCommand)
   
-  EVT_MENU(XRCID("MatchTimeMenuItem"), CMainFrame::OnMenuCommand)
-  EVT_MENU(XRCID("MatchResultMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("MatchTimesMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("MatchResultsMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("MatchLegsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("MatchNumberMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("MatchOverviewMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("MatchUnscheduledMenuItem"), CMainFrame::OnMenuCommand)
@@ -299,10 +300,12 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
   else if (evt.GetId() == XRCID("DrawCSDMenuItem"))
     CTT32App::instance()->OpenView(_("CSD"), wxT("DrawKO"), 2);
     
-  else if (evt.GetId() == XRCID("MatchTimeMenuItem"))
-    CTT32App::instance()->OpenView(_("Match Time"), wxT("MtListView"), 0, true);
-  else if (evt.GetId() == XRCID("MatchResultMenuItem"))
-    CTT32App::instance()->OpenView(_("Match Result"), wxT("MtListView"), 0, false);
+  else if (evt.GetId() == XRCID("MatchTimesMenuItem"))
+    CTT32App::instance()->OpenView(_("Match Times"), wxT("MtListView"), 0, true);
+  else if (evt.GetId() == XRCID("MatchResultsMenuItem"))
+    CTT32App::instance()->OpenView(_("Match Results"), wxT("MtListView"), 0, false);
+  else if (evt.GetId() == XRCID("MatchLegsMenuItem"))
+    CTT32App::instance()->OpenView(_("Match Legs"), wxT("MtLeg"), 0, false);
   else if (evt.GetId() == XRCID("MatchNumberMenuItem"))
     CTT32App::instance()->OpenViewNoResize(_("Select Match"), wxT("MtSelect"));
   else if (evt.GetId() == XRCID("MatchOverviewMenuItem"))

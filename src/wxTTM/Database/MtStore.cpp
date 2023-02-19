@@ -612,6 +612,7 @@ bool  MtStore::CreateTable()
     "mtRound         "+SMALLINT+"     NOT NULL,  "
     "mtMatch         "+SMALLINT+"     NOT NULL,  "
     "mtChance        "+SMALLINT+"     NOT NULL,  "
+    "mtLeg           "+SMALLINT+"     NOT NULL DEFAULT 0, "
     "mtDateTime      "+TIMESTAMP+",   "
     "mtTable         "+SMALLINT+",    "
     "mtUmpire        "+INTEGER+",     "
@@ -868,7 +869,34 @@ bool  MtStore::UpdateTable(long version)
     }
   }
 
-  if (!UpdateStoredProcedure(version))
+  if (version < 170)
+  {
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+    wxASSERT(connPtr);
+
+    Statement* tmp = connPtr->CreateStatement();
+
+    wxString SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+
+    wxString sql =
+      "ALTER TABLE MtRec ADD "
+      "mtLeg  " + SMALLINT + " NOT NULL DEFAULT 0 ";
+
+    try
+    {
+      tmp->ExecuteUpdate(sql);
+    }
+    catch (SQLException& e)
+    {
+      infoSystem.Exception(sql, e);
+
+      delete tmp;
+
+      return false;
+    }
+  }
+
+   if (!UpdateStoredProcedure(version))
     return false;
 
   return true;
@@ -2725,20 +2753,20 @@ wxString  MtStore::SelectString() const
 {
   wxString  str = 
     "SELECT mt.mtID, mtNr, stA, stX, mtUmpire, mtUmpire2, mtReverse,     "
-    "       mt.mtWalkOverA, mt.mtWalkOverX,         "
-    "       mt.mtInjuredA, mt.mtInjuredX,           "
-    "       mt.mtDisqualifiedA, mt.mtDisqualifiedX, "
-    "       mtMatches, mtBestOf,                    "
-    "       mt.grID, mtRound, mtMatch, mtChance,    "
-    "       mtDateTime, mtTable,                    "
-    "       mt.mtResA, mt.mtResX,                   "
-    "       mtMatch.mtResA, mtMatch.mtResX,         "
-    "       mtSet.mtResA, mtSet.mtResX,             "
-    "       stA.tmID, stX.tmID,                     "
-    "       xxA.stID, xxX.stID                      "
-    "  FROM MtRec mt                                "
-    "    LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID "
-    "    LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID "
+    "       mt.mtWalkOverA, mt.mtWalkOverX,               "
+    "       mt.mtInjuredA, mt.mtInjuredX,                 "
+    "       mt.mtDisqualifiedA, mt.mtDisqualifiedX,       "
+    "       mtMatches, mtBestOf,                          "
+    "       mt.grID, mtRound, mtMatch, mtChance, mtLeg,   "
+    "       mtDateTime, mtTable,                          "
+    "       mt.mtResA, mt.mtResX,                         "
+    "       mtMatch.mtResA, mtMatch.mtResX,               "
+    "       mtSet.mtResA, mtSet.mtResX,                   "
+    "       stA.tmID, stX.tmID,                           "
+    "       xxA.stID, xxX.stID                            "
+    "  FROM MtRec mt                                      "
+    "    LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID   "
+    "    LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID   "
     "    LEFT OUTER JOIN mtMatch ON mt.mtID = mtMatch.mtID AND mtMatch.mtMS = 0 "
     "    LEFT OUTER JOIN mtSet ON mt.mtID = mtSet.mtID AND  "
     "                    mtSet.mtMS = 0 AND mtSet.mtSet = 0 "
@@ -2772,6 +2800,7 @@ bool  MtStore::BindRec()
   BindCol(++col, &mtEvent.mtRound);
   BindCol(++col, &mtEvent.mtMatch);
   BindCol(++col, &mtEvent.mtChance);
+  BindCol(++col, &mtEvent.mtLeg);
   BindCol(++col, &mtPlace.mtDateTime);
   BindCol(++col, &mtPlace.mtTable);
   BindCol(++col, &mtResA);
