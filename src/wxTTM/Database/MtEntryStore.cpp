@@ -32,7 +32,7 @@ bool  MtEntryStore::CreateView()
   try
   {
     str = "CREATE VIEW MtSingleList                                             "
-          " (mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg, grID,               "
+          " (mtID, mtNr, mtRound, mtMatch, mtChance, grID,                      "
           "  mtDateTime, mtTable, mtResA, mtResX, mtWalkOverA, mtWalkOverX,     "
           "  mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX,          "
           "  plAplID, plAplNr, plApsLast, plApsFirst, plAnaID, plAnaName, plAnaDesc, plAnaRegion, plAplExtID,  "
@@ -59,10 +59,10 @@ bool  MtEntryStore::CreateView()
           "             LEFT OUTER JOIN StSingleList stx ON mt.stx = stx.stID   ";
     tmp->ExecuteUpdate(str);
 
-    str = "CREATE VIEW MtDoubleList                               "
-          " (mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg, grID, "
-          "  mtDateTime, mtTable, mtResA, mtResX,                 "
-          "  mtWalkOverA, mtWalkOverX,                            "
+    str = "CREATE VIEW MtDoubleList                             "
+          " (mtID, mtNr, mtRound, mtMatch, mtChance, grID,      "
+          "  mtDateTime, mtTable, mtResA, mtResX,               "
+          "  mtWalkOverA, mtWalkOverX,                          "
           "  mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX,          "
           "  plAplID, plAplNr, plApsLast, plApsFirst, plAnaID, plAnaName, plAnaDesc, plAnaRegion, plAplExtID, "
           "  plBplID, plBplNr, plBpsLast, plBpsFirst, plBnaID, plBnaName, plBnaDesc, plBnaRegion, plBplExtID, "
@@ -96,7 +96,7 @@ bool  MtEntryStore::CreateView()
     tmp->ExecuteUpdate(str);
 
     str = "CREATE VIEW MtTeamList                                                   "
-          " (mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg, grID,                   "
+          " (mtID, mtNr, mtRound, mtMatch, mtChance, grID,                          "
           "  mtDateTime, mtTable, mtResA, mtResX, mtReverse,                        "
           "  mtWalkOverA, mtWalkOverX,                                              "
           "  mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX,          "
@@ -120,7 +120,7 @@ bool  MtEntryStore::CreateView()
     tmp->ExecuteUpdate(str);
 
     str = "CREATE VIEW MtIndividualList                                         "
-          " (mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg, mtMS, grID,         "
+          " (mtID, mtNr, mtRound, mtMatch, mtChance, mtMS, grID,                "
           "  mtDateTime, mtTable, mtResA, mtResX, mtReverse, nmType,            "
           "  mtWalkOverA, mtWalkOverX,                                          "
           "  mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX,          "
@@ -448,7 +448,7 @@ wxString  MtEntryStore::SelectString() const
     case CP_SINGLE :
       str = "SELECT cp.cpName, cp.cpType, "
             "       gr.grName, gr.grModus, gr.grSize, gr.grWinner, gr.grQualRounds, "
-            "       mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg, "
+            "       mtID, mtNr, mtRound, mtMatch, mtChance, "
             "       mtDateTime, mtTable, "
             "       mtMatches, mtBestOf, mtUmpire, mtUmpire2, mtPrinted, mtChecked,  "
             "       plAplNr, plApsLast, plApsFirst, plAnaName, plAnaDesc, "
@@ -473,7 +473,7 @@ wxString  MtEntryStore::SelectString() const
       // Ohne gibt es einen "protocol error in TDS stream"
       str =  "SELECT cp.cpName, cp.cpType, "
              "       gr.grName, gr.grModus, gr.grSize, gr.grWinner, gr.grQualRounds, "
-             "       mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg,     "
+             "       mtID, mtNr, mtRound, mtMatch, mtChance,            "
              "       mtDateTime, mtTable,                               "
              "       mtMatches, mtBestOf, mtUmpire, mtUmpire2, mtPrinted, mtChecked, "
              "       CAST(plAplNr AS char), plApsLast, plApsFirst, plAnaName, plAnaDesc, "
@@ -497,7 +497,7 @@ wxString  MtEntryStore::SelectString() const
     case CP_TEAM :
       str =  "SELECT cp.cpName, cp.cpType, "
              "       gr.grName, gr.grModus, gr.grSize, gr.grWinner, gr.grQualRounds, "
-             "       mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg,   "
+             "       mtID, mtNr, mtRound, mtMatch, mtChance,          "
              "       mtDateTime, mtTable,                             "
              "       mtMatches, mtBestOf, mtUmpire, mtUmpire2, mtPrinted, mtChecked, "
              "       tmAtmName, tmAtmDesc, tmAnaName, tmAnaDesc,      "
@@ -520,7 +520,7 @@ wxString  MtEntryStore::SelectString() const
     default :
       str =  "SELECT cp.cpName, " // Not cpType, always CP_INDIVIDUAL cp.cpType,
              "       gr.grName, gr.grModus, gr.grSize, gr.grWinner, gr.grQualRounds, "
-             "       mtID, mtNr, mtRound, mtMatch, mtChance, mtLeg,      "
+             "       mtID, mtNr, mtRound, mtMatch, mtChance,             "
              "       mtDateTime, mtTable,                                "
              "       mtMatches, mtBestOf, mtUmpire, mtUmpire2, mtPrinted, mtChecked,  "
              "       plAplNr, plApsLast, plApsFirst, plAnaName, plAnaDesc, "
@@ -561,7 +561,6 @@ bool  MtEntryStore::BindRec()
       BindCol(++col, &mt.mtEvent.mtRound);
       BindCol(++col, &mt.mtEvent.mtMatch);
       BindCol(++col, &mt.mtEvent.mtChance);
-      BindCol(++col, &mt.mtEvent.mtLeg);
       BindCol(++col, &mt.mtPlace.mtDateTime);
       BindCol(++col, &mt.mtPlace.mtTable);
       BindCol(++col, &mt.mtMatches);
@@ -631,7 +630,6 @@ bool  MtEntryStore::BindRec()
       BindCol(++col, &mt.mtEvent.mtRound);
       BindCol(++col, &mt.mtEvent.mtMatch);
       BindCol(++col, &mt.mtEvent.mtChance);
-      BindCol(++col, &mt.mtEvent.mtLeg);
       BindCol(++col, &mt.mtPlace.mtDateTime);
       BindCol(++col, &mt.mtPlace.mtTable);
       BindCol(++col, &mt.mtMatches);
@@ -712,7 +710,6 @@ bool  MtEntryStore::BindRec()
       BindCol(++col, &mt.mtEvent.mtRound);
       BindCol(++col, &mt.mtEvent.mtMatch);
       BindCol(++col, &mt.mtEvent.mtChance);
-      BindCol(++col, &mt.mtEvent.mtLeg);
       BindCol(++col, &mt.mtPlace.mtDateTime);
       BindCol(++col, &mt.mtPlace.mtTable);
       BindCol(++col, &mt.mtMatches);
@@ -781,7 +778,6 @@ bool  MtEntryStore::BindRec()
       BindCol(++col, &mt.mtEvent.mtRound);
       BindCol(++col, &mt.mtEvent.mtMatch);
       BindCol(++col, &mt.mtEvent.mtChance);
-      BindCol(++col, &mt.mtEvent.mtLeg);
       BindCol(++col, &mt.mtPlace.mtDateTime);
       BindCol(++col, &mt.mtPlace.mtTable);
       BindCol(++col, &mt.mtMatches);

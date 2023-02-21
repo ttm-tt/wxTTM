@@ -415,8 +415,8 @@ void  CMtListView::OnChangeRound()
     MtEntry mtEntry(mt, GetTeamA(mt), GetTeamX(mt));
 
     m_listCtrl->AddListItem(new MtItem(mtEntry, showTimes));
-
   }
+
   m_listCtrl->SortItems();
 
   m_listCtrl->Thaw();
@@ -472,20 +472,17 @@ void CMtListView::OnResultTime(wxCommandEvent &)
     // Spieler / Teams
     m_listCtrl->InsertColumn(1, strColumn, wxALIGN_CENTER);
 
-    // Leg
-    m_listCtrl->InsertColumn(2, _("Leg"), wxALIGN_LEFT);
-
     // Datum
-    m_listCtrl->InsertColumn(3, _("Date"), wxALIGN_LEFT, GetTextExtent("00.00.00").GetWidth() + 2 * cW);
+    m_listCtrl->InsertColumn(2, _("Date"), wxALIGN_LEFT, GetTextExtent("00.00.00").GetWidth() + 2 * cW);
 
     // Zeit
-    m_listCtrl->InsertColumn(4, _("Time"), wxALIGN_LEFT,  GetTextExtent("00:00").GetWidth() + 2 * cW);
+    m_listCtrl->InsertColumn(3, _("Time"), wxALIGN_LEFT,  GetTextExtent("00:00").GetWidth() + 2 * cW);
 
     // Tisch
-    m_listCtrl->InsertColumn(5, _("Table"), wxALIGN_LEFT);
+    m_listCtrl->InsertColumn(4, _("Table"), wxALIGN_LEFT);
 
     // SchiRi
-    m_listCtrl->InsertColumn(6, _("Umpire"), wxALIGN_LEFT);
+    m_listCtrl->InsertColumn(5, _("Umpire"), wxALIGN_LEFT);
   }
   else
   {
@@ -495,11 +492,8 @@ void CMtListView::OnResultTime(wxCommandEvent &)
     // Spieler / Teams
     m_listCtrl->InsertColumn(1, strColumn, wxALIGN_CENTER);
 
-    // Leg
-    m_listCtrl->InsertColumn(2, _("Leg"), wxALIGN_LEFT);
-
     // Ergebnis
-    m_listCtrl->InsertColumn(3, _("Result"), wxALIGN_LEFT);
+    m_listCtrl->InsertColumn(2, _("Result"), wxALIGN_LEFT);
   }
 
   for (int idx = m_listCtrl->GetItemCount(); idx--; )

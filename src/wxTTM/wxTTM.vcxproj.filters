@@ -554,9 +554,6 @@
     <ClCompile Include="Dialogs\NmEditXTS.cpp">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClCompile>
-    <ClCompile Include="Dialogs\MtLeg.cpp">
-      <Filter>Source Files\Dialogs\Table</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -947,9 +944,6 @@
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClInclude>
     <ClInclude Include="Dialogs\NmEditXTS.h">
-      <Filter>Source Files\Dialogs\Table</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialogs\MtLeg.h">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClInclude>
   </ItemGroup>

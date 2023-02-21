@@ -118,13 +118,6 @@ void MtItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       break;
 
     case 2 :
-      if (mt.mt.mtEvent.mtLeg)
-        DrawLong(pDC, rc, mt.mt.mtEvent.mtLeg);
-      else
-        DrawString(pDC, rc, "");
-      break;
-
-    case 3 :
       if (showTimes)
         DrawString(pDC, rc, date);
       else
@@ -136,17 +129,17 @@ void MtItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       }
       break;
 
-    case 4 :
+    case 3 :
       if (showTimes)
         DrawString(pDC, rc, time);
       break;
 
-    case 5 :
+    case 4 :
       if (showTimes && mt.mt.mtPlace.mtTable)
         DrawLong(pDC, rc, mt.mt.mtPlace.mtTable);
       break;
 
-    case 6 :
+    case 5 :
       if (showTimes && mt.mt.mtUmpire)
         DrawLong(pDC, rc, mt.mt.mtUmpire);
       break;
