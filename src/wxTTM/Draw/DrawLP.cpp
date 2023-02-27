@@ -305,6 +305,10 @@ bool DrawLP::ReadDirectEntries()
   rk.SelectByCp(cp);
   while (rk.Next())
   {
+    // If there is no fromStage all teams are DE
+    if (fromStage.IsEmpty())
+      rk.rk.rkDirectEntry = true;
+
     // Only direct entries
     if (!rk.rk.rkDirectEntry)
       continue;
@@ -405,6 +409,14 @@ bool DrawLP::ReadRanking()
     // Int'l ranking used, players not finishing first will be replaced with winners
     RkEntryStore rk(connPtr);
 
+    // Do we have intl rank
+    bool haveRank = false;
+    rk.SelectByCp(cp);
+    while (rk.Next() && !haveRank)
+      haveRank |= (rk.rk.rkIntlRank != 0);
+
+    rk.Close();
+
     rk.SelectByCp(cp);
     while (rk.Next())
     {
@@ -412,9 +424,13 @@ bool DrawLP::ReadRanking()
       // If we don't have DE and do not use Groups, then take WR.
       // Or we have DE and the top seeds are DE and we don't care about QU
       //
-      // But: we ignore entries without rank
-      if (rk.rk.rkIntlRank == 0)
+      // We ignore entries without intl rank if there are any with intl rank
+      if (haveRank && rk.rk.rkIntlRank == 0)
         continue;
+
+      // If there is no fromStage all teams are DE
+      if (fromStage.IsEmpty())
+        rk.rk.rkDirectEntry = true;
 
       DrawItemTeam *itemTMP = new DrawItemTeam(rk);
 
