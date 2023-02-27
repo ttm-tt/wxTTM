@@ -1188,9 +1188,9 @@ bool DrawLP::DrawSection(int stg, int sec)
         if (rkChoice == None)
           continue;
 
-        // Not a bye,not a DE, but no or too low intl rank
+        // Not a bye and no or too low intl rank
         // We need the total count here, nut just in this sec
-        if (!itemTM->IsBye() && !itemTM->rkDirectEntry && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count()))
+        if (!itemTM->IsBye() && (!itemTM->rkIntlRank || itemTM->rkIntlRank > listBY.Count()))
           continue;
 
         colvec[j] = colMapping[itemTM];
@@ -1210,18 +1210,20 @@ bool DrawLP::DrawSection(int stg, int sec)
 
       if (byes < de)
       {
-        // Add the lowest ranked 2nd to play against DE, i.e. as if they were byes
+        // Add the lowest ranked team to play against DE, i.e. as if they were byes
         for (DrawListTeam::iterator it = listSC.begin(); it != listSC.end(); it++)
         {
           DrawItemTeam *itemTM = (DrawItemTeam *) (*it);
 
+          // No byes
           if (itemTM->IsBye())
             continue;
             
           // total is the number of real entries. They are ranked 1..n, so total is also the highest rank position
-          // Lowest ranked who has to play against a DE
-          // We need the total number of byes here, not only number is this sec
-          if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - (totalDE - listBY.Count()))
+          // Lowest ranked who have to play against a DE
+          // cout is the number of non-byes added before
+          // We need the total number of byes here, not only number in this sec
+          if (itemTM->rkIntlRank && itemTM->rkIntlRank <= total - (count - listBY.Count()))
             continue;
 
           colvec[j] = colMapping[itemTM];
