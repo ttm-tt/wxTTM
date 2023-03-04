@@ -145,7 +145,7 @@
         "     SET @id = NULL; \n"
         
         "   --- Update stPos \n"
-        "   IF @id <> NULL \n"
+        "   IF @id IS NOT NULL \n"
         "   BEGIN \n"
         "   ---   At present time: KO AND Play Off only \n"
         "   ---   Round Robin would need a calculated table \n"
