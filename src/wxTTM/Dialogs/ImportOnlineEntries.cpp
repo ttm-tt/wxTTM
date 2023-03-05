@@ -25,6 +25,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <utility>
 #include <algorithm>
 
 IMPLEMENT_DYNAMIC_CLASS(CImportOnlineEntries, wxWizard)
@@ -147,6 +148,7 @@ struct Registration {
   int mixedID;
   int mixedPartnerID;
   int teamID;
+  int teamNo;
   bool cancelled;
   bool singleCancelled;
   bool doubleCancelled;
@@ -654,7 +656,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   }
 
   std::map<int, Registration> ltMap;
-  std::map<int, std::set<int>> tmMap;
+  std::map<int, std::set<std::pair<int, int>>> tmMap;
                 
   for (int idx = 0; idx < players.size(); idx++)
   {
@@ -680,6 +682,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     lt.mixedID = GetInt(participant["mixed_id"]);
     lt.mixedPartnerID = GetInt(participant["mixed_partner_id"]);
     lt.teamID = GetInt(participant["team_id"]);
+    lt.teamNo = GetInt(participant["team_no"]);
     lt.cancelled = (bool) participant["cancelled"];
     lt.singleCancelled = (bool) participant["single_cancelled"];
     lt.doubleCancelled = (bool) participant["double_cancelled"];
@@ -692,7 +695,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     ltMap[lt.id] = lt;
 
     if (lt.teamID && !lt.teamCancelled)
-      tmMap[lt.teamID].insert(plMap[lt.playerID].naID);
+      tmMap[lt.teamID].insert(std::make_pair(plMap[lt.playerID].naID, lt.teamNo));
   }
 
   // Write Competitions
@@ -819,16 +822,25 @@ bool CImportOnlineEntries::ImportThreadRead()
   // Teams
   lttFile.Write("# Team Name;Event;Team Desc;Association;National Ranking;International Ranking\n");
             
-  for (std::map<int, std::set<int>>::iterator it = tmMap.begin(); it != tmMap.end(); it++)
+  for (std::map<int, std::set<std::pair<int, int>>>::iterator it = tmMap.begin(); it != tmMap.end(); it++)
   {
     int id = (*it).first;
-    for (std::set<int>::iterator it2 = (*it).second.begin(); it2 != (*it).second.end(); it2++)
+    for (std::set<std::pair<int, int>>::iterator it2 = (*it).second.begin(); it2 != (*it).second.end(); it2++)
     {
-      int id2 = (*it2);
+      int id2 = (*it2).first;
+      int no  = (*it2).second;
+      wxString tmName = naMap[id2].name;
+
+      if (no > 0)
+        tmName += no;
+      wxString tmDesc = naMap[id2].description;
+      if (no > 0)
+        tmDesc += " " + no;
+
       wxString line;
-      line << naMap[id2].name << ";"
+      line << tmName << ";"
            << cpMap[id].name << ";"
-           << naMap[id2].description << ";"
+           << tmDesc << ";"
            << naMap[id2].name << ";"
            << "0" << ";"
            << "0" << "\n";
