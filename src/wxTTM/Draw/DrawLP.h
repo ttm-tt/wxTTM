@@ -49,6 +49,10 @@ class DrawLP
     DrawListNation listNA;             // Liste der Nationen
     DrawListTeam   listIRK;            // Liste der Spieler mit Int'l Ranking
     DrawListNation listNRK;            // Liste der Spieler mit Nat'l Ranking
+    
+    // Mapping von ID auf Name von Gruppe / Nation
+    std::map<long, wxString, std::less<long> > grList;  // Map grID to grName
+    std::map<long, wxString, std::less<long> > naList;  // Map naID to naName
 
     std::map<long, NaRec> idMapping;   // Map Verband zu Regionalverband
 

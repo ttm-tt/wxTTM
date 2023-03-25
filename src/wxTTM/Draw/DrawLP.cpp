@@ -40,10 +40,6 @@
 #include <map>
 #include <string>
 
-// Mapping von ID auf Name von Gruppe / Nation
-static std::map<long, wxString, std::less<long> > grList;
-static std::map<long, wxString, std::less<long> > naList;
-
 #ifdef DEBUG  
     static FILE *file;
 # endif
@@ -453,6 +449,10 @@ bool DrawLP::ReadRanking()
       rk.SelectByCp(cp);
       while (rk.Next())
       {
+        // Skip QU, we can't filter for DE in SQL yet
+        if (!rk.rk.rkDirectEntry)
+          continue;
+
         DrawItemTeam *itemTMP = new DrawItemTeam(rk);
         listTMP.AddItem(itemTMP);        
       }
@@ -1250,6 +1250,7 @@ bool DrawLP::DrawSection(int stg, int sec)
         }
       }
 
+      // Now make this, top rank vs byes and low rank, a rule
       if (count == byes)
       {
         add_constraintex(lp, j, rowvec, colvec, EQ, 0);
