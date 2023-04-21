@@ -832,10 +832,10 @@ bool CImportOnlineEntries::ImportThreadRead()
       wxString tmName = naMap[id2].name;
 
       if (no > 0)
-        tmName += no;
+        tmName += wxString::Format("%d", no);
       wxString tmDesc = naMap[id2].description;
       if (no > 0)
-        tmDesc += " " + no;
+        tmDesc += " " + wxString::Format("%d", no);
 
       wxString line;
       line << tmName << ";"
@@ -947,7 +947,7 @@ bool CImportOnlineEntries::ImportThreadRead()
 
       line << plMap[lt.playerID].startNr << ";"
            << cpMap[lt.teamID].name << ";"
-           << naMap[plMap[lt.playerID].naID].name << ";"
+           << naMap[plMap[lt.playerID].naID].name + (lt.teamNo > 0 ? wxString::Format("%d", lt.teamNo) : wxString::Format("")) << ";"
            << "0" << ";"
            << "0" << "\n";
                     
