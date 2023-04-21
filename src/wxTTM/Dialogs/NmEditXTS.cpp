@@ -68,7 +68,7 @@ bool  CNmEditXTS::Edit(va_list vaList)
 {
   long mtID = va_arg(vaList, long);
   long tmID = va_arg(vaList, long);
-  int  ax   = va_arg(vaList, int);
+  int  ax   = va_arg(vaList, int) > 0 ? 1 : 0;
 
   mt.SelectById(mtID);
   mt.Next();

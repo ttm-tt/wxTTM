@@ -853,6 +853,11 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		{wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1")},
 		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1")}
 	};
+	const wxChar *xtsa[][8] = 
+	{
+		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
+		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1"), wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
+	};
 
 	// Insgesamt gibt es ??? Gruppen
 	CRect  regGroup;
@@ -1086,6 +1091,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
     
 		if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = xts[0][singles];
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = xtsa[0][singles];
 		else if (sySingles < 4)
 			str = alpha[0][singles];
 		else
@@ -1095,6 +1102,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
 		if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = xts[1][singles];
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = xtsa[1][singles];
 		else if (sySingles < 4)
 			str = alpha[1][singles];
 		else
@@ -1130,6 +1139,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
     
  		if (wxStrcmp(sy.syName, "OTS") == 0)
  			str = "C\nA/B";
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = "A-B\nA-G";
 		else if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = "A-B1\nA-G1";
 		else if (syDoubles > 1)
@@ -1141,6 +1152,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
  		if (wxStrcmp(sy.syName, "OTS") == 0)
  			str = "Z\nX/Y";
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = "X-B\nX-G";
 		else if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = "X-B1\nX-G1";
 		else if (syDoubles > 1)      
@@ -1410,6 +1423,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			{
 				strA = xts[0][mtmt.nmAnmNr - 1];
 			}
+			else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			{
+				strA = xtsa[0][mtmt.nmAnmNr - 1];
+			}
 			else if (sySingles < 4)
 			{
         if (mtmt.nmAnmNr > 0)
@@ -1434,6 +1451,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			else if (wxStrcmp(sy.syName, "XTS") == 0)
 			{
 				strX = xts[1][mtmt.nmXnmNr - 1];
+			}
+			else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			{
+				strX = xtsa[1][mtmt.nmXnmNr - 1];
 			}
 			else if (sySingles < 4)
 			{
@@ -1460,6 +1481,11 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			{
 				strA = "A-B1\nA-G1";
 				strX = "X-B1\nX-G1";
+			}
+			else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			{
+				strA = "A-B\nA-G";
+				strX = "X-B\nX-G";
 			}
       else if (syDoubles > 1)
       {
