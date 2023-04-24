@@ -855,8 +855,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	};
 	const wxChar *xtsa[][8] = 
 	{
-		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
-		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1"), wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
+		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
+		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
 	};
 
 	// Insgesamt gibt es ??? Gruppen
