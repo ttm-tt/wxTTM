@@ -107,7 +107,7 @@ bool  CNmEditXTSA::Edit(va_list vaList)
   if (syDoubles)
     nmList->SetItemHeight(1.5);
 
-	const wxChar *xts[][4] = 
+	const wxChar *xtsa[][4] = 
 	{
 		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
 		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
@@ -128,7 +128,7 @@ bool  CNmEditXTSA::Edit(va_list vaList)
 
   for (int nmSingle = 1; nmSingle <= sySingles; nmSingle++)
   {
-    str = xts[ax ? 1 : 0][nmSingle - 1];
+    str = xtsa[ax ? 1 : 0][nmSingle - 1];
 
     NmItem *itemPtr = new NmItem(str, false);
     itemPtr->nm.team.cpType = CP_SINGLE;
