@@ -307,6 +307,7 @@ bool  SyStore::CreateTable()
   // AddOlympicTeamSystem2Players();
   AddECTeamSystem();
   AddMixedTeamSystem();
+  AddMixedTeamSystemA();
 
   connPtr->Commit();
 
@@ -896,6 +897,59 @@ bool SyStore::AddMixedTeamSystem()
 	sy.syList[4].syType = CP_SINGLE;
 	sy.syList[4].syPlayerA = 4;
 	sy.syList[4].syPlayerX = 4;
+
+  return sy.InsertOrUpdate();
+}
+
+ 
+bool SyStore::AddMixedTeamSystemA()
+{
+  SyStore sy;
+
+	wxStrcpy((wxChar *) sy.syName, "XTSA");
+	wxStrcpy((wxChar *) sy.syDesc, "Mixed Team System A-Final");
+	sy.syMatches = 9;
+	sy.sySingles = 4;
+	sy.syDoubles = 1;
+  sy.syComplete = 0;
+
+  sy.syList = new SyList[9];
+
+	sy.syList[0].syType = CP_DOUBLE;
+	sy.syList[0].syPlayerA = 1;
+	sy.syList[0].syPlayerX = 1;
+
+	sy.syList[1].syType = CP_SINGLE;
+	sy.syList[1].syPlayerA = 1;
+	sy.syList[1].syPlayerX = 3;
+
+	sy.syList[2].syType = CP_SINGLE;
+	sy.syList[2].syPlayerA = 2;
+	sy.syList[2].syPlayerX = 4;
+
+	sy.syList[3].syType = CP_SINGLE;
+	sy.syList[3].syPlayerA = 3;
+	sy.syList[3].syPlayerX = 1;
+
+	sy.syList[4].syType = CP_SINGLE;
+	sy.syList[4].syPlayerA = 4;
+	sy.syList[4].syPlayerX = 2;
+
+	sy.syList[5].syType = CP_SINGLE;
+	sy.syList[5].syPlayerA = 1;
+	sy.syList[5].syPlayerX = 1;
+
+	sy.syList[6].syType = CP_SINGLE;
+	sy.syList[6].syPlayerA = 2;
+	sy.syList[6].syPlayerX = 2;
+
+	sy.syList[7].syType = CP_SINGLE;
+	sy.syList[7].syPlayerA = 3;
+	sy.syList[7].syPlayerX = 3;
+
+	sy.syList[8].syType = CP_SINGLE;
+	sy.syList[8].syPlayerA = 4;
+	sy.syList[8].syPlayerX = 4;
 
   return sy.InsertOrUpdate();
 }
