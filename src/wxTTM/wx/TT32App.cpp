@@ -1678,9 +1678,10 @@ void CTT32App::RestoreDatabase()
   wxString name = GetDatabase() + ".bak";
   wxFileName tmpName(GetPath(), name);
   tmpName.Normalize();
+  wxString path = tmpName.GetPath();
   
   wxFileDialog fileDlg(
-      m_pMainWnd, _("Backup Database"), GetPath(), name, 
+      m_pMainWnd, _("Restore Database"), path, name, 
       "Backup Files (*.bak)|*.bak|All Files (*.*)|*.*||", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     
 
@@ -1691,7 +1692,7 @@ void CTT32App::RestoreDatabase()
 
   if (name != tmpName.GetFullPath())
   {
-    tmpName = wxFileName(GetPath(), wxString("tmp-") + fileDlg.GetFilename());
+    tmpName = wxFileName(path, wxString("tmp-") + fileDlg.GetFilename());
     tmpName.Normalize();
 
     wxCopyFile(name, tmpName.GetFullPath());
