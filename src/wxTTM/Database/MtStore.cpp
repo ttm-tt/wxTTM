@@ -3422,19 +3422,19 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
   if (!append)
   {
     os.AddLine(
-      "TourID; Level; IDA; IRGA; IDB; ORGB; IDX; ORGX; IDY; ORGY; "
-      "Event; Stage; Group; Group No; Round; Seq; Format; Desc; "
-      "Game 1 Points A;Game 1 Points X;"
-      "Game 2 Points A;Game 2 Points X;"
-      "Game 3 Points A;Game 3 Points X;"
-      "Game 4 Points A;Game 4 Points X;"
-      "Game 5 Points A;Game 5 Points X;"
-      "Game 6 Points A;Game 6 Points X;"
-      "Game 7 Points A;Game 7 Points X;"
-      "Result A;Result X;"
-      "Winner; Winner Doubles; IRM; Kind; "
-      "Year; Date; Time; Table; "
-      "Group Rank A; GroupRank X; Final Rank A; Final Rank X; Seeded A; Seeded X;"
+      "IDA; IRGA; IDB; ORGB; IDX; ORGX; IDY; ORGY; "
+      "EVENT; STAGE; GROUP; ROUND; DESC; "
+      "GAMEA1;GAMEX1;"
+      "GAMEA2;GAMEX2;"
+      "GAMEA3;GAMEX3;"
+      "GAMEA4;GAMEX4;"
+      "GAMEA5;GAMEX5;"
+      "GAMEA6;GAMEX6;"
+      "GAMEA7;GAMEX7;"
+      "RESA;RESX;"
+      "WINNER; WINNER_DOUBLES; IRM; KIND; "
+      "YEAR; DATE; TIME; TABLE; "
+      "GROUPRANKA; GROUPRANKX; FINALRANKA; FINALRANKX;"
     );
   }
 
@@ -3442,7 +3442,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
   {
     long grID = (*it);
 
-    // Ich brauche die "Gruppennummer", das ist die wievielte Gruppe ist dieses
+    // Ich brauche die "Gruppennummer", das ist "die wievielte Gruppe ist dieses"
     long seq = 0;
 
     try 
@@ -3473,6 +3473,9 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 
     wxString sql;
     wxString teamSql;
+    wxString event = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cpYear))), CASE cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'X' WHEN 4 THEN 'T' END) ";
+    wxString round = "IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound))";
+    wxString desc = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', cpYear - YEAR(mtDateTime))), ' ', CASE cpSex WHEN 1 THEN 'Men\'s' WHEN 2 THEN 'Women\'s' ELSE 'Mixed' END, ' ', CASE cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
 
     std::map<long, wxString> teamMatchMap;
 
@@ -3481,19 +3484,18 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       sql =
       "SELECT "
       "mt.mtID, "
-      "NULL, NULL, plAplExtID, plAnaName, NULL, NULL, plXplExtID, plXnaName, NULL, NULL, "
-      "cpName, grStage, grName, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), mtMatch, NULL, "
-      "CONCAT(cpDesc, ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+      "plAplExtID, plAnaName, NULL, NULL, plXplExtID, plXnaName, NULL, NULL, "
+      + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
+      "CONCAT(" + desc + ", IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
       "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
       "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
       "mt.mtResA, mt.mtResX, "
       "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), NULL, "
       "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-      "'Singles', "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'yyyy-MM-dd'), FORMAT(mtDateTime, 'hh\\:mm'), mt.mtTable, "
+      "'SINGLES', "
+      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
       "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
-      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1), "
-      "stA.stSeeded, stX.stSeeded "
+      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
       "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
       "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
       "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
@@ -3512,19 +3514,18 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       sql =
       "SELECT "
       "mt.mtID, "
-      "NULL, NULL, plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
-      "cpName, grStage, grName, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), mtMatch, NULL, "
-      "CONCAT(cpDesc, ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+      "plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
+      + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
+      "CONCAT(" + desc + ", ' ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
       "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
       "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
       "mt.mtResA, mt.mtResX, "
       "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
       "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-      "CASE cpType WHEN 2 THEN 'Doubles' ELSE 'Mixed' END, "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'yyyy-MM-dd'), FORMAT(mtDateTime, 'hh\\:mm'), mt.mtTable, "
+      "CASE cpType WHEN 2 THEN 'DOUBLES' ELSE 'MIXED' END, "
+      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
       "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
-      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1), "
-      "stA.stSeeded, stX.stSeeded "
+      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
       "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cpType = 3) "
       "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
       "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
@@ -3543,19 +3544,18 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       sql =
         "SELECT "
         "mt.mtID, "
-        "NULL, NULL, plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
-        "cpName, grStage, grName, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), 10 * mtMatch + mt.mtMS, NULL, "
+        "plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
+        + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
         "CONCAT('Match ', mt.mtMatch, ' M', mt.mtMS), "
         "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
         "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
         "mt.mtResA, mt.mtResX, "
         "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
         "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-        "CASE WHEN nmType = 1 THEN 'Singles' ELSE 'Doubles' END, "
-        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'yyyy-MM-dd'), FORMAT(mtDateTime, 'hh\\:mm'), mt.mtTable, "
+        "CASE nmType WHEN 1 THEN 'SINGLES' ELSE 'DOUBLES' END, "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
         "NULL, NULL, "
-        "NULL, NULL, "
-        "NULL, NULL "
+        "NULL, NULL  "
         "FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
         "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
         "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
@@ -3572,11 +3572,10 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       teamSql =
         "SELECT "
         "mt.mtID, "
-        "NULL, NULL, "
         "CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmAnaName, FORMAT(mt.tmAtmID, '0000')), tmAnaName, NULL, NULL, "
         "CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmXnaName, FORMAT(mt.tmXtmID, '0000')), tmXnaName, NULL, NULL, "
-        "cpName, grStage, grName, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), mtMatch, NULL, "
-        "CONCAT(cpDesc, ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+        + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
+        "CONCAT(" + event + ", ' ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
         "IIF(mt.mtResA + mt.mtResX < 1, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 1 AND MtMatch.mtResA > MtMatch.mtResX) AS VARCHAR(2))), "
         "IIF(mt.mtResA + mt.mtResX < 1, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 1 AND MtMatch.mtResA < MtMatch.mtResX) AS VARCHAR(2))), "
         "IIF(mt.mtResA + mt.mtResX < 2, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 2 AND MtMatch.mtResA > MtMatch.mtResX) AS VARCHAR(2))), "
@@ -3594,11 +3593,10 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "mt.mtResA, mt.mtResX, "
         "IIF(mt.mtResA > mt.mtResX, CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmAnaName, FORMAT(mt.tmAtmID, '0000')), CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmXnaName, FORMAT(mt.tmXtmID, '0000'))), NULL, "
         "CASE WHEN mt.mtWalkOverA > 0 OR mt.mtWalkOverX > 0 THEN 'WO' WHEN mt.mtInjuredA > 0 OR mt.mtInjuredX > 0 THEN 'INJ' WHEN mt.mtDisqualifiedA > 0 OR mt.mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-        "'Team', "
-        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'yyyy-MM-dd'), FORMAT(mtDateTime, 'hh\\:mm'), mt.mtTable, "
+        "'TEAM', "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
         "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
-        "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1), "
-        "NULL, NULL " //  "stA.stSeeded, stX.stSeeded "
+        "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
         "FROM MtTeamList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
         "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
         "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
