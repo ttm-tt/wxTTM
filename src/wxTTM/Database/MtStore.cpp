@@ -3422,7 +3422,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
   if (!append)
   {
     os.AddLine(
-      "IDA; IRGA; IDB; ORGB; IDX; ORGX; IDY; ORGY; "
+      "IDA; ORGA; IDB; ORGB; IDX; ORGX; IDY; ORGY; "
       "EVENT; STAGE; GROUP; ROUND; DESC; "
       "GAMEA1;GAMEX1;"
       "GAMEA2;GAMEX2;"
@@ -3475,7 +3475,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
     wxString teamSql;
     wxString event = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cpYear))), CASE cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'X' WHEN 4 THEN 'T' END) ";
     wxString round = "IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound))";
-    wxString desc = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', cpYear - YEAR(mtDateTime))), ' ', CASE cpSex WHEN 1 THEN 'Men\'s' WHEN 2 THEN 'Women\'s' ELSE 'Mixed' END, ' ', CASE cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
+    wxString desc = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cpYear))), ' ', CASE cpSex WHEN 1 THEN 'Me\'\'s' WHEN 2 THEN 'Women\'\'s' ELSE 'Mixed' END, ' ', CASE cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
 
     std::map<long, wxString> teamMatchMap;
 
