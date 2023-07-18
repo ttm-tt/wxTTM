@@ -1446,6 +1446,7 @@ void COvList::OnPopupTimer(wxTimerEvent &evt)
       wxTRANSLATE("Error"),
       wxTRANSLATE("Incomplete"),
       wxTRANSLATE("Not Printed"),
+      wxTRANSLATE("Missing"),
       wxTRANSLATE("Printed"),
       wxTRANSLATE("Finished"),
       wxTRANSLATE("Checked")

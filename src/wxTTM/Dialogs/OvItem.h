@@ -22,6 +22,7 @@ class  OvItem : public ListItem
       OVERROR = 0,
       OVUNKNOWN,
       OVNOTPRINTED,
+      OVMISSING,     // Printed, but nomination not complete (e.g. doubles still missing)
       OVPRINTED,
       OVFINISHED,
       OVCHECKED,
@@ -91,6 +92,9 @@ class  OvItem : public ListItem
 
         case OVNOTPRINTED :
           return "NotPrinted";
+
+        case OVMISSING :
+          return "Missing";
 
         case OVPRINTED :
           return "Printed";

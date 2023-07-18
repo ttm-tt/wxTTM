@@ -173,7 +173,8 @@ struct  MtRec
   long   xxAstID;
   long   xxXstID;
 
-  bool   mtComplete;
+  // Should play all matches in team event (copy of syComplete)
+  bool   mtComplete;  
 
   MtRec();
   MtRec(const MtRec &rec);

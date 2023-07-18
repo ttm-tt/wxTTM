@@ -15,7 +15,10 @@ struct  TmRec;
 
 struct  MtListRec : public MtRec
 {
-  short  mtSet;
+  short    mtSet;
+  
+  // Count missing nominations, e.g. doubles in cadet teams
+  short    mtMissing;
 
   short    cpType;
   short    grModus;
@@ -76,7 +79,7 @@ class  MtListStore : public StoreObj, public MtListRec
 
     // Return tuples of grID and mtRound, and mtDateTime
     std::list<std::tuple<long, short, timestamp>> GetFinishedRounds(Finished what);
-    
+
   private:
     wxString  SelectString() const;
     bool  BindRec();

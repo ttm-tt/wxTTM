@@ -15,6 +15,7 @@ wxColor  OvItem::defaultColors[][2] = {
   {wxColor(0, 0, 0),       wxColor(255, 255, 255)},   // Error
   {wxColor(255, 0, 0),     wxColor(0, 0, 0)},         // Unknown
   {wxColor(255, 255, 0),   wxColor(0, 0, 0)},         // Not printed
+  {wxColor(255, 191,0),    wxColor(0, 0, 0) },        // Missing
   {wxColor(0, 255, 0),     wxColor(0, 0, 0)},         // Printed
   // {wxColor(173, 216, 230), wxColor(0, 0, 0)},         // Finished 
   // {wxColor(121, 188, 255), wxColor(0, 0, 0)},         // Finished 
@@ -24,6 +25,7 @@ wxColor  OvItem::defaultColors[][2] = {
 
 
 wxColor  OvItem::colors[][2] = {
+  {wxNullColour, wxNullColour},
   {wxNullColour, wxNullColour},
   {wxNullColour, wxNullColour},
   {wxNullColour, wxNullColour},
@@ -102,6 +104,8 @@ void  OvItem::SetValue(const MtListRec &rec)
     ovType = OVUNKNOWN;
   else if (!mt.mtScorePrinted)
     ovType = OVNOTPRINTED;
+  else if (mt.mtScorePrinted && !mt.mtScoreChecked && mt.cpType == 4 && mt.mtMissing > 0)
+    ovType = OVMISSING;
   else
     ovType = OVPRINTED;
 }

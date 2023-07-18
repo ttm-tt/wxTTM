@@ -119,6 +119,7 @@ bool  MtListStore::Next()
 
   // When all team matches have to be played and we are in a RR group, set the flag in MtRec
   mtComplete = syComplete && cpType == 4 && grModus == 1;
+
   return true;
 }
 
@@ -127,8 +128,8 @@ bool  MtListStore::Next()
 bool  MtListStore::SelectById(long id)
 {
   wxString  str = SelectString();
-  str += "WHERE (mtMS IS NULL OR mtMS = 0) "
-         "  AND (mtSet IS NULL OR mtSet = 0) "  
+  str += "WHERE ISNULL(mtMS, 0) = 0 "
+         "  AND ISNULL(mtSet, 0) = 0 "  
          "  AND mt.mtID = " + ltostr(id);
 
   try
@@ -152,9 +153,9 @@ bool  MtListStore::SelectById(long id)
 bool  MtListStore::SelectByNr(long nr)
 {
   wxString  str = SelectString();
-  str += "WHERE (mtMS IS NULL OR mtMS = 0) "
-         "  AND (mtSet IS NULL OR mtSet = 0) "
-         "  AND mt.mtNr = " + ltostr(nr);
+  str += "WHERE ISNULL(mtMS, 0) = 0 "
+    "  AND ISNULL(mtSet, 0) = 0 "
+    "  AND mt.mtNr = " + ltostr(nr);
 
   try
   {
@@ -177,9 +178,10 @@ bool  MtListStore::SelectByNr(long nr)
 bool  MtListStore::SelectByGr(const GrRec &gr)
 {
   wxString  str = SelectString();
-  str += "WHERE (mtMS IS NULL OR mtMS = 0) "
-         "  AND (mtSet IS NULL OR mtSet = 0) "
-         "  AND mt.grID = " + ltostr(gr.grID);
+  str += 
+    "WHERE ISNULL(mtMS, 0) = 0 "
+    "  AND ISNULL(mtSet, 0) = 0 "
+    "  AND mt.grID = " + ltostr(gr.grID);
 
   try
   {
@@ -201,11 +203,12 @@ bool  MtListStore::SelectByGr(const GrRec &gr)
 bool  MtListStore::SelectByGrTm(const GrRec &gr, const TmRec &tm)
 {
   wxString  str = SelectString();
-  str += "WHERE (mtMS IS NULL OR mtMS = 0) "
-         "  AND (mtSet IS NULL OR mtSet = 0) "
-         "  AND mt.grID = " + ltostr(gr.grID) + " "
-         "  AND (mt.tmA = " + ltostr(tm.tmID) + " OR mt.tmX = " + ltostr(tm.tmID) + ") "
-         "ORDER BY mtDateTime, mtTable, mtRound, mtMatch";
+  str += 
+    "WHERE ISNULL(mtMS, 0) = 0 "
+    "  AND ISNULL(mtSet, 0) = 0 "
+    "  AND mt.grID = " + ltostr(gr.grID) + " "
+    "  AND (mt.tmA = " + ltostr(tm.tmID) + " OR mt.tmX = " + ltostr(tm.tmID) + ") "
+    "ORDER BY mtDateTime, mtTable, mtRound, mtMatch";
 
   try
   {
@@ -228,10 +231,10 @@ bool  MtListStore::SelectByRound(const GrRec &gr, short round)
 {
   wxString  str = SelectString();
   str += 
-      " WHERE (mtMS IS NULL OR mtMS = 0) "
-      " AND (mtSet IS NULL OR mtSet = 0) "
-      " AND mt.grID = " + ltostr(gr.grID) +
-      " AND mt.mtRound = " + ltostr(round) +
+      "WHERE ISNULL(mtMS, 0) = 0 "
+      "  AND ISNULL(mtSet, 0) = 0 "
+      "  AND mt.grID = " + ltostr(gr.grID) +
+      "  AND mt.mtRound = " + ltostr(round) +
       " ORDER BY mtMatch ";
 
   try
@@ -256,12 +259,14 @@ bool  MtListStore::SelectByEvent(const MtEvent &event)
 {
   // XXX: PreparedStatement
   wxString  str = SelectString();
-  str += " WHERE mt.grID  = " + ltostr(event.grID) +
-         "   AND mtRound  = " + ltostr(event.mtRound) + 
-         "   AND mtMatch  = " + ltostr(event.mtMatch) +
-         "   AND mtChance = " + ltostr(event.mtChance) +
-         "   AND (mtMS IS NULL OR mtMS = 0) "+
-         "   AND (mtSet IS NULL OR mtSet = 0)";
+  str +=
+    " WHERE mt.grID  = " + ltostr(event.grID) +
+    "   AND mtRound  = " + ltostr(event.mtRound) +
+    "   AND mtMatch  = " + ltostr(event.mtMatch) +
+    "   AND mtChance = " + ltostr(event.mtChance) +
+    "   AND ISNULL(mtMS, 0) = 0 " +
+    "   AND ISNULL(mtSet, 0) = 0 "
+  ;
 
   try
   {
@@ -286,8 +291,8 @@ bool  MtListStore::SelectByTime(const timestamp &fromTime, short fromTable,
   wxString  str = SelectString();
 
   // Where-Bedingung
-  str += " WHERE (mtMS IS NULL OR mtMS = 0) "
-         "   AND (mtSet IS NULL OR mtSet = 0) ";
+  str += " WHERE ISNULL(mtMS, 0) = 0 "
+         "   AND ISNULL(mtSet, 0) = 0 ";
          
   if (fromTime.year == 0 && toTime.year == 0)
     str += " AND mtDateTime IS NULL ";
@@ -549,8 +554,18 @@ wxString  MtListStore::SelectString() const
         "       syComplete,                                           "
         "       tmA, tmX, xxA.stID, xxX.stID,                         "
         "       mtMatches, mtBestOf, mtUmpire, mtUmpire2,             "
-        "       mtPrinted, mtChecked   "
-        "FROM   MtList mt "
+        "       mtPrinted, mtChecked,                                 "
+        "       (SELECT COUNT(*) AS count FROM (                      "
+        "               SELECT ltA FROM NmSingle nms LEFT OUTER JOIN NmRec ON nms.nmID = NmRec.nmID "
+        "                WHERE NmRec.mtID = mt.mtID AND ltA IS NULL   "
+        "               UNION                                         "
+        "               SELECT ltA FROM NmDouble nmd LEFT OUTER JOIN NmRec ON nmd.nmID = NmRec.nmID "
+        "                WHERE NmRec.mtID = mt.mtID AND ltA IS NULL   "
+        "               UNION                                         "
+        "               SELECT ltB FROM NmDouble nmd LEFT OUTER JOIN NmRec ON nmd.nmID = NmRec.nmID "
+        "                WHERE NmRec.mtID = mt.mtID AND ltB IS NULL   "
+        "       ) AS nm) AS mtMissing                                 "
+        "FROM   MtList mt                                    "
         "       LEFT OUTER JOIN XxRec xxA ON stA = xxA.stID  "
         "       LEFT OUTER JOIN XxRec xxX ON stX = xxX.stID  ";  
 
@@ -617,6 +632,8 @@ bool  MtListStore::BindRec()
   BindCol(++col, &mtUmpire2);
   BindCol(++col, &mtScorePrinted);
   BindCol(++col, &mtScoreChecked);
+
+  BindCol(++col, &mtMissing);
 
   return true;
 }
