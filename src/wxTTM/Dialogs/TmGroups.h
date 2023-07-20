@@ -17,11 +17,15 @@ class CTmGroups : public CFormViewEx
     ~CTmGroups();
 
     virtual bool Edit(va_list);
+
   private:
     virtual void OnInitialUpdate();
 
   private:
     void OnSelChangedEnteredGroups(wxListEvent&);
+
+  private:
+    virtual  void  OnEdit();
 
   private:
     CItemCtrl   * m_tmItem;

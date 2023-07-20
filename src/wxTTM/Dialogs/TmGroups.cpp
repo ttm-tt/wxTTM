@@ -9,6 +9,7 @@
 
 #include "GrListStore.h"
 #include "MtListStore.h"
+#include "StListStore.h"
 
 
 // Put specific classes into a namespace
@@ -152,4 +153,44 @@ void CTmGroups::OnSelChangedEnteredGroups(wxListEvent&)
     m_tmSchedules->InsertListItem(itemPtr);
   }
 }
+
+
+// -----------------------------------------------------------------------
+void CTmGroups::OnEdit()
+{
+  if (FindWindow("Schedules")->HasFocus())
+  {
+    MtRec mt;
+    ListItem* itemPtr = m_tmSchedules->GetCurrentItem();
+    if (!itemPtr)
+      return;
+
+    long mtID = itemPtr->GetID();
+
+    CTT32App::instance()->OpenView(_T("MatchResult"), wxT("MtListView"), mtID);
+
+    return;
+  }
+  else if (FindWindow("Groups")->HasFocus())
+  {
+    GrRec gr;
+    CpRec cp;
+
+    ListItem* itemPtr = m_tmGroups->GetCurrentItem();
+    if (!itemPtr)
+      return;
+
+    gr = ((GrItem*)itemPtr)->gr;
+
+    StListStore st;
+    st.SelectByGrTm(gr, tm);
+    st.Next();
+    st.Close();
+
+    CTT32App::instance()->OpenView(_T("Group Positioning"), wxT("StListView"), st.stID);
+
+    return;
+  }
+}
+
 
