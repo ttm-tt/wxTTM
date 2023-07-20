@@ -87,6 +87,29 @@ void  TmListStore::Init()
 
 
 // -----------------------------------------------------------------------
+bool  TmListStore::SelectById(long id)
+{
+  wxString str = SelectString();
+  str += " WHERE tmID = " + ltostr(id);
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindRec();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+
+}
+
+
 bool  TmListStore::SelectByCp(const CpRec &cp)
 {
   wxString str = SelectString();

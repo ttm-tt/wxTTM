@@ -34,6 +34,8 @@ class CTmListView : public CFormViewEx
   private:
 	  void OnSelChangeCp(wxCommandEvent &);
 
+    void OnGroups(wxCommandEvent&);
+
   private:
     CpListStore   cp;
     CComboBoxEx * m_cbCp;

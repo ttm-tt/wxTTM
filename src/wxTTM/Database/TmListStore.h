@@ -37,6 +37,7 @@ class  TmListStore : public StoreObj, public TmListRec
     virtual void  Init();
 
   public:
+    bool  SelectById(long id);
     bool  SelectByCp(const CpRec &);
     bool  SelectByPl(const PlRec &);
     bool  SelectByCpPl(const CpRec &, const PlRec &, const timestamp * = NULL);

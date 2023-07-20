@@ -25,6 +25,7 @@ IMPLEMENT_DYNAMIC_CLASS(CTmListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CTmListView, CFormViewEx)
   EVT_COMBOBOX(XRCID("Event"), OnSelChangeCp)
+  EVT_BUTTON(XRCID("Groups"), OnGroups)
 END_EVENT_TABLE()
 
 
@@ -167,6 +168,18 @@ void CTmListView::OnSelChangeCp(wxCommandEvent &)
   m_listCtrl->SetCurrentIndex(0);
 
   CTT32App::instance()->SetDefaultCP(cp.cpName);
+}
+
+
+void CTmListView::OnGroups(wxCommandEvent&)
+{
+  ListItem* itemPtr = m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+  long  tmID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Team Groups"), wxT("TmGroups"), tmID, 0, NULL);
 }
 
 
