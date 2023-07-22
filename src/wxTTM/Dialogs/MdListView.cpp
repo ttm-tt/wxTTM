@@ -15,8 +15,13 @@
 #include "Request.h"
 
 
-
 IMPLEMENT_DYNAMIC_CLASS(CMdListView, CFormViewEx)
+
+BEGIN_EVENT_TABLE(CMdListView, CFormViewEx)
+  EVT_BUTTON(XRCID("Groups"), CMdListView::OnGroups)
+END_EVENT_TABLE()
+
+
 
 // -----------------------------------------------------------------------
 // CMdListView
@@ -107,6 +112,20 @@ void  CMdListView::OnDelete()
     else
       TTDbse::instance()->GetDefaultConnection()->Rollback();
   }
+}
+
+
+// -----------------------------------------------------------------------
+void CMdListView::OnGroups(wxCommandEvent&)
+{
+  ListItem* itemPtr = m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+
+  long  mdID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Groups"), wxT("MdGroups"), mdID, 0, NULL);
 }
 
 

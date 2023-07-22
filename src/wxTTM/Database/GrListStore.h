@@ -37,6 +37,7 @@ class  GrListStore : public StoreObj, public GrListRec
 
   public:
     bool  SelectAll(const CpRec &);      // Alle Gruppen
+    bool  SelectAll(const MdRec&);       // All RR-Gruppen mit Group Modus
     bool  SelectById(long id);           // Wettbewerb nach ID
     bool  SelectById(const std::set<long> &idList);
     bool  SelectByStage(const CpRec &, const wxString &stage);

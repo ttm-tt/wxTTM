@@ -545,6 +545,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\GrOptionsList.cpp" />
     <ClCompile Include="Dialogs\GrPrintBase.cpp" />
     <ClCompile Include="Dialogs\ImportOnlineEntries.cpp" />
+    <ClCompile Include="Dialogs\MdGroups.cpp" />
     <ClCompile Include="Dialogs\MpEdit.cpp" />
     <ClCompile Include="Dialogs\MpItem.cpp" />
     <ClCompile Include="Dialogs\MpListView.cpp" />
@@ -723,6 +724,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\GrOptionsList.h" />
     <ClInclude Include="Dialogs\GrPrintBase.h" />
     <ClInclude Include="Dialogs\ImportOnlineEntries.h" />
+    <ClInclude Include="Dialogs\MdGroups.h" />
     <ClInclude Include="Dialogs\MpEdit.h" />
     <ClInclude Include="Dialogs\MpItem.h" />
     <ClInclude Include="Dialogs\MpListView.h" />
