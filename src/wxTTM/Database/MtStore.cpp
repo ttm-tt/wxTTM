@@ -3707,7 +3707,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     Format Individual
     ID  date_time  event  rnd  match  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
     g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x  
-    res_a  res_x  wo_a  wo_x  yr  type
+    res_a  res_x  wo_a  wo_x  yr  type winner_id loser_id
  
     Format Team
     ID  date_time  event  group_  stage  rnd  match_no  match_  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
@@ -3724,14 +3724,14 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "ID;date_time;event;group_;stage;rnd;match_no;match_;"
           "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
           "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
-          "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type"         
+          "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"         
       );
     else
       os.AddLine(
           "ID;date_time;event;rnd;match;"
           "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
           "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
-          "res_a;res_x;wo_a;wo_x;yr;type"   
+          "res_a;res_x;wo_a;wo_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"   
       );
   }
 
@@ -3759,7 +3759,11 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
           "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, mt.mttmResA, mt.mttmResX, YEAR(mtDateTime), '" + type + "' "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, mt.mttmResA, mt.mttmResX, YEAR(mtDateTime), '" + type + "', "
+          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
+          "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
+          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
+          "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
           "  FROM MtIndividualList mt "
           "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
           "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
@@ -3784,7 +3788,9 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
           "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "' "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
+          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), NULL, "
+          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), NULL "
           "  FROM MtSingleList mt "
           "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
           "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
@@ -3809,7 +3815,11 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
           "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "' "
+          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
+          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
+          "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
+          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
+          "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
           "  FROM MtDoubleList mt "
           "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3) "
           "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
