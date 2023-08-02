@@ -786,6 +786,15 @@ bool DrawLP::Distribute(GrStore &gr)
 # endif
   }
 
+  # ifdef DEBUG
+  if (warnings.size())
+  {
+    wxFprintf(file, "\nWarnings:\n");
+    for (std::list<wxString>::iterator it = warnings.begin(); it != warnings.end(); it++)
+      wxFprintf(file, "%s\n", (*it).wc_str());
+  }
+  # endif
+
   return true;
 }
 
@@ -2036,8 +2045,6 @@ bool DrawLP::DrawImpl(long seed)
     if (!infoSystem.Question(str))
       ret = false;
   }
-
-  warnings.clear();
 
   if (!ret )
   {
