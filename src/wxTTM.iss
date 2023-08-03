@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TTM
-AppVerName=TTM 23.04.02
+AppVerName=TTM 23.08
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={autopf}\TTM
@@ -145,9 +145,6 @@ Source: src\Reports\FinalStandings.rep; DestDir: {app}; Flags: ignoreversion
 ; Damit ich die Rechte setzen kann ("Users" im englischen, "Benutzer" im deutschen), ein leeres File kopieren
 ; Source: "Output\TT32.ini"; DestDir: "{code:GetIniDir}"; Flags: onlyifdoesntexist; Permissions: authusers-modify;
 
-; Lizenz kopieren
-Source: {code:GetLicenseFile}; DestDir: {code:GetIniDir}; Check: NeedsLicense(); Flags: external skipifsourcedoesntexist 
-
 [INI]
 
 ; Funtioniert leider noch nicht :(
@@ -190,11 +187,11 @@ Filename: {tmp}\x64\vcredist_x64_2019.exe; Parameters: "/install /quiet"; Check:
 Filename: {tmp}\dotNetFx40_Full_x86_x64.exe; Parameters: /q /norestart; StatusMsg: Install .NET 4.0; Check: not CheckDotNET; Components: database
 
 ; SQL Server Native Client
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_17.4.1.1_x86.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_17.4.1.1_x64.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.3.1.1_x86.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.3.1.1_x64.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
 
-; SQL Server 2017 64 Bit
-Filename: {tmp}\x64\SQLEXPR_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2008 R2; Components: database
+; SQL Server 2022 64 Bit
+Filename: {tmp}\x64\SQLEXPR_2022_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2022; Components: database
 
 ; Berechtigungen setzen
 Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername}\SQLServerMSSQLUser${computername}$MSSQLSERVER:C"; Flags: runascurrentuser hidewizard skipifdoesntexist; StatusMsg: Set access rights; Components: database
@@ -315,8 +312,8 @@ begin
     idx := Pos('.', tmp);
     tmpBuild := StrToInt(Copy(tmp, 1, idx - 1));
 
-    {Soll: 14.0.1000.x (2017)}
-    Result := (tmpMajor > 14) or ((tmpMajor = 14) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 1000) or ((tmpBuild = 1000))))));
+    {Soll: 16.0.1000.x (2022)}
+    Result := (tmpMajor > 16) or ((tmpMajor = 16) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 1000) or ((tmpBuild = 1000))))));
   end;    
 end;
 
@@ -358,40 +355,6 @@ begin
 
     ITD_AddFileSize('http://downloads.ttm.co.at/ttm/' + tmp, ExpandConstant('{tmp}\' + File), size);
   end;
-end;
-
-{Prueft, ob die Lizenz gueltig ist}
-function NeedsLicense() : Boolean;
-  var currentDate, expires : String;
-begin
-  Result := false;
-
-  if (WizardIsComponentSelected('Database') or FileExists(GetIniDir('') + '\License.ini')) then
-  begin
-    {Ich weiss nicht, wie man bei GetDateTimeString('yyyymmdd', ...) verhindern kann, dass ein Seperator verwendet wird}
-    currentDate := GetDateTimeString('yyyy', #0, #0) + GetDateTimeString('mm', #0, #0) + GetDateTimeString('dd', #0, #0);
-    expires := GetIniString('license', 'expires', '00000000', GetIniDir('') + '\License.ini');
-
-    {Lizenz installieren, wenn abgelaufen oder nur mehr bis 31.1. dieses Jahres gueltig oder in src ist eine aktuellere}
-    Result := (expires > currentDate) and
-              (expires > GetDateTimeString('yyyy', #0, #0) + '0131') and
-              (expires > GetIniString('license', 'expires', '00000000', LicenseFile));
-  end;
-end;
-
-{Liefert den Namen der Lizenzdatei}
-function GetLicenseFile(Param : String) : String;
-  var filename : String;
-begin
-  filename := 'License.ini';
-
-  if (AskForLicenseFile and not FileExists(LicenseFile) and 
-      GetOpenFileName(ExpandConstant('{cm:SelectLicenseFile}'), filename, '', 'License File (*.ini)|*.ini|All Files|*.*', 'ini')) then
-    LicenseFile := filename;
-
-   AskForLicenseFile := False;
-
-  Result := LicenseFile;
 end;
 
 {---------------------------------------------------------------------------------------------------------------------------------------------------}
@@ -537,7 +500,7 @@ begin
         GetFile('dotNetFx40_Full_x86_x64.exe');
       end;
 
-      GetFile('x64\SQLEXPR_x64_ENU.exe');
+      GetFile('x64\SQLEXPR_2022_x64_ENU.exe');
     end;
 
     {Bei Bedarf den Windows Installer installieren}
@@ -566,11 +529,11 @@ begin
     begin
       if (Is64BitInstallMode()) then
       begin
-        GetFile('x64\msodbcsql_17.4.1.1_x64.msi');
+        GetFile('x64\msodbcsql_18.3.1.1_x64.msi');
       end
       else
       begin
-        GetFile('x86\msodbcsql_17.4.1.1_x86.msi');
+        GetFile('x86\msodbcsql_18.3.1.1_x86.msi');
       end;
     end;
   end;
