@@ -40,9 +40,9 @@ class CTTNewDlg : public wxDialog
 	  wxString  m_server;
 	  wxString	m_user;
 	  wxString	m_passwd;
-    bool      m_windowsAuth;
-	  int       m_type;
-	  int       m_table;
+    bool      m_windowsAuth = true;
+	  int       m_type = 1;   // "Regular"
+	  int       m_table = 0;  // "ITTF"
 
   DECLARE_DYNAMIC_CLASS(CTTNewDlg)
   DECLARE_EVENT_TABLE()

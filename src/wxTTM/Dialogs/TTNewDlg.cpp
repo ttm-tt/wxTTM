@@ -32,6 +32,7 @@ CTTNewDlg::CTTNewDlg() : wxDialog()
 	m_type = CTT32App::instance()->GetDefaultType() - 1;
 	m_table = CTT32App::instance()->GetDefaultTable() - 1;
   m_server = "localhost";
+  m_windowsAuth = true;
 }
 
 
