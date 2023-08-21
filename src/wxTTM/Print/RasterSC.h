@@ -1,6 +1,6 @@
 /* Copyright (C) 2020 Christoph Theis */
 
-// MAl was Neues: Klasse fuer ScoreSheet
+// Mal was Neues: Klasse fuer ScoreSheet
 
 # ifndef  RASTERSC_H
 # define  RASTERSC_H
