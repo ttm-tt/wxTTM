@@ -23,6 +23,9 @@
 #include "MtTeam.h"
 #include "Score.h"
 
+#include "TossSheet.h"
+#include "MtEntryStore.h"
+
 #include "Printer.h"
 #include "Profile.h"
 #include "Request.h"
@@ -693,6 +696,7 @@ void COvList::OnInitialUpdate()
   FindWindow("Error")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
   FindWindow("Incomplete")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
   FindWindow("NotPrinted")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
+  FindWindow("Missing")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
   FindWindow("Printed")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
   FindWindow("Finished")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
   FindWindow("Checked")->Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(COvList::OnContextMenuLabel), NULL, this);
@@ -1525,11 +1529,12 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
   
   static wxString matchCellMenu[] = 
   {
+    wxTRANSLATE("Print Tosssheet"),
     wxTRANSLATE("Print Scoresheet"),
     wxTRANSLATE("Find Match"),
     wxTRANSLATE("Edit Result"),
     wxTRANSLATE("Edit Schedule"),
-    wxTRANSLATE("Swap Table")
+    wxTRANSLATE("Swap Table"),
   };
   
   if (m_popupTimer.IsRunning())
@@ -1634,15 +1639,41 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
     switch (rc - 2000)
     {
       case 0 :
+        {
+          MtEntryStore mt;
+          mt.SelectById(itemPtr->mt.mtID, CP_TEAM);
+          mt.Next();
+          mt.Close();
+
+          GrListStore gr;
+          gr.SelectById(mt.mt.mtEvent.grID);
+          gr.Next();
+          gr.Close();
+
+          CpListStore cp;
+          cp.SelectById(gr.cpID);
+          cp.Next();
+          cp.Close();
+
+          Printer *printer = new PrinterPreview("Toss Sheet");
+          printer->StartDoc("Toss Sheet");
+          TossSheet *toss = new TossSheet(printer, TTDbse::instance()->GetDefaultConnection());
+          toss->Print(cp, gr, mt);
+          printer->EndDoc();
+        }
+
+        break;
+
+      case 1 :
         CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("Score"), itemPtr->mt.mtID, combined ? 4 : 0);
         
         break;
 
-      case 1 :
+      case 2 :
         CTT32App::instance()->OpenView(_T("MatchResult"), wxT("MtListView"), itemPtr->mt.mtID, m_showUmpire);
         break;
 
-      case 2 :
+      case 3 :
         if (combined)
           CTT32App::instance()->OpenView(_("Edit Group Results"), wxT("MtListView"), itemPtr->mt.mtID, false);
         else if (itemPtr->mt.cpType == CP_TEAM)
@@ -1652,7 +1683,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
 
         break;
       
-      case 3 :
+      case 4 :
         if (combined)
           CTT32App::instance()->OpenView(_("Edit Group Schedule"), wxT("MtListView"), itemPtr->mt.mtID, true);
         else
@@ -1660,7 +1691,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
       
         break;
 
-      case 4 :
+      case 5 :
         {
           // Alter Tisch ergibt sich aus aktuellem Item
           // Neuen Tisch vom Benutzer erfragen, aber nur innerhalb des angezeigten Bereiches.

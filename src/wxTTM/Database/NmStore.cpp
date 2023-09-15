@@ -51,43 +51,38 @@ NmRec & NmRec::operator=(const NmRec &rec)
 }
 
 
-void  NmRec::SetSingle(short idx, long id)
+void  NmRec::SetSingle(short idx, long id, bool optional)
 {
-  if (idx < nofSingles)
-    nmSingle[idx].ltA = id;
-  else
+  if (idx >= nofSingles)
   {
-    NmSingle * tmp = new NmSingle[idx+1];
-    memset(tmp, 0, (idx+1) * sizeof(NmSingle));
+    NmSingle * tmp = new NmSingle[idx + 1];
+    memset(tmp, 0, (idx + 1) * sizeof(NmSingle));
     memcpy(tmp, nmSingle, nofSingles * sizeof(NmSingle));
-    nofSingles = idx+1;
+    nofSingles = idx + 1;
     delete[] nmSingle;
     nmSingle = tmp;
-
-    nmSingle[idx].ltA = id;
   }
+
+  nmSingle[idx].ltA = id;
+  nmSingle[idx].nmOptional = optional;
 }
 
 
-void  NmRec::SetDoubles(short idx, long idA, long idB)
+void  NmRec::SetDoubles(short idx, long idA, long idB, bool optional)
 {
-  if (idx < nofDoubles)
+  if (idx >= nofDoubles)
   {
-    nmDouble[idx].ltA = idA;
-    nmDouble[idx].ltB = idB;
-  }
-  else
-  {
-    NmDouble * tmp = new NmDouble[idx+1];
-    memset(tmp, 0, (idx+1) * sizeof(NmDouble));
+    NmDouble * tmp = new NmDouble[idx + 1];
+    memset(tmp, 0, (idx + 1) * sizeof(NmDouble));
     memcpy(tmp, nmDouble, nofDoubles * sizeof(NmDouble));
-    nofDoubles = idx+1;
+    nofDoubles = idx + 1;
     delete[] nmDouble;
     nmDouble = tmp;
-
-    nmDouble[idx].ltA = idA;
-    nmDouble[idx].ltB = idB;
   }
+
+  nmDouble[idx].ltA = idA;
+  nmDouble[idx].ltB = idB;
+  nmDouble[idx].nmOptional = optional;
 }
 
 
@@ -125,6 +120,7 @@ bool  NmSingleStore::CreateTable()
     "nmID        "+INTEGER+"      NOT NULL,  "
     "nmNr        "+SMALLINT+"     NOT NULL,  "
     "ltA         "+INTEGER+"          NULL,  "
+    "nmOptional  "+SMALLINT+"     NOT NULL DEFAULT 0, "
     "CONSTRAINT nmSingleKey PRIMARY KEY (nmID, nmNr) "
     
 	  ")";
@@ -164,6 +160,31 @@ bool  NmSingleStore::UpdateTable(long version)
     }
     
     tmp->Close();
+    delete tmp;
+  }
+
+  if (version < 173)
+  {
+    Connection * connPtr = TTDbse::instance()->GetDefaultConnection();
+    wxASSERT(connPtr);
+
+    Statement * tmp = connPtr->CreateStatement();
+
+    wxString  TINYINT = connPtr->GetDataType(SQL_TINYINT);  
+
+    wxString sql = "ALTER TABLE NmSingle ADD nmOptional " + TINYINT + " NOT NULL DEFAULT 0";
+
+    try
+    {
+      tmp->ExecuteUpdate(sql);
+    }
+    catch (SQLException & e)
+    {
+      infoSystem.Exception(sql, e);
+    }
+
+    tmp->Close();
+
     delete tmp;
   }
 
@@ -231,8 +252,8 @@ bool  NmSingleStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
 
-  wxString str = "INSERT INTO NmSingle (nmID, nmNr, ltA) "
-                    "VALUES (?, ?, ?)";
+  wxString str = "INSERT INTO NmSingle (nmID, nmNr, ltA, nmOptional) "
+                    "VALUES (?, ?, ?, ?)";
 
   try
   {    
@@ -243,6 +264,7 @@ bool  NmSingleStore::Insert()
     stmtPtr->SetData(1, &nmID);
     stmtPtr->SetData(2, &nmNr);
     stmtPtr->SetData(3, ltA ? &ltA : NULL);
+    stmtPtr->SetData(4, &nmOptional);
 
     stmtPtr->Execute();
   }
@@ -282,7 +304,7 @@ bool  NmSingleStore::Remove()
 bool  NmSingleStore::SelectAll()
 {
   wxString str = 
-      "SELECT nmID, nmNr, ltA FROM NmSingle WHERE nmID = " + ltostr(nmID);
+      "SELECT nmID, nmNr, ltA, nmOptional FROM NmSingle WHERE nmID = " + ltostr(nmID);
 
   try
   {
@@ -292,6 +314,7 @@ bool  NmSingleStore::SelectAll()
     BindCol(1, &nmID);
     BindCol(2, &nmNr);
     BindCol(3, &ltA);
+    BindCol(4, &nmOptional);
 
     return true;
   }
@@ -323,7 +346,8 @@ bool  NmDoubleStore::CreateTable()
     "nmNr        "+SMALLINT+"     NOT NULL,  "
     "ltA         "+INTEGER+"          NULL,  "
     "ltB         "+INTEGER+"          NULL,  "
-    "CONSTRAINT nmDoubleKey PRIMARY KEY (nmID, nmNr) "    
+    "nmOptional  "+ SMALLINT+"    NOT NULL DEFAULT 0, "
+    "CONSTRAINT nmDoubleKey PRIMARY KEY (nmID, nmNr) "
 	  ")";
 
   tmp->ExecuteUpdate(sql);
@@ -364,9 +388,29 @@ bool  NmDoubleStore::UpdateTable(long version)
       infoSystem.Exception(sql, e);
     }
     
-    
     tmp->Close();
     delete tmp;
+  }
+
+  if (version < 173)
+  {
+    Connection * connPtr = TTDbse::instance()->GetDefaultConnection();
+    wxASSERT(connPtr);
+
+    Statement * tmp = connPtr->CreateStatement();
+
+    wxString  TINYINT = connPtr->GetDataType(SQL_TINYINT);
+
+    wxString sql = "ALTER TABLE NmDouble ADD nmOptional " + TINYINT + " NOT NULL DEFAULT 0";
+
+    try
+    {
+      tmp->ExecuteUpdate(sql);
+    }
+    catch (SQLException & e)
+    {
+      infoSystem.Exception(sql, e);
+    }
   }
 
   return true;
@@ -438,8 +482,8 @@ bool  NmDoubleStore::Insert()
 {
   PreparedStatement *stmtPtr = 0;
 
-  wxString str = "INSERT INTO NmDouble (nmID, nmNr, ltA, ltB) "
-                    "VALUES (?, ?, ?, ?)";
+  wxString str = "INSERT INTO NmDouble (nmID, nmNr, ltA, ltB, nmOptional) "
+                    "VALUES (?, ?, ?, ?, ?)";
 
   try
   {    
@@ -451,6 +495,7 @@ bool  NmDoubleStore::Insert()
     stmtPtr->SetData(2, &nmNr);
     stmtPtr->SetData(3, ltA ? &ltA : NULL);
     stmtPtr->SetData(4, ltB ? &ltB : NULL);
+    stmtPtr->SetData(5, &nmOptional);
 
     stmtPtr->Execute();
   }
@@ -490,7 +535,7 @@ bool  NmDoubleStore::Remove()
 bool  NmDoubleStore::SelectAll()
 {
   wxString str = 
-      "SELECT nmID, nmNr, ltA, ltB FROM NmDouble WHERE nmID = " + ltostr(nmID);
+      "SELECT nmID, nmNr, ltA, ltB, nmOptional FROM NmDouble WHERE nmID = " + ltostr(nmID);
 
   try
   {
@@ -501,6 +546,7 @@ bool  NmDoubleStore::SelectAll()
     BindCol(2, &nmNr);
     BindCol(3, &ltA);
     BindCol(4, &ltB);
+    BindCol(5, &nmOptional);
 
     return true;
   }
@@ -717,6 +763,8 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
       NmSingleStore  tmp(*this);
       tmp.nmNr = idxSingle+1;
       tmp.ltA = nmSingle[idxSingle].ltA;
+      tmp.nmOptional = nmSingle[idxSingle].nmOptional;
+
       if (!tmp.Insert())
         return false;
     }
@@ -730,6 +778,8 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
       tmp.nmNr = idxDouble+1;
       tmp.ltA  = nmDouble[idxDouble].ltA;
       tmp.ltB  = nmDouble[idxDouble].ltB;
+      tmp.nmOptional = nmDouble[idxDouble].nmOptional;
+
       if (!tmp.Insert())
         return false;
     }
@@ -802,12 +852,12 @@ bool  NmStore::Next()
   NmSingleStore  tmpSingle(*this);
   tmpSingle.SelectAll();
   while (tmpSingle.Next())
-    SetSingle(tmpSingle.nmNr-1, tmpSingle.ltA);
+    SetSingle(tmpSingle.nmNr-1, tmpSingle.ltA, tmpSingle.nmOptional);
 
   NmDoubleStore  tmpDouble(*this);
   tmpDouble.SelectAll();
   while (tmpDouble.Next())
-    SetDoubles(tmpDouble.nmNr-1, tmpDouble.ltA, tmpDouble.ltB);
+    SetDoubles(tmpDouble.nmNr-1, tmpDouble.ltA, tmpDouble.ltB, tmpDouble.nmOptional);
 
   return true;
 }

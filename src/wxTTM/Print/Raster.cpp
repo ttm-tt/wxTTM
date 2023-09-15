@@ -440,22 +440,22 @@ void  RasterBase::PrintStringWrapped(const wxString &text, const CRect &reg, int
 
 
 // Ausgabe eines int, rechtsbuendig mit space, vertikal zentriert
-void  RasterBase::PrintInt(int nr, const CRect &reg)
+void  RasterBase::PrintInt(int nr, const CRect &reg, int fmt)
 {
   wxChar  str[17];
   _itot(nr, str, 10);
 
-  PrintString(str, reg, wxALIGN_RIGHT);
+  PrintString(str, reg, fmt);
 }
 
 
 // Ausgabe eines long
-void  RasterBase::PrintLong(long nr, const CRect &reg)
+void  RasterBase::PrintLong(long nr, const CRect &reg, int fmt)
 {
   wxChar  str[33];
   _itot(nr, str, 10);
 
-  PrintString(str, reg, wxALIGN_RIGHT);
+  PrintString(str, reg, fmt);
 }
 
 

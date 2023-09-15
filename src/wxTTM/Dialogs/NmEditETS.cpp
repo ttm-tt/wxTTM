@@ -136,15 +136,19 @@ bool  CNmEditETS::Edit(va_list vaList)
     plFourReplace->Select(1);
   else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0) // Player for 4th and 5th not set
     plFourReplace->Select(0); // Not decided
-  else if (nm.GetSingle(3) == nm.GetSingle(4))           // 4 replaces 1
+  else if (nm.GetSingle(2) == nm.GetSingle(5))           // 3 replaces 1 (player 6)
     plFourReplace->Select(2);
-  else if (nm.GetSingle(3) == nm.GetSingle(5))           // 4 replaces 2
+  else if (nm.GetSingle(2) == nm.GetSingle(4))           // 3 replaces 2 (player 5)
     plFourReplace->Select(3);
-  else                                                   // Else 4 replaces none
+  else if (nm.GetSingle(3) == nm.GetSingle(5))           // 4 replaces 1 (player 6)
+    plFourReplace->Select(4);
+  else if (nm.GetSingle(3) == nm.GetSingle(4))           // 4 replaces 2 (player 5)
+    plFourReplace->Select(5);
+  else                                                   // Else 3 and 4 replace none
     plFourReplace->Select(1);
 
-  plFourReplace->Enable(nm.GetSingle(3) != 0);
-  // plFourReplace->Enable(true);
+  // Enable if we have 3 or more players
+  plFourReplace->Enable(nm.GetSingle(2) != 0);
   
   OnSelChanged(wxListEvent_);
 
@@ -331,7 +335,7 @@ void  CNmEditETS::OnOK()
     if (nmItemPtr->nm.team.cpType == CP_SINGLE)
     {
       hasNomination |= nmItemPtr->nm.ltA != 0;
-      nm.SetSingle(nmItemPtr->nm.nmNr-1, nmItemPtr->nm.ltA);
+      nm.SetSingle(nmItemPtr->nm.nmNr-1, nmItemPtr->nm.ltA, nmItemPtr->nm.nmNr == 4);
     }
     else if (nmItemPtr->nm.team.cpType == CP_DOUBLE)
     {

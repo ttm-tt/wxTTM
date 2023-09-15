@@ -9,7 +9,7 @@
 #define  SEX_MIXED   (3)
 
 
-#define  CP_OPEN     (0)
+#define  CP_UNKNOWN  (0)
 #define  CP_SINGLE   (1)
 #define  CP_DOUBLE   (2)
 #define  CP_MIXED    (3)

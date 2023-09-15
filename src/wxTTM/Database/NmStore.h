@@ -22,9 +22,10 @@ struct TmEntry;
 // Meldung Single / Double
 struct NmSingle
 {
-  long  nmID;   // Referenz NmRec
-  short nmNr;   // Nummer der Meldung
-  long  ltA;    // Referenz LtRec
+  long  nmID;         // Referenz NmRec
+  short nmNr;         // Nummer der Meldung
+  long  ltA;          // Referenz LtRec
+  bool  nmOptional;
 
   void  Init() {memset(this, 0, sizeof(NmSingle));}
 };
@@ -32,10 +33,11 @@ struct NmSingle
 
 struct  NmDouble
 {
-  long  nmID;   // Referenz NmRec
-  short nmNr;   // Nummer der Meldung
-  long  ltA;    // Referenz LtRec
-  long  ltB;    // Referenz LtRec
+  long  nmID;          // Referenz NmRec
+  short nmNr;          // Nummer der Meldung
+  long  ltA;           // Referenz LtRec
+  long  ltB;           // Referenz LtRec
+  bool  nmOptional;
 
   void  Init() {memset(this, 0, sizeof(NmDouble));}
 };
@@ -122,8 +124,8 @@ struct NmRec
   short GetNofDoubles() const        {return nofDoubles;}
 
 
-  void  SetSingle(short idx, long lt);
-  void  SetDoubles(short idx, long ltA, long ltB);
+  void  SetSingle(short idx, long lt, bool optional = false);
+  void  SetDoubles(short idx, long ltA, long ltB, bool optional = false);
 
   void  SetNofSingles(short nof);
   void  SetNofDoubles(short nof);
@@ -134,17 +136,15 @@ struct NmRec
 
   struct  NmSingle
   {
-    long  ltA;
-
-    NmSingle() {ltA = 0;}
+    long  ltA = 0;
+    bool  nmOptional = false;
   }  *nmSingle;
 
   struct  NmDouble
   {
-    long  ltA;
-    long  ltB;
-
-    NmDouble() {ltA = ltB =0;}
+    long  ltA = 0;
+    long  ltB = 0;
+    bool  nmOptional = false;
   }  *nmDouble;
 };
 

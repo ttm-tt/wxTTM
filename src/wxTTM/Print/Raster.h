@@ -160,8 +160,8 @@ class  RasterBase
 		// void  PrintString(const wxString &, const CRect &, int fmt = DT_LEFT | DT_END_ELLIPSIS);
 		void  PrintStringCentered(const wxString &, const CRect &);
     void  PrintStringWrapped(const wxString &, const CRect &, int offset = 0);
-		void  PrintInt(int, const CRect &);
-		void  PrintLong(long, const CRect &);
+		void  PrintInt(int, const CRect &, int fmt = wxALIGN_RIGHT);
+		void  PrintLong(long, const CRect &, int fmt = wxALIGN_RIGHT);
 		
 		void  PrintDate(const timestamp &, const CRect &, int fmt = wxALIGN_LEFT);
 		void  PrintTime(const timestamp &, const CRect &, int fmt = wxALIGN_LEFT);

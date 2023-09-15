@@ -369,8 +369,9 @@ bool  MtEntryStore::SelectById(long id, short type)
 
 // -----------------------------------------------------------------------
 bool  MtEntryStore::SelectByTime(const timestamp &fromTime, short fromTable,
-                                const timestamp &toTime, short toTable)
+                                const timestamp &toTime, short toTable, short cpType)
 {
+  mt.cpType = cpType;
   wxString  str = SelectString();
 
   // Erweitertes JOIN
@@ -383,6 +384,9 @@ bool  MtEntryStore::SelectByTime(const timestamp &fromTime, short fromTable,
     str += "   AND mtTable >= " + ltostr(fromTable);
   if (toTable > 0)
     str += "   AND mtTable <= " + ltostr(toTable);
+
+  if (cpType != CP_UNKNOWN)
+    str += "   AND cpType = " + ltostr(cpType);
 
   // Order by
   str += " ORDER BY mtDateTime, mtTable";

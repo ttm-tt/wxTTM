@@ -567,7 +567,7 @@ short  Printer::CreateFont(const wxString &faceName, int height, int weight, int
 }
 
 
-short Printer::DeriveFont(short font, int weight, int attr)
+short Printer::DeriveFont(short font, int weight, int attr, double size)
 {
   if (!fontTable[font].IsOk())
     return 0;
@@ -580,6 +580,7 @@ short Printer::DeriveFont(short font, int weight, int attr)
       fontTable[i].SetWeight(weight > 500 ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
       fontTable[i].SetStyle((attr & 0x01) == 0x01 ? wxFONTSTYLE_ITALIC : wxFONTSTYLE_NORMAL);
       fontTable[i].SetUnderlined((attr & 0x02) == 0x02);
+      fontTable[i].SetPointSize(fontTable[font].GetPointSize() * size);
 
       return i;
     }

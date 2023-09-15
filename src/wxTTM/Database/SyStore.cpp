@@ -954,3 +954,39 @@ bool SyStore::AddMixedTeamSystemA()
   return sy.InsertOrUpdate();
 }
  
+bool SyStore::AddYouthSeriesTeamA()
+{
+  SyStore sy;
+
+  wxStrcpy((wxChar *) sy.syName, "YSTA");
+  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team A-Final");
+  sy.syMatches = 5;
+  sy.sySingles = 6;
+  sy.syDoubles = 1;
+  sy.syComplete = 0;
+
+  sy.syList = new SyList[9];
+
+  sy.syList[1].syType = CP_SINGLE;
+  sy.syList[1].syPlayerA = 1;
+  sy.syList[1].syPlayerX = 2;
+
+  sy.syList[2].syType = CP_SINGLE;
+  sy.syList[2].syPlayerA = 2;
+  sy.syList[2].syPlayerX = 1;
+
+  sy.syList[0].syType = CP_DOUBLE;
+  sy.syList[0].syPlayerA = 1;
+  sy.syList[0].syPlayerX = 1;
+
+  sy.syList[3].syType = CP_SINGLE;
+  sy.syList[3].syPlayerA = 5;
+  sy.syList[3].syPlayerX = 5;
+
+  sy.syList[4].syType = CP_SINGLE;
+  sy.syList[4].syPlayerA = 6;
+  sy.syList[4].syPlayerX = 6;
+
+  return sy.InsertOrUpdate();
+}
+

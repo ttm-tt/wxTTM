@@ -554,6 +554,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\NmEditOTS.cpp" />
     <ClCompile Include="Dialogs\NmEditXTS.cpp" />
     <ClCompile Include="Dialogs\NmEditXTSA.cpp" />
+    <ClCompile Include="Dialogs\NmEditYSTA.cpp" />
     <ClCompile Include="Dialogs\OvListBook.cpp" />
     <ClCompile Include="Dialogs\PlHistEvents.cpp" />
     <ClCompile Include="Dialogs\PlHistView.cpp" />
@@ -565,6 +566,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\UpListView.cpp" />
     <ClCompile Include="Dialogs\Validators.cpp" />
     <ClCompile Include="Draw\DrawLP.cpp" />
+    <ClCompile Include="Print\TossSheet.cpp" />
     <ClCompile Include="Tools\ReportManViewer.cpp" />
     <ClCompile Include="Tools\StrUtils.cpp" />
     <ClCompile Include="wx\ChildFrm.cpp" />
@@ -733,6 +735,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\NmEditOTS.h" />
     <ClInclude Include="Dialogs\NmEditXTS.h" />
     <ClInclude Include="Dialogs\NmEditXTSA.h" />
+    <ClInclude Include="Dialogs\NmEditYSTA.h" />
     <ClInclude Include="Dialogs\OvListBook.h" />
     <ClInclude Include="Dialogs\PlHistEvents.h" />
     <ClInclude Include="Dialogs\PlHistView.h" />
@@ -744,6 +747,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\UpListView.h" />
     <ClInclude Include="Dialogs\Validators.h" />
     <ClInclude Include="Draw\DrawLP.h" />
+    <ClInclude Include="Print\TossSheet.h" />
     <ClInclude Include="Tools\ReportManViewer.h" />
     <ClInclude Include="Tools\StrUtils.h" />
     <ClInclude Include="Tools\wxStringTokenizerEx.h" />

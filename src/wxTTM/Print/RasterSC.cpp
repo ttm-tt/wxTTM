@@ -823,12 +823,14 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
 
-  if (wxStrcmp(sy.syName, wxT("OTS")) == 0)
-    sySingles = 3;
+	if (wxStrcmp(sy.syName, wxT("OTS")) == 0)
+		sySingles = 3;
 	else if (wxStrcmp(sy.syName, wxT("ETS")) == 0)
-	  sySingles = 4;
+		sySingles = 4;
 	else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
 		sySingles = 2;
+	else if (wxStrcmp(sy.syName, wxT("YSTA")) == 0)
+		sySingles = 4;
   
   short textFont =  sy.syMatches + sySingles + syDoubles > 12 ?
                     printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL) :

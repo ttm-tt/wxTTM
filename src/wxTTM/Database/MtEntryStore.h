@@ -67,13 +67,13 @@ class  MtEntryStore : public StoreObj, public MtEntry
   public:
     bool  SelectByGr(const GrRec &gr, short round, short cpType);
     bool  SelectByMS(const MtRec &mt, short ms = 0);
-    bool  SelectById(long id, short type);
+    bool  SelectById(long id, short cpType);
     bool  SelectByTime(const timestamp &fromTime, short fromTable,
-                       const timestamp &toTime, short toTable);
-    bool  SelectByTime(const MtStore::MtPlace &fromEvent, const MtStore::MtPlace &toEvent)
+                       const timestamp &toTime, short toTable, short cpType = CP_UNKNOWN);
+    bool  SelectByTime(const MtStore::MtPlace &fromEvent, const MtStore::MtPlace &toEvent, short cpType = CP_UNKNOWN)
     { 
       return SelectByTime(fromEvent.mtDateTime, fromEvent.mtTable, 
-                          toEvent.mtDateTime, toEvent.mtTable); 
+                          toEvent.mtDateTime, toEvent.mtTable, cpType); 
     }
 
     bool  SelectUnscheduled(short cpType, long cpID = 0, long grID = 0);

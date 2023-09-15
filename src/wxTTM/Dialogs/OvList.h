@@ -64,8 +64,8 @@ class COvList : public CFormViewEx
 
   private:
     // Grid-Ctrl
-    COvGridCtrl * m_gridCtrl;
-    CComboBoxEx * m_cbDate;
+    COvGridCtrl * m_gridCtrl = nullptr;
+    CComboBoxEx * m_cbDate = nullptr;
     
     wxTimer      m_popupTimer;
     wxTimer      m_updateTimer;

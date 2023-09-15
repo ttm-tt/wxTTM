@@ -37,12 +37,12 @@ class CNmEditETS : public CFormViewEx
     void OnSelChanged(wxListEvent &);
 
   private:
-    CItemCtrl *  cpItem;
-    CItemCtrl *  grItem;
-    CItemCtrl *  tmItem;  
-	  CListCtrlEx * nmList;
-	  CListCtrlEx * plList;
-    wxChoice *   plFourReplace;
+    CItemCtrl *  cpItem = nullptr;
+    CItemCtrl *  grItem = nullptr;
+    CItemCtrl *  tmItem = nullptr;
+	  CListCtrlEx * nmList = nullptr;
+	  CListCtrlEx * plList = nullptr;
+    wxChoice *   plFourReplace = nullptr;
 
     CpStore   cp;
     GrStore   gr;

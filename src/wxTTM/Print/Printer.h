@@ -82,7 +82,7 @@ class  Printer
   // Verwaltung von Fonts
   public:
     short  CreateFont(const wxString &faceName, int height, int weight, int attr);
-    short  DeriveFont(short font, int weight, int attr);
+    short  DeriveFont(short font, int weight, int attr, double size = 1.0);
     short  LoadFont(const wxString &prof, const wxString &app, const wxString &key);
     void   DeleteFont(short font);
     short  SelectFont(short font);
@@ -99,6 +99,8 @@ class  Printer
     void  SetPreviewDC(wxDC *dc) {dcOutput = dc;}
 
     const wxPrintData & GetPrintData() const {return printData;}
+
+    virtual wxDC * GetDC() const {return dcOutput;}
 
   protected:
     void  GetPrinterDC();
