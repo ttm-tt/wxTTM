@@ -96,6 +96,7 @@ class  SyStore : public StoreObj, public SyRec
     static  bool  AddECTeamSystem();
     static  bool  AddMixedTeamSystem();
     static  bool  AddMixedTeamSystemA();
+    static  bool  AddYouthSeriesTeamQualification();
     static  bool  AddYouthSeriesTeamA();
 
   public:

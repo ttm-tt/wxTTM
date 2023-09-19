@@ -990,3 +990,30 @@ bool SyStore::AddYouthSeriesTeamA()
   return sy.InsertOrUpdate();
 }
 
+bool SyStore::AddYouthSeriesTeamQualification()
+{
+  SyStore sy;
+
+  wxStrcpy((wxChar *) sy.syName, "YSTQ");
+  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team Qualification");
+  sy.syMatches = 3;
+  sy.sySingles = 2;
+  sy.syDoubles = 1;
+  sy.syComplete = 1;
+
+  sy.syList = new SyList[3];
+
+  sy.syList[1].syType = CP_SINGLE;
+  sy.syList[1].syPlayerA = 1;
+  sy.syList[1].syPlayerX = 2;
+
+  sy.syList[2].syType = CP_SINGLE;
+  sy.syList[2].syPlayerA = 2;
+  sy.syList[2].syPlayerX = 1;
+
+  sy.syList[0].syType = CP_DOUBLE;
+  sy.syList[0].syPlayerA = 1;
+  sy.syList[0].syPlayerX = 1;
+
+  return sy.InsertOrUpdate();
+}
