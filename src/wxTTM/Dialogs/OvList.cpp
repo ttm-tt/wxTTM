@@ -1655,7 +1655,25 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
           cp.Next();
           cp.Close();
 
-          Printer *printer = new PrinterPreview("Toss Sheet");
+          Printer * printer;
+          if (CTT32App::instance()->GetPrintPreview())
+            printer = new PrinterPreview(_("Print Toss Sheet"));
+          else if (CTT32App::instance()->GetPrintPdf())
+          {
+            wxFileDialog fileDlg(
+              this, wxFileSelectorPromptStr, CTT32App::instance()->GetPath(), wxString::Format("Tosssheet.pdf"),
+              wxT("PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*||"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+            if (fileDlg.ShowModal() != wxID_OK)
+              return;
+
+            printer = new PrinterPdf(fileDlg.GetPath());
+          }
+          else
+            printer = new Printer;
+
+          if (printer->PrinterAborted())
+            return;
+
           printer->StartDoc("Toss Sheet");
           TossSheet *toss = new TossSheet(printer, TTDbse::instance()->GetDefaultConnection());
           toss->Print(cp, gr, mt);
