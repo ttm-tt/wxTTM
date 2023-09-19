@@ -324,7 +324,7 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
       else if (sy.sySingles < 4)
       {
         strA = alpha[0][sy.syList[i].syPlayerA-1];
-        strX = alpha[0][sy.syList[i].syPlayerX-1];
+        strX = alpha[1][sy.syList[i].syPlayerX-1];
       }
       else
       {
@@ -429,7 +429,6 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
     }
   }
 
-
   for (int i = 0; i < sySingles; i++)
   {
     // In XTS/XTSA we add only the 2 players not playing doubles
@@ -452,7 +451,19 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
       else
         str = wxString::Format(ax ? "X-%d" : "A-%d", (i+1));
     }
-    else 
+    else if (sy.sySingles < 4)
+    {
+      const wxChar * alpha[][3] =
+      {
+        {wxT("A"), wxT("B"), wxT("C")},
+        {wxT("X"), wxT("Y"), wxT("Z")}
+      };
+
+      str = ax ?
+        alpha[1][sy.syList[i].syPlayerX - 1] :
+        alpha[0][sy.syList[i].syPlayerA - 1];
+    }
+    else
     {
       str = wxString::Format(ax ? "X-%d" : "A-%d", (i+1));
     }
