@@ -181,7 +181,7 @@ bool  NmEditYSTA::Edit(va_list vaList)
   else                                                   // Else 3 and 4 replaces none
     plReplace->Select(1);
 
-  plReplace->Enable(nm.GetSingle(3) != 0);
+  plReplace->Enable(nm.GetSingle(2) != 0);
   // plReplace->Enable(true);
 
   OnSelChanged(wxListEvent_);
@@ -289,7 +289,7 @@ void  NmEditYSTA::OnAdd()
     nmItemPtr = (NmItem *) nmList->GetListItem(0);
   if (!nmItemPtr)
     return;
-    
+
   LtItem *ltItemPtr = (LtItem *) plList->GetCurrentItem();
   if (!ltItemPtr)
     return;
@@ -302,7 +302,10 @@ void  NmEditYSTA::OnAdd()
     delete plList->CutCurrentItem();
   }
   
-  plList->SetSelected(0);
+  if (((NmItem *) nmList->GetListItem(2))->nm.ltA != 0)
+    plList->SetSelected(1);  // No change
+  else
+    plList->SetSelected(0);  // Not decided
 
   long idx = nmList->GetCurrentIndex();
   if (idx < nmList->GetCount() - 1)
