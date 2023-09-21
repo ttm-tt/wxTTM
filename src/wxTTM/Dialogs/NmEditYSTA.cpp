@@ -369,7 +369,8 @@ void  NmEditYSTA::OnOK()
     NmItem *nmItemPtr = (NmItem *) nmList->GetListItem(idx);
     wxASSERT(nmItemPtr);
 
-    bool optional = (idx == 3) || (idx == 4);
+    // Players 3 and 4 are optional (0-based) 
+    bool optional = (idx == 2) || (idx == 3);
 
     if (nmItemPtr->nm.team.cpType == CP_SINGLE)
     {
