@@ -302,16 +302,40 @@ void  NmEditYSTA::OnAdd()
     delete plList->CutCurrentItem();
   }
   
-  if (((NmItem *) nmList->GetListItem(2))->nm.ltA != 0)
-    plList->SetSelected(1);  // No change
-  else
-    plList->SetSelected(0);  // Not decided
+  // We completed a double or this is a single: 
+  // continue to the next possible entry
+  if (nmItemPtr->nm.ltB || nmItemPtr->nm.team.cpType == CP_SINGLE)
+  {
+    long idx = nmList->GetCurrentIndex();
+    while (++idx < nmList->GetCount() - 1)
+    {
+      NmItem * nmItem = (NmItem *) nmList->GetListItem(idx);
 
-  long idx = nmList->GetCurrentIndex();
-  if (idx < nmList->GetCount() - 1)
-    nmList->SetSelected(idx+1);
+      // Break on not-single
+      if (nmItem->nm.team.cpType != CP_SINGLE)
+        break;
+
+      // Stop when player is already nominated
+      if (nmItem->nm.ltA != 0)
+        break;
+
+      // Continue when no more players are available
+      if (plList->GetCount() == 0)
+        continue;
+
+      break;
+    }
+
+    nmList->SetSelected(idx);
+  }
 
   ResetPlReplaces();
+
+  if (((NmItem *) nmList->GetListItem(2))->nm.ltA != 0)
+    plReplace->Select(1);  // No change
+  else
+    plReplace->Select(0);  // Not decided
+
 }
 
 

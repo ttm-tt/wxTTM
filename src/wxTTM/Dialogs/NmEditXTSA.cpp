@@ -258,12 +258,32 @@ void  CNmEditXTSA::OnAdd()
     delete plList->CutCurrentItem();
   }
   
+  // We completed a double or this is a single: 
+  // continue to the next possible entry
   if (nmItemPtr->nm.ltB || nmItemPtr->nm.team.cpType == CP_SINGLE)
   {
     long idx = nmList->GetCurrentIndex();
-    if (idx < nmList->GetCount() - 1)
-      nmList->SetSelected(idx+1);
-  }     
+    while (++idx < nmList->GetCount() - 1)
+    {
+      NmItem * nmItem = (NmItem *) nmList->GetListItem(idx);
+
+      // Break on not-single
+      if (nmItem->GetType() != CP_SINGLE)
+        break;
+
+      // Stop when player is already nominated
+      if (nmItem->nm.ltA != 0)
+        break;
+
+      // Continue when no more players are available
+      if (plList->GetCount() == 0)
+        continue;
+
+      break;
+    }
+
+    nmList->SetSelected(idx);
+  }
   else
     plList->SetSelected(0);
       
