@@ -65,7 +65,7 @@ class  PlStore : public StoreObj, public PlRec
     bool  SelectById(long id);
     bool  SelectByNr(long nr);
     bool  SelectByExtId(const wxString &extId);
-    bool  SelectByName(const wxString &name);
+    bool  SelectByName(const wxString &name, const wxString na = wxEmptyString);
 
     bool  Insert();
     bool  Update();

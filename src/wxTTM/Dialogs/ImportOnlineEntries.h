@@ -58,6 +58,7 @@ class CImportOnlineEntries : public wxWizard
     wxFileName ltdFileName;
     wxFileName ltxFileName;
     wxFileName lttFileName;
+    wxFileName ltcFileName;
 
     bool inThread;
 

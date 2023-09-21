@@ -507,10 +507,12 @@ bool  PlStore::SelectByExtId(const wxString &extId)
 }
 
 
-bool PlStore::SelectByName(const wxString &name)
+bool PlStore::SelectByName(const wxString &name, const wxString na)
 {
   wxString str = SelectString();
   str += " WHERE psLast + ' ' + psFirst = '" + TransformString(name) + "'";
+  if (!na.IsEmpty())
+    str += " AND naName = '" + TransformString(na) + "'";
 
   try
   {

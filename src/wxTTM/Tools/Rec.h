@@ -14,6 +14,7 @@
 #define  CP_DOUBLE   (2)
 #define  CP_MIXED    (3)
 #define  CP_TEAM     (4)
+#define  CP_CLUB     (5)
 #define  CP_INDIVIDUAL (8)
 #define  CP_GROUP    (16)
 

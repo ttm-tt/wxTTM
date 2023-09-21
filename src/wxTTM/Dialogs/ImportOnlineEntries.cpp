@@ -82,35 +82,35 @@ class TournamentItem : public ListItem
 
 struct Competition
 {
-  int id;
+  int id = 0;
   wxString name;
   wxString description;
   wxString category;
   wxString type;
   wxString sex;
-  int born;
+  int born = 0;
 };
 
 
 struct Nation
 {
-  int id;
+  int id = 0;
   wxString name;
   wxString description;
 };
 
 
 struct Person {
-  int id;
+  int id = 0;
   wxString firstName;
   wxString lastName;
   wxString displayName;
   wxString sex;
-  int      naID;
-  int      born;
+  int      naID = 0;
+  int      born = 0;
   wxString externID;
-  double   rankPts;
-  int      startNr;
+  double   rankPts = 0.;
+  int      startNr = 0;
   wxString naName;
   wxString phone;
   wxString comment;
@@ -118,6 +118,15 @@ struct Person {
   bool operator<(const Person &b);
 };
 
+struct Club
+{
+  int id = 0;
+  int naID = 0;
+  int cpID = 0;
+  wxString name;
+  wxString description;
+  std::list<Person> players;
+};
 
 bool Person::operator<(const Person &b)
 {
@@ -195,6 +204,8 @@ bool CImportOnlineEntries::Import()
     XRCCTRL(*wizard, "ImportEntriesMixed", wxCheckBox)->Enable(false);
     XRCCTRL(*wizard, "ImportEntriesTeams", wxCheckBox)->SetValue(false);
     XRCCTRL(*wizard, "ImportEntriesTeams", wxCheckBox)->Enable(false);
+    XRCCTRL(*wizard, "ImportEntriesClubs", wxCheckBox)->SetValue(false);
+    XRCCTRL(*wizard, "ImportEntriesClubs", wxCheckBox)->Enable(false);
   }
 
   wxSize minSize = wizard->GetSize();
@@ -367,7 +378,11 @@ void CImportOnlineEntries::OnPageChangingSelect(wxWizardEvent &evt)
          wxFileExists(wxFileName(path, "na.csv").GetFullPath()) ||
          wxFileExists(wxFileName(path, "pl.csv").GetFullPath()) ||
          wxFileExists(wxFileName(path, "ph.csv").GetFullPath()) ||
-         wxFileExists(wxFileName(path, "lt.csv").GetFullPath()) )
+         wxFileExists(wxFileName(path, "lts.csv").GetFullPath()) ||
+         wxFileExists(wxFileName(path, "ltd.csv").GetFullPath()) ||
+         wxFileExists(wxFileName(path, "ltx.csv").GetFullPath()) ||
+         wxFileExists(wxFileName(path, "ltt.csv").GetFullPath()) ||
+         wxFileExists(wxFileName(path, "ltc.csv").GetFullPath()) )
     {
       if ( !infoSystem.Confirmation(_("Overwrite exsting import files?")) )
       {
@@ -388,6 +403,7 @@ void CImportOnlineEntries::OnPageChangingSelect(wxWizardEvent &evt)
     ltdFileName = wxFileName(path, "ltd.csv").GetFullPath();
     ltxFileName = wxFileName(path, "ltx.csv").GetFullPath();
     lttFileName = wxFileName(path, "ltt.csv").GetFullPath();
+    ltcFileName = wxFileName(path, "ltc.csv").GetFullPath();
   }
   else
   {
@@ -400,7 +416,8 @@ void CImportOnlineEntries::OnPageChangingSelect(wxWizardEvent &evt)
     ltdFileName = wxFileName::CreateTempFileName("ltd");
     ltxFileName = wxFileName::CreateTempFileName("ltx");
     lttFileName = wxFileName::CreateTempFileName("ltt");
-  }  
+    ltcFileName = wxFileName::CreateTempFileName("ltc");
+  }
 }
 
 
@@ -446,6 +463,8 @@ bool CImportOnlineEntries::ImportThreadRead()
   XmlRpcValue nations;
   XmlRpcValue players;
   XmlRpcValue rankings;
+  XmlRpcValue clubs;
+  XmlRpcValue clubplayers;
   
   // rankings.initAsArray();
 
@@ -455,6 +474,7 @@ bool CImportOnlineEntries::ImportThreadRead()
   res &= xmlRpcClient.execute("onlineentries.listNations", args, nations);
   res &= xmlRpcClient.execute("onlineentries.listPlayers", args, players);
   res &= xmlRpcClient.execute("onlineentries.listRankingpoints", args, rankings);
+  res &= xmlRpcClient.execute("onlineentries.listClubs", args, clubs);
 
   if (!res)
   {
@@ -484,6 +504,9 @@ bool CImportOnlineEntries::ImportThreadRead()
     if (val.hasMember("category"))
       cp.category = wxString::FromUTF8((const char *) val["category"]);
     cp.type = wxString::FromUTF8((const char *) val["type_of"]);
+    // Correct for CP_CLUB
+    if (cp.type.MakeUpper() == "C")
+      cp.type = "T";
     cp.sex = wxString::FromUTF8((const char *) val["sex"]);
     cp.born = GetInt(val["born"]);
 
@@ -628,18 +651,6 @@ bool CImportOnlineEntries::ImportThreadRead()
     plList.push_back(pl);
   }
 
-  // Spielern, die noch keine Startnummer haben, eine vergeben
-  // Dazu werden die Spieler erst nach Startnummer, dann nach Nation, Geschlecht und Namen sortiert
-  std::sort(plList.begin(), plList.end());
-
-  for (std::vector<Person>::iterator it = plList.begin(); it != plList.end(); it++)
-  {
-    if ((*it).startNr == 0)
-      (*it).startNr = ++maxStartNr;
-
-    plMap[(*it).id] = (*it);
-  }
-
   // Rankingpunkte lesen
   std::map<int, std::map<short, double>> rpMap;
 
@@ -696,6 +707,49 @@ bool CImportOnlineEntries::ImportThreadRead()
 
     if (lt.teamID && !lt.teamCancelled)
       tmMap[lt.teamID].insert(std::make_pair(plMap[lt.playerID].naID, lt.teamNo));
+  }
+
+  std::map<int, Club> clMap;
+
+  for (int idx = 0; idx < clubs.size(); idx++)
+  {
+    Club club;
+    int id = clubs[idx]["id"];
+    club.cpID = clubs[idx]["competition_id"];
+    club.naID = clubs[idx]["nation_id"];
+    club.name = wxString::FromUTF8((const char *) clubs[idx]["name"]);
+    club.description = wxString::FromUTF8((const char *) clubs[idx]["description"]);
+
+    XmlRpcValue people = clubs[idx]["people"];
+
+    for (int idx2 = 0; idx2 < people.size(); idx2++)
+    {
+      Person pl;
+      pl.startNr = 0;
+      pl.id = GetInt(people[idx2]["id"]);
+      pl.firstName = wxString::FromUTF8((const char *) people[idx2]["first_name"]);
+      pl.lastName = wxString::FromUTF8((const char *) people[idx2]["last_name"]);
+      pl.displayName = wxString::FromUTF8((const char *) people[idx2]["display_name"]);
+      pl.sex = wxString::FromUTF8((const char *) people[idx2]["sex"]);
+      pl.naID = GetInt(people[idx2]["nation_id"]);
+
+      plList.push_back(pl);
+      club.players.push_back(pl);
+    }
+
+    clMap[id] = club;
+  }
+
+  // Spielern, die noch keine Startnummer haben, eine vergeben
+  // Dazu werden die Spieler erst nach Startnummer, dann nach Nation, Geschlecht und Namen sortiert
+  std::sort(plList.begin(), plList.end());
+
+  for (std::vector<Person>::iterator it = plList.begin(); it != plList.end(); it++)
+  {
+    if ((*it).startNr == 0)
+      (*it).startNr = ++maxStartNr;
+
+    plMap[(*it).id] = (*it);
   }
 
   // Write Competitions
@@ -813,11 +867,13 @@ bool CImportOnlineEntries::ImportThreadRead()
   wxFFile ltdFile(ltdFileName.GetFullPath(), "w");
   wxFFile ltxFile(ltxFileName.GetFullPath(), "w");
   wxFFile lttFile(lttFileName.GetFullPath(), "w");
+  wxFFile ltcFile(ltcFileName.GetFullPath(),"w");
 
   ltsFile.Write("#ENTRIES\n");                
   ltdFile.Write("#ENTRIES\n");                
   ltxFile.Write("#ENTRIES\n");                
-  lttFile.Write("#ENTRIES\n");                
+  lttFile.Write("#ENTRIES\n"); 
+  ltcFile.Write("#ENTRIES\n");
 
   // Teams
   lttFile.Write("# Team Name;Event;Team Desc;Association;National Ranking;International Ranking\n");
@@ -955,10 +1011,50 @@ bool CImportOnlineEntries::ImportThreadRead()
     }
   }
 
+  // Clubs
+  ltcFile.Write("# Club Name;Event;Club Desc;Association\n");
+
+  for (auto it = clMap.begin(); it != clMap.end(); it++)
+  {
+    wxString line;
+
+    line << (*it).second.name << ";"
+         << cpMap[(*it).second.cpID].name << ";"
+         << (*it).second.description << ";"
+         << naMap[(*it).second.naID].name << ";"
+          << "\n"
+    ;
+
+    ltcFile.Write(line);
+  }
+
+  // Club Players
+  ltcFile.Write("# Players Number;Event;Club\n");
+
+  for (auto it = clMap.begin(); it != clMap.end(); it++)
+  {
+    for (auto it2 = (*it).second.players.begin(); it2 != (*it).second.players.end(); it2++)
+    {
+      wxString line;
+
+      Club club = (*it).second;
+      Person pl = plMap[(*it2).id];
+      
+      line << pl.startNr << ";"
+           << cpMap[club.cpID].name << ";"
+           << club.name << ";"
+           << "\n"
+       ;
+
+      ltcFile.Write(line);
+    }
+  }
+
   ltsFile.Close();
   ltdFile.Close();
   ltxFile.Close();
   lttFile.Close();
+  ltcFile.Close();
 
   return true;
 }
@@ -1134,6 +1230,15 @@ void CImportOnlineEntries::ImportLT()
     CTT32App::SetProgressBarText(_("Import Teams"));
 
     wxTextFileAuto is(lttFileName.GetFullPath());
+    LtStore::Import(is);
+  }
+
+  if (XRCCTRL(*this, "ImportEntriesClubs", wxCheckBox)->GetValue())
+  {
+    // Import LTT
+    CTT32App::SetProgressBarText(_("Import Clubs"));
+
+    wxTextFileAuto is(ltcFileName.GetFullPath());
     LtStore::Import(is);
   }
 }
