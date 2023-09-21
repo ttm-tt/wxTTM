@@ -387,6 +387,11 @@ void  NmEditYSTA::OnOK()
   // Match 4: player 5 (A2/A3/X4)
   // Match 5: player 6 (A1/A3/A4)
   int choice = plReplace->GetSelection();
+
+  // Quick Fix: If no 3rd player it will be "none"
+  if (nm.GetSingle(2) == 0)
+    choice = 1;
+
   switch (choice)
   {
     case 0 :  // Not decided
@@ -398,22 +403,22 @@ void  NmEditYSTA::OnOK()
 
     case 1 :  // None
     {
-      nm.SetSingle(4, nm.GetSingle(1));  // A2 / X2 (5)
-      nm.SetSingle(5, nm.GetSingle(0));  // A1 / X1 (6)
+      nm.SetSingle(4, nm.GetSingle(0));  // A1 / X1 (6)
+      nm.SetSingle(5, nm.GetSingle(1));  // A2 / X2 (5)
       break;
     }
 
     case 2 :  // 3 replaces A1 / X1 (6); A2 / X2 (5) stay
     {
-      nm.SetSingle(4, nm.GetSingle(1));
-      nm.SetSingle(5, nm.GetSingle(2));
+      nm.SetSingle(4, nm.GetSingle(2));
+      nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
     case 3:  // 3 replaces A2 / X2 (5); A1 / X1 (6) stay
     {
-      nm.SetSingle(4, nm.GetSingle(2));
-      nm.SetSingle(5, nm.GetSingle(0));
+      nm.SetSingle(4, nm.GetSingle(0));
+      nm.SetSingle(5, nm.GetSingle(2));
       break;
     }
 
