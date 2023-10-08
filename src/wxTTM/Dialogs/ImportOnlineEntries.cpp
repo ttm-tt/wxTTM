@@ -666,49 +666,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     rpMap[id][year] = rankPts;
   }
 
-  std::map<int, Registration> ltMap;
-  std::map<int, std::set<std::pair<int, int>>> tmMap;
-                
-  for (int idx = 0; idx < players.size(); idx++)
-  {
-    XmlRpcValue registration, participant;
-
-    if (players[idx]["Registration"].getType() == XmlRpcValue::Type::TypeStruct)
-    {
-      registration = players[idx]["Registration"];
-      participant = players[idx]["Participant"];
-    }
-    else
-    {
-      registration = players[idx];
-      participant = players[idx]["participant"];
-    }
-                    
-    Registration lt;
-    lt.id = GetInt(registration["id"]);
-    lt.playerID = GetInt(registration["person_id"]);
-    lt.singleID = GetInt(participant["single_id"]);
-    lt.doubleID = GetInt(participant["double_id"]);
-    lt.doublePartnerID = GetInt(participant["double_partner_id"]);
-    lt.mixedID = GetInt(participant["mixed_id"]);
-    lt.mixedPartnerID = GetInt(participant["mixed_partner_id"]);
-    lt.teamID = GetInt(participant["team_id"]);
-    lt.teamNo = GetInt(participant["team_no"]);
-    lt.cancelled = (bool) participant["cancelled"];
-    lt.singleCancelled = (bool) participant["single_cancelled"];
-    lt.doubleCancelled = (bool) participant["double_cancelled"];
-    lt.mixedCancelled = (bool) participant["mixed_cancelled"];
-    lt.teamCancelled = (bool) participant["team_cancelled"];
-                    
-    if (lt.cancelled)
-        continue;
-                    
-    ltMap[lt.id] = lt;
-
-    if (lt.teamID && !lt.teamCancelled)
-      tmMap[lt.teamID].insert(std::make_pair(plMap[lt.playerID].naID, lt.teamNo));
-  }
-
+  // Read clubs first, because we need the players there to fill in start no
   std::map<int, Club> clMap;
 
   for (int idx = 0; idx < clubs.size(); idx++)
@@ -750,6 +708,49 @@ bool CImportOnlineEntries::ImportThreadRead()
       (*it).startNr = ++maxStartNr;
 
     plMap[(*it).id] = (*it);
+  }
+
+  std::map<int, Registration> ltMap;
+  std::map<int, std::set<std::pair<int, int>>> tmMap;
+                
+  for (int idx = 0; idx < players.size(); idx++)
+  {
+    XmlRpcValue registration, participant;
+
+    if (players[idx]["Registration"].getType() == XmlRpcValue::Type::TypeStruct)
+    {
+      registration = players[idx]["Registration"];
+      participant = players[idx]["Participant"];
+    }
+    else
+    {
+      registration = players[idx];
+      participant = players[idx]["participant"];
+    }
+                    
+    Registration lt;
+    lt.id = GetInt(registration["id"]);
+    lt.playerID = GetInt(registration["person_id"]);
+    lt.singleID = GetInt(participant["single_id"]);
+    lt.doubleID = GetInt(participant["double_id"]);
+    lt.doublePartnerID = GetInt(participant["double_partner_id"]);
+    lt.mixedID = GetInt(participant["mixed_id"]);
+    lt.mixedPartnerID = GetInt(participant["mixed_partner_id"]);
+    lt.teamID = GetInt(participant["team_id"]);
+    lt.teamNo = GetInt(participant["team_no"]);
+    lt.cancelled = (bool) participant["cancelled"];
+    lt.singleCancelled = (bool) participant["single_cancelled"];
+    lt.doubleCancelled = (bool) participant["double_cancelled"];
+    lt.mixedCancelled = (bool) participant["mixed_cancelled"];
+    lt.teamCancelled = (bool) participant["team_cancelled"];
+                    
+    if (lt.cancelled)
+        continue;
+                    
+    ltMap[lt.id] = lt;
+
+    if (lt.teamID && !lt.teamCancelled)
+      tmMap[lt.teamID].insert(std::make_pair(plMap[lt.playerID].naID, lt.teamNo));
   }
 
   // Write Competitions
