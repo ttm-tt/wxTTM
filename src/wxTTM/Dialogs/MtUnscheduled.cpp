@@ -41,13 +41,26 @@ int MtUnscheduledItem::Compare(const ListItem *itemPtr, int col) const
   // Fall-trhough beabsichtigt
   switch (col)
   {
-    // Erst nach Datum und Zeit sortieren, dann nach WB, GR, ...
+    // Erst nach Datum, Zeit und Tisch sortieren, dann nach WB, GR, ...
     case 6 :
     case 7 :
       if ( (mt.mt.mtPlace.mtDateTime < other->mt.mt.mtPlace.mtDateTime) )
         return -1;
 
       if ( (mt.mt.mtPlace.mtDateTime > other->mt.mt.mtPlace.mtDateTime) )
+        return +1;
+
+    case 8 :
+      if ( (mt.mt.mtPlace.mtTable == 0 && other->mt.mt.mtPlace.mtTable > 0) )
+        return +1;
+
+      if ( (mt.mt.mtPlace.mtTable > 0 && other->mt.mt.mtPlace.mtTable == 0) )
+        return -1;
+
+      if ( (mt.mt.mtPlace.mtTable < other->mt.mt.mtPlace.mtTable) )
+        return -1;
+
+      if ( (mt.mt.mtPlace.mtTable > other->mt.mt.mtPlace.mtTable) )
         return +1;
 
     case 1 :
@@ -125,6 +138,11 @@ void MtUnscheduledItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
     case 7 :
       DrawString(pDC, rc, time);
       break;
+
+    case 8 :
+      if (mt.mt.mtPlace.mtTable)
+        DrawLong(pDC, rect, mt.mt.mtPlace.mtTable);
+      break;
   }
 }
 
@@ -155,6 +173,7 @@ void CMtUnscheduled::OnInitialUpdate()
   m_listCtrl->InsertColumn(5, _("Players / Teams"), wxALIGN_LEFT);
   m_listCtrl->InsertColumn(6, _("Date"), wxALIGN_LEFT, 6 * cW);
   m_listCtrl->InsertColumn(7, _("Time"), wxALIGN_LEFT, 5 * cW);
+  m_listCtrl->InsertColumn(8, _("Table"), wxALIGN_LEFT, 5 * cW);
 
   m_listCtrl->ResizeColumn(5);
 
@@ -305,7 +324,7 @@ void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
   MtUnscheduledItem *itemPtr = (MtUnscheduledItem *) m_listCtrl->FindListItem(reqPtr->id);
   if (itemPtr)
   {
-    if (mt.mt.mtPlace.mtTable)
+    if (mt.mt.mtPlace.mtTable && mt.mt.mtPlace.mtDateTime.year && mt.mt.mtPlace.mtDateTime.hour)
     {
       long idx = m_listCtrl->GetCurrentIndex();
       if (idx >= 0)
