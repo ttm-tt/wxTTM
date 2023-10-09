@@ -308,6 +308,8 @@ bool  SyStore::CreateTable()
   AddECTeamSystem();
   AddMixedTeamSystem();
   AddMixedTeamSystemA();
+  AddYouthSeriesTeamSystem();
+  AddYouthSeriesTeamSystemA();
 
   connPtr->Commit();
 
@@ -954,12 +956,12 @@ bool SyStore::AddMixedTeamSystemA()
   return sy.InsertOrUpdate();
 }
  
-bool SyStore::AddYouthSeriesTeamA()
+bool SyStore::AddYouthSeriesTeamSystemA()
 {
   SyStore sy;
 
   wxStrcpy((wxChar *) sy.syName, "YSTA");
-  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team A-Final");
+  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team System A-Final");
   sy.syMatches = 5;
   sy.sySingles = 6;
   sy.syDoubles = 1;
@@ -967,17 +969,17 @@ bool SyStore::AddYouthSeriesTeamA()
 
   sy.syList = new SyList[9];
 
-  sy.syList[1].syType = CP_SINGLE;
-  sy.syList[1].syPlayerA = 1;
-  sy.syList[1].syPlayerX = 2;
-
-  sy.syList[2].syType = CP_SINGLE;
-  sy.syList[2].syPlayerA = 2;
-  sy.syList[2].syPlayerX = 1;
-
-  sy.syList[0].syType = CP_DOUBLE;
+  sy.syList[0].syType = CP_SINGLE;
   sy.syList[0].syPlayerA = 1;
-  sy.syList[0].syPlayerX = 1;
+  sy.syList[0].syPlayerX = 2;
+
+  sy.syList[1].syType = CP_SINGLE;
+  sy.syList[1].syPlayerA = 2;
+  sy.syList[1].syPlayerX = 1;
+
+  sy.syList[2].syType = CP_DOUBLE;
+  sy.syList[2].syPlayerA = 1;
+  sy.syList[2].syPlayerX = 1;
 
   sy.syList[3].syType = CP_SINGLE;
   sy.syList[3].syPlayerA = 5;
@@ -990,12 +992,12 @@ bool SyStore::AddYouthSeriesTeamA()
   return sy.InsertOrUpdate();
 }
 
-bool SyStore::AddYouthSeriesTeamQualification()
+bool SyStore::AddYouthSeriesTeamSystem()
 {
   SyStore sy;
 
-  wxStrcpy((wxChar *) sy.syName, "YSTQ");
-  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team Qualification");
+  wxStrcpy((wxChar *) sy.syName, "YST");
+  wxStrcpy((wxChar *) sy.syDesc, "Youth Series Team System");
   sy.syMatches = 3;
   sy.sySingles = 2;
   sy.syDoubles = 1;
@@ -1003,17 +1005,17 @@ bool SyStore::AddYouthSeriesTeamQualification()
 
   sy.syList = new SyList[3];
 
-  sy.syList[1].syType = CP_SINGLE;
-  sy.syList[1].syPlayerA = 1;
-  sy.syList[1].syPlayerX = 2;
-
-  sy.syList[2].syType = CP_SINGLE;
-  sy.syList[2].syPlayerA = 2;
-  sy.syList[2].syPlayerX = 1;
-
-  sy.syList[0].syType = CP_DOUBLE;
+  sy.syList[0].syType = CP_SINGLE;
   sy.syList[0].syPlayerA = 1;
-  sy.syList[0].syPlayerX = 1;
+  sy.syList[0].syPlayerX = 2;
+
+  sy.syList[1].syType = CP_SINGLE;
+  sy.syList[1].syPlayerA = 2;
+  sy.syList[1].syPlayerX = 1;
+
+  sy.syList[2].syType = CP_DOUBLE;
+  sy.syList[2].syPlayerA = 1;
+  sy.syList[2].syPlayerX = 1;
 
   return sy.InsertOrUpdate();
 }
