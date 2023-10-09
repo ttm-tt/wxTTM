@@ -3,9 +3,13 @@
 
 #include "it_download.iss"
 
+#define Version '23.10'
+
 [Setup]
 AppName=TTM
-AppVerName=TTM 23.09.02
+AppVersion={#Version}
+VersionInfoVersion={#Version}
+AppVerName=TTM {#Version}
 AppPublisher=Christoph Theis
 AppMutex=TTM
 DefaultDirName={autopf}\TTM
