@@ -1098,6 +1098,15 @@
     <None Include="Database\TbSort.sql">
       <Filter>Source Files\Database\Scripts</Filter>
     </None>
+    <None Include="..\Reports\PlayerlistPerAssociation.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\PlayerlistPerName.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
+    <None Include="..\Reports\PlayerlistPerNumber.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources\wxTTM.rc">

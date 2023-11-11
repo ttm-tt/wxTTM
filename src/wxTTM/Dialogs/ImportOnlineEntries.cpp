@@ -28,6 +28,8 @@
 #include <utility>
 #include <algorithm>
 
+extern wxCommandEvent     wxCommandEvent_; 
+
 IMPLEMENT_DYNAMIC_CLASS(CImportOnlineEntries, wxWizard)
 
 BEGIN_EVENT_TABLE(CImportOnlineEntries, wxWizard)
@@ -35,6 +37,8 @@ BEGIN_EVENT_TABLE(CImportOnlineEntries, wxWizard)
   EVT_WIZARD_PAGE_SHOWN(wxID_ANY, CImportOnlineEntries::OnPageShown)
 
   EVT_TEXT(XRCID("Url"), CImportOnlineEntries::OnTextUrl)
+
+  EVT_COMBOBOX(XRCID("Tournaments"), CImportOnlineEntries::OnSelectTournament)
   EVT_BUTTON(XRCID("SelectDirectory"), CImportOnlineEntries::OnSelectDirectory)
 
   EVT_CHECKBOX(XRCID("ImportEntries"), CImportOnlineEntries::OnChangeImportEntries)
@@ -70,13 +74,41 @@ static int GetDouble(XmlRpcValue &val)
 }
 
 
-class TournamentItem : public ListItem
+static wxDateTime GetDateTime(XmlRpcValue& val)
 {
-  public:
-    TournamentItem(int id, const char *name_, const char *description_) : ListItem(id, description_), name(name_) {}
+  wxDateTime dt;
+  if (val.getType() !=XmlRpcValue::Type::TypeStruct)
+    return dt;
 
-  public:
-    wxString name;
+  struct tm tm;
+  tm.tm_year = GetInt(val["year"]) - 1900;
+  tm.tm_mon = GetInt(val["month"]) - 1; 
+  tm.tm_mday = GetInt(val["day"]);
+  tm.tm_hour = GetInt(val["hour"]);
+  tm.tm_min = GetInt(val["minute"]); 
+  tm.tm_sec = GetInt(val["second"]);
+
+  dt.Set(tm);
+
+  return dt;
+}
+
+
+struct Tournament
+{
+  int id = 0;
+  wxString name;
+  wxString description;
+  wxDateTime created;
+
+  Tournament(XmlRpcValue &v) 
+  {
+    id = GetInt(v["id"]);
+    name = (const char *) v["name"];
+    description = (const char *) v["description"];
+
+    created = GetDateTime(v["created"]);
+  }
 };
 
 
@@ -164,7 +196,16 @@ struct Registration {
   bool mixedCancelled;
   bool teamCancelled;
 };
-                
+
+// -----------------------------------------------------------------------                
+class TournamentItem : public ListItem
+{
+  public:
+    TournamentItem(const Tournament &t_) : ListItem(t_.id, t_.description), t(t_) {}
+
+  public:
+    Tournament t;
+};
 
 
 // -----------------------------------------------------------------------
@@ -312,14 +353,15 @@ void CImportOnlineEntries::ConnectThreadImpl(const wxString &url, const wxString
 
   for (int idx = 0; idx < result.size(); idx++)
   {
-    XmlRpcValue t;
+    XmlRpcValue v;
 
     if (result[idx]["Tournament"].getType() == XmlRpcValue::Type::TypeStruct)
-      t = result[idx]["Tournament"];
+      v = result[idx]["Tournament"];
     else
-      t = result[idx];
+      v = result[idx];
 
-    tournaments->AddListItem(new TournamentItem(t["id"], t["name"], t["description"]));
+    Tournament t(v);
+    tournaments->AddListItem(new TournamentItem(t));
   }
 
   if (tournaments->GetCount() == 0)
@@ -329,6 +371,7 @@ void CImportOnlineEntries::ConnectThreadImpl(const wxString &url, const wxString
   }
 
   tournaments->SetSelection(0);
+  OnSelectTournament(wxCommandEvent_);
 }
 
 
@@ -561,6 +604,8 @@ bool CImportOnlineEntries::ImportThreadRead()
     delete connPtr;
   }
 
+  wxDateTime cutoff = XRCCTRL(*this, "Created", wxDatePickerCtrl)->GetValue();
+
   std::vector<Person> plList;
 
   for (int idx = 0; idx < players.size(); idx++)
@@ -595,6 +640,11 @@ bool CImportOnlineEntries::ImportThreadRead()
     }
                     
     if ( (bool) participant["cancelled"])
+      continue;
+
+    if (GetDateTime(person["created"]) < cutoff)
+      continue;
+    if (GetDateTime(registration["created"]) < cutoff)
       continue;
 
     Person pl;
@@ -671,6 +721,10 @@ bool CImportOnlineEntries::ImportThreadRead()
 
   for (int idx = 0; idx < clubs.size(); idx++)
   {
+    // Chgeck cut-off date before processing this entry so we don't add the players
+    if (GetDateTime(clubs[idx]["created"]) < cutoff)
+      continue;
+
     Club club;
     int id = clubs[idx]["id"];
     club.cpID = clubs[idx]["competition_id"];
@@ -690,6 +744,8 @@ bool CImportOnlineEntries::ImportThreadRead()
       pl.displayName = wxString::FromUTF8((const char *) people[idx2]["display_name"]);
       pl.sex = wxString::FromUTF8((const char *) people[idx2]["sex"]);
       pl.naID = GetInt(people[idx2]["nation_id"]);
+      pl.naName = naMap[pl.naID].name;
+      pl.externID = wxString::FromUTF8((const char *) people[idx2]["player"]["extern_id"]);
 
       plList.push_back(pl);
       club.players.push_back(pl);
@@ -1295,6 +1351,16 @@ void CImportOnlineEntries::OnTextUrl(wxCommandEvent &)
   wxTextCtrl *url = XRCCTRL(*currentPage, "Url", wxTextCtrl);
   wxWindow *forward = this->FindWindow(wxID_FORWARD);
   forward->Enable(url->IsEmpty() == false);
+}
+
+
+void CImportOnlineEntries::OnSelectTournament(wxCommandEvent&)
+{
+  CComboBoxEx * cbTournaments = XRCCTRL(*this, "Tournaments", CComboBoxEx);
+  const TournamentItem *tourItem = (const TournamentItem *) cbTournaments->GetCurrentItem();
+
+  XRCCTRL(*this, "Created", wxDatePickerCtrl)->SetRange(tourItem->t.created, wxDateTime::Now());
+  XRCCTRL(*this, "Created", wxDatePickerCtrl)->SetValue(tourItem->t.created);
 }
 
 

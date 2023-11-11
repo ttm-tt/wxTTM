@@ -46,6 +46,9 @@ en.ProgramOnly=Program only
 en.AdditionalIcons=Additional icons
 en.CreateDesktopIcon=Create a &desktop icon
 en.Playerlist=List of Players
+en.PlayerlistPerName=List of Players Sorted by Name
+en.PlayerlistPerNumber=List of Players Sorted by Number
+en.PlayerlistPerAssociation=List of Players Sorted by Association
 en.PlayerControl=List of Players with Birthday
 en.Participants=List of Players with their Events
 en.Entries=Participants per Event
@@ -76,6 +79,9 @@ de.ProgramOnly=Nur Programm
 de.AdditionalIcons=Weitere Icons
 de.CreateDesktopIcon=Ein Icon auf dem &Desktop anlegen
 de.Playerlist=Liste der Spieler
+de.PlayerlistPerName=Spieler sortiert nach Nachname
+de.PlayerlistPerNumber=Spieler sortiert nach Startnummer
+de.PlayerlistPerAssociation=Spieler sortiert nach Verband
 de.PlayerControl=Spieler mit Geburtsjahr
 de.Participants=Spieler mit ihren Wettbewerben
 de.Entries=Teilnehmer eines Wettbewerbs
@@ -131,9 +137,9 @@ Source: src\Reports\x86\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sha
 Source: src\Reports\x64\ReportMan.ocx; DestDir: {sys}; Flags: restartreplace sharedfile regserver; Check: isAdminInstallMode and Is64BitInstallMode()
 ;Source: src\Reports\ReportMan.ocx.manifest; DestDir: {sys}; Check: isAdminInstallMode
 Source: src\Reports\Playerlist.rep; DestDir: {app}; Flags: ignoreversion
-;Source: src\Reports\PlayerlistPerName.rep; DestDir: {app}; Flags: ignoreversion
-;Source: src\Reports\PlayerlistPerNumber.rep; DestDir: {app}; Flags: ignoreversion
-;Source: src\Reports\PlayerlistPerAssociation.rep; DestDir: {app}; Flags: ignoreversion
+Source: src\Reports\PlayerlistPerName.rep; DestDir: {app}; Flags: ignoreversion
+Source: src\Reports\PlayerlistPerNumber.rep; DestDir: {app}; Flags: ignoreversion
+Source: src\Reports\PlayerlistPerAssociation.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\Participants.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\Entries.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\PartnerMissing.rep; DestDir: {app}; Flags: ignoreversion

@@ -537,6 +537,10 @@ bool  NaStore::Import(wxTextBuffer &is)
     NaStore  na(connPtr);
     if (na.Read(line))
     {
+      // Skip empty records
+      if (*na.naName == '\0')
+        continue;
+
       connPtr->StartTransaction();
 
       if (na.InsertOrUpdate())

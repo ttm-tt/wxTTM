@@ -11,6 +11,7 @@
 
 #include <wx/aboutdlg.h>
 #include <wx/colordlg.h>
+#include <wx/datectrl.h>
 #include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/filename.h>

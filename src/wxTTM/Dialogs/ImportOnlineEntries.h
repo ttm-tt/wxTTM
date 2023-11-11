@@ -25,6 +25,7 @@ class CImportOnlineEntries : public wxWizard
 
     void OnTextUrl(wxCommandEvent &);
     void OnSelectDirectory(wxCommandEvent &);
+    void OnSelectTournament(wxCommandEvent &);
     void OnChangeImportEntries(wxCommandEvent &);
 
   private:

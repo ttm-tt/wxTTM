@@ -883,6 +883,9 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Crypt\crypt.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Reports\PlayerlistPerAssociation.rep" />
+    <None Include="..\Reports\PlayerlistPerName.rep" />
+    <None Include="..\Reports\PlayerlistPerNumber.rep" />
     <None Include="Database\DttbSort.sql">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
