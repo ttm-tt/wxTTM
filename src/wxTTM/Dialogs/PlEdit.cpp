@@ -66,6 +66,10 @@ bool  CPlEdit::Edit(va_list vaList)
   {
     FindWindow("Male")->Enable(false);
     FindWindow("Female")->Enable(false);
+  }
+  // Allow to change the nation if not yet set
+  if (pl.naID)
+  {
     FindWindow("Association")->Enable(false);
   }
   lt.Close();

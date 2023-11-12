@@ -507,10 +507,36 @@ bool  PlStore::SelectByExtId(const wxString &extId)
 }
 
 
-bool PlStore::SelectByName(const wxString &name, const wxString na)
+bool PlStore::SelectByName(const wxString &name, const wxString &na)
 {
   wxString str = SelectString();
   str += " WHERE psLast + ' ' + psFirst = '" + TransformString(name) + "'";
+  if (!na.IsEmpty())
+    str += " AND naName = '" + TransformString(na) + "'";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindRec();
+
+    return true;
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
+bool PlStore::SelectByNames(const wxString &last, const wxString &first, const wxString &na)
+{
+  wxString str = SelectString();
+  str += " WHERE psLast = '" + TransformString(last) + "' AND psFirst = '" + TransformString(first) + "' ";
   if (!na.IsEmpty())
     str += " AND naName = '" + TransformString(na) + "'";
 
@@ -773,13 +799,34 @@ bool  PlStore::InsertOrUpdate()
       pl.Close();
   }
 
-  // I none found but we have plExtID (which may not be unique, son don't look for it first)
+  // I none found but we have plExtID (which may not be unique, so don't look for it first)
   if (!pl.plID && *plExtID)
   {
     pl.SelectByExtId(plExtID);
     
     pl.Next();
     pl.Close();
+  }
+
+  if (!pl.plID && *psName.psLast)
+  {
+    pl.SelectByNames(psName.psLast, psName.psFirst);
+
+    if (pl.Next())
+    {
+      long tmpPlID = pl.plID;
+      if (pl.Next())
+      {
+        // Duplicate entries
+        pl.Close();
+        return false;
+      }
+
+      // Read again with newly found id
+      pl.SelectById(tmpPlID);
+      pl.Next();
+      pl.Close();
+    }
   }
   
   if (pl.plID)
