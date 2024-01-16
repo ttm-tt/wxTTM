@@ -110,7 +110,7 @@ bool UpRec::Read(const wxString &line)
     wxStrncpy(naName, strNa, sizeof(naName) / sizeof(wxChar) - 1);
 
     wxStrncpy(psEmail, strEmail, sizeof(psEmail) / sizeof(wxChar) - 1);
-    wxStrncpy(psPhone, strFirst, sizeof(psPhone) / sizeof(wxChar) - 1);
+    wxStrncpy(psPhone, strPhone, sizeof(psPhone) / sizeof(wxChar) - 1);
   }
 
   return true;
