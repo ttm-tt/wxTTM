@@ -184,6 +184,7 @@ struct Registration {
   int id;
   int playerID;
   int singleID;
+  int altSingleID;
   int doubleID;
   int doublePartnerID;
   int mixedID;
@@ -192,6 +193,7 @@ struct Registration {
   int teamNo;
   bool cancelled;
   bool singleCancelled;
+  bool altSingleCancelled;
   bool doubleCancelled;
   bool mixedCancelled;
   bool teamCancelled;
@@ -788,6 +790,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     lt.id = GetInt(registration["id"]);
     lt.playerID = GetInt(registration["person_id"]);
     lt.singleID = GetInt(participant["single_id"]);
+    lt.altSingleID = GetInt(participant["single_2_id"]);
     lt.doubleID = GetInt(participant["double_id"]);
     lt.doublePartnerID = GetInt(participant["double_partner_id"]);
     lt.mixedID = GetInt(participant["mixed_id"]);
@@ -796,6 +799,7 @@ bool CImportOnlineEntries::ImportThreadRead()
     lt.teamNo = GetInt(participant["team_no"]);
     lt.cancelled = (bool) participant["cancelled"];
     lt.singleCancelled = (bool) participant["single_cancelled"];
+    lt.altSingleCancelled = (bool) participant["single_2_cancelled"];
     lt.doubleCancelled = (bool) participant["double_cancelled"];
     lt.mixedCancelled = (bool) participant["mixed_cancelled"];
     lt.teamCancelled = (bool) participant["team_cancelled"];
@@ -980,6 +984,19 @@ bool CImportOnlineEntries::ImportThreadRead()
       wxString line;
       line << plMap[lt.playerID].startNr << ";"
         << cpMap[lt.singleID].name << ";"
+        << "0" << ";"
+        << naMap[plMap[lt.playerID].naID].name << ";"
+        << "0" << ";"
+        << "0" << "\n";
+
+      ltsFile.Write(line);
+    }
+
+    if (lt.altSingleID != 0 && !lt.altSingleCancelled) 
+    {
+      wxString line;
+      line << plMap[lt.playerID].startNr << ";"
+        << cpMap[lt.altSingleID].name << ";"
         << "0" << ";"
         << naMap[plMap[lt.playerID].naID].name << ";"
         << "0" << ";"
