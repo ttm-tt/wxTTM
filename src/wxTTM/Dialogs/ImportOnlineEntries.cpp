@@ -644,8 +644,8 @@ bool CImportOnlineEntries::ImportThreadRead()
     if ( (bool) participant["cancelled"])
       continue;
 
-    if (GetDateTime(person["created"]) < cutoff)
-      continue;
+    // if (GetDateTime(person["created"]) < cutoff)
+    //   continue;
     if (GetDateTime(registration["created"]) < cutoff)
       continue;
 
