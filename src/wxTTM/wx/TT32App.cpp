@@ -35,11 +35,11 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "23.10";
+static const wxString versionNumber = "24.01";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
-static wxString copyright = "(C) Christoph Theis 2023";
+static wxString copyright = "(C) Christoph Theis 2024";
 static wxString expire = "";
 
 
