@@ -3,7 +3,7 @@
 
 #include "it_download.iss"
 
-#define Version '24.01'
+#define Version '24.01.01'
 
 [Setup]
 AppName=TTM
@@ -162,9 +162,9 @@ Source: src\Reports\FinalStandings.rep; DestDir: {app}; Flags: ignoreversion
 
 Filename: {code:GetIniDir}\TT32.ini; Section: Settings; Key: Language; String: {cm:Language}
 Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: Playerlist; String: {cm:Playerlist}
-;Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerName; String: {cm:PlayerlistPerName}
-;Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerNumber; String: {cm:PlayerlistPerNumber}
-;Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerAssociation; String: {cm:PlayerlistPerAssociation}
+Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerName; String: {cm:PlayerlistPerName}
+Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerNumber; String: {cm:PlayerlistPerNumber}
+Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: PlayerlistPerAssociation; String: {cm:PlayerlistPerAssociation}
 Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: Participants; String: {cm:Participants}
 Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: Entries; String: {cm:Entries}
 Filename: {code:GetIniDir}\TT32.ini; Section: Reports; Key: Ranking; String: {cm:Ranking}
