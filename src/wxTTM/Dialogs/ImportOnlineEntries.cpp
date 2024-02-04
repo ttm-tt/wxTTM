@@ -58,7 +58,7 @@ static int GetInt(XmlRpcValue &val)
 }
 
 
-static int GetDouble(XmlRpcValue &val)
+static double GetDouble(XmlRpcValue &val)
 {
   switch (val.getType())
   {

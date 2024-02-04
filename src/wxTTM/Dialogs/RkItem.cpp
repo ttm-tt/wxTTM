@@ -107,7 +107,7 @@ void RkItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       break;
 
     case 4 :
-      DrawDouble(pDC, rect, entry.rankPts);
+      DrawDouble(pDC, rect, entry.rankPts, wxALIGN_RIGHT, 1);
       break;
   }
 }

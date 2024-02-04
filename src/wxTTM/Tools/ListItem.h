@@ -77,7 +77,7 @@ class  ListItem
     // Strings etc. zeichnen
     static void  DrawString(wxDC *pDC, const wxRect &rect, const wxString &str, unsigned fmt = wxALIGN_LEFT);
     static void  DrawLong(wxDC *pDC, const wxRect &rect, long val, unsigned fmt = wxALIGN_RIGHT);
-    static void  DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt = wxALIGN_RIGHT);
+    static void  DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt = wxALIGN_RIGHT, int precision = -1);
 
     static void  DrawStringCentered(wxDC *pDC, const wxRect &rect, const wxString &str);
     static void  DrawBye(wxDC *pDC, const wxRect &rect);
@@ -139,9 +139,9 @@ inline  void  ListItem::DrawLong(wxDC *pDC, const wxRect &rect, long val, unsign
  
 
 
-inline  void  ListItem::DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt)
+inline  void  ListItem::DrawDouble(wxDC *pDC, const wxRect &rect, double val, unsigned fmt, int precision)
 {
-  DrawString(pDC, rect, wxString::FromCDouble(val), fmt);
+  DrawString(pDC, rect, wxString::FromCDouble(val, precision), fmt);
 }
  
 
