@@ -703,21 +703,6 @@ bool CImportOnlineEntries::ImportThreadRead()
     plList.push_back(pl);
   }
 
-  // Rankingpunkte lesen
-  std::map<int, std::map<short, double>> rpMap;
-
-  for (int idx = 0; idx < rankings.size(); idx++)
-  {
-    int id = GetInt(rankings[idx]["id"]);
-    if (plMap.find(id) == plMap.end())
-      continue;
-
-    int year = GetInt(rankings[idx]["year"]);
-    double rankPts = GetDouble(rankings[idx]["rank_pts"]);
-
-    rpMap[id][year] = rankPts;
-  }
-
   // Read clubs first, because we need the players there to fill in start no
   std::map<int, Club> clMap;
 
@@ -811,6 +796,24 @@ bool CImportOnlineEntries::ImportThreadRead()
 
     if (lt.teamID && !lt.teamCancelled)
       tmMap[lt.teamID].insert(std::make_pair(plMap[lt.playerID].naID, lt.teamNo));
+  }
+
+  // Rankingpunkte lesen
+  std::map<int, std::map<short, double>> rpMap;
+
+  for (int idx = 0; idx < rankings.size(); idx++)
+  {
+    int id = GetInt(rankings[idx]["id"]);
+    if (plMap.find(id) == plMap.end())
+      continue;
+
+    int year = GetInt(rankings[idx]["year"]);
+    double rankPts = GetDouble(rankings[idx]["rank_pts"]);
+
+    if (year == 0)
+      plMap[id].rankPts = rankPts;
+    else
+      rpMap[id][year] = rankPts;
   }
 
   // Write Competitions
