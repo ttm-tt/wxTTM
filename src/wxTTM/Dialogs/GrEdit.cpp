@@ -232,6 +232,9 @@ bool CGrEdit::Edit(va_list vaList)
     nofEntries = gr.grSize;
 
   TransferDataToWindow();
+
+  // Set Focus to first field (Stage)
+  FindWindow("Stage")->SetFocus();
   
   return true;
 }
@@ -424,6 +427,10 @@ void  CGrEdit::OnOK()
   
   TransferDataFromWindow();
 
+  // Correct sort order, if it is still default
+  if (gr.grSortOrder == 0)
+    CalculateNextSortOrder();
+
   // System kann immer korrigiert werden, wenn es moeglich ist.
   // Wenn die Gruppe bereits spielt, ist die ComboBox gesperrt.
   if (cp.cpType == CP_TEAM)
@@ -536,6 +543,10 @@ void  CGrEdit::OnTemplate(wxCommandEvent &)
   GrStore::CreateGroupStruct  *cgs = 0;
 
   TransferDataFromWindow();
+
+  // Correct sort order, if it is still default
+  if (gr.grSortOrder == 0)
+    CalculateNextSortOrder();
 
   // Modus und System auswaehlen
   ListItem *itemPtr;
