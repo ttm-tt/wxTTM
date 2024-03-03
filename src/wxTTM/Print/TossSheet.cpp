@@ -43,6 +43,7 @@ int  TossSheet::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt)
 
 	textFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_NORMAL);
   headerFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_MEDIUMB);
+  smallFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL);
 
 	short  oldFont = printer->SelectFont(textFont);
 
@@ -92,6 +93,9 @@ int TossSheet::PrintToss(const MtEntry& mt, const CRect& rect, bool ax)
   header.bottom = header.top + headerHeight;
   PrintHeader(mt, header);
 
+  // Team and system are printed small
+  printer->SelectFont(smallFont);
+
   CRect teamA = rect;
   teamA.top = header.bottom + printer->cH;
   teamA.bottom = teamA.top + printer->cH + std::max((int) sy.syMatches, 5) * printer->cH;
@@ -112,6 +116,9 @@ int TossSheet::PrintToss(const MtEntry& mt, const CRect& rect, bool ax)
   syRect.bottom = teamX.top + sy.syMatches * printer->cH;
 
   PrintSystem(sy, syRect);
+
+  // Nomination is printed normal
+  printer->SelectFont(textFont);
 
   CRect nmRect = rect;
   nmRect.top = std::max(std::max(teamA.bottom, teamX.bottom), syRect.bottom) + 2 * printer->cH;
@@ -190,7 +197,7 @@ int TossSheet::PrintTeam(const TmEntry& tm, const CRect& rect)
   wxRect entry(header.left, header.top + printer->cH, header.GetWidth(), printer->cH);
   entry.Offset(0, -printer->cH);
 
-  printer->SelectFont(textFont);
+  printer->SelectFont(smallFont);
 
   NtEntryStore nt;
   nt.SelectByTm(tm);
@@ -220,7 +227,7 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
 
   printer->Rectangle(header, THICK_FRAME);
 
-  printer->SelectFont(textFont);
+  printer->SelectFont(smallFont);
 
   CRect matches = rect;
   matches.top = header.bottom;
@@ -248,11 +255,13 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
 		{wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1")},
 		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1")}
 	};
-	const wxChar *xtsa[][4] = 
-	{
-		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
-		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
-	};
+  const wxChar* xtsa[][10] =
+  {
+    {wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-Res"),
+     wxT("A-G1/Res"), wxT("A-B1/Res"), wxT("A-G2/Res"), wxT("A-B2/Res")},
+    {wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2"), wxT("X-Res"),
+     wxT("X-G1/Res"), wxT("X-B1/Res"), wxT("X-G2/Res"), wxT("X-B2/Res")}
+  };
 
   for (int i = 0; i < sy.syMatches; i++)
   {
@@ -365,6 +374,9 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
     printer->Text(col, strX);
   }
 
+  // Always continue with textFont, regardles of the system
+  printer->SelectFont(textFont);
+
   return 0;
 }
 
@@ -401,7 +413,7 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
 	else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
 		sySingles = 2;
 	else if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
-		sySingles = 2;
+		sySingles = 5;
   else if (wxStrcmp(sy.syName, wxT("YSTA")) == 0)
     sySingles = 4;
 
@@ -431,7 +443,7 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
 
   for (int i = 0; i < sySingles; i++)
   {
-    // In XTS/XTSA we add only the 2 players not playing doubles
+    // In XTS we add only the 2 players not playing doubles
     wxString str;
     if (wxStrcmp(sy.syName, "XTS") == 0)
     {
@@ -444,12 +456,13 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
     }
     else if (wxStrcmp(sy.syName, "XTSA") == 0)
     {
-      if (i == 0)
-        str = ax ? "X-G2" : "A-G2";
-      else if (i == 1)
-        str = ax ? "X-B2" : "A-B2";
-      else
-        str = wxString::Format(ax ? "X-%d" : "A-%d", (i+1));
+      const wxChar* xtsa[][10] =
+      {
+        {wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-Res")},
+        {wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2"), wxT("X-Res")}
+      };
+
+      str = xtsa[ax ? 1 : 0][i];
     }
     else if (sy.sySingles < 4)
     {

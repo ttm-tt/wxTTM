@@ -23,4 +23,5 @@ class TossSheet : public RasterBase
 
   protected:
     short headerFont = 0;
+    short smallFont = 0;
 };

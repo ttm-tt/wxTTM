@@ -34,8 +34,9 @@
 #define STR_SETS    IDS_GAMES
 #define STR_RESULT  IDS_RESULT
 
-// Breite des Eintrags fuer 'A' etc...
-#define  WIDTH_AX  (6 * printer->cW)
+// Width of entry for 'A' etc
+// We need to change it for XTSA
+static int  WIDTH_AX;
 
 
 // Definition von Strings
@@ -300,7 +301,7 @@ int  RasterScore::PrintScore(const MtEntry &mt)
   short oldFont = -1; 
 
   textFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_MEDIUM);
-  oldFont = printer->SelectFont(textFont);                    
+  oldFont = printer->SelectFont(textFont);     
 
   // Aufsetzen der einzelnen Bestandteile
   CRect  regTm;         // Teams (1 - 2)
@@ -829,6 +830,8 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		sySingles = 4;
 	else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
 		sySingles = 2;
+	else if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
+		sySingles = 5;
 	else if (wxStrcmp(sy.syName, wxT("YSTA")) == 0)
 		sySingles = 4;
   
@@ -836,8 +839,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
                     printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL) :
                     printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_MEDIUM);
                     
-  short oldFont = printer->SelectFont(textFont);                    
-  
+  short oldFont = printer->SelectFont(textFont);  
+
+	// Define width of entries	
+	WIDTH_AX = (6 * printer->cW);
 	int top = offsetY;
 	int left = offsetX;
 	int heightTop = 2 * printer->cH;  // Hoehe Ueberschrift
@@ -855,11 +860,17 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		{wxT("A-G2"), wxT("A-B2"), wxT("A-G1"), wxT("A-B1")},
 		{wxT("X-G2"), wxT("X-B2"), wxT("X-G1"), wxT("X-B1")}
 	};
-	const wxChar *xtsa[][8] = 
+	const wxChar *xtsa[][10] = 
 	{
-		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
-		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
+		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-Res"),
+		 wxT("A-G1/Res"), wxT("A-B1/Res"), wxT("A-G2/Res"), wxT("A-B2/Res")},
+		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2"), wxT("X-Res"),
+		 wxT("X-G1/Res"), wxT("X-B1/Res"), wxT("X-G2/Res"), wxT("X-B2/Res")}
 	};
+
+	// Strings are longer in XTSA
+	if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
+		WIDTH_AX += 6 * printer->cW;
 
 	// Insgesamt gibt es ??? Gruppen
 	CRect  regGroup;
@@ -1310,8 +1321,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
               
 	offsetY = regGroup.bottom;
 
-	// Undo the correction, in XTS we need all of them
+	// Undo the correction, in XTS(A) we need all of them
 	if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
+		sySingles = sy.sySingles;
+	else if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
 		sySingles = sy.sySingles;
 
 	// --- Naechste Gruppe: Liste der Spiele ---

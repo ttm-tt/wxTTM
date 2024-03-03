@@ -35,11 +35,19 @@ class CNmEditXTSA : public CFormViewEx
     void OnSelChanged(wxListEvent &);
 
   private:
+    void ResetPlReplaces();
+
+  private:
+    int ax = false;
+    wxString lblPlReplaces[4];
+
+  private:
     CItemCtrl *  cpItem;
     CItemCtrl *  grItem;
     CItemCtrl *  tmItem;  
 	  CListCtrlEx * nmList;
 	  CListCtrlEx * plList;
+    wxChoice *   plReplace = nullptr;
 
     CpStore   cp;
     GrStore   gr;

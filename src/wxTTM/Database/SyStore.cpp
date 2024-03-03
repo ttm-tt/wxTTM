@@ -911,47 +911,47 @@ bool SyStore::AddMixedTeamSystemA()
 	wxStrcpy((wxChar *) sy.syName, "XTSA");
 	wxStrcpy((wxChar *) sy.syDesc, "Mixed Team System A-Final");
 	sy.syMatches = 9;
-	sy.sySingles = 4;
+	sy.sySingles = 9; // 4 players, 1 reserve, placeholder for match 5..9
 	sy.syDoubles = 1;
   sy.syComplete = 0;
 
   sy.syList = new SyList[9];
 
-	sy.syList[0].syType = CP_DOUBLE;
+	sy.syList[0].syType = CP_DOUBLE;  // A-XD vs X-XD
 	sy.syList[0].syPlayerA = 1;
 	sy.syList[0].syPlayerX = 1;
 
-	sy.syList[1].syType = CP_SINGLE;
-	sy.syList[1].syPlayerA = 1;
+	sy.syList[1].syType = CP_SINGLE;  // A-G1 vs X-G2
+	sy.syList[1].syPlayerA = 1;  
 	sy.syList[1].syPlayerX = 3;
 
-	sy.syList[2].syType = CP_SINGLE;
+	sy.syList[2].syType = CP_SINGLE;  // A-B1 vs X-B2
 	sy.syList[2].syPlayerA = 2;
 	sy.syList[2].syPlayerX = 4;
 
-	sy.syList[3].syType = CP_SINGLE;
+	sy.syList[3].syType = CP_SINGLE;  // A-G2 vs X-G1
 	sy.syList[3].syPlayerA = 3;
 	sy.syList[3].syPlayerX = 1;
 
-	sy.syList[4].syType = CP_SINGLE;
+	sy.syList[4].syType = CP_SINGLE;  // A-B2 vs X-B1
 	sy.syList[4].syPlayerA = 4;
 	sy.syList[4].syPlayerX = 2;
 
-	sy.syList[5].syType = CP_SINGLE;
-	sy.syList[5].syPlayerA = 1;
-	sy.syList[5].syPlayerX = 1;
+	sy.syList[5].syType = CP_SINGLE;  // A-G1 vs X-G1 (or reserve)
+	sy.syList[5].syPlayerA = 6;
+	sy.syList[5].syPlayerX = 6;
 
-	sy.syList[6].syType = CP_SINGLE;
-	sy.syList[6].syPlayerA = 2;
-	sy.syList[6].syPlayerX = 2;
+	sy.syList[6].syType = CP_SINGLE;  // A-B1 vs X-B1 (or reserve)
+	sy.syList[6].syPlayerA = 7;
+	sy.syList[6].syPlayerX = 7;
 
-	sy.syList[7].syType = CP_SINGLE;
-	sy.syList[7].syPlayerA = 3;
-	sy.syList[7].syPlayerX = 3;
+	sy.syList[7].syType = CP_SINGLE;  // A-G2 vs X-G2 (or reserve)
+	sy.syList[7].syPlayerA = 8;
+	sy.syList[7].syPlayerX = 8;
 
-	sy.syList[8].syType = CP_SINGLE;
-	sy.syList[8].syPlayerA = 4;
-	sy.syList[8].syPlayerX = 4;
+	sy.syList[8].syType = CP_SINGLE;  // A-B2 vs X-B2 (or reserve)
+	sy.syList[8].syPlayerA = 9;
+	sy.syList[8].syPlayerX = 9;
 
   return sy.InsertOrUpdate();
 }

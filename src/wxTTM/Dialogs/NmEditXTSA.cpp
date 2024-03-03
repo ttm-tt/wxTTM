@@ -103,28 +103,34 @@ bool  CNmEditXTSA::Edit(va_list vaList)
   
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
+
+  // Hidden players n XTSA
+  sySingles = 5;
   
   if (syDoubles)
     nmList->SetItemHeight(1.5);
 
-	const wxChar *xtsa[][4] = 
+	const wxChar *xtsa[][5] = 
 	{
-		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2")},
-		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2")}
+		{wxT("A-G1"), wxT("A-B1"), wxT("A-G2"), wxT("A-B2"), wxT("A-Res")},
+		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2"), wxT("X-Res")}
 	};
 
   wxString str;
     
-  str = ax ? "X-B\nA-G" : "A-B\nA-G";
+  for (int nmDouble = 1; nmDouble <= syDoubles; nmDouble++)
+  {
+    str = ax ? "X-B\nA-G" : "A-B\nA-G";
 
-  NmItem *itemPtr = new NmItem(str, false);
-  itemPtr->nm.team.cpType = CP_DOUBLE;
-  itemPtr->nm.nmNr = 1;
-  itemPtr->nm.mtID = mt.mtID;
-  itemPtr->nm.tmID = tm.tmID;
-  itemPtr->SetType(IDC_DELETE);
+    NmItem *itemPtr = new NmItem(str, false);
+    itemPtr->nm.team.cpType = CP_DOUBLE;
+    itemPtr->nm.nmNr = nmDouble;
+    itemPtr->nm.mtID = mt.mtID;
+    itemPtr->nm.tmID = tm.tmID;
+    itemPtr->SetType(IDC_DELETE);
     
-  nmList->AddListItem(itemPtr);
+    nmList->AddListItem(itemPtr);
+  }
 
   for (int nmSingle = 1; nmSingle <= sySingles; nmSingle++)
   {
@@ -140,14 +146,20 @@ bool  CNmEditXTSA::Edit(va_list vaList)
     nmList->AddListItem(itemPtr);
   }
 
-  NmEntryStore  nm;
-  nm.SelectByMtTm(mt, tm);
-  while (nm.Next())
+  NmEntryStore  nmEntry;
+  nmEntry.SelectByMtTm(mt, tm);
+  while (nmEntry.Next())
   {
-    long idx = (nm.team.cpType == CP_DOUBLE ? nm.nmNr : syDoubles + nm.nmNr);
+    if (nmEntry.team.cpType == CP_SINGLE && nmEntry.nmNr > sySingles ||
+        nmEntry.team.cpType == CP_DOUBLE && nmEntry.nmNr > syDoubles)
+      continue;
+
+    long idx = (nmEntry.team.cpType == CP_DOUBLE ? nmEntry.nmNr : syDoubles + nmEntry.nmNr);
     NmItem *itemPtr = (NmItem *) nmList->GetListItem(idx-1);
+    if (!itemPtr)
+      continue;
     wxASSERT(itemPtr);
-    itemPtr->SetValue(nm);
+    itemPtr->SetValue(nmEntry);
     
     // Wenn eine existiert, ist es eine
     hasNomination = true;
@@ -175,6 +187,67 @@ bool  CNmEditXTSA::Edit(va_list vaList)
 
 
 // -----------------------------------------------------------------------
+void CNmEditXTSA::ResetPlReplaces()
+{
+  // 0 is the double, 1-4 the player, 5 the reseerve
+  NmItem* itemPtr = (NmItem*)nmList->GetListItem(5);
+  bool isBoy = itemPtr && itemPtr->nm.team.pl.psSex == SEX_MALE;
+  bool isGirl = itemPtr && itemPtr->nm.team.pl.psSex == SEX_FEMALE;
+  char cax = ax == 0 ? 'A' : 'X';
+
+  lblPlReplaces[0] = wxString(_("Not decided"));
+  lblPlReplaces[1] = wxString(_("None"));
+
+  if (isBoy)
+  {
+    lblPlReplaces[2] = wxString::Format(_("%c-Res replaces %c-B1"), cax, cax);
+    lblPlReplaces[3] = wxString::Format(_("%c-Res replaces %c-B2"), cax, cax);
+  }
+  else if (isGirl)
+  {
+    lblPlReplaces[2] = wxString::Format(_("%c-Res replaces %c-G1"), cax, cax);
+    lblPlReplaces[3] = wxString::Format(_("%c-Res replaces %c-G2"), cax, cax);
+  }
+  else
+  {
+    // No 5th player
+    lblPlReplaces[2] = wxEmptyString;
+    lblPlReplaces[3] = wxEmptyString;
+  }
+
+  plReplace->Clear();
+
+  for (int idx = 0; idx < 4; ++idx)
+  {
+    if (lblPlReplaces[idx].IsEmpty())
+      break;
+
+    plReplace->AppendString(lblPlReplaces[idx]);
+  }
+
+  // Test, ob 6 - 9 gesetzt sind. NmRec ist 0-basiert
+  if (nm.GetSingle(4) == 0)                              // No 5th, we'll stay at None
+    plReplace->Select(1);
+  else if (nm.GetSingle(5) == 0 || nm.GetSingle(6) == 0) // Not decided (players for 5th to 8th not set
+    plReplace->Select(0);
+  else if (nm.GetSingle(7) == 0 || nm.GetSingle(8) == 0) 
+    plReplace->Select(0);
+  else if (nm.GetSingle(4) == nm.GetSingle(5))           // 5 replaces Girl 1
+    plReplace->Select(2);
+  else if (nm.GetSingle(4) == nm.GetSingle(6))           // 5 replaces Girl 2
+    plReplace->Select(3);
+  else if (nm.GetSingle(4) == nm.GetSingle(7))           // 5 replaces Boy 1
+    plReplace->Select(2);
+  else if (nm.GetSingle(4) == nm.GetSingle(8))           // 5 replaces Boy 2
+    plReplace->Select(3);
+  else                                                   // Else not decided
+    plReplace->Select(1);
+
+  plReplace->Enable(nm.GetSingle(4) != 0);
+
+}
+
+// -----------------------------------------------------------------------
 void CNmEditXTSA::OnInitialUpdate() 
 {
 	CFormViewEx::OnInitialUpdate();
@@ -185,6 +258,8 @@ void CNmEditXTSA::OnInitialUpdate()
   
   plList = XRCCTRL(*this, "AvailablePlayers", CListCtrlEx);
   nmList = XRCCTRL(*this, "NominatedPlayers", CListCtrlEx);
+  
+  plReplace = XRCCTRL(*this, "PlayerReplaces", wxChoice);
   
   FindWindow("MatchNo")->SetValidator(CLongValidator(&mt.mtNr));
 }
@@ -199,20 +274,26 @@ void  CNmEditXTSA::OnSelChanged(wxListEvent &)
     
   plList->RemoveAllListItems();
 
-  // 2nd, 4th, 6th and 8th match is a girl, also the 2nd player in the double
+  // 2nd, 4th entry is a girl, also the 2nd player in the double, and the reserve can be any
   bool wantGirl = 
-    (nmList->GetCurrentIndex() > 0 && (nmList->GetCurrentIndex() & 0x1) == 1) || nmList->GetCurrentIndex() == 0 && nmItemPtr->nm.ltA != 0;
-  // 3rd, 5th. 7th and 9th match is a boy, also the 1st player in the double
+    (nmList->GetCurrentIndex() > 0 && (nmList->GetCurrentIndex() & 0x1) == 1) || 
+    (nmList->GetCurrentIndex() == 0 && nmItemPtr->nm.ltA != 0) ||
+    (nmList->GetCurrentIndex() == 5)
+  ;
+  // 3rd, 5th entry is a boy, also the 1st player in the double, and the reserve can be any
   bool wantBoy  = 
-    (nmList->GetCurrentIndex() > 0 && (nmList->GetCurrentIndex() & 0x1) == 0) || nmList->GetCurrentIndex() == 0 && nmItemPtr->nm.ltA == 0;
+    (nmList->GetCurrentIndex() > 0 && (nmList->GetCurrentIndex() & 0x1) == 0) || 
+    (nmList->GetCurrentIndex() == 0 && nmItemPtr->nm.ltA == 0) ||
+    (nmList->GetCurrentIndex() == 5)
+  ;
     
   LtEntryStore lt;
   lt.SelectPlayerByTm(tm);
   while (lt.Next())
   {
-    if (wantGirl && lt.psSex != SEX_FEMALE)
+    if (!wantGirl && lt.psSex == SEX_FEMALE)
       continue;
-    if (wantBoy && lt.psSex != SEX_MALE)
+    if (!wantBoy && lt.psSex == SEX_MALE)
       continue;
 
     LtItem *itemPtr = new LtItemXTSA(lt, false);
@@ -234,6 +315,8 @@ void  CNmEditXTSA::OnSelChanged(wxListEvent &)
   }
   
   plList->SetSelected(0);
+
+  ResetPlReplaces();
 }
 
 
@@ -365,6 +448,70 @@ void  CNmEditXTSA::OnOK()
     {
       hasNomination |= nmItemPtr->nm.ltA != 0;
       nm.SetDoubles(nmItemPtr->nm.nmNr-1, nmItemPtr->nm.ltA, nmItemPtr->nm.ltB);
+    }
+  }
+
+  // NmRec beginnt bei 0 zu zaehlen
+  int choice = plReplace->GetSelection();
+  NmItem *itemPtr = (NmItem *) nmList->GetListItem(5); // Index 0 is the mixed double
+  bool isBoy = (itemPtr && itemPtr->nm.team.pl.psSex == SEX_MALE);
+  bool isGirl = (itemPtr && itemPtr->nm.team.pl.psSex == SEX_FEMALE);
+
+  if (itemPtr && choice == 0)
+  {
+    nm.SetSingle(5, 0);
+    nm.SetSingle(6, 0);
+    nm.SetSingle(7, 0);
+    nm.SetSingle(8, 0);
+  }
+  else
+  {
+    nm.SetSingle(5, nm.GetSingle(0));  // A-G1 / X-G1
+    nm.SetSingle(6, nm.GetSingle(1));  // A-B1 / X-B1
+    nm.SetSingle(7, nm.GetSingle(2));  // A-G2 / X-G2
+    nm.SetSingle(8, nm.GetSingle(3));  // A-B2 / X-B2
+  }
+
+  switch (choice)
+  {
+    case 0:  // Not decided
+    {
+      nm.SetSingle(5, 0);
+      nm.SetSingle(6, 0);
+      nm.SetSingle(7, 0);
+      nm.SetSingle(8, 0);
+
+      break;
+    }
+
+    case 1:  // None
+    {
+      nm.SetSingle(5, nm.GetSingle(0));  // A-G1 / X-G1
+      nm.SetSingle(6, nm.GetSingle(1));  // A-B1 / X-B1
+      nm.SetSingle(7, nm.GetSingle(2));  // A-G2 / X-G2
+      nm.SetSingle(8, nm.GetSingle(3));  // A-B2 / X-B2
+
+      break;
+    }
+
+    case 2:  // Res replaces G1 / B1
+    {
+      if (isBoy)
+        nm.SetSingle(6, nm.GetSingle(4));
+      else if (isGirl)
+        nm.SetSingle(5, nm.GetSingle(4));
+
+      break;
+    }
+
+    case 3:  // Res replaces G2 / B2
+    {
+      if (isBoy)
+        nm.SetSingle(8, nm.GetSingle(4));
+      else if (isGirl)
+        nm.SetSingle(7, nm.GetSingle(4));
+
+      break;
     }
   }
 
