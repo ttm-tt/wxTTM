@@ -467,7 +467,11 @@ void  CListCtrlEx::SetCurrentIndex(long idx)
 // Get index of current item
 long  CListCtrlEx::GetCurrentIndex()
 {
-  return GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+  long ret = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+  if (ret == -1) // not found
+    ret = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED);
+
+  return ret;
 }
 
 

@@ -43,6 +43,8 @@ class CStListView : public CFormViewEx
 
     void OnChildClose(wxCloseEvent &);
 
+    void OnSetFocus(wxFocusEvent &);
+
     void OnCalculate(wxCommandEvent &);
 
   private:

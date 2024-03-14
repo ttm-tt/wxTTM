@@ -546,6 +546,7 @@ void CStListView::OnInitialUpdate()
   m_listCtrl->SetResizeColumn(5);
 
   m_listCtrl->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(CStListView::OnMouseLeftDown), NULL, this);
+  m_listCtrl->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(CStListView::OnSetFocus), NULL, this);
 }
 
 
@@ -649,6 +650,9 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
     {
       m_listCtrl->AddListItem(new TbItem(st));
     }
+
+    // Trotzdem erstmal nach Position sortieren?
+    m_listCtrl->SortItems();
   }
   else
   {
@@ -695,14 +699,18 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
       
       m_listCtrl->AddListItem(itemPtr);
     }
-  }
-   
-  // Sort by position (is this necessary?)
-  m_listCtrl->SortItems();
 
-  // Select the first entry by default
-  if (m_listCtrl->GetCount())
-    m_listCtrl->SetCurrentIndex(0);
+    m_listCtrl->SortItems();
+  }
+}
+
+void CStListView::OnSetFocus(wxFocusEvent &)
+{
+  int idx = m_listCtrl->GetCurrentIndex();
+  if (idx == -1)
+    m_listCtrl->SetSelected(0);
+  else if (!m_listCtrl->IsSelected(idx))
+    m_listCtrl->SetSelected(idx);
 }
 
 
