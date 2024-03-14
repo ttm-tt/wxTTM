@@ -24,6 +24,7 @@ class CMdGroups : public CFormViewEx
 
   private:
     void OnSelChangedGroupSystem(wxCommandEvent &);
+    void OnPositions(wxCommandEvent &);
 
   private:
     virtual void  OnEdit();

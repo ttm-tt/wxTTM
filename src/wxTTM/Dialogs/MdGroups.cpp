@@ -18,6 +18,7 @@ IMPLEMENT_DYNAMIC_CLASS(CMdGroups, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CMdGroups, CFormViewEx)
   EVT_COMBOBOX(XRCID("GroupSystem"), CMdGroups::OnSelChangedGroupSystem)
+  EVT_BUTTON(XRCID("Positions"), CMdGroups::OnPositions)
 END_EVENT_TABLE()
 
 namespace
@@ -174,6 +175,23 @@ void CMdGroups::OnSelChangedGroupSystem(wxCommandEvent &)
   m_grList->SortItems(0);
 
   gr.Close();
+}
+
+
+// -----------------------------------------------------------------------
+void CMdGroups::OnPositions(wxCommandEvent&)
+{
+  if (m_grList->GetSelectedCount() != 1)
+    return;
+
+  GrItemEx * itemPtr = (GrItemEx *) m_grList->GetCurrentItem();
+
+  if (!itemPtr)
+    return;
+
+  long grID = itemPtr->gr.grID;
+
+  CTT32App::instance()->OpenView(_("Group Positioning"), wxT("StListView"), grID);
 }
 
 
