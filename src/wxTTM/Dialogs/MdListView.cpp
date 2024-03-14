@@ -122,10 +122,9 @@ void CMdListView::OnGroups(wxCommandEvent&)
   if (!itemPtr)
     return;
 
-
   long  mdID = itemPtr->GetID();
 
-  CTT32App::instance()->OpenView(_("Groups"), wxT("MdGroups"), mdID, 0, NULL);
+  CTT32App::instance()->OpenView(_("Groups"), wxT("MdGroups"), mdID);
 }
 
 

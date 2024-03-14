@@ -560,6 +560,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\PlHistView.cpp" />
     <ClCompile Include="Dialogs\RpEdit.cpp" />
     <ClCompile Include="Dialogs\SQLEditorBook.cpp" />
+    <ClCompile Include="Dialogs\SyGroups.cpp" />
     <ClCompile Include="Dialogs\TmGroups.cpp" />
     <ClCompile Include="Dialogs\UpEdit.cpp" />
     <ClCompile Include="Dialogs\UpItem.cpp" />
@@ -741,6 +742,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\PlHistView.h" />
     <ClInclude Include="Dialogs\RpEdit.h" />
     <ClInclude Include="Dialogs\SQLEditorBook.h" />
+    <ClInclude Include="Dialogs\SyGroups.h" />
     <ClInclude Include="Dialogs\TmGroups.h" />
     <ClInclude Include="Dialogs\UpEdit.h" />
     <ClInclude Include="Dialogs\UpItem.h" />

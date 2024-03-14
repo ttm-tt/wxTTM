@@ -15,6 +15,7 @@
 #include  "CpStore.h"
 #include  "TmStore.h"
 #include  "MdStore.h"
+#include  "SyStore.h"
 
 #include  <stdio.h>
 #include  <stdlib.h>
@@ -120,6 +121,28 @@ bool  GrListStore::SelectAll(const MdRec& md)
 {
   wxString  str = SelectString();
   str += " WHERE grModus =  " + ltostr(MOD_RR) + " AND mdID = " + ltostr(md.mdID) + " ORDER BY grSortOrder, grStage, grName";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindRec();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
+bool  GrListStore::SelectAll(const SyRec& sy)
+{
+  wxString  str = SelectString();
+  str += " WHERE syID = " + ltostr(sy.syID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {

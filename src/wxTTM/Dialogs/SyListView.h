@@ -24,12 +24,15 @@ class CSyListView : public CFormViewEx
     virtual void OnEdit();
     virtual void OnDelete();
 
+		void OnGroups(wxCommandEvent&);
+
 	  virtual void OnUpdate(CRequest *);
 
   private:
 	  CListCtrlEx * m_listCtrl;
 	  
 	DECLARE_DYNAMIC_CLASS(CSyListView)
+	DECLARE_EVENT_TABLE()
 };
 
 #endif 

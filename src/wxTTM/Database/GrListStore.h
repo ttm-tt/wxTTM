@@ -36,9 +36,10 @@ class  GrListStore : public StoreObj, public GrListRec
     virtual void  Init();
 
   public:
-    bool  SelectAll(const CpRec &);      // Alle Gruppen
-    bool  SelectAll(const MdRec&);       // All RR-Gruppen mit Group Modus
-    bool  SelectById(long id);           // Wettbewerb nach ID
+    bool  SelectAll(const CpRec &);      // All groups
+    bool  SelectAll(const MdRec&);       // All RR-groups with Group Modus
+    bool  SelectAll(const SyRec&);       // All groups with team system
+    bool  SelectById(long id);           // All groups of given event
     bool  SelectById(const std::set<long> &idList);
     bool  SelectByStage(const CpRec &, const wxString &stage);
     bool  SelectByCpTm(const CpRec &, const TmRec &);

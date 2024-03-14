@@ -17,6 +17,10 @@
 
 IMPLEMENT_DYNAMIC_CLASS(CSyListView, CFormViewEx)
 
+BEGIN_EVENT_TABLE(CSyListView, CFormViewEx)
+  EVT_BUTTON(XRCID("Groups"), CSyListView::OnGroups)
+END_EVENT_TABLE()
+
 
 // -----------------------------------------------------------------------
 // CSyListView
@@ -108,6 +112,19 @@ void  CSyListView::OnDelete()
   }
 }
 
+
+
+// -----------------------------------------------------------------------
+void CSyListView::OnGroups(wxCommandEvent&)
+{
+  ListItem* itemPtr = m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+  long  syID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Groups"), wxT("SyGroups"), syID);
+}
 
 // -----------------------------------------------------------------------
 void CSyListView::OnUpdate(CRequest *reqPtr) 

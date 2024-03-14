@@ -569,6 +569,9 @@
     <ClCompile Include="Dialogs\NmEditYSTA.cpp">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClCompile>
+    <ClCompile Include="Dialogs\SyGroups.cpp">
+      <Filter>Source Files\Dialogs\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -975,6 +978,9 @@
     </ClInclude>
     <ClInclude Include="Dialogs\NmEditYSTA.h">
       <Filter>Source Files\Dialogs\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SyGroups.h">
+      <Filter>Source Files\Dialogs\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
