@@ -937,6 +937,10 @@ bool  TTDbse::RestoreDatabase(const wxString &fileName, const wxString &dir)
     infoSystem.Exception(str, e);
     
     delete stmt;
+
+    // Open database again, but don't show error
+    OpenDatabase(strDsn, false);
+
     return false;
   } 
     

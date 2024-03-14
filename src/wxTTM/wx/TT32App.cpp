@@ -1675,33 +1675,41 @@ void CTT32App::BackupDatabase()
 
 void CTT32App::RestoreDatabase()
 {
-  wxString name = GetDatabase() + ".bak";
-  wxFileName tmpName(GetPath(), name);
+  wxFileName name(GetPath(), GetDatabase() + ".bak");
+  wxFileName tmpName(name);
+  name.Normalize();
   tmpName.Normalize();
   wxString path = tmpName.GetPath();
   
   wxFileDialog fileDlg(
-      m_pMainWnd, _("Restore Database"), path, name, 
+      m_pMainWnd, _("Restore Database"), path, name.GetFullName(),
       "Backup Files (*.bak)|*.bak|All Files (*.*)|*.*||", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     
 
   if (fileDlg.ShowModal() != wxID_OK)
     return;
     
-  name = fileDlg.GetPath();
+  name.Assign(fileDlg.GetPath());
+  name.Normalize();
 
-  if (name != tmpName.GetFullPath())
+  tmpName.Normalize();
+
+  // If the selected file is in a different directory than the DB
+  // then copy it to a temp file
+  if (wxFileName(name.GetPath(), "").SameAs(wxFileName(tmpName.GetPath(), "")))
+  {
+    tmpName.Assign(name);
+  }
+  else
   {
     tmpName = wxFileName(path, wxString("tmp-") + fileDlg.GetFilename());
     tmpName.Normalize();
 
-    wxCopyFile(name, tmpName.GetFullPath());
+    wxCopyFile(name.GetFullPath(), tmpName.GetFullPath());
   }
   
   m_pMainWnd->SetCursor(wxCURSOR_WAIT);
   bool res = TTDbse::instance()->RestoreDatabase(tmpName.GetFullPath(), GetPath());
-
-  wxRemoveFile(tmpName.GetFullPath());
 
   m_pMainWnd->SetCursor(wxCURSOR_DEFAULT);
   
