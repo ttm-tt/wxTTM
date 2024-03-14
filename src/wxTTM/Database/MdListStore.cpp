@@ -25,7 +25,7 @@ bool  MdListStore::CreateView()
   Statement *tmp = connPtr->CreateStatement();
 
   wxString  str = "CREATE VIEW MdList AS "
-                     "SELECT mdID, mdName, mdDesc, mdSize FROM MdRec";
+                     "SELECT mdID, mdName, mdDesc, mdSize, mpID FROM MdRec";
 
   try
   {

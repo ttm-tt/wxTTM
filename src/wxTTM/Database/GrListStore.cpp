@@ -15,6 +15,7 @@
 #include  "CpStore.h"
 #include  "TmStore.h"
 #include  "MdStore.h"
+#include  "MpStore.h"
 #include  "SyStore.h"
 
 #include  <stdio.h>
@@ -121,6 +122,29 @@ bool  GrListStore::SelectAll(const MdRec& md)
 {
   wxString  str = SelectString();
   str += " WHERE grModus =  " + ltostr(MOD_RR) + " AND mdID = " + ltostr(md.mdID) + " ORDER BY grSortOrder, grStage, grName";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindRec();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
+bool  GrListStore::SelectAll(const MpRec& mp)
+{
+  wxString  str = SelectString();
+  str += " INNER JOIN MdList ON MdList.mdID = GrList.mdID ";
+  str += " WHERE MdList.mpID = " + ltostr(mp.mpID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {
@@ -425,7 +449,7 @@ short GrListStore::GetLastScheduledRound(long id)
 wxString  GrListStore::SelectString() const
 {
   wxString  str = 
-    "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, cpID, mdID, syID, grBestOf, "
+    "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, cpID, GrList.mdID, syID, grBestOf, "
     "       grQualRounds, grNofRounds, grNofMatches, grNoThirdPlace, grOnlyThirdPlace, "
     "       grPublished, grHasNotes, grSortOrder, grPrinted "
     "  FROM GrList "

@@ -15,6 +15,10 @@
 
 IMPLEMENT_DYNAMIC_CLASS(CMpListView, CFormViewEx)
 
+BEGIN_EVENT_TABLE(CMpListView, CFormViewEx)
+  EVT_BUTTON(XRCID("Groups"), CMpListView::OnGroups)
+END_EVENT_TABLE()
+
 
 // -----------------------------------------------------------------------
 CMpListView::CMpListView() : CFormViewEx()
@@ -103,6 +107,19 @@ void  CMpListView::OnDelete()
     else
       TTDbse::instance()->GetDefaultConnection()->Rollback();
   }
+}
+
+
+// -----------------------------------------------------------------------
+void CMpListView::OnGroups(wxCommandEvent&)
+{
+  ListItem* itemPtr = m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+  long  syID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Groups"), wxT("MpGroups"), syID);
 }
 
 

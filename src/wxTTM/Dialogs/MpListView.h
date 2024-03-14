@@ -18,12 +18,15 @@ class CMpListView : public CFormViewEx
     virtual void OnEdit();
     virtual void OnDelete();
 
+		void OnGroups(wxCommandEvent&);
+
 	  virtual void OnUpdate(CRequest *);
 
   private:
 	  CListCtrlEx * m_listCtrl;
 	  
 	DECLARE_DYNAMIC_CLASS(CMpListView)
+	DECLARE_EVENT_TABLE()
 };
 
 

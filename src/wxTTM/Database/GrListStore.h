@@ -7,7 +7,8 @@
 #include "StoreObj.h"
 #include "GrStore.h"
 
-struct  CpListRec;
+struct CpListRec;
+struct MpRec;
 
 
 // Tabellendaten in eigene Struktur
@@ -37,7 +38,8 @@ class  GrListStore : public StoreObj, public GrListRec
 
   public:
     bool  SelectAll(const CpRec &);      // All groups
-    bool  SelectAll(const MdRec&);       // All RR-groups with Group Modus
+    bool  SelectAll(const MdRec &);      // All RR-groups with Group Modus
+    bool  SelectAll(const MpRec &);      // All groups with match points
     bool  SelectAll(const SyRec&);       // All groups with team system
     bool  SelectById(long id);           // All groups of given event
     bool  SelectById(const std::set<long> &idList);

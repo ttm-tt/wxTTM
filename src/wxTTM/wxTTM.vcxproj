@@ -547,6 +547,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\ImportOnlineEntries.cpp" />
     <ClCompile Include="Dialogs\MdGroups.cpp" />
     <ClCompile Include="Dialogs\MpEdit.cpp" />
+    <ClCompile Include="Dialogs\MpGroups.cpp" />
     <ClCompile Include="Dialogs\MpItem.cpp" />
     <ClCompile Include="Dialogs\MpListView.cpp" />
     <ClCompile Include="Dialogs\MtUnscheduled.cpp" />
@@ -729,6 +730,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\ImportOnlineEntries.h" />
     <ClInclude Include="Dialogs\MdGroups.h" />
     <ClInclude Include="Dialogs\MpEdit.h" />
+    <ClInclude Include="Dialogs\MpGroups.h" />
     <ClInclude Include="Dialogs\MpItem.h" />
     <ClInclude Include="Dialogs\MpListView.h" />
     <ClInclude Include="Dialogs\MtUnscheduled.h" />

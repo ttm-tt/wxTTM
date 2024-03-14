@@ -572,6 +572,9 @@
     <ClCompile Include="Dialogs\SyGroups.cpp">
       <Filter>Source Files\Dialogs\View</Filter>
     </ClCompile>
+    <ClCompile Include="Dialogs\MpGroups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -981,6 +984,9 @@
     </ClInclude>
     <ClInclude Include="Dialogs\SyGroups.h">
       <Filter>Source Files\Dialogs\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MpGroups.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
