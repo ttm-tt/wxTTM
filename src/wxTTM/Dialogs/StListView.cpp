@@ -649,9 +649,6 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
     {
       m_listCtrl->AddListItem(new TbItem(st));
     }
-
-    // Trotzdem erstmal nach Position sortieren?
-    m_listCtrl->SortItems();
   }
   else
   {
@@ -698,9 +695,14 @@ void CStListView::OnSelChangeCount(wxCommandEvent &)
       
       m_listCtrl->AddListItem(itemPtr);
     }
-
-    m_listCtrl->SortItems();
   }
+   
+  // Sort by position (is this necessary?)
+  m_listCtrl->SortItems();
+
+  // Select the first entry by default
+  if (m_listCtrl->GetCount())
+    m_listCtrl->SetCurrentIndex(0);
 }
 
 
