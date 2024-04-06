@@ -515,7 +515,7 @@ bool  NaStore::Import(wxTextBuffer &is)
   // Check header
   if (!CheckImportHeader(line, "#NATIONS", version))
   {
-    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#NATIONS"), line.c_str()))
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#NATIONS"), line.wx_str()))
       return false;
   }
 
