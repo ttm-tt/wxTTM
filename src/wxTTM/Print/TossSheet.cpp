@@ -321,13 +321,13 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
         }
         else if (i == 3)
         {
-          strA = wxString::Format("A-2/A-3/A-4");
-          strX = wxString::Format("X-2/X-3/X-4");
+          strA = wxString::Format("A-1/A-3/A-4");
+          strX = wxString::Format("X-1/X-3/X-4");
         }
         else if (i == 4)
         {
-          strA = wxString::Format("A-1/A-3/A-4");
-          strX = wxString::Format("X-1/X-3/X-4");
+          strA = wxString::Format("A-2/A-3/A-4");
+          strX = wxString::Format("X-2/X-3/X-4");
         }
       }
       else if (sy.sySingles < 4)
