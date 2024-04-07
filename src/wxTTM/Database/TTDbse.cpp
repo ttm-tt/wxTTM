@@ -991,3 +991,30 @@ wxString TTDbse::GetDsnPart(const wxString &part) const
 
   return "";
 }
+
+
+// -----------------------------------------------------------------------
+bool TTDbse::IsScheduled() const
+{
+  long count = MtListStore().CountScheduledMatches();
+  return count > 0;
+}
+
+
+bool TTDbse::IsStarted() const
+{
+  long countScheduled = MtListStore().CountScheduledMatches();
+  long countFinished = MtListStore().CountFinishedMatches();
+
+  return (countFinished > 0) && (countFinished < countScheduled);
+}
+
+
+bool TTDbse::IsFinished() const
+{
+  long countScheduled = MtListStore().CountScheduledMatches();
+  long countFinished = MtListStore().CountFinishedMatches();
+
+  // To avoid the unlikely situation that matches are finished but not scheduled
+  return (countScheduled > 0) && (countFinished >= countScheduled);
+}

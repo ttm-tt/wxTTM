@@ -80,6 +80,12 @@ class  MtListStore : public StoreObj, public MtListRec
     // Return tuples of grID and mtRound, and mtDateTime
     std::list<std::tuple<long, short, timestamp>> GetFinishedRounds(Finished what);
 
+    // Count scheduled matches
+    long CountScheduledMatches();
+
+    // Count finished (checked) matches
+    long CountFinishedMatches();
+
   private:
     wxString  SelectString() const;
     bool  BindRec();

@@ -1675,6 +1675,28 @@ void CTT32App::BackupDatabase()
 
 void CTT32App::RestoreDatabase()
 {
+  if (!TTDbse::instance()->GetDefaultConnection())
+  {
+    infoSystem.Error(_("Database is not open"));
+    return;
+  }
+
+  if (TTDbse::instance()->IsFinished())
+  {
+    if (!infoSystem.Question(_("Tournament %s has already finished, restoring will overwrite all data. Continue anyway?"), GetDatabase().wx_str()))
+      return;
+  }
+  else if (TTDbse::instance()->IsStarted())
+  {
+    if (!infoSystem.Question(_("Tournament %s has already started, restoring will overwrite all data. Continue anyway?"), GetDatabase().wx_str()))
+      return;
+  }
+  else if (TTDbse::instance()->IsScheduled())
+  {
+    if (!infoSystem.Question(_("Tournament %s has already scheduled matches, restoring will overwrite all data. Continue anyway?"), GetDatabase().wx_str()))
+      return;
+  }
+
   wxFileName name(GetPath(), GetDatabase() + ".bak");
   wxFileName tmpName(name);
   name.Normalize();

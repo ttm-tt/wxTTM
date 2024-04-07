@@ -80,6 +80,15 @@ class  TTDbse
     // List all databases on server. Return a std::list<wxString>
     std::list<wxString> ListDatabases(const wxString &server, const wxString &connStr = wxEmptyString) const;
 
+    // Test if tournament has schedule
+    bool IsScheduled() const;
+
+    // Test if tournament has started
+    bool IsStarted() const;
+
+    // Test if tournament has finished
+    bool IsFinished() const;
+
   private:
     // Rollen fuer DB erzeugen
     bool  CreateRoles();

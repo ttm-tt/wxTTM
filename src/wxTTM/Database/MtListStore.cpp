@@ -539,6 +539,49 @@ std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Fin
   return ret;
 }
 
+
+// -----------------------------------------------------------------------
+long MtListStore::CountScheduledMatches()
+{
+  wxString sql = "SELECT COUNT(*) FROM MtList WHERE mtDateTime IS NOT NULL";
+  long count = 0;
+
+  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+  wxASSERT(stmtPtr);
+  
+  ResultSet *resPtr = stmtPtr->ExecuteQuery(sql);
+  wxASSERT(resPtr);
+  
+  if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+    count = 0;
+    
+  delete resPtr;
+  delete stmtPtr;
+  
+  return count;
+}
+
+
+long MtListStore::CountFinishedMatches()
+{
+  wxString sql = "SELECT COUNT(*) FROM MtList WHERE mtChecked <> 0";
+  long count = 0;
+
+  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+  wxASSERT(stmtPtr);
+  
+  ResultSet *resPtr = stmtPtr->ExecuteQuery(sql);
+  wxASSERT(resPtr);
+  
+  if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+    count = 0;
+    
+  delete resPtr;
+  delete stmtPtr;
+  
+  return count;
+}
+
 // -----------------------------------------------------------------------
 wxString  MtListStore::SelectString() const
 {
