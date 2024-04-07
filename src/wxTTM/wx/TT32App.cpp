@@ -35,7 +35,7 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "24.03.01";
+static const wxString versionNumber = "24.04.01";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
