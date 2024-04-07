@@ -867,10 +867,17 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		{wxT("X-G1"), wxT("X-B1"), wxT("X-G2"), wxT("X-B2"), wxT("X-Res"),
 		 wxT("X-G1/Res"), wxT("X-B1/Res"), wxT("X-G2/Res"), wxT("X-B2/Res")}
 	};
+	const wxChar *ysta[][6] =
+	{
+		{wxT("A1"), wxT("A2"), wxT("A3"), wxT("A4"), wxT("A1/Res"), wxT("A2/Res")},
+		{wxT("X1"), wxT("X2"), wxT("X3"), wxT("X4"), wxT("X1/Res"), wxT("X2/Res")}
+	};
 
-	// Strings are longer in XTSA
+	// Strings are longer in XTSA and YSTA
 	if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
 		WIDTH_AX += 6 * printer->cW;
+	else if (wxStrcmp(sy.syName, wxT("YSTA")) == 0)
+		WIDTH_AX += 2 * printer->cW;
 
 	// Insgesamt gibt es ??? Gruppen
 	CRect  regGroup;
@@ -1102,6 +1109,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 		// Die horizontale Trennlinie
 		printer->Line(reg.left, reg.bottom, reg.right, reg.bottom);
     
+		// Special considerations for XTS(A), but YSTA is printed normally
 		if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = xts[0][singles];
 		else if (wxStrcmp(sy.syName, "XTSA") == 0)
@@ -1113,6 +1121,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
 		PrintStringCentered(str, regA);
 
+		// Special considerations for XTS(A), but YSTA is printed normally
 		if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = xts[1][singles];
 		else if (wxStrcmp(sy.syName, "XTSA") == 0)
@@ -1321,10 +1330,12 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
               
 	offsetY = regGroup.bottom;
 
-	// Undo the correction, in XTS(A) we need all of them
+	// Undo the correction, in XTS(A) and YSTA we need all of them
 	if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
 		sySingles = sy.sySingles;
 	else if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)
+		sySingles = sy.sySingles;
+	else if (wxStrcmp(sy.syName, wxT("YSTA")) == 0)
 		sySingles = sy.sySingles;
 
 	// --- Naechste Gruppe: Liste der Spiele ---
@@ -1334,7 +1345,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	// int  gameWidth = printer->TextWidth("5. Game");
 	int  gameWidth = (printer->width / 2) / (mt.mt.mtBestOf + 2);
 
-	// 'Players
+	// Players
 	CRect  regPlayers = regGroup;
 	regPlayers.right = regGroup.right - (mt.mt.mtBestOf + 2) * gameWidth;
 
@@ -1442,6 +1453,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			{
 				strA = xtsa[0][mtmt.nmAnmNr - 1];
 			}
+			else if (wxStrcmp(sy.syName, "YSTA") == 0)
+			{
+				strA = ysta[0][mtmt.nmAnmNr - 1];
+			}
 			else if (sySingles < 4)
 			{
         if (mtmt.nmAnmNr > 0)
@@ -1470,6 +1485,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 			else if (wxStrcmp(sy.syName, "XTSA") == 0)
 			{
 				strX = xtsa[1][mtmt.nmXnmNr - 1];
+			}
+			else if (wxStrcmp(sy.syName, "YSTA") == 0)
+			{
+				strX = ysta[1][mtmt.nmXnmNr - 1];
 			}
 			else if (sySingles < 4)
 			{

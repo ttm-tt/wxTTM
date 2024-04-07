@@ -170,14 +170,14 @@ bool  NmEditYSTA::Edit(va_list vaList)
     plReplace->Select(1);
   else if (nm.GetSingle(4) == 0 || nm.GetSingle(5) == 0) // Not decided (players for 5th or 6th not set
     plReplace->Select(0);                                
-  else if (nm.GetSingle(5) == nm.GetSingle(2))           // 3 replaces 1
+  else if (nm.GetSingle(4) == nm.GetSingle(2))           // 3 replaces 1
     plReplace->Select(2);
-  else if (nm.GetSingle(4) == nm.GetSingle(2))           // 3 replaces 2
+  else if (nm.GetSingle(5) == nm.GetSingle(2))           // 3 replaces 2
     plReplace->Select(3);
-  else if (nm.GetSingle(5) == nm.GetSingle(3))           // 4 replaces 1
-    plReplace->Select(2);
-  else if (nm.GetSingle(4) == nm.GetSingle(3))           // 4 replaces 2
-    plReplace->Select(3);
+  else if (nm.GetSingle(4) == nm.GetSingle(3))           // 4 replaces 1
+    plReplace->Select(4);
+  else if (nm.GetSingle(5) == nm.GetSingle(3))           // 4 replaces 2
+    plReplace->Select(5);
   else                                                   // Else 3 and 4 replaces none
     plReplace->Select(1);
 
@@ -204,10 +204,12 @@ void NmEditYSTA::ResetPlReplaces()
 
   if (((NmItem *) nmList->GetListItem(2))->nm.ltA == 0)
   {
+    // No 3rd, only "None" available
     plReplace->AppendString(lblPlReplaces[1]);
   }
   else if (((NmItem *) nmList->GetListItem(3))->nm.ltA == 0)
   {
+    // Only 3rd, no 4th: only Not decided, None, and 3 replaces ... available
     plReplace->AppendString(lblPlReplaces[0]); // Not decided
     plReplace->AppendString(lblPlReplaces[1]); // None
     plReplace->AppendString(lblPlReplaces[2]); // 3 -> 1
@@ -215,6 +217,7 @@ void NmEditYSTA::ResetPlReplaces()
   }
   else
   {
+    // 3rd and 4th present, all options available
     plReplace->AppendString(lblPlReplaces[0]); // Not decided
     plReplace->AppendString(lblPlReplaces[1]); // None
     plReplace->AppendString(lblPlReplaces[2]); // 3 -> 1
@@ -436,31 +439,31 @@ void  NmEditYSTA::OnOK()
       break;
     }
 
-    case 2 :  // 3 replaces A1 / X1 (6); A2 / X2 (5) stay
+    case 2 :  // 3 replaces A1 / X1 (5); A2 / X2 (6) stay
     {
       nm.SetSingle(4, nm.GetSingle(2));
       nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
-    case 3:  // 3 replaces A2 / X2 (5); A1 / X1 (6) stay
+    case 3:  // 3 replaces A2 / X2 (6); A1 / X1 (5) stay
     {
       nm.SetSingle(4, nm.GetSingle(0));
       nm.SetSingle(5, nm.GetSingle(2));
       break;
     }
 
-    case 4 :  // 4 replaces A1 / X1 (6); A2 / X2 (5) stay
+    case 4 : // 4 replaces A1 / X1 (5); A2 / X2 (6) stay
     {
-      nm.SetSingle(5, nm.GetSingle(3));
-      nm.SetSingle(4, nm.GetSingle(1));
+      nm.SetSingle(4, nm.GetSingle(3));
+      nm.SetSingle(5, nm.GetSingle(1));
       break;
     }
 
-    case 5:  // 4 replaces A2 / X2 (5); A1 / X1 (6) stay
+    case 5:  // 4 replaces A2 / X2 (6); A1 / X1 (5) stay
     {
-      nm.SetSingle(4, nm.GetSingle(3));
-      nm.SetSingle(5, nm.GetSingle(0));
+      nm.SetSingle(4, nm.GetSingle(0));
+      nm.SetSingle(5, nm.GetSingle(3));
       break;
     }
   }
