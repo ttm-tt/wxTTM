@@ -32,6 +32,9 @@ MinVersion=6.1sp1
 ; Sign installer
 ; SignTool=MS /d $qTable Tennis Manager$q $f
 
+; Close TTM before installation
+CloseApplications = force;
+
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
 Name: de; MessagesFile: compiler:Languages\German.isl
