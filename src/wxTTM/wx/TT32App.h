@@ -210,6 +210,8 @@ class CTT32App : public wxApp
     void  OnProgressBarExit(wxThreadEvent &);
 
   private:
+    bool  IsUpdateAvailable() const;
+
     bool  CheckLicenseCode(const wxString &name) const;
     bool  HasLicenseExpired(const wxString &name) const;
     void  ReadLicense(const wxString &name);

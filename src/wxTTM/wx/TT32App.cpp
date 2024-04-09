@@ -35,7 +35,7 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "24.04.02";
+static const wxString versionNumber = "24.04.03";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
@@ -141,7 +141,7 @@ bool CTT32App::OnInit()
     ReadLicense(licenseFileName);
   }
 #endif
-  
+
   // Setup von [Raster]
   if (!ttProfile.GetFirstKey(PRF_RASTER))
   {
@@ -225,6 +225,17 @@ bool CTT32App::OnInit()
   Connect(IDC_PROGRESSBAR_STEP, wxThreadEventHandler(CTT32App::OnProgressBarStep), NULL, this);
   Connect(IDC_PROGRESSBAR_EXIT, wxThreadEventHandler(CTT32App::OnProgressBarExit), NULL, this);
 
+  // Check for update on start
+  if (IsUpdateAvailable())
+  {
+    wxDialog* dlg = wxXmlResource::Get()->LoadDialog(m_pMainWnd, "UpdateAvailable");
+
+    // Aus seltsamen Gruenden hat der Close-Button nicht die "affirmative ID"
+    dlg->FindWindow("Close")->SetId(dlg->GetAffirmativeId());
+
+    dlg->ShowModal();
+  }
+  
   return true;
 }
 
@@ -1935,36 +1946,62 @@ void CTT32App::CheckForUpdate()
 
   if (url.GetError() == wxURL_NOERR)
   {
-      wxString newVersionNumnber;
-      wxInputStream *in = url.GetInputStream();
+    wxString newVersionNumnber;
+    wxInputStream* in = url.GetInputStream();
 
-      if (in && in->IsOk())
+    if (in && in->IsOk())
+    {
+      wxStringOutputStream sos(&newVersionNumnber);
+      in->Read(sos);
+
+      newVersionNumnber.Trim();
+
+      if (newVersionNumnber > versionNumber)
       {
-          wxStringOutputStream sos(&newVersionNumnber);
-          in->Read(sos);
+        wxDialog* dlg = wxXmlResource::Get()->LoadDialog(m_pMainWnd, "UpdateAvailable");
 
-          newVersionNumnber.Trim();
+        // Aus seltsamen Gruenden hat der Close-Button nicht die "affirmative ID"
+        dlg->FindWindow("Close")->SetId(dlg->GetAffirmativeId());
 
-          if (newVersionNumnber > versionNumber)
-          {
-            wxDialog * dlg = wxXmlResource::Get()->LoadDialog(m_pMainWnd, "UpdateAvailable");
-
-            // Aus seltsamen Gruenden hat der Close-Button nicht die "affirmative ID"
-            dlg->FindWindow("Close")->SetId(dlg->GetAffirmativeId());
-
-            dlg->ShowModal();
-          }
-          else
-          {
-            infoSystem.Information(_("You are using the latest version of TTM"));
-          }
-
-          return;
+        dlg->ShowModal();
       }
+      else
+      {
+        infoSystem.Information(_("You are using the latest version of TTM"));
+      }
+
+      return;
+    }
   }
 
   // Irgend ein Fehler ist aufgetreten
   infoSystem.Error(_("Could not determine the current version of TTM"));
+}
+
+
+// Almost same code as above, but here we don't show errors (e.g. "no internet")
+bool CTT32App::IsUpdateAvailable() const
+{
+  wxURL url("http://downloads.ttm.co.at/ttm/current.txt");
+
+  if (url.GetError() == wxURL_NOERR)
+  {
+    wxString newVersionNumnber;
+    wxInputStream* in = url.GetInputStream();
+
+    if (in && in->IsOk())
+    {
+      wxStringOutputStream sos(&newVersionNumnber);
+      in->Read(sos);
+
+      newVersionNumnber.Trim();
+
+      if (newVersionNumnber > versionNumber)
+        return true;
+    }
+  }
+
+  return false;
 }
 
 
