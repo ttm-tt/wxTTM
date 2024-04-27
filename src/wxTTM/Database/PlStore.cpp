@@ -799,7 +799,8 @@ bool  PlStore::InsertOrUpdate()
       pl.Close();
   }
 
-  // I none found but we have plExtID (which may not be unique, so don't look for it first)
+  // I none found but we have plExtID 
+  // (which may not be unique, so don't look for it first)
   if (!pl.plID && *plExtID)
   {
     pl.SelectByExtId(plExtID);
@@ -808,7 +809,9 @@ bool  PlStore::InsertOrUpdate()
     pl.Close();
   }
 
-  if (!pl.plID && *psName.psLast)
+  // Looking for name, but only if we don't have an plExtId
+  // (otherwise we would have found it)
+  if (!pl.plID && *psName.psLast && !*plExtID)
   {
     pl.SelectByNames(psName.psLast, psName.psFirst);
 
