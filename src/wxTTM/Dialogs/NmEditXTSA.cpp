@@ -441,8 +441,11 @@ void  CNmEditXTSA::OnOK()
 
     if (nmItemPtr->nm.team.cpType == CP_SINGLE)
     {
+      // 5th single is optional
+      bool optional = (nmItemPtr->nm.nmNr == 5);
+
       hasNomination |= nmItemPtr->nm.ltA != 0;
-      nm.SetSingle(nmItemPtr->nm.nmNr-1, nmItemPtr->nm.ltA);
+      nm.SetSingle(nmItemPtr->nm.nmNr-1, nmItemPtr->nm.ltA, optional);
     }
     else if (nmItemPtr->nm.team.cpType == CP_DOUBLE)
     {
