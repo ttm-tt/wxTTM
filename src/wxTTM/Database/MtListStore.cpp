@@ -598,6 +598,7 @@ wxString  MtListStore::SelectString() const
         "       tmA, tmX, xxA.stID, xxX.stID,                         "
         "       mtMatches, mtBestOf, mtUmpire, mtUmpire2,             "
         "       mtPrinted, mtChecked,                                 "
+        // Count missing singles / double players
         "       (SELECT COUNT(*) AS count FROM (                      "
         "               SELECT ltA FROM NmSingle nms LEFT OUTER JOIN NmRec ON nms.nmID = NmRec.nmID "
         "                WHERE NmRec.mtID = mt.mtID AND ltA IS NULL AND nmOptional = 0   "
@@ -607,7 +608,10 @@ wxString  MtListStore::SelectString() const
         "               UNION                                         "
         "               SELECT ltB FROM NmDouble nmd LEFT OUTER JOIN NmRec ON nmd.nmID = NmRec.nmID "
         "                WHERE NmRec.mtID = mt.mtID AND ltB IS NULL  AND nmOptional = 0  "
-        "       ) AS nm) AS mtMissing                                 "
+        "       ) AS nm) + "
+        // plus missing entire nominations (there must be 2 per match)
+        "       2 - (SELECT COUNT(*) FROM NmRec nm WHERE nm.mtID = mt.mtID) "
+        " AS mtMissing                                 "
         "FROM   MtList mt                                    "
         "       LEFT OUTER JOIN XxRec xxA ON stA = xxA.stID  "
         "       LEFT OUTER JOIN XxRec xxX ON stX = xxX.stID  ";  
