@@ -13,6 +13,7 @@
 
 #include "LtStore.h"
 #include "CpStore.h"
+#include "GrStore.h"
 
 
 IMPLEMENT_DYNAMIC_CLASS(CPlEdit, CFormViewEx)
@@ -67,10 +68,10 @@ bool  CPlEdit::Edit(va_list vaList)
     FindWindow("Male")->Enable(false);
     FindWindow("Female")->Enable(false);
   }
-  // Allow to change the nation if not yet set
+  // Allow to change the nation if not yet set or if no groups yet exist
   if (pl.naID)
   {
-    FindWindow("Association")->Enable(false);
+    FindWindow("Association")->Enable(GrStore().CountGroups() == 0);
   }
   lt.Close();
 

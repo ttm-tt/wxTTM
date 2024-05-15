@@ -274,6 +274,7 @@ class  GrStore : public StoreObj, public GrRec
     bool  QryCombined();
 
     // Fuer die Auslosung, Drucken, ...
+    short CountGroups();
     short CountGroups(const CpRec &);
     short CountGroups(const CpRec &, const wxString &stage);
     bool  ClearDraw(const CpRec &, const wxString &stage);

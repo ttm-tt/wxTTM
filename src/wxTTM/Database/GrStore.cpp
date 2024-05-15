@@ -1543,6 +1543,37 @@ bool GrStore::SetPublish(bool publish)
 
 
 // -----------------------------------------------------------------------
+short GrStore::CountGroups()
+{
+  Connection* connPtr = GetConnectionPtr();
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
+
+  wxString str = "SELECT COUNT(*) FROM GrRec ";
+
+  short res;
+
+  try
+  {
+    stmtPtr = connPtr->CreateStatement();
+    resPtr = stmtPtr->ExecuteQuery(str);
+    resPtr->BindCol(1, &res);
+    if (!resPtr->Next() || resPtr->WasNull(1))
+      res = 0;
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    res = 0;
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return res;
+}
+
+
 short GrStore::CountGroups(const CpRec &cp)
 {
   Connection * connPtr = GetConnectionPtr();
