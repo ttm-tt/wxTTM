@@ -311,9 +311,10 @@ int  RasterScore::PrintScore(const MtEntry &mt)
   CRect  regUmpire;     // Schiri und Unterschrift
   CRect  regSignature;  // Unterschrift Spieler
 
-  // char  str[32];            // Allgemeiner Ausgabestring
-
-  int top = offsetY;
+	// Define width of entries	
+	WIDTH_AX = (6 * printer->cW);
+	
+	int top = offsetY;
   int left = offsetX;
   int heightTop = 2 * printer->cH;  // Hoehe Ueberschrift
   int heightBot = 3 * printer->cH;  // Hoehe Eintraege
@@ -843,6 +844,7 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
 	// Define width of entries	
 	WIDTH_AX = (6 * printer->cW);
+
 	int top = offsetY;
 	int left = offsetX;
 	int heightTop = 2 * printer->cH;  // Hoehe Ueberschrift
