@@ -68,12 +68,13 @@ bool  CPlEdit::Edit(va_list vaList)
     FindWindow("Male")->Enable(false);
     FindWindow("Female")->Enable(false);
   }
+  lt.Close();
+
   // Allow to change the nation if not yet set or if no groups yet exist
   if (pl.naID)
   {
     FindWindow("Association")->Enable(GrStore().CountGroups() == 0);
   }
-  lt.Close();
 
   bool hasYear = false;
   CpStore cp;

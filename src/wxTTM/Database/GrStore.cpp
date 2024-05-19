@@ -1551,7 +1551,7 @@ short GrStore::CountGroups()
 
   wxString str = "SELECT COUNT(*) FROM GrRec ";
 
-  short res;
+  short res = 0;
 
   try
   {
