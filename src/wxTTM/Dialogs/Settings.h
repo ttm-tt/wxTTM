@@ -55,6 +55,8 @@ class CSettings : public CFormViewEx
     bool     m_printStartEnd;
     bool     m_printRemarks;
     bool     m_printServiceTimeout;
+    bool     m_printCards;
+    bool     m_printSides;
 
     wxString m_server;
     wxString m_dbName;

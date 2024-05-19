@@ -313,6 +313,8 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 
 	// Define width of entries	
 	WIDTH_AX = (6 * printer->cW);
+
+	bool isDouble = cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED;
 	
 	int top = offsetY;
   int left = offsetX;
@@ -347,14 +349,17 @@ int  RasterScore::PrintScore(const MtEntry &mt)
   // Ueberschrift: Players
   regTm = regGroup;
   regTm.bottom = regTm.top + heightTop;
-  regTm.right = regTm.left + printer->width / 2 -3 * WIDTH_AX;
+  regTm.right = regTm.left + printer->width / 2;
+
   if (CTT32App::instance()->GetPrintScoreServiceTimeout())
     regTm.right -= 2 * WIDTH_AX;
+	if (CTT32App::instance()->GetPrintScoreCards())
+		regTm.right -= 3 * WIDTH_AX;
 
 	PrintStringCentered(_("Players"), regTm);
 	printer->Line(regTm.right, regTm.top, regTm.right, regGroup.bottom);
 
-	CRect regYR = regGroup;  // Gelbe / Rote Karten
+	CRect regYR = regGroup;  // Service / Timeout / Cards
 	
 	regYR.bottom = regTm.bottom;
 
@@ -364,6 +369,20 @@ int  RasterScore::PrintScore(const MtEntry &mt)
   if (CTT32App::instance()->GetPrintScoreServiceTimeout())
   {
     PrintStringCentered(_("S"), regYR);
+
+		// Seperating lines for service/return per player
+		if (isDouble)
+		{
+			printer->Line(
+				regYR.left, regGroup.top + heightTop + heightBot / 2,
+				regYR.right, regGroup.top + heightTop + heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+			printer->Line(
+				regYR.left, regGroup.bottom - heightBot / 2,
+				regYR.right, regGroup.bottom - heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+		}
+
 	  printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom);
 
     regYR.left = regYR.right;
@@ -376,18 +395,54 @@ int  RasterScore::PrintScore(const MtEntry &mt)
     regYR.right = regYR.left + WIDTH_AX;
   }
 
-	PrintStringCentered(_("Y"), regYR);
-	printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom);
+	if (CTT32App::instance()->GetPrintScoreCards())
+	{
+		PrintStringCentered(_("Y"), regYR);
+		printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom);
+		if (isDouble)
+		{
+			printer->Line(
+				regYR.left, regGroup.top + heightTop + heightBot / 2,
+				regYR.right, regGroup.top + heightTop + heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+			printer->Line(
+				regYR.left, regGroup.bottom - heightBot / 2,
+				regYR.right, regGroup.bottom - heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+		}
 
-	regYR.left = regYR.right;
-	regYR.right += WIDTH_AX;
-	PrintStringCentered(_("1P"), regYR);
-	printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom);
-	
-	regYR.left = regYR.right;
-	regYR.right += WIDTH_AX;
-	PrintStringCentered(_("2P"), regYR);
-	printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom, THICK_FRAME);
+		regYR.left = regYR.right;
+		regYR.right += WIDTH_AX;
+		PrintStringCentered(_("1P"), regYR);
+		printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom);
+		if (isDouble)
+		{
+			printer->Line(
+				regYR.left, regGroup.top + heightTop + heightBot / 2,
+				regYR.right, regGroup.top + heightTop + heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+			printer->Line(
+				regYR.left, regGroup.bottom - heightBot / 2,
+				regYR.right, regGroup.bottom - heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+		}
+
+		regYR.left = regYR.right;
+		regYR.right += WIDTH_AX;
+		PrintStringCentered(_("2P"), regYR);
+		printer->Line(regYR.right, regYR.top, regYR.right, regGroup.bottom, THICK_FRAME);
+		if (isDouble)
+		{
+			printer->Line(
+				regYR.left, regGroup.top + heightTop + heightBot / 2,
+				regYR.right, regGroup.top + heightTop + heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+			printer->Line(
+				regYR.left, regGroup.bottom - heightBot / 2,
+				regYR.right, regGroup.bottom - heightBot / 2,
+				THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+		}
+	}
 
 	TmEntry  tmA = mt.tmA, tmX = mt.tmX;
 
@@ -405,25 +460,13 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 	// PrintTeam(TM_ENTRY(tma), regTm);
 	PrintEntry(tmA, regTm, flags);
 
-  // Trennlinie fuer die beiden Spieler im Doppel. Verwarnungen werden einem Spieler ausgesprochen,
-  // auch wenn sie für das Paar gelten.
-  if (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED)
-    printer->Line(regTm.right, regTm.top + regTm.GetHeight() / 2, regYR.right, regTm.top + regTm.GetHeight() / 2, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
-	
 	regTm.top = regTm.bottom;
 	regTm.bottom = regGroup.bottom;
 	// PrintTeam(TM_ENTRY(tmX), regTm);
 	PrintEntry(tmX, regTm, flags);
 
-  // Trennlinie fuer die beiden Spieler im Doppel. Verwarnungen werden einem Spieler ausgesprochen,
-  // auch wenn sie für das Paar gelten.
-  if (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED)
-    printer->Line(regTm.right, regTm.top + regTm.GetHeight() / 2, regYR.right, regTm.top + regTm.GetHeight() / 2, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
-	
 	// Die anderen CRect verlassen sich auf regTm.right in der Mitten
-	regTm.right += 3 * WIDTH_AX;
-  if (CTT32App::instance()->GetPrintScoreServiceTimeout())
-    regTm.right += 2 * WIDTH_AX;
+	regTm.right = regTm.left + regGroup.GetWidth() / 2;
 
 	// Drucke Kaesten fuer die Saetze 1 - n
 	regSet.top = regGroup.top;
@@ -562,16 +605,16 @@ int  RasterScore::PrintScore(const MtEntry &mt)
 
   if (CTT32App::instance()->GetPrintPlayersSignature())
   {
-    regWinner = regGroup;
-    regWinner.left = regWinner.left + printer->width / 2;
+		regSignature = regGroup;
+		regSignature.left = regSignature.left + printer->width / 2;
 
     // Dicken Rahmen drum und Strich drunter
-    printer->Rectangle(regWinner, THICK_FRAME, FALSE);
-    printer->Line(regWinner.left, regWinner.top + heightTop,
-      regWinner.right, regWinner.top + heightTop, THINN_FRAME);
+    printer->Rectangle(regSignature, THICK_FRAME, FALSE);
+    printer->Line(regSignature.left, regSignature.top + heightTop,
+			regSignature.right, regSignature.top + heightTop, THINN_FRAME);
 
     // Sieger
-    regWinner.bottom = regWinner.top + heightTop;
+		regSignature.bottom = regSignature.top + heightTop;
 
     // 'Signature'
     // Eindhoven
@@ -583,8 +626,8 @@ int  RasterScore::PrintScore(const MtEntry &mt)
     // Und eine duenne Linie, wenn Doppel
     if (mt.mt.cpType == CP_DOUBLE || mt.mt.cpType == CP_MIXED)
     {
-      printer->Line(regWinner.left, regWinner.top + heightTop + heightBot,
-        regWinner.right, regWinner.top + heightTop + heightBot, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+      printer->Line(regSignature.left, regSignature.top + heightTop + heightBot,
+				regSignature.right, regSignature.top + heightTop + heightBot, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
     }
   }
 
@@ -609,76 +652,111 @@ int  RasterScore::PrintScore(const MtEntry &mt)
     // Mitte mit dicken Strich abtrennten
     printer->Line(hcenter, regGroup.top, hcenter, regGroup.bottom, THICK_FRAME);
 
-    // Gelbe / Rote Karte mit Strich abtrennen, Seitenwahl falls aktiv
-    if (CTT32App::instance()->GetPrintScoreServiceTimeout())
-      printer->Line(hcenter - 3 * WIDTH_AX, regGroup.top, hcenter - 3 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-    printer->Line(hcenter - 2 * WIDTH_AX, regGroup.top, hcenter - 2 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-    printer->Line(hcenter - 1 * WIDTH_AX, regGroup.top, hcenter - 1 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-
-    if (CTT32App::instance()->GetPrintScoreServiceTimeout())
-      printer->Line(regGroup.right - 3 * WIDTH_AX, regGroup.top, regGroup.right - 3 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-    printer->Line(regGroup.right - 2 * WIDTH_AX, regGroup.top, regGroup.right - 2 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-    printer->Line(regGroup.right - 1 * WIDTH_AX, regGroup.top, regGroup.right - 1 * WIDTH_AX, regGroup.bottom, THINN_FRAME);
-
     // Im Doppel / Mixed rote / gelbe Karten nochmal unterteilen
-    if (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED)
+    if (CTT32App::instance()->GetPrintScoreCards()&& (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED))
     {
       printer->Line(
-        hcenter - 2 * WIDTH_AX, regGroup.top + heightTop + heightBot, 
+        hcenter, regGroup.top + heightTop + heightBot, 
         hcenter, regGroup.top + heightTop + heightBot, 
         THINN_FRAME, wxPENSTYLE_SHORT_DASH);
 
       printer->Line(
-        regGroup.right - 2 * WIDTH_AX, regGroup.top + heightTop + heightBot, 
+        regGroup.right, regGroup.top + heightTop + heightBot, 
         regGroup.right, regGroup.top + heightTop + heightBot, 
         THINN_FRAME, wxPENSTYLE_SHORT_DASH);
     }
 
     // Trennlinie fuer die beiden Spieler im Doppel. Verwarnungen werden einem Spieler ausgesprochen,
     // auch wenn sie für das Paar gelten.
-    if (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED)
-      printer->Line(regTm.right, regTm.top + regTm.GetHeight() / 2, regYR.right, regTm.top + regTm.GetHeight() / 2, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
+    if (CTT32App::instance()->GetPrintScoreCards() && (cp.cpType == CP_DOUBLE || cp.cpType == CP_MIXED))
+      printer->Line(regTm.right, regTm.top + regTm.GetHeight() / 2, 
+					regYR.right, regTm.top + regTm.GetHeight() / 2, THINN_FRAME, wxPENSTYLE_SHORT_DASH);
 	
     // Ueberschriften
     regSignature = regGroup;
     regSignature.bottom = regSignature.top + heightTop;
   
-    regSignature.right = hcenter - 2 * WIDTH_AX;
-    PrintStringCentered(_("Coach(es)"), regSignature);
+    regSignature.right = hcenter;
+		if (CTT32App::instance()->GetPrintScoreSides())
+			regSignature.right -= WIDTH_AX;  // "Sd"
+		if (CTT32App::instance()->GetPrintScoreCards())
+			regSignature.right -= 2 * WIDTH_AX; // "YR"
+		
+		printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
 
-    regSignature.left = hcenter;
-    regSignature.right = regGroup.right - 2 * WIDTH_AX;
-    PrintStringCentered(_("Coach(es)"), regSignature);
+		PrintStringCentered(_("Coach(es)"), regSignature);
 
-    if (CTT32App::instance()->GetPrintScoreServiceTimeout())
-    {
-      regSignature.left = hcenter - 3 * WIDTH_AX;
-      regSignature.right = hcenter - 2 * WIDTH_AX;
-      PrintStringCentered(_("Sd"), regSignature);
-    }
+		if (CTT32App::instance()->GetPrintScoreSides())
+		{
+		  regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
 
-    regSignature.left = hcenter - 2 * WIDTH_AX;
-    regSignature.right = hcenter - 1 * WIDTH_AX;
-    PrintStringCentered(_("Y"), regSignature);
+			PrintStringCentered(_("Sd"), regSignature);
 
-    regSignature.left = hcenter - 1 * WIDTH_AX;
-    regSignature.right = hcenter - 0 * WIDTH_AX;
-    PrintStringCentered(_("R"), regSignature);
+			regSignature.left = regSignature.right;
+		}
 
-    if (CTT32App::instance()->GetPrintScoreServiceTimeout())
-    {
-      regSignature.left = regGroup.right - 3 * WIDTH_AX;
-      regSignature.right = regGroup.right - 2 * WIDTH_AX;
-      PrintStringCentered(_("Sd"), regSignature);
-    }
+		if (CTT32App::instance()->GetPrintScoreCards())
+		{
+			regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
 
-    regSignature.left = regGroup.right - 2 * WIDTH_AX;
-    regSignature.right = regGroup.right - 1 * WIDTH_AX;
-    PrintStringCentered(_("Y"), regSignature);
+			PrintStringCentered(_("Y"), regSignature);
+			
+			regSignature.left = regSignature.right;
 
-    regSignature.left = regGroup.right - 1 * WIDTH_AX;
-    regSignature.right = regGroup.right - 0 * WIDTH_AX;
-    PrintStringCentered(_("R"), regSignature);
+			regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
+
+			PrintStringCentered(_("R"), regSignature);
+
+			regSignature.left = regSignature.right;
+		}
+
+		regSignature.left = hcenter;
+		regSignature.right = regGroup.right;
+
+		if (CTT32App::instance()->GetPrintScoreSides())
+			regSignature.right -= WIDTH_AX;  // "Sd"
+		if (CTT32App::instance()->GetPrintScoreCards())
+			regSignature.right -= 2 * WIDTH_AX; // "YR"
+
+		printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
+
+		PrintStringCentered(_("Coach(es)"), regSignature);
+
+		if (CTT32App::instance()->GetPrintScoreSides())
+		{
+			regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
+
+			PrintStringCentered(_("Sd"), regSignature);
+
+			regSignature.left = regSignature.right;
+		}
+
+		if (CTT32App::instance()->GetPrintScoreCards())
+		{
+			regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
+
+			PrintStringCentered(_("Y"), regSignature);
+
+			regSignature.left = regSignature.right;
+
+			regSignature.left = regSignature.right;
+			regSignature.right += WIDTH_AX;
+			printer->Line(regSignature.right, regGroup.top, regSignature.right, regGroup.bottom, THINN_FRAME);
+
+			PrintStringCentered(_("R"), regSignature);
+
+			regSignature.left = regSignature.right;
+		}
 
     offsetY = regGroup.bottom;
   }
@@ -943,17 +1021,6 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	// Mitte abteilen
 	printer->Line(hcenter, regGroup.top, hcenter, regGroup.bottom, THICK_FRAME);
 	
-	// "Y" / "R" fuer gelbe / rote Karten der Trainer
-	printer->Line(hcenter - 2 * WIDTH_AX, regGroup.top, 
-	              hcenter - 2 * WIDTH_AX, regGroup.bottom);
-	printer->Line(hcenter - 1 * WIDTH_AX, regGroup.top, 
-	              hcenter - 1 * WIDTH_AX, regGroup.bottom);
-	
-	printer->Line(regGroup.right - 2 * WIDTH_AX, regGroup.top, 
-	              regGroup.right - 2 * WIDTH_AX, regGroup.bottom);
-	printer->Line(regGroup.right - 1 * WIDTH_AX, regGroup.top, 
-	              regGroup.right - 1 * WIDTH_AX, regGroup.bottom);
-
 	CRect  regTeamNames = regGroup;
 	regTeamNames.bottom = regTeamNames.top + heightTop;
 	
@@ -965,38 +1032,49 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
     // Team A	
 	  CRect reg = regTeamNames;
-	  reg.right = hcenter - 2 * WIDTH_AX;
+		reg.right = hcenter;
+		if (CTT32App::instance()->GetPrintScoreCards())
+			reg.right -= 2 * WIDTH_AX;
     	
 	  PrintStringCentered(strTeam + " A", reg);
-	  
-	  // "Y", "R" (Gelbe / Rote Karte)
-	  reg.left = hcenter - 2 * WIDTH_AX;
-	  reg.right = hcenter - WIDTH_AX;
-	  
-	  PrintStringCentered(_("Y"), reg);
-	  
-	  reg.left = hcenter - WIDTH_AX;
-	  reg.right = hcenter;
-	  
-	  PrintStringCentered(_("R"), reg);
+		printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+
+		// "Y", "R" (Gelbe / Rote Karte)
+		if (CTT32App::instance()->GetPrintScoreCards())
+		{
+		  reg.left = reg.right;
+			reg.right += WIDTH_AX;
+			PrintStringCentered(_("Y"), reg);
+			printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+
+			reg.left = reg.right;
+			reg.right += WIDTH_AX;
+			PrintStringCentered(_("R"), reg);
+			printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+		}
 	  
 	  // Team X
 	  reg.left = hcenter;
-	  reg.right = regGroup.right - 2 * WIDTH_AX;
-	  PrintStringCentered(strTeam + " X", reg);
-	  
-	  // "Y", "R" (Gelbe / Rote Karte)
-	  reg.left = regGroup.right - 2 * WIDTH_AX;
-	  reg.right = regGroup.right - WIDTH_AX;
-	  
-	  PrintStringCentered(_("Y"), reg);
-	  
-	  reg.left = regGroup.right - WIDTH_AX;
 	  reg.right = regGroup.right;
-	  
-	  PrintStringCentered(_("R"), reg); 
-	  
-	  // PrintStringCentered(IDS_TEAMS, regTeamNames);
+		if (CTT32App::instance()->GetPrintScoreCards())
+			reg.right -= 2 * WIDTH_AX;
+
+		PrintStringCentered(strTeam + " X", reg);
+		printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+
+		// "Y", "R" (Gelbe / Rote Karte)
+		if (CTT32App::instance()->GetPrintScoreCards())
+		{
+			reg.left = reg.right;
+			reg.right += WIDTH_AX;
+			PrintStringCentered(_("Y"), reg);
+			printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+
+			reg.left = reg.right;
+			reg.right += WIDTH_AX;
+			PrintStringCentered(_("R"), reg);
+			printer->Line(reg.right, regGroup.top, reg.right, regGroup.bottom);
+		}
 	}
 
 	// Duenne Linie unter den Text
@@ -1025,11 +1103,6 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	regTmNameX = regTeamNames;
 	regTmNameX.left = regX.right;
 	
-	// Und vertikale Striche
-	// printer->Line(regA.right, regA.top, regA.right, regA.bottom);
-	// printer->Line(regX.right, regX.top, regX.right, regX.bottom);	
-	// printer->Line(regX.left, regX.top, regX.left, regX.bottom);
-
 	offsetY = regGroup.bottom;
 
 	// ---- 2. Gruppe: Mannschaftsaufstellung  ---
@@ -1038,47 +1111,59 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
 	CRect  regNomination = regGroup;
 	regNomination.right = hcenter;
-	regNomination.right -= 3 * WIDTH_AX;
+	if (CTT32App::instance()->GetPrintScoreCards())
+		regNomination.right -= 3 * WIDTH_AX;
 
 	PrintStringCentered(_("Nomination"), regNomination);
+	printer->Line(regNomination.right, regGroup.top, regNomination.right, regGroup.bottom);
 
-  // "Y", "1P", "2P" (Gelbe / Rot-Gelbe / Rote Karte)
-	regNomination.left = hcenter - 3 * WIDTH_AX;
-	regNomination.right = hcenter - 2 * WIDTH_AX;
+	if (CTT32App::instance()->GetPrintScoreCards())
+	{
+		// "Y", "1P", "2P" (Gelbe / Rot-Gelbe / Rote Karte)
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
 	
-	PrintStringCentered(_("Y"), regNomination);
+		PrintStringCentered(_("Y"), regNomination);
 	
-	regNomination.left = hcenter - 2 * WIDTH_AX;
-	regNomination.right = hcenter - 1 * WIDTH_AX;
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
+
+		PrintStringCentered(_("1P"), regNomination);
 	
-	PrintStringCentered(_("1P"), regNomination);
-	
-	regNomination.left = hcenter - WIDTH_AX;
-	regNomination.right = hcenter;
-	
-	PrintStringCentered(_("2P"), regNomination);
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
+
+		PrintStringCentered(_("2P"), regNomination);
+	}
 	
 	regNomination.left = hcenter;
-	regNomination.right = regGroup.right - 3 * WIDTH_AX;
+	regNomination.right = regGroup.right;
+
+	if (CTT32App::instance()->GetPrintScoreCards())
+		regNomination.right -= 3 * WIDTH_AX;
 
 	PrintStringCentered(_("Nomination"), regNomination);
+	printer->Line(regNomination.right, regGroup.top, regNomination.right, regGroup.bottom);
 
-  // "Y", "1P", "2P" (Gelbe / Rot-Gelbe / Rote Karte)
-	regNomination.left = regGroup.right - 3 * WIDTH_AX;
-	regNomination.right = regGroup.right - 2 * WIDTH_AX;
-	
-	PrintStringCentered(_("Y"), regNomination);
-	
-	regNomination.left = regGroup.right - 2 * WIDTH_AX;
-	regNomination.right = regGroup.right - 1 * WIDTH_AX;
-	
-	PrintStringCentered(_("1P"), regNomination);
-	
-	regNomination.left = regGroup.right - WIDTH_AX;
-	regNomination.right = regGroup.right;
-	
-	PrintStringCentered(_("2P"), regNomination);
-	
+	if (CTT32App::instance()->GetPrintScoreCards())
+	{
+		// "Y", "1P", "2P" (Gelbe / Rot-Gelbe / Rote Karte)
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
+
+		PrintStringCentered(_("Y"), regNomination);
+
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
+
+		PrintStringCentered(_("1P"), regNomination);
+
+		regNomination.left = regNomination.right;
+		regNomination.right += WIDTH_AX;
+
+		PrintStringCentered(_("2P"), regNomination);
+	}
+
 	// Waagrechte Trennlinie
 	printer->Line(regGroup.left, regGroup.bottom,
 								regGroup.right, regGroup.bottom);
@@ -1310,12 +1395,15 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	printer->Line(regGroup.left + WIDTH_AX, regGroup.top + heightTop,
 								regGroup.left + WIDTH_AX, regGroup.bottom);
 								
-  printer->Line(hcenter - 3 * WIDTH_AX, regGroup.top, 
-                hcenter - 3 * WIDTH_AX, regGroup.bottom);							
-  printer->Line(hcenter - 2 * WIDTH_AX, regGroup.top, 
-                hcenter - 2 * WIDTH_AX, regGroup.bottom);							
-  printer->Line(hcenter - 1 * WIDTH_AX, regGroup.top, 
-                hcenter - 1 * WIDTH_AX, regGroup.bottom);							
+	if (CTT32App::instance()->GetPrintScoreCards())
+	{
+		printer->Line(hcenter - 3 * WIDTH_AX, regGroup.top, 
+									hcenter - 3 * WIDTH_AX, regGroup.bottom);							
+		printer->Line(hcenter - 2 * WIDTH_AX, regGroup.top, 
+									hcenter - 2 * WIDTH_AX, regGroup.bottom);							
+		printer->Line(hcenter - 1 * WIDTH_AX, regGroup.top, 
+									hcenter - 1 * WIDTH_AX, regGroup.bottom);					
+	}
                 
 	printer->Line(hcenter, regGroup.top,
 								hcenter, regGroup.bottom, THICK_FRAME);
@@ -1323,13 +1411,16 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 	printer->Line(hcenter + WIDTH_AX, regGroup.top + heightTop,
 								hcenter + WIDTH_AX, regGroup.bottom);
 								
-  printer->Line(regGroup.right - 3 * WIDTH_AX, regGroup.top, 
-                regGroup.right - 3 * WIDTH_AX, regGroup.bottom);							
-  printer->Line(regGroup.right - 2 * WIDTH_AX, regGroup.top, 
-                regGroup.right - 2 * WIDTH_AX, regGroup.bottom);							
-  printer->Line(regGroup.right - 1 * WIDTH_AX, regGroup.top, 
-                regGroup.right - 1 * WIDTH_AX, regGroup.bottom);							
-              
+	if (CTT32App::instance()->GetPrintScoreCards())
+	{
+		printer->Line(regGroup.right - 3 * WIDTH_AX, regGroup.top, 
+									regGroup.right - 3 * WIDTH_AX, regGroup.bottom);							
+		printer->Line(regGroup.right - 2 * WIDTH_AX, regGroup.top, 
+									regGroup.right - 2 * WIDTH_AX, regGroup.bottom);							
+		printer->Line(regGroup.right - 1 * WIDTH_AX, regGroup.top, 
+									regGroup.right - 1 * WIDTH_AX, regGroup.bottom);							
+	}
+	
 	offsetY = regGroup.bottom;
 
 	// Undo the correction, in XTS(A) and YSTA we need all of them

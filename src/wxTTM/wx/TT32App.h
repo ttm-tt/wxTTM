@@ -176,6 +176,12 @@ class CTT32App : public wxApp
     bool GetPrintScoreServiceTimeout() const;
     void SetPrintScoreServiceTimeout(bool, bool writeDB = true);
 
+    bool GetPrintScoreCards() const;
+    void SetPrintScoreCards(bool, bool writeDB = true);
+
+    bool GetPrintScoreSides() const;
+    void SetPrintScoreSides(bool, bool writeDB = true);
+
     void SetOvFgColor(const wxString &which, const wxColor &color);
     wxColor GetOvFgColor(const wxString &which) const;
 

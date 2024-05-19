@@ -104,6 +104,8 @@ void CSettings::OnInitialUpdate()
   m_printStartEnd = CTT32App::instance()->GetPrintScoreStartEnd();
   m_printRemarks = CTT32App::instance()->GetPrintScoreRemarks();
   m_printServiceTimeout = CTT32App::instance()->GetPrintScoreServiceTimeout();
+  m_printCards = CTT32App::instance()->GetPrintScoreCards();
+  m_printSides = CTT32App::instance()->GetPrintScoreSides();
 
   FindWindow("Title")->SetValidator(wxGenericValidator(&m_title));
   FindWindow("Subtitle")->SetValidator(wxGenericValidator(&m_subtitle));
@@ -143,6 +145,8 @@ void CSettings::OnInitialUpdate()
   FindWindow("PrintScaleToPaperSize")->SetValidator(wxGenericValidator(&m_printScaleToPaperSize));
 
   FindWindow("PrintScoreServiceTimeout")->SetValidator(wxGenericValidator(&m_printServiceTimeout));
+  FindWindow("PrintScoreCards")->SetValidator(wxGenericValidator(&m_printCards));
+  FindWindow("PrintScoreSides")->SetValidator(wxGenericValidator(&m_printSides));
   FindWindow("PrintCallArea")->SetValidator(wxGenericValidator(&m_printCallArea));
   FindWindow("PrintPlayersSignature")->SetValidator(wxGenericValidator(&m_printPlayersSignature));
   FindWindow("PrintScoreCoaches")->SetValidator(wxGenericValidator(&m_printCoaches));
@@ -362,6 +366,8 @@ void CSettings::OnOK()
   CTT32App::instance()->SetType(m_type + 1);
   CTT32App::instance()->SetTable(m_table + 1);
   CTT32App::instance()->SetPrintScoreServiceTimeout(m_printServiceTimeout);
+  CTT32App::instance()->SetPrintScoreCards(m_printCards);
+  CTT32App::instance()->SetPrintScoreSides(m_printSides);
   CTT32App::instance()->SetPrintPlayersSignature(m_printPlayersSignature);
   CTT32App::instance()->SetPrintScoreCoaches(m_printCoaches);
   CTT32App::instance()->SetPrintScoreUmpires(m_printUmpires);

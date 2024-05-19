@@ -46,6 +46,8 @@ bool  IdStore::CreateTable(long dbVersion)
       "idScoreUmpires " + SMALLINT + " DEFAULT 1 NOT NULL, "
       "idScoreUmpireName " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idPrintScoreServiceTimeout " + SMALLINT + " DEFAULT 0 NOT NULL, "
+      "idPrintScoreCards " + SMALLINT + " DEFAULT 0 NOT NULL, "
+      "idPrintScoreSides " + SMALLINT + " DEFAULT 0 NOT NULL, "
       "idLogo     "+IMAGE+", "
       "idSponsor  "+IMAGE+", "
       "idBanner   "+IMAGE+", "
@@ -250,6 +252,23 @@ bool  IdStore::UpdateTable(long version, long dbVersion)
       stmtPtr->ExecuteUpdate(str);
     }
     catch (SQLException &)
+    {
+    }
+  }
+
+  if (version <= 176)
+  {
+    wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
+    wxString str = "ALTER TABLE IdRec ADD "
+      "idScoreCards " + SMALLINT + " DEFAULT 0 NOT NULL, "
+      "idScoreSides " + SMALLINT + " DEFAULT 0 NOT NULL "
+      ;
+
+    try
+    {
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException&)
     {
     }
   }
@@ -769,6 +788,30 @@ void IdStore::SetPrintScoreServiceTimeout(bool f)
 bool IdStore::GetPrintScoreServiceTimeout()
 {
   return GetFlag("idPrintScoreServiceTimeout");
+}
+
+
+void IdStore::SetPrintScoreCards(bool f)
+{
+  SetFlag("idPrintScoreCards", f);
+}
+
+
+bool IdStore::GetPrintScoreCards()
+{
+  return GetFlag("idPrintScoreCards");
+}
+
+
+void IdStore::SetPrintScoreSides(bool f)
+{
+  SetFlag("idPrintScoreSides", f);
+}
+
+
+bool IdStore::GetPrintScoreSides()
+{
+  return GetFlag("idPrintScoreSides");
 }
 
 

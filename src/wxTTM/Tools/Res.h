@@ -91,6 +91,8 @@ const unsigned  IDC_LIST_DEL   = 0x8003;
 #define  PRF_SETTINGS_SCOREUMPIRES  wxT("PrintScoreUmpires")
 #define  PRF_SETTINGS_SCOREUMPIRENAME  wxT("PrintScoreUmpireName")
 #define  PRF_SETTINGS_SCORESERVICETIMEOUT wxT("PrintScoreServiceTimeout")
+#define  PRF_SETTINGS_SCORECARDS    wxT("PrintScoreCards")
+#define  PRF_SETTINGS_SCORESIDES    wxT("PrintScoreSides")
 #define  PRF_SETTINGS_SCORESTARTENDTIME   wxT("PrintScoreStartEnd")
 #define  PRF_SETTINGS_PRINTSCALEPAPER wxT("PrintScaleToPaperSize")
 #define  PRF_SETTINGS_DATABASEPATH  wxT("DatabasePath")

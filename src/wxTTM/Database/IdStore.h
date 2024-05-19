@@ -82,6 +82,12 @@ class  IdStore : public StoreObj, public IdRec
     static bool GetPrintScoreServiceTimeout();
     static void SetPrintScoreServiceTimeout(bool);
 
+    static bool GetPrintScoreCards();
+    static void SetPrintScoreCards(bool);
+
+    static bool GetPrintScoreSides();
+    static void SetPrintScoreSides(bool);
+
 private:
     static bool GetFlag(const wxString &name);
     static void SetFlag(const wxString &name, bool f);

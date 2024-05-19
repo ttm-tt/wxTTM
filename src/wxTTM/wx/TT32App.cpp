@@ -1200,6 +1200,36 @@ void CTT32App::SetPrintScoreServiceTimeout(bool f, bool writeDB)
 }
 
 
+bool CTT32App::GetPrintScoreCards() const
+{
+  return ttProfile.GetInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORECARDS, 0) != 0;
+}
+
+
+void CTT32App::SetPrintScoreCards(bool f, bool writeDB)
+{
+  ttProfile.AddInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORECARDS, f ? 1 : 0);
+
+  if (writeDB)
+    IdStore::SetPrintScoreCards(f);
+}
+
+
+bool CTT32App::GetPrintScoreSides() const
+{
+  return ttProfile.GetInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORESIDES, 0) != 0;
+}
+
+
+void CTT32App::SetPrintScoreSides(bool f, bool writeDB)
+{
+  ttProfile.AddInt(PRF_LOCAL_SETTINGS, PRF_SETTINGS_SCORESIDES, f ? 1 : 0);
+
+  if (writeDB)
+    IdStore::SetPrintScoreCards(f);
+}
+
+
 void CTT32App::SetOvFgColor(const wxString &which, const wxColor &color)
 {
   wxArrayString colors = wxStringTokenize(ttProfile.GetString(PRF_SETTINGS, PRF_OVLIST_COLORS, ""), ";");
