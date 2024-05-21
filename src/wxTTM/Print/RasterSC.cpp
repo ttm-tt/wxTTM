@@ -1248,10 +1248,10 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
     
  		if (wxStrcmp(sy.syName, "OTS") == 0)
  			str = "C\nA/B";
-		else if (wxStrcmp(sy.syName, "XTSA") == 0)
-			str = "A-B\nA-G";
 		else if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = "A-B1\nA-G1";
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = "A-B\nA-G";
 		else if (syDoubles > 1)
  			str = wxString::Format("DA%i", doubles+1);
  		else
@@ -1261,11 +1261,11 @@ int  RasterScore::PrintScoreTM(const MtEntry &mt)
 
  		if (wxStrcmp(sy.syName, "OTS") == 0)
  			str = "Z\nX/Y";
-		else if (wxStrcmp(sy.syName, "XTSA") == 0)
-			str = "X-B\nX-G";
 		else if (wxStrcmp(sy.syName, "XTS") == 0)
 			str = "X-B1\nX-G1";
-		else if (syDoubles > 1)      
+		else if (wxStrcmp(sy.syName, "XTSA") == 0)
+			str = "X-B\nX-G";
+		else if (syDoubles > 1)
 			str = wxString::Format("DX%i", doubles+1);
 		else
 			str = "DX";

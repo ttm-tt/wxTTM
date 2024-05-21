@@ -345,8 +345,8 @@ int TossSheet::PrintSystem(const SyListRec & sy, const CRect & rect)
     {
       if (wxStrcmp(sy.syName, "XTS") == 0)
       {
-        strA = "A-B/A-G";
-        strX = "X-B/X-G";
+        strA = "A-B1/A-G1";
+        strX = "X-B1/X-G1";
       }
       else if (wxStrcmp(sy.syName, "XTSA") == 0)
       {
