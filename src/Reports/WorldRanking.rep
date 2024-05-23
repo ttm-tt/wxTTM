@@ -1038,7 +1038,7 @@ Pl. No.#10#Pl. No.#10#St. Nr.</WIDETEXT>
 <EXPRESSION type="WideString">rkIntlRank</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
-<DATATYPE type="Integer">16</DATATYPE>
+<DATATYPE type="Integer">1</DATATYPE>
 <DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
 <IDENTIFIER type="String"></IDENTIFIER>
 <AGGREGATE type="Integer">0</AGGREGATE>
@@ -1186,7 +1186,8 @@ t</EXPRESSION>
 <BIDIMODES type="String"></BIDIMODES>
 <MULTIPAGE type="Boolean">False</MULTIPAGE>
 <PRINTSTEP type="Integer">0</PRINTSTEP>
-<EXPRESSION type="WideString">rankPts</EXPRESSION>
+<EXPRESSION type="WideString">FormatNum(#39##35##35##35##35#0.0#35##39#
+#44# rankPts)</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
 <DATATYPE type="Integer">16</DATATYPE>
@@ -1432,7 +1433,7 @@ t</EXPRESSION>
 <EXPRESSION type="WideString">rkIntlRank</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
-<DATATYPE type="Integer">16</DATATYPE>
+<DATATYPE type="Integer">1</DATATYPE>
 <DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
 <IDENTIFIER type="String"></IDENTIFIER>
 <AGGREGATE type="Integer">0</AGGREGATE>
@@ -1781,7 +1782,8 @@ t</EXPRESSION>
 <BIDIMODES type="String"></BIDIMODES>
 <MULTIPAGE type="Boolean">False</MULTIPAGE>
 <PRINTSTEP type="Integer">0</PRINTSTEP>
-<EXPRESSION type="WideString">rankPts</EXPRESSION>
+<EXPRESSION type="WideString">FormatNum(#39##35##35##35##35#0.0#35##39#
+#44# rankPts)</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
 <DATATYPE type="Integer">16</DATATYPE>
@@ -1977,7 +1979,7 @@ t</EXPRESSION>
 <EXPRESSION type="WideString">rkIntlRank</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
-<DATATYPE type="Integer">16</DATATYPE>
+<DATATYPE type="Integer">1</DATATYPE>
 <DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
 <IDENTIFIER type="String"></IDENTIFIER>
 <AGGREGATE type="Integer">0</AGGREGATE>
@@ -2174,7 +2176,8 @@ t</EXPRESSION>
 <BIDIMODES type="String"></BIDIMODES>
 <MULTIPAGE type="Boolean">False</MULTIPAGE>
 <PRINTSTEP type="Integer">0</PRINTSTEP>
-<EXPRESSION type="WideString">rankPts</EXPRESSION>
+<EXPRESSION type="WideString">FormatNum(#39##35##35##35##35#0.0#35##39#
+#44# rankPts)</EXPRESSION>
 <AGINIVALUE type="WideString">0</AGINIVALUE>
 <EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
 <DATATYPE type="Integer">16</DATATYPE>
