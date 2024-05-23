@@ -98,7 +98,7 @@ int TossSheet::PrintToss(const MtEntry& mt, const CRect& rect, bool ax)
 
   CRect teamA = rect;
   teamA.top = header.bottom + printer->cH;
-  teamA.bottom = teamA.top + printer->cH + std::max((int) sy.syMatches, 5) * printer->cH;
+  teamA.bottom = teamA.top + printer->cH + std::max((int) sy.syMatches, 6) * printer->cH;
   teamA.right = teamA.left + printer->width / 3 - 2 * printer->cW;;
 
   PrintTeam(mt.tmA, teamA);
