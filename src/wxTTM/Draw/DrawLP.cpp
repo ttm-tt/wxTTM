@@ -1919,6 +1919,8 @@ bool DrawLP::DrawImpl(long seed)
       CTT32App::instance()->GetPath().data(), cp.cpName, tmpStage.c_str(),
       tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
 
+  wxString debugLogName = fname;
+
   file = wxFopen(fname, "w");
   // file = fopen("Debug.txt", "w");
   #endif
@@ -2012,12 +2014,16 @@ bool DrawLP::DrawImpl(long seed)
       CTT32App::instance()->GetPath().data(), cp.cpName, tmpStage.c_str(),
       tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
 
+  wxString outlpName = fname;
+
   wxFileOutputStream outlp(fname);
   ziplp = new wxZipOutputStream(outlp);
 
   wxSprintf(fname, "%s\\%s_%s_%04d%02d%02dT%02d%02d%02d-lplogs.zip", 
       CTT32App::instance()->GetPath().data(), cp.cpName, tmpStage.c_str(),
       tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+  wxString outlogName = fname;
 
   wxFileOutputStream outlog(fname);
   ziplog = new wxZipOutputStream(outlog);
@@ -2051,6 +2057,10 @@ bool DrawLP::DrawImpl(long seed)
 #ifdef DEBUG
     fclose(file);
 #endif 
+
+    wxRemoveFile(outlpName);
+    wxRemoveFile(outlogName);
+    wxRemoveFile(debugLogName);
 
     return false;
   }
