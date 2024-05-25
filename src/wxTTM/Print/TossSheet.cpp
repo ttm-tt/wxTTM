@@ -41,6 +41,10 @@ int  TossSheet::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt)
   cp = cp_;
   gr = gr_;
 
+  // Nothing to do when it is not a team
+  if (cp.cpType != CP_TEAM && cp.cpType != CP_CLUB)
+    return 1;
+
 	textFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_NORMAL);
   headerFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_MEDIUMB);
   smallFont = printer->LoadFont(TT_PROFILE, PRF_RASTER, PRF_RASTER_SMALL);
@@ -550,7 +554,7 @@ int TossSheet::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
     // 1st string ("None") is shorter than the others, give it less weight
     int width = (footer.right - footer.left) / (2 * count - 1);
 
-    for (int idx = 0; idx < count; ++idx)
+    for (size_t idx = 0; idx < count; ++idx)
     {
       footer.right = footer.left + (idx == 0 ? width : 2 * width);
 

@@ -1655,6 +1655,13 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
           cp.Next();
           cp.Close();
 
+          if (cp.cpID == 0) // No such event
+            return;
+
+          // No toss for non-teams
+          if (cp.cpType != CP_TEAM && cp.cpType != CP_CLUB)
+            return;
+
           Printer * printer;
           if (CTT32App::instance()->GetPrintPreview())
             printer = new PrinterPreview(_("Print Toss Sheet"));
