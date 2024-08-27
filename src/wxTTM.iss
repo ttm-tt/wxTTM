@@ -292,7 +292,7 @@ end;
 {Prueft, ob SQL Native Client ODBC-Treiber installiert ist}
 function CheckSQLNativeClientVersion() : Boolean;
 begin
-  Result := RegKeyExists(HKLM, 'Software\ODBC\ODBCINST.INI\ODBC Driver 17 for SQL Server');
+  Result := RegKeyExists(HKLM, 'Software\ODBC\ODBCINST.INI\ODBC Driver 18 for SQL Server');
 end;
 
 
