@@ -3,6 +3,7 @@
 #include "stdafx.h"
 
 #include <wx/progdlg.h>
+#include <wx/zipstrm.h>
 #include <wx/xrc/xh_aui.h>
 
 #include "tt32App.h"
@@ -1664,7 +1665,7 @@ void CTT32App::BackupDatabase()
   
   wxFileDialog fileDlg(
       m_pMainWnd, _("Backup Database"), GetPath(), name, 
-      "Backup Files (*.bak)|*.bak|All Files (*.*)|*.*||", wxFD_SAVE);
+      "Backup Files (*.bak)|*.bak|Zip Files (*.zip)|*.zip|All Files (*.*)|*.*||", wxFD_SAVE);
     
   if (fileDlg.ShowModal() != wxID_OK)
     return;
@@ -1681,21 +1682,41 @@ void CTT32App::BackupDatabase()
 
   // dbPath ist ein Verzeichnis, GetFullPath also der komplette Name
   // tmpName ist ein Dateiname, GetPath also das Verzeichnis ohne Dateiname und -erweiterung
-  if (tmpName.GetPath() != dbPath.GetFullPath())
+  // And the extenstion should be .bak
+  if ((tmpName.GetPath() != dbPath.GetFullPath()) || 
+      (tmpName.GetExt() != "bak"))
   {
     tmpName = wxFileName(GetPath(), wxString("tmp-") + fileDlg.GetFilename()).GetFullPath();
     tmpName.Normalize();
+    // Just in case
+    tmpName.SetExt("bak");
   }
-  
+
   m_pMainWnd->SetCursor(wxCURSOR_WAIT);
   bool res = TTDbse::instance()->BackupDatabase(tmpName.GetFullPath());
 
-  // Falls eine temp. Kopie im DB-Verzeichnis gemacht wurde
-  if (res && tmpName != saveName)
+  if (res && saveName.GetExt() == "zip")
   {
-    wxCopyFile(tmpName.GetFullPath(), saveName.GetFullPath());
-    wxRemoveFile(tmpName.GetFullPath());
+    // If zip'ed file
+    wxFFileOutputStream fileOut(saveName.GetFullPath());
+    wxZipOutputStream zipOut(fileOut);
+    wxFFileInputStream in(tmpName.GetFullPath());
+    wxFileName zipName(tmpName.GetFullPath());
+    zipName.MakeRelativeTo();
+    zipOut.PutNextEntry(zipName.GetFullPath());
+    zipOut.Write(in);
+    zipOut.CloseEntry();
+    zipOut.Close();
+    fileOut.Close();
   }
+  else if (res && tmpName != saveName)
+  {
+    // Falls eine temp. Kopie im DB-Verzeichnis gemacht wurde
+    wxCopyFile(tmpName.GetFullPath(), saveName.GetFullPath());
+  }
+
+  if (tmpName != saveName)
+    wxRemoveFile(tmpName.GetFullPath());
 
   // Ebenfalls Kopie im alternativen Verzeichnis
   wxString backupPath = GetBackupPath();
@@ -1705,7 +1726,6 @@ void CTT32App::BackupDatabase()
     if (fn.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL))
       wxCopyFile(saveName.GetFullPath(), fn.GetFullPath(), true);
   }
-
 
   m_pMainWnd->SetCursor(wxCURSOR_DEFAULT);
   
@@ -1746,7 +1766,7 @@ void CTT32App::RestoreDatabase()
   
   wxFileDialog fileDlg(
       m_pMainWnd, _("Restore Database"), path, name.GetFullName(),
-      "Backup Files (*.bak)|*.bak|All Files (*.*)|*.*||", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+      "Backup Files (*.bak)|*.bak|Zip Files (*.zip)|*.zip|All Files (*.*)|*.*||", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     
 
   if (fileDlg.ShowModal() != wxID_OK)
@@ -1757,9 +1777,10 @@ void CTT32App::RestoreDatabase()
 
   tmpName.Normalize();
 
-  // If the selected file is in a different directory than the DB
+  // If the selected file is in a different directory than the DB or not a .bak
   // then copy it to a temp file
-  if (wxFileName(name.GetPath(), "").SameAs(wxFileName(tmpName.GetPath(), "")))
+  if (wxFileName(name.GetPath(), "").SameAs(wxFileName(tmpName.GetPath(), "")) &&
+      (wxFileName(name.GetPath(), "").GetExt() == "bak"))
   {
     tmpName.Assign(name);
   }
@@ -1767,8 +1788,25 @@ void CTT32App::RestoreDatabase()
   {
     tmpName = wxFileName(path, wxString("tmp-") + fileDlg.GetFilename());
     tmpName.Normalize();
+    // Just in case
+    tmpName.SetExt("bak");
 
-    wxCopyFile(name.GetFullPath(), tmpName.GetFullPath());
+    if (name.GetExt() == "zip")
+    {
+      // Extract .zip entry to a tmp file
+      wxFFileInputStream fileIn(name.GetFullPath());
+      wxZipInputStream zipIn(fileIn);
+      wxFFileOutputStream out(tmpName.GetFullPath());
+      zipIn.GetNextEntry();
+      zipIn.Read(out);
+
+      zipIn.CloseEntry();
+      out.Close();
+    }
+    else if (tmpName.GetExt() == "bak")
+    {
+      wxCopyFile(name.GetFullPath(), tmpName.GetFullPath());
+    }
   }
   
   m_pMainWnd->SetCursor(wxCURSOR_WAIT);
@@ -1778,6 +1816,8 @@ void CTT32App::RestoreDatabase()
   
   if (res)
     infoSystem.Information(_("Restore successful"));
+
+  // Maybe delete a tmp file? Or keep it around ...
 }
 
 
