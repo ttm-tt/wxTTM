@@ -644,9 +644,8 @@ bool CImportOnlineEntries::ImportThreadRead()
     if ( (bool) participant["cancelled"])
       continue;
 
-    // if (GetDateTime(person["created"]) < cutoff)
-    //   continue;
-    if (GetDateTime(registration["created"]) < cutoff)
+    if ((GetDateTime(person["modified"]) < cutoff) &&
+        (GetDateTime(registration["modified"]) < cutoff))
       continue;
 
     Person pl;
@@ -708,8 +707,8 @@ bool CImportOnlineEntries::ImportThreadRead()
 
   for (int idx = 0; idx < clubs.size(); idx++)
   {
-    // Chgeck cut-off date before processing this entry so we don't add the players
-    if (GetDateTime(clubs[idx]["created"]) < cutoff)
+    // Check cut-off date before processing this entry so we don't add the players
+    if (GetDateTime(clubs[idx]["modified"]) < cutoff)
       continue;
 
     Club club;
