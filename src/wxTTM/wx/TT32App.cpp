@@ -36,7 +36,7 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "24.05.04";
+static const wxString versionNumber = "24.10.01";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
@@ -1702,7 +1702,7 @@ void CTT32App::BackupDatabase()
     wxZipOutputStream zipOut(fileOut);
     wxFFileInputStream in(tmpName.GetFullPath());
     wxFileName zipName(tmpName.GetFullPath());
-    zipName.MakeRelativeTo();
+    zipName.MakeRelativeTo(tmpName.GetPath());
     zipOut.PutNextEntry(zipName.GetFullPath());
     zipOut.Write(in);
     zipOut.CloseEntry();
