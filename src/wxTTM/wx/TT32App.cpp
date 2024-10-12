@@ -1665,7 +1665,7 @@ void CTT32App::BackupDatabase()
   
   wxFileDialog fileDlg(
       m_pMainWnd, _("Backup Database"), GetPath(), name, 
-      "Backup Files (*.bak)|*.bak|Zip Files (*.zip)|*.zip|All Files (*.*)|*.*||", wxFD_SAVE);
+      "Backup Files (*.bak)|*.bak|Zip Files (*.zip)|*.zip|All Files (*.*)|*.*||", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     
   if (fileDlg.ShowModal() != wxID_OK)
     return;
@@ -1701,9 +1701,9 @@ void CTT32App::BackupDatabase()
     wxFFileOutputStream fileOut(saveName.GetFullPath());
     wxZipOutputStream zipOut(fileOut);
     wxFFileInputStream in(tmpName.GetFullPath());
-    wxFileName zipName(tmpName.GetFullPath());
-    zipName.MakeRelativeTo(tmpName.GetPath());
-    zipOut.PutNextEntry(zipName.GetFullPath());
+    wxFileName zipName = saveName;
+    zipName.SetExt("bak");
+    zipOut.PutNextEntry(zipName.GetFullName());
     zipOut.Write(in);
     zipOut.CloseEntry();
     zipOut.Close();
