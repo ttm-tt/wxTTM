@@ -194,10 +194,10 @@ echo Parse XRC file
 "$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
 
 echo Convert en\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
 
 echo Convert de\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
 
 </Command>
     </PostBuildEvent>
@@ -239,10 +239,10 @@ echo Parse XRC file
 "$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
 
 echo Convert en\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
 
 echo Convert de\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
 
 </Command>
     </PostBuildEvent>
@@ -377,10 +377,10 @@ echo Parse XRC file
 "$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
 
 echo Convert en\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
 
 echo Convert de\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
 
 rem echo Sign TTM32.exe
 rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
@@ -425,10 +425,10 @@ echo Parse XRC file
 "$(WXWIN)\utils\wxrc\vc_mswu\wxrc.exe" -g -o $(SolutionDir)\src\Resources\TTM.cpp $(SolutionDir)\src\Resources\TTM.xrc
 
 echo Convert en\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\en\ttm.po -o $(SolutionDir)\src\Resources\en\ttm.mo
 
 echo Convert de\ttm.po
-"$(MSBuildProgramFiles32)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
+"$(ProgramFiles)\Poedit\GetTextTools\bin\msgfmt.exe" $(SolutionDir)\src\Resources\de\ttm.po -o $(SolutionDir)\src\Resources\de\ttm.mo
 
 rem echo Sign TTM32.exe
 rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n "Christoph Theis" /d "Table Tennis Manager" $(TargetPath)
