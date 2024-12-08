@@ -22,8 +22,8 @@
 #include "MtRes.h"
 #include "MtTeam.h"
 #include "Score.h"
-
 #include "TossSheet.h"
+
 #include "MtEntryStore.h"
 
 #include "Printer.h"
@@ -1523,6 +1523,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
 {
   static wxString emptyCellMenu[] = 
   {
+    wxTRANSLATE("Print Tossheet"),
     wxTRANSLATE("Print Scoresheet"),
     wxTRANSLATE("Print Match List")
   };
@@ -1601,7 +1602,20 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
   {
     switch (rc - 2000)
     {
-      case 0 :
+      case 0 : // Toss sheet
+      {
+        short from = m_fromTable ? m_fromTable : 1;
+        short to = m_toTable ? m_toTable : m_fromTable + m_gridCtrl->GetNumberCols() - 1;
+
+        timestamp fromTime = m_fromTime;
+        timestamp toTime = m_toTime;
+
+        CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("TossSheet"), itemPtr ? itemPtr->mt.mtID : 0, 2, from, to, fromTime, toTime);
+
+        break;
+      }
+
+      case 1 : // Score sheet
       {
         short from = m_fromTable ? m_fromTable : 1;
         short to   = m_toTable ? m_toTable : m_fromTable + m_gridCtrl->GetNumberCols() - 1;
@@ -1614,7 +1628,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
         break;
       }
 
-      case 1 :
+      case 2 : // Match list
       {
         std::map<wxString, wxString> params;
         timestamp fromDateTime = m_fromTime, toDateTime = m_toTime;
@@ -1638,63 +1652,17 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
   {
     switch (rc - 2000)
     {
-      case 0 :
-        {
-          MtEntryStore mt;
-          mt.SelectById(itemPtr->mt.mtID, CP_TEAM);
-          mt.Next();
-          mt.Close();
-
-          GrListStore gr;
-          gr.SelectById(mt.mt.mtEvent.grID);
-          gr.Next();
-          gr.Close();
-
-          CpListStore cp;
-          cp.SelectById(gr.cpID);
-          cp.Next();
-          cp.Close();
-
-          if (cp.cpID == 0) // No such event
-            return;
-
-          // No toss for non-teams
-          if (cp.cpType != CP_TEAM && cp.cpType != CP_CLUB)
-            return;
-
-          Printer * printer;
-          if (CTT32App::instance()->GetPrintPreview())
-            printer = new PrinterPreview(_("Print Toss Sheet"));
-          else if (CTT32App::instance()->GetPrintPdf())
-          {
-            wxFileDialog fileDlg(
-              this, wxFileSelectorPromptStr, CTT32App::instance()->GetPath(), wxString::Format("Tosssheet.pdf"),
-              wxT("PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*||"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-            if (fileDlg.ShowModal() != wxID_OK)
-              return;
-
-            printer = new PrinterPdf(fileDlg.GetPath());
-          }
-          else
-            printer = new Printer;
-
-          if (printer->PrinterAborted())
-            return;
-
-          printer->StartDoc("Toss Sheet");
-          TossSheet *toss = new TossSheet(printer, TTDbse::instance()->GetDefaultConnection());
-          toss->Print(cp, gr, mt);
-          printer->EndDoc();
-        }
+      case 0 : // Tosssheet
+        CTT32App::instance()->OpenDialog(true, _("Print Tossaheet"), wxT("TossSheet"), itemPtr->mt.mtID, 0);
 
         break;
 
-      case 1 :
+      case 1 : // Score sheet
         CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("Score"), itemPtr->mt.mtID, combined ? 4 : 0);
         
         break;
 
-      case 2 :
+      case 2 : 
         CTT32App::instance()->OpenView(_T("MatchResult"), wxT("MtListView"), itemPtr->mt.mtID, m_showUmpire);
         break;
 

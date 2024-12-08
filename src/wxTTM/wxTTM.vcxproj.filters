@@ -563,7 +563,7 @@
     <ClCompile Include="Dialogs\MdGroups.cpp">
       <Filter>Source Files\Dialogs\View</Filter>
     </ClCompile>
-    <ClCompile Include="Print\TossSheet.cpp">
+    <ClCompile Include="Print\RasterTS.cpp">
       <Filter>Source Files\Print</Filter>
     </ClCompile>
     <ClCompile Include="Dialogs\NmEditYSTA.cpp">
@@ -574,6 +574,9 @@
     </ClCompile>
     <ClCompile Include="Dialogs\MpGroups.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\TossSheet.cpp">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -976,7 +979,7 @@
     <ClInclude Include="Dialogs\MdGroups.h">
       <Filter>Source Files\Dialogs\View</Filter>
     </ClInclude>
-    <ClInclude Include="Print\TossSheet.h">
+    <ClInclude Include="Print\RasterTS.h">
       <Filter>Source Files\Print</Filter>
     </ClInclude>
     <ClInclude Include="Dialogs\NmEditYSTA.h">
@@ -987,6 +990,9 @@
     </ClInclude>
     <ClInclude Include="Dialogs\MpGroups.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\TossSheet.h">
+      <Filter>Source Files\Dialogs\Tournament</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

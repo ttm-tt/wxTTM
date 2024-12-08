@@ -43,20 +43,20 @@ class CScore : public CFormViewEx
     void OnCombined(wxCommandEvent &);
   
   private:
-    short  m_matchOption;
-    bool   m_notPrinted;
-    bool   m_inclTeam;
-    bool   m_combined;
-    bool   m_consolation;
+    short  m_matchOption = 0;
+    bool   m_notPrinted = false;
+    bool   m_inclTeam = false;
+    bool   m_combined = false;
+    bool   m_consolation = false;
 
   private:
-    struct PrintScheduledStruct
+    struct PrintScheduledScoreStruct
     {
-      std::vector<MtListRec *> *mtList;
-      Printer *printer;
-      bool     isPreview;
-      bool     isCombined;
-	  bool     rrConsolation;
+      std::vector<MtListRec *> *mtList = nullptr;
+      Printer *printer = nullptr;
+      bool     isPreview = false;
+      bool     isCombined = false;
+	    bool     rrConsolation = false;
     };
 
     static unsigned PrintScheduledThread(void *);
@@ -70,7 +70,7 @@ class CScore : public CFormViewEx
 
     void  DoSetPrinted(boolean set);
 
-    Printer *m_printer;
+    Printer *m_printer = nullptr;
 
     MtStore::MtPlace fromPlace;
     MtStore::MtPlace toPlace;

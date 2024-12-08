@@ -42,10 +42,20 @@ END_EVENT_TABLE()
 // -----------------------------------------------------------------------
 // CScore
 
+enum
+{
+  Individual = 1,
+  Match = 2,
+  Round = 3,
+  Group = 4,
+  Selected = 5
+};
+
+
 CScore::CScore() : CFormViewEx()
 {
 
-  m_matchOption = 2;
+  m_matchOption = Match;
   m_notPrinted = true;
   m_inclTeam = false;
   m_combined = false;
@@ -84,10 +94,10 @@ bool CScore::Edit(va_list vaList)
 {
   long  id = va_arg(vaList, long);
   short matchOption = va_arg(vaList, int); 
-  short fromTable = (matchOption == 5 ? va_arg(vaList, short) : 0);
-  short toTable = (matchOption == 5 ? va_arg(vaList, short) : 999);
-  timestamp fromTime = (matchOption == 5 ? va_arg(vaList, timestamp) : timestamp());
-  timestamp toTime = (matchOption == 5 ? va_arg(vaList, timestamp) : timestamp());
+  short fromTable = (matchOption == Selected ? va_arg(vaList, short) : 0);
+  short toTable = (matchOption == Selected ? va_arg(vaList, short) : 999);
+  timestamp fromTime = (matchOption == Selected ? va_arg(vaList, timestamp) : timestamp());
+  timestamp toTime = (matchOption == Selected ? va_arg(vaList, timestamp) : timestamp());
 
   MtListStore  tmpMt;
   tmpMt.SelectById(id);
@@ -123,7 +133,7 @@ bool CScore::Edit(va_list vaList)
       m_matchOption = matchOption;
     }
 
-    if (matchOption == 4)
+    if (matchOption == Group)
     {
       m_combined = true;
       m_consolation = CTT32App::instance()->GetType() == TT_SCI;
@@ -131,12 +141,12 @@ bool CScore::Edit(va_list vaList)
   }
   else
   {
-    m_matchOption = 5;
+    m_matchOption = Selected;
     fromPlace.mtDateTime = fromTime;
     toPlace.mtDateTime = toTime;
   }
 
-  if (matchOption == 5)
+  if (matchOption == Selected)
   {
     // We are combined if there is at least one case where 2 matches of a group are on one table.
     bool combined = false;
@@ -177,7 +187,7 @@ bool CScore::Edit(va_list vaList)
     }
   }
 
-  if (m_matchOption == 5)
+  if (m_matchOption == Selected)
   {
     // Wurde "Print Scheduled" vorgegeben, alles andere disablen.
     // Diese Vorgabe kommt (eigentlich) nur von OvList und 
@@ -214,11 +224,11 @@ void CScore::OnInitialUpdate()
 	FindWindow("TableFrom")->SetValidator(CShortValidator(&fromPlace.mtTable));
 	FindWindow("TableUntil")->SetValidator(CShortValidator(&toPlace.mtTable));
 	
-	FindWindow("IndividualMatch")->SetValidator(CEnumValidator(&m_matchOption, 1));
-	FindWindow("ThisMatch")->SetValidator(CEnumValidator(&m_matchOption, 2));
-	FindWindow("ThisRound")->SetValidator(CEnumValidator(&m_matchOption, 3));
-	FindWindow("ThisGroup")->SetValidator(CEnumValidator(&m_matchOption, 4));
-	FindWindow("ScheduledMatches")->SetValidator(CEnumValidator(&m_matchOption, 5));
+	FindWindow("IndividualMatch")->SetValidator(CEnumValidator(&m_matchOption, Individual));
+	FindWindow("ThisMatch")->SetValidator(CEnumValidator(&m_matchOption, Match));
+	FindWindow("ThisRound")->SetValidator(CEnumValidator(&m_matchOption, Round));
+	FindWindow("ThisGroup")->SetValidator(CEnumValidator(&m_matchOption, Group));
+	FindWindow("ScheduledMatches")->SetValidator(CEnumValidator(&m_matchOption, Selected));
 
   FindWindow("NotPrinted")->SetValidator(wxGenericValidator(&m_notPrinted));
   FindWindow("CombinedScoresheet")->SetValidator(wxGenericValidator(&m_combined));
@@ -238,33 +248,33 @@ void  CScore::OnSelectMatch(wxCommandEvent &)
 
   switch (m_matchOption)
   {
-    case 1 : // Individual match
-    case 2 : // This match
-    case 3 : // This round
-    case 4 : // This group
+    case Individual : // Individual match
+    case Match :      // This match
+    case Round :      // This round
+    case Group :      // This group
       break;
-    case 5 : // Selected matches
+    case Selected :   // Selected matches
       break;
 
     default :
       break;
   }
 
-  if (m_matchOption == 4) // This group
+  if (m_matchOption == Group) // This group
     FindWindow(XRCID("NotPrinted"))->Enable(gr.grModus != MOD_RR);
   else
     FindWindow(XRCID("NotPrinted"))->Enable(m_matchOption > 2);
 
-  FindWindow(XRCID("DateFrom"))->Enable(m_matchOption == 5);
-  FindWindow(XRCID("DateUntil"))->Enable(m_matchOption == 5);
-  FindWindow(XRCID("TimeFrom"))->Enable(m_matchOption == 5);
-  FindWindow(XRCID("TimeUntil"))->Enable(m_matchOption == 5);
-  FindWindow(XRCID("TableFrom"))->Enable(m_matchOption == 5);
-  FindWindow(XRCID("TableUntil"))->Enable(m_matchOption == 5);
+  FindWindow(XRCID("DateFrom"))->Enable(m_matchOption == Selected);
+  FindWindow(XRCID("DateUntil"))->Enable(m_matchOption == Selected);
+  FindWindow(XRCID("TimeFrom"))->Enable(m_matchOption == Selected);
+  FindWindow(XRCID("TimeUntil"))->Enable(m_matchOption == Selected);
+  FindWindow(XRCID("TableFrom"))->Enable(m_matchOption == Selected);
+  FindWindow(XRCID("TableUntil"))->Enable(m_matchOption == Selected);
   
   // Combined Scoresheet nur bei "This Group" oder "Scheduled"
-  FindWindow(XRCID("CombinedScoresheet"))->Enable(m_matchOption >= 4);
-  FindWindow(XRCID("PrintParticipateConsolation"))->Enable(m_matchOption >= 4 && m_combined);
+  FindWindow(XRCID("CombinedScoresheet"))->Enable(m_matchOption >= Group);
+  FindWindow(XRCID("PrintParticipateConsolation"))->Enable(m_matchOption >= Group && m_combined);
 }
 
 
@@ -302,28 +312,28 @@ void CScore::DoSetPrinted(boolean f)
   
   switch (m_matchOption)
   {
-    case 1 : // Individual Match
+    case Individual : // Individual Match
       break;
       
-    case 2 : // This Match
+    case Match : // This Match
     {
       MtStore().UpdateScorePrinted(mt.mtID, f);
       break;
     }
     
-    case 3 : // This Round
+    case Round : // This Round
     {
       MtStore().UpdateScorePrintedForRound(gr.grID, mt.mtEvent.mtRound, f);
       break;
     }
     
-    case 4 : // This Group
+    case Group : // This Group
     {
       MtStore().UpdateScorePrintedForGroup(gr.grID, f);
       break;
     }
     
-    case 5 : // Scheduled
+    case Selected: // Scheduled
     {
       MtStore().UpdateScorePrintedScheduled(fromPlace, toPlace, f);
       break; 
@@ -350,7 +360,7 @@ void  CScore::OnPrint()
 // -----------------------------------------------------------------------
 void  CScore::DoPrint()
 {
-  if (m_matchOption == 5)
+  if (m_matchOption == Selected)
   {
     DoPrintScheduled();
     return;
@@ -379,23 +389,23 @@ void  CScore::DoPrint()
 
   switch (m_matchOption)
   {
-    case 1 : // Individual match
+    case Individual : // Individual match
       DoPrintMatch();
       break;
 
-    case 2 : // This match 
+    case Match : // This match 
       DoPrintMatch();
       break;
 
-    case 3 : // This round
+    case Round : // This round
       DoPrintRound();
       break;
 
-    case 4 : // This group
+    case Group : // This group
       DoPrintGroup();
       break;
 
-    case 5 : // Secheduled matches
+    case Selected: // Secheduled matches
      DoPrintScheduled();
      break;
 
@@ -587,7 +597,7 @@ void  CScore::DoPrintScheduled()
   char str[128];
   sprintf(str, "Print %d of %d score sheets", (int) (mtList->size() + printed), total);
 
-  PrintScheduledStruct *tmp = new PrintScheduledStruct;
+  PrintScheduledScoreStruct *tmp = new PrintScheduledScoreStruct;
 
   if (CTT32App::instance()->GetPrintPreview())
     tmp->printer = new PrinterPreview(_("Print Scoresheets"));
@@ -630,11 +640,11 @@ unsigned CScore::PrintScheduledThread(void *arg)
 
   connPtr->StartTransaction();
 
-  std::vector<MtListRec *> *mtList = ((PrintScheduledStruct *) arg)->mtList;
-  Printer *printer = ((PrintScheduledStruct *) arg)->printer;
-  bool isPreview   = ((PrintScheduledStruct *) arg)->isPreview;
-  bool isCombined  = ((PrintScheduledStruct *) arg)->isCombined;
-  bool rrConsolation = ((PrintScheduledStruct *)arg)->rrConsolation;
+  std::vector<MtListRec *> *mtList = ((PrintScheduledScoreStruct *) arg)->mtList;
+  Printer *printer = ((PrintScheduledScoreStruct *) arg)->printer;
+  bool isPreview   = ((PrintScheduledScoreStruct *) arg)->isPreview;
+  bool isCombined  = ((PrintScheduledScoreStruct *) arg)->isCombined;
+  bool rrConsolation = ((PrintScheduledScoreStruct *)arg)->rrConsolation;
 
   int count = mtList->size();
 
@@ -789,7 +799,7 @@ unsigned CScore::PrintScheduledThread(void *arg)
   delete mtList;
   delete connPtr;
 
-  delete (PrintScheduledStruct *) arg;
+  delete (PrintScheduledScoreStruct *) arg;
 
   return 0;
 }
