@@ -44,7 +44,7 @@ bool  MpListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW MpList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS MpList");
   }
   catch(SQLException &)
   {

@@ -61,7 +61,7 @@ bool  RpListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW RpList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS RpList");
   }
   catch(SQLException &)
   {

@@ -219,7 +219,7 @@ bool  UpStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER upUpdateTrigger ON UpRec FOR UPDATE AS \n"
+        "CREATE OR ALTER TRIGGER upUpdateTrigger ON UpRec FOR UPDATE AS \n"
         " --- Update timestamp for last changed \n"
         "UPDATE PsRec SET psTimestamp = GETUTCDATE() \n"
         " WHERE psID IN (SELECT psID FROM deleted) \n;");

@@ -9,6 +9,7 @@
 
 #include "CpItem.h"
 #include "GrItem.h"
+#include "TmItem.h"
 
 #include "MtListStore.h"
 
@@ -42,7 +43,7 @@ enum
   APPLY_TO_GROUP = 7
 };
 
-CMtTime::CMtTime() : CFormViewEx(), cpItem(NULL), grItem(NULL), matchDate(NULL), matchTime(NULL)
+CMtTime::CMtTime() : CFormViewEx()
 {
   m_applyTo = 1;
 	m_assignPlayer = false;
@@ -72,8 +73,22 @@ bool  CMtTime::Edit(va_list vaList)
   
   m_assignPlayer = (mt.mtUmpire == -1);
   
+  m_sequence = mt.mtPlace.mtDateTime.second;
+
+  TmEntryStore tm;
+
+  tm.SelectTeamById(mt.tmA, cp.cpType);
+  tm.Next();
+  tmA = tm;
+
+  tm.SelectTeamById(mt.tmX, cp.cpType);
+  tm.Next();
+  tmX = tm;
+
   cpItem->SetListItem(new CpItem(cp));
   grItem->SetListItem(new GrItem(gr));
+  tmAItem->SetListItem(new TmItem(tmA));
+  tmXItem->SetListItem(new TmItem(tmX));
 
   if (mt.mtEvent.mtRound > gr.grQualRounds)
     XRCCTRL(*this, "Round", wxTextCtrl)->SetValue(wxString::Format("%d", mt.mtEvent.mtRound - gr.grQualRounds));
@@ -81,8 +96,6 @@ bool  CMtTime::Edit(va_list vaList)
     XRCCTRL(*this, "Round", wxTextCtrl)->SetValue(wxString::Format(_("Qu.")));
   else
     XRCCTRL(*this, "Round", wxTextCtrl)->SetValue(wxString::Format(_("Qu.") + " %d", mt.mtEvent.mtRound));
-
-  m_sequence = mt.mtPlace.mtDateTime.second;
 
   FindWindow("AvailTables")->Enable(m_applyTo != 1);
   FindWindow("DecrementNo")->Enable(m_applyTo != 1);
@@ -342,10 +355,15 @@ void CMtTime::OnInitialUpdate()
 	
 	cpItem = XRCCTRL(*this, "Event", CItemCtrl);
 	grItem = XRCCTRL(*this, "Group", CItemCtrl);
-		
+
+  tmAItem = XRCCTRL(*this, "TeamA", CItemCtrl);
+  tmXItem = XRCCTRL(*this, "TeamX", CItemCtrl);
+
   cpItem->SetItemHeight(1);
   grItem->SetItemHeight(1);
-  
+  tmAItem->SetItemHeight(2);
+  tmXItem->SetItemHeight(2);
+
   FindWindow("MatchNo")->SetValidator(CLongValidator(&mt.mtNr));
   // FindWindow("Round")->SetValidator(CShortValidator(&mt.mtEvent.mtRound));
   FindWindow("Match")->SetValidator(CShortValidator(&mt.mtEvent.mtMatch));
@@ -357,6 +375,9 @@ void CMtTime::OnInitialUpdate()
   FindWindow("Date")->SetValidator(CDateValidator(&mt.mtPlace.mtDateTime));
   FindWindow("Time")->SetValidator(CTimeValidator(&mt.mtPlace.mtDateTime));
   
+  tmAItem = XRCCTRL(*this, "TeamA", CItemCtrl);
+  tmXItem = XRCCTRL(*this, "TeamX", CItemCtrl);
+
   FindWindow("Sequence")->SetValidator(CShortValidator(&m_sequence));
   
   FindWindow("ApplyToMatch")->SetValidator(CEnumValidator(&m_applyTo, APPLY_TO_MATCH));

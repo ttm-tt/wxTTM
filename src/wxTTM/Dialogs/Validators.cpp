@@ -821,3 +821,66 @@ bool CTimeValidator::Validate(wxWindow *parent)
 }
 
 
+// -----------------------------------------------------------------------  
+IMPLEMENT_DYNAMIC_CLASS(CDateTimeValidator, wxValidator)
+
+CDateTimeValidator::CDateTimeValidator()
+  : wxValidator(), m_val(NULL)
+{
+}
+
+
+CDateTimeValidator::CDateTimeValidator(timestamp* val)
+  : wxValidator(), m_val(val)
+{
+}
+
+
+CDateTimeValidator::CDateTimeValidator(const CDateTimeValidator& val)
+  : wxValidator(), m_val(val.m_val)
+{
+}
+
+
+wxObject* CDateTimeValidator::Clone() const
+{
+  return new CDateTimeValidator(*this);
+}
+
+
+bool CDateTimeValidator::TransferFromWindow()
+{
+  // Fields should be r/o 
+  return false;
+}
+
+
+bool CDateTimeValidator::TransferToWindow()
+{
+  if (m_val && m_validatorWindow->IsKindOf(CLASSINFO(wxTextCtrl)))
+  {
+    if (m_val->day)
+    {
+      wxDateTime dateTime(
+        m_val->day, (wxDateTime::Month)(m_val->month - 1), m_val->year,
+        m_val->hour, m_val->minute, m_val->second
+      );
+      ((wxTextCtrl*)m_validatorWindow)->SetValue(dateTime.Format("%d.%m.%Y %H:%M"));
+    }
+    else
+    {
+      ((wxTextCtrl*)m_validatorWindow)->SetValue("");
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+
+bool CDateTimeValidator::Validate(wxWindow* parent)
+{
+  return true;
+}
+

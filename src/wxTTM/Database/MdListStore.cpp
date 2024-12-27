@@ -50,7 +50,7 @@ bool  MdListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW MdList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS MdList");
   }
   catch(SQLException &)
   {

@@ -59,7 +59,7 @@ bool  PlListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW PlList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS PlList");
   }
   catch(SQLException &)
   {

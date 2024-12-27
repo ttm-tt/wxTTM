@@ -109,10 +109,10 @@ class CSetValidator : public wxValidator
     }    
     
   private:
-    short *m_mtResA;
-    short *m_mtResX;
-    short  m_ptsToWin;  // Points needed to win
-    short  m_ptsAhead;  // Points ahead of opponent to win
+    short *m_mtResA = nullptr;
+    short *m_mtResX = nullptr;
+    short  m_ptsToWin;          // Points needed to win
+    short  m_ptsAhead;          // Points ahead of opponent to win
     
   private:
   // ---------------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ class CSetValidator : public wxValidator
 // -----------------------------------------------------------------------
 // CMtRes
 
-CMtRes::CMtRes() : CFormViewEx(), cpItem(0), grItem(0), tmAItem(0), tmXItem(0), tmWinnerItem(0), mtSetsItem(0)
+CMtRes::CMtRes() : CFormViewEx()
 {
   mtSetList = new MtSet[MAX_SET];
 }

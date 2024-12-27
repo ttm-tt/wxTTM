@@ -482,7 +482,7 @@ bool  MtMatchStore::UpdateTable(long version)
 
     delete tmp;
   }
-    
+
   return true;
 }
 
@@ -616,8 +616,11 @@ bool  MtStore::CreateTable()
     "mtTable         "+SMALLINT+",    "
     "mtUmpire        "+INTEGER+",     "
     "mtUmpire2       "+INTEGER+",     "
-    "mtPrinted       "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtChecked       "+SMALLINT+"     NOT NULL DEFAULT 0, "
+    "mtPrintTossTime      "+TIMESTAMP+",   DEFAULT NULL,       "
+    "mtPrintScoreTime     "+TIMESTAMP+",   DEFAULT NULL,       "
+    "mtStartMatchTime     "+TIMESTAMP+",   DEFAULT NULL,       "
+    "mtEndMatchTime       "+TIMESTAMP+",   DEFAULT NULL,       "
+    "mtCheckMatchTime     "+TIMESTAMP+",   DEFAULT NULL,       "
     "mtReverse       "+SMALLINT+"     NOT NULL DEFAULT 0, "
     "mtMatches       "+SMALLINT+"     NOT NULL,  "
     "mtBestOf        "+SMALLINT+"     NOT NULL,  "
@@ -868,6 +871,90 @@ bool  MtStore::UpdateTable(long version)
     }
   }
 
+  if (version < 177)
+  {
+      Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+      wxASSERT(connPtr);
+
+      Statement* tmp = connPtr->CreateStatement();
+
+      wxString  DATETIME = connPtr->GetDataType(SQL_DATETIME);
+      wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
+
+      wxString sql;
+      
+      try
+      {
+          sql =
+              "ALTER TABLE MtRec ADD "
+              "mtPrintTossTime   " + TIMESTAMP + " DEFAULT NULL, "
+              "mtPrintScoreTime  " + TIMESTAMP + " DEFAULT NULL, "
+              "mtStartMatchTime  " + TIMESTAMP + " DEFAULT NULL, "
+              "mtEndMatchTime    " + TIMESTAMP + " DEFAULT NULL,  "
+              "mtCheckMatchTime  " + TIMESTAMP + " DEFAULT NULL  "
+          ;
+          tmp->ExecuteUpdate(sql);
+
+          sql = "UPDATE MtRec SET mtPrintScoreTime = mtDateTime WHERE mtPrinted <> 0";
+          tmp->ExecuteUpdate(sql);
+          sql = "UPDATE MtRec SET mtStartMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
+          tmp->ExecuteUpdate(sql);
+          sql = "UPDATE MtRec SET mtEndMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
+          tmp->ExecuteUpdate(sql);
+          sql = "UPDATE MtRec SET mtCheckMatchTime = mtDateTime WHERE mtChecked <> 0";
+          tmp->ExecuteUpdate(sql);
+
+          // Before we can drop the column we have to drop the contraint
+          // DROP CONTRAINT braucht den Namen, den vergebe ich aber nicht explizit
+          // Also in den Sys-Tabellen suchen
+          Statement* dstmt = connPtr->CreateStatement();
+          sql =
+            "SELECT d.name, c.name "
+            "  FROM sys.tables t "
+            "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
+            "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
+            " WHERE t.name = 'MtRec' AND c.name IN ('mtPrinted', 'mtChecked') "
+            ;
+          ResultSet* rs = dstmt->ExecuteQuery(sql);
+          std::map<wxString, wxString> dmap;
+          while (rs->Next())
+          {
+            wxChar d[128];
+            wxChar c[128];
+
+            rs->GetData(1, d, 128);
+            rs->GetData(2, c, 128);
+
+            dmap[wxString(d)] = wxString(c);
+          }
+
+          dstmt->Close();
+          delete rs;
+          delete dstmt;
+
+          for (auto it : dmap)
+            tmp->ExecuteQuery("ALTER TABLE MtRec DROP CONSTRAINT " + it.first);
+
+          // And now we can
+          sql = "ALTER TABLE MtRec DROP COLUMN mtPrinted";
+          tmp->ExecuteUpdate(sql);
+          sql = "ALTER TABLE MtRec DROP COLUMN mtChecked";
+          tmp->ExecuteUpdate(sql);
+
+          // And finally update role permissions
+          sql = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results";
+          tmp->ExecuteUpdate(sql);
+      }
+      catch (SQLException& e)
+      {
+          infoSystem.Exception(sql, e);
+
+          delete tmp;
+
+          return false;
+      }
+  }
+
   if (!UpdateStoredProcedure(version))
     return false;
 
@@ -1086,14 +1173,14 @@ bool  MtStore::UpdateStoredProcedure(long version)
 #   include "TbSort.sql"
 
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER mtUpdateTrigger ON MtRec FOR UPDATE AS \n"
+        "CREATE OR ALTER TRIGGER mtUpdateTrigger ON MtRec FOR UPDATE AS \n"
         " --- Update timestamp for last changed \n"
         "DECLARE @mtNr " + INTEGER + ";\n"
         "UPDATE MtRec SET mtTimestamp = GETUTCDATE() \n"
         " WHERE mtID IN (SELECT mtID FROM deleted); \n"
         
         " --- Update printed flag if match data have changed but only if the match has not started yet \n"
-        "UPDATE MtRec SET mtPrinted = 0 \n"
+        "UPDATE MtRec SET mtPrintScoreTime = NULL \n"
         " WHERE mtResA = 0 AND mtResX = 0 AND mtID IN \n"
         "       (SELECT deleted.mtID FROM deleted INNER JOIN inserted ON deleted.mtID = inserted.mtID \n"
         "         WHERE deleted.mtDateTime != inserted.mtDateTime OR \n"
@@ -1107,7 +1194,7 @@ bool  MtStore::UpdateStoredProcedure(long version)
         " DECLARE mtCheckedCursor CURSOR LOCAL FOR \n"
         "   (SELECT inserted.mtNr \n"
         "      FROM inserted LEFT OUTER JOIN deleted ON inserted.mtID = deleted.mtID \n"
-        "     WHERE inserted.mtChecked <> deleted.mtChecked) \n"
+        "     WHERE IIF(inserted.mtCheckMatchTime IS NULL, 0, 1) <> IIF(deleted.mtCheckMatchTime IS NULL, 0, 1)) \n"
         " OPEN mtCheckedCursor \n"
         " FETCH NEXT FROM mtCheckedCursor INTO @mtNr \n"
         " WHILE (@@FETCH_STATUS = 0) \n"
@@ -2344,7 +2431,7 @@ bool  MtStore::UpdateScheduleMatch(
 bool  MtStore::UpdateScoreChecked(long id, bool checked)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtChecked = " + ltostr(checked ? 1 : 0) + 
+    "UPDATE MtRec SET mtCheckMatchTime = " + wxString(checked ? "GETUTCDATE() " : "NULL ") +
     " WHERE mtID = " + ltostr(id);
   try
   {
@@ -2370,10 +2457,39 @@ bool  MtStore::UpdateScoreChecked(long id, bool checked)
 
 
 // -----------------------------------------------------------------------
+bool  MtStore::UpdateTossPrinted(long id, bool printed)
+{
+  wxString  str =
+    "UPDATE MtRec SET mtPrintTossTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
+    " WHERE mtID = " + ltostr(id);
+  try
+  {
+    ExecuteUpdate(str);
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+
+    return false;
+  }
+
+  // Notify Views
+  CRequest update;
+  update.type = CRequest::UPDATE;
+  update.rec = CRequest::MTREC;
+  update.id = id;
+
+  CTT32App::NotifyChange(update);
+
+  return true;
+}
+
+
+// -----------------------------------------------------------------------
 bool  MtStore::UpdateScorePrinted(long id, bool printed)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtPrinted = " + ltostr(printed ? 1 : 0) + 
+    "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE mtID = " + ltostr(id);
   try
   {
@@ -2401,7 +2517,7 @@ bool  MtStore::UpdateScorePrinted(long id, bool printed)
 bool  MtStore::UpdateScorePrintedForRound(long id, short round, bool printed)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtPrinted = " + ltostr(printed ? 1 : 0) + 
+    "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id) + " AND mtRound = " + ltostr(round);
   try
   {
@@ -2421,7 +2537,7 @@ bool  MtStore::UpdateScorePrintedForRound(long id, short round, bool printed)
 bool  MtStore::UpdateScorePrintedForGroup(long id, bool printed)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtPrinted = " + ltostr(printed ? 1 : 0) + 
+    "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id);
   try
   {
@@ -2443,7 +2559,7 @@ bool  MtStore::UpdateScorePrintedScheduled(
     const MtStore::MtPlace &to, bool printed)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtPrinted = " + ltostr(printed ? 1 : 0) + 
+    "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE mtDateTime >= '" + tstostr(from.mtDateTime) + "'" +
     "   AND mtTable >= " + ltostr(from.mtTable) +
     "   AND mtDateTime <= '" + tstostr(to.mtDateTime) + "'" +
@@ -2467,7 +2583,7 @@ bool  MtStore::UpdateScorePrintedScheduled(
 bool  MtStore::UpdateScorePrintedForTeam(const StRec &st, bool printed)
 {
   wxString  str = 
-    "UPDATE MtRec SET mtPrinted = " + ltostr(printed ? 1 : 0) + 
+    "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE stA = " + ltostr(st.stID) + " OR stX = " + ltostr(st.stID);
 
   try
@@ -2512,11 +2628,12 @@ timestamp MtStore::GetEarliestMatchTime(const MtEvent &event)
   
   memset(&ts, 0, sizeof(ts));
   
-  wxString str = "SELECT MIN(mtDateTime) FROM MtRec "
-    "WHERE grId = " + ltostr(event.grID) + 
-    "  AND mtRound = " + ltostr(event.mtRound) + 
-    "  AND mtChance = " + ltostr(event.mtChance) + 
-    "  AND DAY(mtDateTime) <> 0";
+  wxString str = 
+    "SELECT MIN(mtDateTime) FROM MtRec "
+    " WHERE grId = " + ltostr(event.grID) + 
+    "   AND mtRound = " + ltostr(event.mtRound) + 
+    "   AND mtChance = " + ltostr(event.mtChance) + 
+    "   AND DAY(mtDateTime) <> 0";
     
   Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
@@ -2543,10 +2660,11 @@ timestamp MtStore::GetLatestMatchTime(const MtEvent &event)
   
   memset(&ts, 0, sizeof(ts));
   
-  wxString str = "SELECT MAX(mtDateTime) FROM MtRec "
-    "WHERE grId = " + ltostr(event.grID) + 
-    "  AND mtRound = " + ltostr(event.mtRound) + 
-    "  AND mtChance = " + ltostr(event.mtChance);
+  wxString str = 
+    "SELECT MAX(mtDateTime) FROM MtRec "
+    " WHERE grId = " + ltostr(event.grID) + 
+    "   AND mtRound = " + ltostr(event.mtRound) + 
+    "   AND mtChance = " + ltostr(event.mtChance);
     
   Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
@@ -2571,10 +2689,11 @@ short MtStore::GetLastPlayedRound(const MtEvent &event)
 {
   short rd = 0;
   
-  wxString str = "SELECT MAX(mtRound) FROM MtRec "
-    "WHERE grID = " + ltostr(event.grID) +
-    "  AND mtChance = " + ltostr(event.mtChance) + 
-    "  AND (mtResA > 0 OR mtResX > 0)";
+  wxString str = 
+    "SELECT MAX(mtRound) FROM MtRec "
+    " WHERE grID = " + ltostr(event.grID) +
+    "   AND mtChance = " + ltostr(event.mtChance) + 
+    "   AND (mtResA > 0 OR mtResX > 0)";
     
   Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
@@ -2597,9 +2716,9 @@ short MtStore::CountMatchesInGroupGroup(const MtEvent &evt)
 {
   wxString  str = 
     "SELECT COUNT(*) FROM GrRec "
-      " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") "
-      "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") "
-      "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") "
+    " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") AND "
+    "       grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") AND "
+    "       grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") "
   ;
 
   short count = 0;
@@ -2724,19 +2843,23 @@ long  MtStore::GetNextNumber()
 wxString  MtStore::SelectString() const
 {
   wxString  str = 
-    "SELECT mt.mtID, mtNr, stA, stX, mtUmpire, mtUmpire2, mtReverse,     "
-    "       mt.mtWalkOverA, mt.mtWalkOverX,         "
-    "       mt.mtInjuredA, mt.mtInjuredX,           "
-    "       mt.mtDisqualifiedA, mt.mtDisqualifiedX, "
-    "       mtMatches, mtBestOf,                    "
-    "       mt.grID, mtRound, mtMatch, mtChance,    "
-    "       mtDateTime, mtTable,                    "
-    "       mt.mtResA, mt.mtResX,                   "
-    "       mtMatch.mtResA, mtMatch.mtResX,         "
-    "       mtSet.mtResA, mtSet.mtResX,             "
-    "       stA.tmID, stX.tmID,                     "
-    "       xxA.stID, xxX.stID                      "
-    "  FROM MtRec mt                                "
+    "SELECT mt.mtID, mtNr, stA, stX, mtReverse,       "
+    "       mtUmpire, mtUmpire2,                      "
+    "       mt.mtPrintTossTime,                       "
+    "       mt.mtPrintScoreTime, mt.mtCheckMatchTime, "
+    "       mt.mtStartMatchTime, mt.mtEndMatchTime,   "
+    "       mt.mtWalkOverA, mt.mtWalkOverX,           "
+    "       mt.mtInjuredA, mt.mtInjuredX,             "
+    "       mt.mtDisqualifiedA, mt.mtDisqualifiedX,   "
+    "       mtMatches, mtBestOf,                      "
+    "       mt.grID, mtRound, mtMatch, mtChance,      "
+    "       mtDateTime, mtTable,                      "
+    "       mt.mtResA, mt.mtResX,                     "
+    "       mtMatch.mtResA, mtMatch.mtResX,           "
+    "       mtSet.mtResA, mtSet.mtResX,               "
+    "       stA.tmID, stX.tmID,                       "
+    "       xxA.stID, xxX.stID                        "
+    "  FROM MtRec mt                                  "
     "    LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID "
     "    LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID "
     "    LEFT OUTER JOIN mtMatch ON mt.mtID = mtMatch.mtID AND mtMatch.mtMS = 0 "
@@ -2757,9 +2880,14 @@ bool  MtStore::BindRec()
   BindCol(++col, &mtNr);
   BindCol(++col, &stA);
   BindCol(++col, &stX);
+  BindCol(++col, &mtReverse);
   BindCol(++col, &mtUmpire);
   BindCol(++col, &mtUmpire2);
-  BindCol(++col, &mtReverse);
+  BindCol(++col, &mtDetails.mtPrintTossTime);
+  BindCol(++col, &mtDetails.mtPrintScoreTime);
+  BindCol(++col, &mtDetails.mtCheckMatchTime);
+  BindCol(++col, &mtDetails.mtStartMatchTime);
+  BindCol(++col, &mtDetails.mtEndMatchTime);
   BindCol(++col, &mtWalkOverA);
   BindCol(++col, &mtWalkOverX);
   BindCol(++col, &mtInjuredA);

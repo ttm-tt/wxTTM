@@ -89,9 +89,9 @@ bool  StEntryStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW StSingleList");
-    tmp->ExecuteUpdate("DROP VIEW StDoubleList");
-    tmp->ExecuteUpdate("DROP VIEW StTeamList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS StSingleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS StDoubleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS StTeamList");
   }
   catch(SQLException &)
   {

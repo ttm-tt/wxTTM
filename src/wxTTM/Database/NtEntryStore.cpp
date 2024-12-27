@@ -52,7 +52,7 @@ bool  NtEntryStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW NtEntryList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS NtEntryList");
   }
   catch(SQLException &)
   {

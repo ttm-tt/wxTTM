@@ -95,9 +95,9 @@ bool  NmEntryStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW NmEntryList");
-    tmp->ExecuteUpdate("DROP VIEW NmSingleList");
-    tmp->ExecuteUpdate("DROP VIEW NmDoubleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS NmEntryList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS NmSingleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS NmDoubleList");
   }
   catch(SQLException &)
   {

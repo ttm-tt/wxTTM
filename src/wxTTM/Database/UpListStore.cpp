@@ -58,7 +58,7 @@ bool  UpListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW UpList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS UpList");
   }
   catch(SQLException &)
   {

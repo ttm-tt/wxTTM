@@ -1533,6 +1533,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
     wxTRANSLATE("Print Tosssheet"),
     wxTRANSLATE("Print Scoresheet"),
     wxTRANSLATE("Find Match"),
+    wxTRANSLATE("View Details"),
     wxTRANSLATE("Edit Result"),
     wxTRANSLATE("Edit Schedule"),
     wxTRANSLATE("Swap Table"),
@@ -1653,7 +1654,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
     switch (rc - 2000)
     {
       case 0 : // Tosssheet
-        CTT32App::instance()->OpenDialog(true, _("Print Tossaheet"), wxT("TossSheet"), itemPtr->mt.mtID, 0);
+        CTT32App::instance()->OpenDialog(true, _("Print Tossheet"), wxT("TossSheet"), itemPtr->mt.mtID, 0);
 
         break;
 
@@ -1662,11 +1663,15 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
         
         break;
 
-      case 2 : 
+      case 2 : // Find match
         CTT32App::instance()->OpenView(_T("MatchResult"), wxT("MtListView"), itemPtr->mt.mtID, m_showUmpire);
         break;
 
-      case 3 :
+      case 3: // Match Details
+        CTT32App::instance()->OpenView(_T("Match Details"), wxT("MtDetails"), itemPtr->mt.mtID);
+        break;
+
+      case 4 : // Edit Result
         if (combined)
           CTT32App::instance()->OpenView(_("Edit Group Results"), wxT("MtListView"), itemPtr->mt.mtID, false);
         else if (itemPtr->mt.cpType == CP_TEAM)
@@ -1676,7 +1681,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
 
         break;
       
-      case 4 :
+      case 5 : // Edit Schedule
         if (combined)
           CTT32App::instance()->OpenView(_("Edit Group Schedule"), wxT("MtListView"), itemPtr->mt.mtID, true);
         else
@@ -1684,7 +1689,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
       
         break;
 
-      case 5 :
+      case 6 : // Swap Taable
         {
           // Alter Tisch ergibt sich aus aktuellem Item
           // Neuen Tisch vom Benutzer erfragen, aber nur innerhalb des angezeigten Bereiches.

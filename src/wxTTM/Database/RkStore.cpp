@@ -158,7 +158,7 @@ bool  RkStore::CreateConstraints()
     // wenn der Trigger feuert
 #if 0  
     tmp->ExecuteUpdate(str = 
-      "CREATE TRIGGER rkDeleteTrigger ON RkRec INSTEAD OF DELETE NOT FOR REPLICATION \n"
+      "CREATE OR ALTER TRIGGER rkDeleteTrigger ON RkRec INSTEAD OF DELETE NOT FOR REPLICATION \n"
       "AS \n"
       "BEGIN \n"
       // Die deleted-Tabelle kann mehrere Zeilen enthalten

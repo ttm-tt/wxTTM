@@ -170,4 +170,24 @@ class CTimeValidator : public wxValidator
   DECLARE_DYNAMIC_CLASS(CTimeValidator)
 };
 
+class CDateTimeValidator : public wxValidator
+{
+public:
+  CDateTimeValidator();
+  CDateTimeValidator(timestamp* val);
+  CDateTimeValidator(const CDateTimeValidator&);
+
+public:
+  wxObject* Clone() const;
+
+  bool TransferFromWindow();
+  bool TransferToWindow();
+  bool Validate(wxWindow* parent);
+
+private:
+  timestamp* m_val;
+
+  DECLARE_DYNAMIC_CLASS(CDateTimeValidator)
+};
+
 #endif

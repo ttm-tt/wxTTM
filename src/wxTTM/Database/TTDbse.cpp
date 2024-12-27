@@ -75,7 +75,7 @@
 
 #include  "Res.h"
 
-#define  DB_VERSION  176
+#define  DB_VERSION  177
 
 TTDbse * TTDbse::selfPtr = 0;
 
@@ -396,8 +396,9 @@ bool  TTDbse::CreateRoles()
 
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtSetResultProc TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtUpdateRasterProc TO ttm_results");
-    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtDateTime, mtTable, mtUmpire, mtUmpire2, mtPrinted, mtChecked, mtReverse, mtBestOf) TO ttm_results");    
-    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX) TO ttm_results");    
+    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtDateTime, mtTable, mtUmpire, mtUmpire2, mtReverse, mtBestOf) TO ttm_results");    
+    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results");
+    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE On StRec (stNoCons) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON IdRec (idLast) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON GrRec (grPrinted) TO ttm_results");
@@ -542,6 +543,35 @@ bool  TTDbse::UpdateTables(long version)
     res = CreateTables();
   else if (version < DB_VERSION)
   {
+    // Drop views before update
+    res &= ReportStore::RemoveView();
+
+    res &= MtEntryStore::RemoveView();
+    res &= RkEntryStore::RemoveView();
+    res &= TbEntryStore::RemoveView();
+    res &= StEntryStore::RemoveView();
+    res &= TmEntryStore::RemoveView();
+    res &= NtEntryStore::RemoveView();
+    res &= NmEntryStore::RemoveView();
+    res &= LtEntryStore::RemoveView();
+
+    res &= RpListStore::RemoveView();
+    res &= UpListStore::RemoveView();
+    res &= XxListStore::RemoveView();
+    res &= MtListStore::RemoveView();
+    res &= RkListStore::RemoveView();
+    res &= StListStore::RemoveView();
+    res &= GrListStore::RemoveView();
+    res &= MpListStore::RemoveView();
+    res &= MdListStore::RemoveView();
+    res &= SyListStore::RemoveView();
+    res &= TmListStore::RemoveView();
+    res &= NtListStore::RemoveView();
+    res &= LtListStore::RemoveView();
+    res &= PlListStore::RemoveView();
+    res &= NaListStore::RemoveView();
+    res &= CpListStore::RemoveView();
+
     // Update Tables
     res &= IdStore::UpdateTable(version, DB_VERSION);
     res &= CpStore::UpdateTable(version);
@@ -581,34 +611,6 @@ bool  TTDbse::UpdateTables(long version)
     res &= RpStore::UpdateConstraints(version);
 
     // Update Views
-    res &= ReportStore::RemoveView();
-    
-    res &= MtEntryStore::RemoveView();
-    res &= RkEntryStore::RemoveView();
-    res &= TbEntryStore::RemoveView();
-    res &= StEntryStore::RemoveView();
-    res &= TmEntryStore::RemoveView();
-    res &= NtEntryStore::RemoveView();
-    res &= NmEntryStore::RemoveView();
-    res &= LtEntryStore::RemoveView();
-    
-    res &= RpListStore::RemoveView();
-    res &= UpListStore::RemoveView();
-    res &= XxListStore::RemoveView();
-    res &= MtListStore::RemoveView();
-    res &= RkListStore::RemoveView();
-    res &= StListStore::RemoveView();
-    res &= GrListStore::RemoveView();
-    res &= MpListStore::RemoveView();
-    res &= MdListStore::RemoveView();
-    res &= SyListStore::RemoveView();
-    res &= TmListStore::RemoveView();
-    res &= NtListStore::RemoveView();
-    res &= LtListStore::RemoveView();
-    res &= PlListStore::RemoveView();
-    res &= NaListStore::RemoveView();
-    res &= CpListStore::RemoveView();
-    
     res &= CpListStore::CreateView();
     res &= NaListStore::CreateView();
     res &= PlListStore::CreateView();

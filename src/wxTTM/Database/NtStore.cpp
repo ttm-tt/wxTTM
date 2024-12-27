@@ -163,7 +163,7 @@ bool  NtStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER ntInsertDeleteTrigger ON NtRec FOR INSERT, DELETE AS \n"
+        "CREATE OR ALTER TRIGGER ntInsertDeleteTrigger ON NtRec FOR INSERT, DELETE AS \n"
         " --- Update timestamp for last changed \n"
         "UPDATE LtRec SET ltTimestamp = GETUTCDATE() \n"
         " WHERE ltID IN (SELECT ltID FROM deleted) OR ltID IN (SELECT ltID FROM inserted) \n;");

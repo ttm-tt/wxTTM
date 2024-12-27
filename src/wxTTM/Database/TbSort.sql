@@ -1,6 +1,6 @@
 // Erzeugt eine temporaere Tabelle mit allen Ergebnissen einer Gruppe
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION mtResultsFunc  \n"
+  "CREATE OR ALTER FUNCTION mtResultsFunc  \n"
   "(    \n"
   "   @grID " + INTEGER + "  \n"
   ")  \n"
@@ -113,7 +113,7 @@ tmp->ExecuteUpdate(str =
 
 // Summiert die Ergebnisse der Spieler in @ids auf
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION SumUpFunc  \n"
+  "CREATE OR ALTER FUNCTION SumUpFunc  \n"
   "(    \n"
   "   @grID " + INTEGER + ",  \n"
   "   @ids " + VARCHAR + "(200)  \n"
@@ -175,7 +175,7 @@ tmp->ExecuteUpdate(str =
 
 // Vergleicht 2 Ergebnisse anhand der Differenz  
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION DiffFunc  \n"
+  "CREATE OR ALTER FUNCTION DiffFunc  \n"
   "(  \n"
   "  @p1A " + SMALLINT + ",  \n"
   "  @p1X " + SMALLINT + ",  \n"
@@ -192,7 +192,7 @@ tmp->ExecuteUpdate(str =
 
 // Vergleicht 2 Ergebnisse anhand des Quotienten
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION QuotFunc  \n"
+  "CREATE OR ALTER FUNCTION QuotFunc  \n"
   "(  \n"
   "  @p1A " + SMALLINT + ",  \n"
   "  @p1X " + SMALLINT + ",  \n"
@@ -237,7 +237,7 @@ tmp->ExecuteUpdate(str =
 // Create overall "View" to calculate a subset. Switch to appropriate modus according to tournamnet settings.
 tmp->ExecuteUpdate(str = 
   "--- Calculate results for group @grID according to selected modus (ITTF or DTTB) \n"
-  "CREATE FUNCTION TbSortSubsetFunc  \n"
+  "CREATE OR ALTER FUNCTION TbSortSubsetFunc  \n"
   "(    \n"
   "  @grID " + INTEGER + ",  \n"
   "  @ids " + VARCHAR + "(200) \n"
@@ -295,7 +295,7 @@ tmp->ExecuteUpdate(str =
 // Create overall "View" to calculate from all entries
 tmp->ExecuteUpdate(str = 
   "--- Calculate results for group @grID for all entries \n"
-  "CREATE FUNCTION TbSortFunc  \n"
+  "CREATE OR ALTER FUNCTION TbSortFunc  \n"
   "(    \n"
   "  @grID " + INTEGER + "  \n"
   ")  \n"

@@ -671,13 +671,13 @@ bool  NmStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER nmInsertTrigger ON NMREC "
+        "CREATE OR ALTER TRIGGER nmInsertTrigger ON NMREC "
         "FOR INSERT AS "
         "UPDATE MtRec SET mtTimestamp = GETUTCDATE() "
         " WHERE mtID IN (SELECT mtID FROM inserted) ");
         
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER nmDeleteTrigger ON NMREC "
+        "CREATE OR ALTER TRIGGER nmDeleteTrigger ON NMREC "
         "FOR DELETE AS "
         "UPDATE MtRec SET mtTimestamp = GETUTCDATE() "
         " WHERE mtID IN (SELECT mtID FROM deleted) ");

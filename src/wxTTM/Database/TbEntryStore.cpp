@@ -100,9 +100,9 @@ bool  TbEntryStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW TbSingleList");
-    tmp->ExecuteUpdate("DROP VIEW TbDoubleList");
-    tmp->ExecuteUpdate("DROP VIEW TbTeamList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS TbSingleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS TbDoubleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS TbTeamList");
   }
   catch (SQLException &)
   {

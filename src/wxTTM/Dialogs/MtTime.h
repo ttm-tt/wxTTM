@@ -13,6 +13,8 @@
 #include  "GrStore.h"
 #include  "MtStore.h"
 
+#include  "TmEntryStore.h"
+
 #include  "ItemCtrl.h"
 // #include  "DateTimeEdit.h"
 
@@ -59,15 +61,19 @@ class CMtTime : public CFormViewEx
     void  UpdateMatchesGroup();
     void  UpdateGroup();
 
-    CItemCtrl *   cpItem;
-    CItemCtrl *   grItem;
-    CDateTimeEdit * matchDate;
-    CDateTimeEdit * matchTime;
-    
+    CItemCtrl *   cpItem = nullptr;
+    CItemCtrl *   grItem = nullptr;
+    CDateTimeEdit * matchDate = nullptr;
+    CDateTimeEdit * matchTime = nullptr;
+    CItemCtrl * tmAItem = nullptr;
+    CItemCtrl * tmXItem = nullptr;
+
     CpStore   cp;
     GrStore   gr;
     MtStore   mt;
-    
+    TmEntry   tmA;
+    TmEntry   tmX;
+
   DECLARE_DYNAMIC_CLASS(CMtTime)
   DECLARE_EVENT_TABLE()
 };

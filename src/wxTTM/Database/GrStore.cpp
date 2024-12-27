@@ -690,7 +690,7 @@ bool  GrStore::UpdateTable(long version)
 
       if (updateSmsTrigger)
       {
-        str = "CREATE TRIGGER grSmsUpdateTrigger ON GrRec FOR UPDATE AS "
+        str = "CREATE OR ALTER TRIGGER grSmsUpdateTrigger ON GrRec FOR UPDATE AS "
               " UPDATE smscenter_groups "
               "    SET state_enabled = inserted.grPublished "
               "   FROM inserted INNER JOIN deleted ON inserted.grID = deleted.grID "
@@ -1939,7 +1939,7 @@ bool  GrStore::QryChecked()
         " WHERE mt.grID = " + ltostr(grID) + " AND "
         "   (stA.stID IS NULL OR stA.tmID IS NOT NULL) AND "
         "   (stX.stID IS NULL OR stX.tmID IS NOT NULL) AND "
-        "   mtChecked = 0 "
+        "   mtCheckMatchTime IS NNULL "
   ;
   long count;
 

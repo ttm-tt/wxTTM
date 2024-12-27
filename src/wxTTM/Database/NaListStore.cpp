@@ -50,7 +50,7 @@ bool  NaListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW NaList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS NaList");
   }
   catch(SQLException &)
   {

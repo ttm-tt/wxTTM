@@ -148,9 +148,21 @@ struct  MtRec
 
   struct MtPlace
   {
-    timestamp   mtDateTime; // yyyy-mm-dd hh:mm:ss
+    timestamp  mtDateTime; // yyyy-mm-dd hh:mm:ss
     short  mtTable;        
   } mtPlace;
+
+  // Anonymous struct with times
+  struct MtDetails
+  {
+    timestamp  mtPrintTossTime;   // Time toss sheet was printed (first)
+    timestamp  mtPrintScoreTime;  // Time score sheet was printed (first)
+    timestamp  mtStartMatchTime;  // Time match started (e.g. first point)
+    timestamp  mtEndMatchTime;    // Time match ended (i.e. last ball played)
+    timestamp  mtCheckMatchTime;  // Time match result was checked
+
+    MtDetails() { memset(this, 0, sizeof(*this)); }
+  } mtDetails;
 
   // Ergebnissummen aus MtSets (0), MtMatches (0)
   short  mtBallsA;
@@ -335,6 +347,8 @@ class  MtStore : public StoreObj, public MtRec
                               short umpire, short umpire2);
 
     bool  UpdateScoreChecked(long id, bool checked);
+
+    bool  UpdateTossPrinted(long id, bool printed);
 
     bool  UpdateScorePrinted(long id, bool printed);
     bool  UpdateScorePrintedForRound(long id, short round, bool printed);

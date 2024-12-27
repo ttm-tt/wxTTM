@@ -57,7 +57,7 @@ bool  RkListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW RkList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS RkList");
   }
   catch(SQLException &)
   {

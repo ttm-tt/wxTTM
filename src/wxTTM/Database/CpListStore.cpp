@@ -63,7 +63,7 @@ bool  CpListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW CpList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS CpList");
   }
   catch(SQLException &)
   {

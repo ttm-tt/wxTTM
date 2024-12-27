@@ -63,7 +63,7 @@ bool  GrListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW GrList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS GrList");
   }
   catch(SQLException &)
   {

@@ -1,6 +1,6 @@
 // Direkter Vergleich im ITTF-Modus
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION [dbo].[IttfSortDirectCompFunc]  \n"
+  "CREATE OR ALTER FUNCTION [dbo].[IttfSortDirectCompFunc]  \n"
   "(	  \n"
   "	@syID " + INTEGER + ",  \n"
   "	@grID " + INTEGER + ",  \n"
@@ -166,7 +166,7 @@ tmp->ExecuteUpdate(str =
   
 // Tabellenberechnung im ITTF-Modus
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION IttfSortFunc  \n"
+  "CREATE OR ALTER FUNCTION IttfSortFunc  \n"
   "(	  \n"
   "	 @grID " + INTEGER + ",  \n"
   "  @ids "  + VARCHAR + "(200)  \n"

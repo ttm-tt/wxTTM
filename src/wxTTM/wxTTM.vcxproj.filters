@@ -578,6 +578,9 @@
     <ClCompile Include="Dialogs\TossSheet.cpp">
       <Filter>Source Files\Dialogs\Tournament</Filter>
     </ClCompile>
+    <ClCompile Include="Dialogs\MtDetails.cpp">
+      <Filter>Source Files\Dialogs\Table</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wx\ChildFrm.h">
@@ -993,6 +996,9 @@
     </ClInclude>
     <ClInclude Include="Dialogs\TossSheet.h">
       <Filter>Source Files\Dialogs\Tournament</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MtDetails.h">
+      <Filter>Source Files\Dialogs\Table</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

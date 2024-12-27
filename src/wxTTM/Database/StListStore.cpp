@@ -61,7 +61,7 @@ bool  StListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW StList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS StList");
   }
   catch(SQLException &)
   {

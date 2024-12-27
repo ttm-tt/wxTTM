@@ -185,7 +185,7 @@ bool  StStore::CreateConstraints()
     // ISNULL, weil man nicht mal mit <> Werte mit NULL vergleichen kann
     // 0 ist keine gueltige ID
     tmp->ExecuteUpdate(str = 
-      "CREATE TRIGGER stUpdateTrigger ON StRec FOR UPDATE AS \n"
+      "CREATE OR ALTER TRIGGER stUpdateTrigger ON StRec FOR UPDATE AS \n"
       "  DECLARE @mtID int; \n"
       "  DECLARE @mtNr int; \n"
       "  DECLARE @mtRound smallint; \n"
@@ -214,8 +214,8 @@ bool  StStore::CreateConstraints()
       "      EXEC mtUpdateRasterProc @mtNr, 0; \n"
       "    END \n"
       " \n"
-      "--- In all rounds update mtPrinted (score sheet outdated) and timestamp (record updated) \n"
-      "    UPDATE MtRec SET mtPrinted = 0, mtTimestamp = GETUTCDATE() WHERE mtID = @mtID \n"
+      "--- In all rounds update mtPrintScoreTime (score sheet outdated) and timestamp (record updated) \n"
+      "    UPDATE MtRec SET mtPrintScoreTime = NULL, mtTimestamp = GETUTCDATE() WHERE mtID = @mtID \n"
       " \n"
       "    FETCH NEXT FROM mtUpdateCursor INTO @mtID, @mtNr, @mtRound, @mtChance \n"
       "  END \n"
@@ -244,7 +244,7 @@ bool  StStore::CreateConstraints()
 
 bool  StStore::UpdateConstraints(long version)
 {
-  if (version <= 141)
+  if (version <= 177)
     return CreateConstraints();
 
   return true;

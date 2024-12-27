@@ -84,9 +84,9 @@ bool  RkEntryStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW RkSingleList");
-    tmp->ExecuteUpdate("DROP VIEW RkDoubleList");
-    tmp->ExecuteUpdate("DROP VIEW RkTeamList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS RkSingleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS RkDoubleList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS RkTeamList");
   }
   catch(SQLException &)
   {

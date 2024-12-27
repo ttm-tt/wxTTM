@@ -358,7 +358,7 @@ bool  PlStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER plUpdateTrigger ON PlRec FOR UPDATE AS \n"
+        "CREATE OR ALTER TRIGGER plUpdateTrigger ON PlRec FOR UPDATE AS \n"
         " --- Update timestamp for last changed \n"
         "UPDATE PsRec SET psTimestamp = GETUTCDATE() \n"
         " WHERE psID IN (SELECT psID FROM deleted) \n;");

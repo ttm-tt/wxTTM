@@ -75,7 +75,7 @@ bool  ReportStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW List_K");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS List_K");
   }
   catch(SQLException &)
   {

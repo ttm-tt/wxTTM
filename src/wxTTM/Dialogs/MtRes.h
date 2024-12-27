@@ -50,12 +50,12 @@ class CMtRes : public CFormViewEx
   private:
     static long idcList[];
     
-    CItemCtrl * cpItem;
-    CItemCtrl * grItem;
-    CItemCtrl * tmAItem;
-    CItemCtrl * tmXItem;
-    CItemCtrl * tmWinnerItem;  
-    CItemCtrl * mtSetsItem;
+    CItemCtrl * cpItem = nullptr;
+    CItemCtrl * grItem = nullptr;
+    CItemCtrl * tmAItem = nullptr;
+    CItemCtrl * tmXItem = nullptr;
+    CItemCtrl * tmWinnerItem = nullptr;
+    CItemCtrl * mtSetsItem = nullptr;
     
     CpStore   cp;
     GrStore   gr;
@@ -63,7 +63,7 @@ class CMtRes : public CFormViewEx
     TmEntry   tmA;
     TmEntry   tmX;
 
-    MtSet *   mtSetList;
+    MtSet *   mtSetList = nullptr;
     MtMatch   mtMatch;
     
   DECLARE_DYNAMIC_CLASS(CMtRes)

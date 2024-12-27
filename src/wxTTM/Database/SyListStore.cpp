@@ -53,7 +53,7 @@ bool  SyListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW SyList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS SyList");
   }
   catch(SQLException &)
   {

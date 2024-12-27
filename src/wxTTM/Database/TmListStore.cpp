@@ -55,7 +55,7 @@ bool  TmListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW TmList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS TmList");
   }
   catch(SQLException &)
   {

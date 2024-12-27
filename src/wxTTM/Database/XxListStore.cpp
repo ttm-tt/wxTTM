@@ -50,7 +50,7 @@ bool  XxListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW XxList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS XxList");
   }
   catch(SQLException &)
   {

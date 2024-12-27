@@ -13,7 +13,7 @@
 #include "CpListStore.h"
 #include "GrListStore.h"
 
-#include "InfoSystem.h"3
+#include "InfoSystem.h"
 #include "Request.h"
 
 #include "checked.xpm"

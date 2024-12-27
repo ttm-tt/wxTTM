@@ -1,7 +1,7 @@
 
 // Erster Vergleich im DTTB-Modus
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION DttbCompFunc  \n"
+  "CREATE OR ALTER FUNCTION DttbCompFunc  \n"
   "(  \n"
 	"  @syID " + INTEGER + ",  \n"
 	"  @mtMatchPoints1 " + SMALLINT + ",  \n"
@@ -88,7 +88,7 @@ tmp->ExecuteUpdate(str =
 
 // Vergleich zweier Ergebnisse im direkten Vergleich
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION DttbDirectCompFunc  \n"
+  "CREATE OR ALTER FUNCTION DttbDirectCompFunc  \n"
   "(  \n"
 	"  @syID " + INTEGER + ",  \n"
 	"  @mtMatchPoints1 " + SMALLINT + ",  \n"
@@ -142,7 +142,7 @@ tmp->ExecuteUpdate(str =
 
 // Sortierung im direkten Vergleich im DTTB-Modus
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION DttbSortDirectCompFunc  \n"
+  "CREATE OR ALTER FUNCTION DttbSortDirectCompFunc  \n"
   "(	  \n"
   "	@syID " + INTEGER + ",  \n"
   "	@grID " + INTEGER + ",  \n"
@@ -207,7 +207,7 @@ tmp->ExecuteUpdate(str =
   
 // Berechnet eine Tabelle im DTTB-Modus
 tmp->ExecuteUpdate(str = 
-  "CREATE FUNCTION DttbSortFunc  \n"
+  "CREATE OR ALTER FUNCTION DttbSortFunc  \n"
   "(	  \n"
   "	@grID " + INTEGER + ",  \n"
   " @ids " + VARCHAR + "(200) \n"

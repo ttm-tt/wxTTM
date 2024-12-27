@@ -171,7 +171,7 @@ bool  TmStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str =
-      "CREATE TRIGGER tmUpdateTrigger ON TmRec FOR UPDATE AS \n"
+      "CREATE OR ALTER TRIGGER tmUpdateTrigger ON TmRec FOR UPDATE AS \n"
       " --- Update timestamp for last changed \n"
       "UPDATE TmRec SET tmTimestamp = GETUTCDATE() \n"
       " WHERE tmID IN (SELECT tmID FROM deleted) \n;");

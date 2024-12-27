@@ -29,7 +29,12 @@ bool  MtListStore::CreateView()
           " (mtID, mtNr, mtRound, mtMatch, mtChance, grID, mtMS, mtSet,      "
           "  mtDateTime, mtTable, stA, stX, tmA, tmX,                        "
           "  mtMatches, mtBestOf, mtUmpire, mtUmpire2,                       "
-          "  mtPrinted, mtChecked, mtTimestamp,                              "
+          "  mtPrintTossTime, mtToss,                                        "
+          "  mtPrintScoreTime, mtPrinted,                                    "
+          "  mtStartMatchTime, mtStarted,                                    "
+          "  mtEndMatchTime, mtEnded,                                        "
+          "  mtCheckMatchTime, mtChecked,                                    "
+          "  mtTimestamp,                                                    "
           "  cpID, cpName, cpType, grName, grModus, grSize, grWinner,        "
           "  grQualRounds, grNofRounds, grNofMatches,                        "
           "  syComplete,                                                     "
@@ -43,7 +48,12 @@ bool  MtListStore::CreateView()
           "          mt.mtDateTime, mt.mtTable,                              "
           "          mt.stA, mt.stX, stA.tmID, stX.tmID,                     "
           "          mt.mtMatches, mt.mtBestOf, mt.mtUmpire, mtUmpire2,      "
-          "          mt.mtPrinted, mt.mtChecked, mt.mtTimestamp,             "
+          "          mt.mtPrintTossTime, IIF(mtPrintTossTime IS NULL, 0, 1) AS mtToss,      "
+          "          mt.mtPrintScoreTime, IIF(mtPrintScoreTime IS NULL, 0, 1) AS mtPrinted, "
+          "          mt.mtStartMatchTime, IIF(mtStartMatchTime IS NULL, 0, 1) AS mtStarted, "
+          "          mt.mtEndMatchTime, IIF(mtEndMatchTime IS NULL, 0, 1) AS mtEnded,       "
+          "          mt.mtCheckMatchTime, IIF(mtCheckMatchTime IS NULL, 0, 1) AS mtChecked, "
+          "          mt.mtTimestamp,                                         "
           "          cp.cpID, cp.cpName, cp.cpType,                          "
           "          gr.grName, gr.grModus, gr.grSize, gr.grWinner,          "
           "          gr.grQualRounds, gr.grNofRounds, gr.grNofMatches,       "
@@ -87,7 +97,7 @@ bool  MtListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW MtList");
+    tmp->ExecuteUpdate("DROP VIEW IF EXISTS MtList");
   }
   catch(SQLException &)
   {
@@ -549,11 +559,21 @@ long MtListStore::CountScheduledMatches()
   Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
   
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(sql);
-  wxASSERT(resPtr);
+  ResultSet* resPtr = nullptr; 
   
-  if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+  try
+  {
+    resPtr = stmtPtr->ExecuteQuery(sql);
+    wxASSERT(resPtr);
+
+    if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+      count = 0;
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(sql, e);
     count = 0;
+  }
     
   delete resPtr;
   delete stmtPtr;
@@ -570,12 +590,22 @@ long MtListStore::CountFinishedMatches()
   Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
   
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(sql);
-  wxASSERT(resPtr);
+  ResultSet* resPtr = nullptr;
   
-  if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+  try
+  {
+    resPtr = stmtPtr->ExecuteQuery(sql);
+    wxASSERT(resPtr);
+
+    if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
+      count = 0;
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(sql, e);
     count = 0;
-    
+  }
+
   delete resPtr;
   delete stmtPtr;
   
@@ -597,7 +627,7 @@ wxString  MtListStore::SelectString() const
         "       syComplete,                                           "
         "       tmA, tmX, xxA.stID, xxX.stID,                         "
         "       mtMatches, mtBestOf, mtUmpire, mtUmpire2,             "
-        "       mtPrinted, mtChecked,                                 "
+        "       IIF(mtPrintScoreTime IS NULL, 0, 1) AS mtPrinted, IIF(mtCheckMatchTime IS NULL, 0, 1) AS mtChecked, "
         // Count missing singles / double players
         "       (SELECT COUNT(*) AS count FROM (                      "
         "               SELECT ltA FROM NmSingle nms LEFT OUTER JOIN NmRec ON nms.nmID = NmRec.nmID "

@@ -235,7 +235,7 @@ bool  PsStore::CreateConstraints()
   try
   {
     tmp->ExecuteUpdate(str = 
-        "CREATE TRIGGER psUpdateTrigger ON PsRec AFTER UPDATE AS \n"
+        "CREATE OR ALTER TRIGGER psUpdateTrigger ON PsRec AFTER UPDATE AS \n"
         " --- Update timestamp for last changed \n"
         "UPDATE PsRec SET psTimestamp = SYSUTCDATETIME() \n"
         " WHERE psID IN (SELECT psID FROM deleted) \n;");
