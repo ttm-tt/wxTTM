@@ -260,9 +260,6 @@ void  CTossSheet::DoPrintMatch()
   raster.Print(cp, gr, tmp);
   
   m_printer->EndPage();
-
-  if (!CTT32App::instance()->GetPrintPreview())
-    MtStore(connPtr).UpdateScorePrinted(tmp.mt.mtID, true);
 }
 
 
