@@ -1361,7 +1361,7 @@ precher</WIDETEXT>
 <COMPONENT>
 <NAME type="String">TRpExpression2</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -1411,12 +1411,12 @@ precher</WIDETEXT>
 <COMPONENT>
 <NAME type="String">TRpExpression3</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2310</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">465</POSX>
+<POSX type="Integer">570</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -1463,7 +1463,7 @@ LL#44#  #39##44# #39# #43# plApsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression5</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -1513,12 +1513,12 @@ LL#44#  #39##44# #39# #43# plApsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression6</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2310</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">4260</POSX>
+<POSX type="Integer">4365</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -1752,12 +1752,12 @@ esX #62# 0)#44# STR(mtResA) #43# #39# : #39#
 <COMPONENT>
 <NAME type="String">TRpExpression12</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2310</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">465</POSX>
+<POSX type="Integer">570</POSX>
 <POSY type="Integer">225</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -1804,7 +1804,7 @@ L#44#  #39##44# #39# #43# plBpsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression13</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -1854,12 +1854,12 @@ L#44#  #39##44# #39# #43# plBpsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression14</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2310</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">4260</POSX>
+<POSX type="Integer">4365</POSX>
 <POSY type="Integer">225</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -2006,7 +2006,7 @@ LL#44#  #39##44# #39# #43# plYpsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression17</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -2280,7 +2280,7 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <COMPONENT>
 <NAME type="String">TRpExpression1</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -2330,12 +2330,12 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <COMPONENT>
 <NAME type="String">TRpExpression9</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2190</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">465</POSX>
+<POSX type="Integer">690</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -2432,7 +2432,7 @@ LL#44#  #39##44# #39# #43# plApsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression20</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -2482,12 +2482,12 @@ LL#44#  #39##44# #39# #43# plApsFirst#44#
 <COMPONENT>
 <NAME type="String">TRpExpression21</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2310</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">4260</POSX>
+<POSX type="Integer">4365</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -2895,12 +2895,12 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <COMPONENT>
 <NAME type="String">TRpExpression0</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2175</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">465</POSX>
+<POSX type="Integer">690</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -2963,7 +2963,7 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <FONTCOLOR type="Integer">0</FONTCOLOR>
 <BACKCOLOR type="Integer">16777215</BACKCOLOR>
 <TRANSPARENT type="Boolean">True</TRANSPARENT>
-<CUTTEXT type="Boolean">False</CUTTEXT>
+<CUTTEXT type="Boolean">True</CUTTEXT>
 <ALIGNMENT type="Integer">0</ALIGNMENT>
 <VALIGNMENT type="Integer">0</VALIGNMENT>
 <INTERLINE type="Integer">0</INTERLINE>
@@ -3028,12 +3028,12 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <COMPONENT>
 <NAME type="String">TRpExpression18</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2415</WIDTH>
+<WIDTH type="Integer">2175</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">4260</POSX>
+<POSX type="Integer">4485</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
@@ -3096,7 +3096,7 @@ et7ResX #62# mtSet7ResA#44# #39##44##39#
 <FONTCOLOR type="Integer">0</FONTCOLOR>
 <BACKCOLOR type="Integer">16777215</BACKCOLOR>
 <TRANSPARENT type="Boolean">True</TRANSPARENT>
-<CUTTEXT type="Boolean">False</CUTTEXT>
+<CUTTEXT type="Boolean">True</CUTTEXT>
 <ALIGNMENT type="Integer">0</ALIGNMENT>
 <VALIGNMENT type="Integer">0</VALIGNMENT>
 <INTERLINE type="Integer">0</INTERLINE>
@@ -3330,6 +3330,106 @@ ble)#44# #39##39#))</EXPRESSION>
 <EXPORTSIZE type="Integer">1</EXPORTSIZE>
 <EXPORTDONEWLINE type="Boolean">False</EXPORTDONEWLINE>
 </COMPONENT>
+<COMPONENT>
+<NAME type="String">TRpExpression65</NAME>
+<CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
+<WIDTH type="Integer">570</WIDTH>
+<HEIGHT type="Integer">225</HEIGHT>
+<PRINTCONDITION type="WideString"></PRINTCONDITION>
+<DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
+<DOAFTERPRINT type="WideString"></DOAFTERPRINT>
+<POSX type="Integer">0</POSX>
+<POSY type="Integer">0</POSY>
+<ALIGN type="Integer">0</ALIGN>
+<WFONTNAME type="WideString">Arial</WFONTNAME>
+<LFONTNAME type="WideString">Helvetica</LFONTNAME>
+<BIDIMODE type="Integer">0</BIDIMODE>
+<TYPE1FONT type="Integer">0</TYPE1FONT>
+<FONTSIZE type="Integer">10</FONTSIZE>
+<FONTROTATION type="Integer">0</FONTROTATION>
+<FONTSTYLE type="Integer">0</FONTSTYLE>
+<FONTCOLOR type="Integer">0</FONTCOLOR>
+<BACKCOLOR type="Integer">16777215</BACKCOLOR>
+<TRANSPARENT type="Boolean">True</TRANSPARENT>
+<CUTTEXT type="Boolean">True</CUTTEXT>
+<ALIGNMENT type="Integer">0</ALIGNMENT>
+<VALIGNMENT type="Integer">0</VALIGNMENT>
+<INTERLINE type="Integer">0</INTERLINE>
+<WORDWRAP type="Boolean">False</WORDWRAP>
+<WORDBREAK type="Boolean">False</WORDBREAK>
+<SINGLELINE type="Boolean">False</SINGLELINE>
+<BIDIMODES type="String"></BIDIMODES>
+<MULTIPAGE type="Boolean">False</MULTIPAGE>
+<PRINTSTEP type="Integer">0</PRINTSTEP>
+<EXPRESSION type="WideString">tmAtmName</EXPRESSION>
+<AGINIVALUE type="WideString">0</AGINIVALUE>
+<EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
+<DATATYPE type="Integer">16</DATATYPE>
+<DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
+<IDENTIFIER type="String"></IDENTIFIER>
+<AGGREGATE type="Integer">0</AGGREGATE>
+<GROUPNAME type="String"></GROUPNAME>
+<AGTYPE type="Integer">0</AGTYPE>
+<AUTOEXPAND type="Boolean">False</AUTOEXPAND>
+<AUTOCONTRACT type="Boolean">False</AUTOCONTRACT>
+<PRINTONLYONE type="Boolean">False</PRINTONLYONE>
+<PRINTNULLS type="Boolean">True</PRINTNULLS>
+<EXPORTDISPLAYFORMAT type="WideString"></EXPORTDISPLAYFORMAT>
+<EXPORTLINE type="Integer">0</EXPORTLINE>
+<EXPORTPOSITION type="Integer">0</EXPORTPOSITION>
+<EXPORTSIZE type="Integer">1</EXPORTSIZE>
+<EXPORTDONEWLINE type="Boolean">False</EXPORTDONEWLINE>
+</COMPONENT>
+<COMPONENT>
+<NAME type="String">TRpExpression66</NAME>
+<CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
+<WIDTH type="Integer">570</WIDTH>
+<HEIGHT type="Integer">225</HEIGHT>
+<PRINTCONDITION type="WideString"></PRINTCONDITION>
+<DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
+<DOAFTERPRINT type="WideString"></DOAFTERPRINT>
+<POSX type="Integer">3795</POSX>
+<POSY type="Integer">0</POSY>
+<ALIGN type="Integer">0</ALIGN>
+<WFONTNAME type="WideString">Arial</WFONTNAME>
+<LFONTNAME type="WideString">Helvetica</LFONTNAME>
+<BIDIMODE type="Integer">0</BIDIMODE>
+<TYPE1FONT type="Integer">0</TYPE1FONT>
+<FONTSIZE type="Integer">10</FONTSIZE>
+<FONTROTATION type="Integer">0</FONTROTATION>
+<FONTSTYLE type="Integer">0</FONTSTYLE>
+<FONTCOLOR type="Integer">0</FONTCOLOR>
+<BACKCOLOR type="Integer">16777215</BACKCOLOR>
+<TRANSPARENT type="Boolean">True</TRANSPARENT>
+<CUTTEXT type="Boolean">True</CUTTEXT>
+<ALIGNMENT type="Integer">0</ALIGNMENT>
+<VALIGNMENT type="Integer">0</VALIGNMENT>
+<INTERLINE type="Integer">0</INTERLINE>
+<WORDWRAP type="Boolean">False</WORDWRAP>
+<WORDBREAK type="Boolean">False</WORDBREAK>
+<SINGLELINE type="Boolean">False</SINGLELINE>
+<BIDIMODES type="String"></BIDIMODES>
+<MULTIPAGE type="Boolean">False</MULTIPAGE>
+<PRINTSTEP type="Integer">0</PRINTSTEP>
+<EXPRESSION type="WideString">tmXtmName</EXPRESSION>
+<AGINIVALUE type="WideString">0</AGINIVALUE>
+<EXPORTEXPRESSION type="WideString"></EXPORTEXPRESSION>
+<DATATYPE type="Integer">16</DATATYPE>
+<DISPLAYFORMAT type="WideString"></DISPLAYFORMAT>
+<IDENTIFIER type="String"></IDENTIFIER>
+<AGGREGATE type="Integer">0</AGGREGATE>
+<GROUPNAME type="String"></GROUPNAME>
+<AGTYPE type="Integer">0</AGTYPE>
+<AUTOEXPAND type="Boolean">False</AUTOEXPAND>
+<AUTOCONTRACT type="Boolean">False</AUTOCONTRACT>
+<PRINTONLYONE type="Boolean">False</PRINTONLYONE>
+<PRINTNULLS type="Boolean">True</PRINTNULLS>
+<EXPORTDISPLAYFORMAT type="WideString"></EXPORTDISPLAYFORMAT>
+<EXPORTLINE type="Integer">0</EXPORTLINE>
+<EXPORTPOSITION type="Integer">0</EXPORTPOSITION>
+<EXPORTSIZE type="Integer">1</EXPORTSIZE>
+<EXPORTDONEWLINE type="Boolean">False</EXPORTDONEWLINE>
+</COMPONENT>
 </SECTION>
 <SECTION>
 <NAME type="String">TRpSection11</NAME>
@@ -3419,7 +3519,7 @@ DIVIDUAL</PRINTCONDITION>
 <COMPONENT>
 <NAME type="String">TRpLabel4</NAME>
 <CLASSNAME type="String">TRPLABEL</CLASSNAME>
-<WIDTH type="Integer">345</WIDTH>
+<WIDTH type="Integer">465</WIDTH>
 <HEIGHT type="Integer">225</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
@@ -3452,12 +3552,12 @@ DIVIDUAL</PRINTCONDITION>
 <COMPONENT>
 <NAME type="String">TRpExpression32</NAME>
 <CLASSNAME type="String">TRPEXPRESSION</CLASSNAME>
-<WIDTH type="Integer">2445</WIDTH>
+<WIDTH type="Integer">2340</WIDTH>
 <HEIGHT type="Integer">255</HEIGHT>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">465</POSX>
+<POSX type="Integer">570</POSX>
 <POSY type="Integer">0</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
