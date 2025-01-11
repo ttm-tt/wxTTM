@@ -73,7 +73,7 @@ class  MtListStore : public StoreObj, public MtListRec
     bool  SelectByNr(long nr);
     bool  SelectByTimestamp(const timestamp &ts);
     
-    std::list<timestamp>  ListVenueDays();
+    std::list<timestamp>  ListVenueDays(short fromTable = 0, short toTable = INT16_MAX);
 
     timestamp GetLastUpdateTime();
 

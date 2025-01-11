@@ -370,7 +370,7 @@ bool MtListStore::SelectByTimestamp(const timestamp &ts)
 
 
 // -----------------------------------------------------------------------
-std::list<timestamp> MtListStore::ListVenueDays()
+std::list<timestamp> MtListStore::ListVenueDays(short fromTable, short toTable)
 {
   std::list<timestamp> tsList;
   timestamp ts;
@@ -379,13 +379,13 @@ std::list<timestamp> MtListStore::ListVenueDays()
   memset(&ts, 0, sizeof(timestamp));
   
   wxString str = 
-      "SELECT DISTINCT YEAR(mtDateTime), MONTH(mtDateTime), DAY(mtDateTime)"
-      "  FROM MtList mt INNER JOIN GrList gr ON mt.grID = gr.grID "
-	  " WHERE (gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) AND "
-	  "       (gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) AND "
-	  "       (stA IS NULL OR tmA <> 0) AND (stX IS NULL OR tmX <> 0) "
-	  "    OR DAY(mtDateTime) <> 0 "
-      " ORDER BY 1, 2, 3";
+    "  SELECT DISTINCT YEAR(mtDateTime), MONTH(mtDateTime), DAY(mtDateTime)"
+    "    FROM MtList mt INNER JOIN GrList gr ON mt.grID = gr.grID "
+	  "   WHERE (gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) AND "
+	  "         (gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) AND "
+	  "         (stA IS NULL OR tmA <> 0) AND (stX IS NULL OR tmX <> 0) AND"
+    "         (ISNULL(mt.mtTable, 0) >= " + ltostr(fromTable) + " AND ISNULL(mt.mtTable, 0x7FFFFFFF) <= " + ltostr(toTable) + ")"
+    "   ORDER BY 1, 2, 3";
       
   try
   {

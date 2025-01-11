@@ -581,7 +581,7 @@ void COvList::RestoreSize()
 bool COvList::Edit(va_list vaList)
 {
   std::list<timestamp> tsList;
-  tsList = MtListStore().ListVenueDays();
+  tsList = MtListStore().ListVenueDays(m_fromTable, m_toTable);
 
   ListItem *currentDateItem = NULL;
 
@@ -719,7 +719,7 @@ void COvList::OnRefresh()
   TransferDataFromWindow();
   
   std::list<timestamp> tsList;
-  tsList = MtListStore().ListVenueDays();
+  tsList = MtListStore().ListVenueDays(m_fromTable, m_toTable);
 
   DateItem *currentDateItem = (DateItem *) m_cbDate->GetCurrentItem();
 
