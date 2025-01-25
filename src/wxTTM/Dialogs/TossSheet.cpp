@@ -260,6 +260,9 @@ void  CTossSheet::DoPrintMatch()
   raster.Print(cp, gr, tmp);
   
   m_printer->EndPage();
+
+  if (!CTT32App::instance()->GetPrintPreview())
+    MtStore(connPtr).UpdateTossPrinted(mt.mtID, true);
 }
 
 
@@ -432,6 +435,9 @@ unsigned CTossSheet::PrintScheduledThread(void *arg)
     raster.Print(cp, gr, tmp);
     
     printer->EndPage();
+
+    if (!isPreview)
+      MtStore(connPtr).UpdateTossPrinted(tmp.mt.mtID, true);
   }
   
   } // ]
