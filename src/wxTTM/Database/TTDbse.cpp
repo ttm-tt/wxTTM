@@ -75,7 +75,7 @@
 
 #include  "Res.h"
 
-#define  DB_VERSION  177
+#define  DB_VERSION  178
 
 TTDbse * TTDbse::selfPtr = 0;
 
