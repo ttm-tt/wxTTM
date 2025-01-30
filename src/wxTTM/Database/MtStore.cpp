@@ -3621,7 +3621,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), NULL, "
       "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
       "'SINGLES', "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
       "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
       "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
       "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
@@ -3651,7 +3651,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
       "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
       "CASE cpType WHEN 2 THEN 'DOUBLES' ELSE 'MIXED' END, "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
       "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
       "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
       "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cpType = 3) "
@@ -3681,7 +3681,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
         "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
         "CASE nmType WHEN 1 THEN 'SINGLES' ELSE 'DOUBLES' END, "
-        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
         "NULL, NULL, "
         "NULL, NULL  "
         "FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
@@ -3722,7 +3722,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "IIF(mt.mtResA > mt.mtResX, CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmAnaName, FORMAT(mt.tmAtmID, '0000')), CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmXnaName, FORMAT(mt.tmXtmID, '0000'))), NULL, "
         "CASE WHEN mt.mtWalkOverA > 0 OR mt.mtWalkOverX > 0 THEN 'WO' WHEN mt.mtInjuredA > 0 OR mt.mtInjuredX > 0 THEN 'INJ' WHEN mt.mtDisqualifiedA > 0 OR mt.mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
         "'TEAM', "
-        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'hh\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
         "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
         "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
         "FROM MtTeamList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
@@ -3881,7 +3881,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     if (cpType == CP_TEAM)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, grName, grStage, "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, grName, grStage, "
           "       IIF((grModus <> 2) OR (grWinner <> 1), CONCAT('', mtRound), CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
           "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
@@ -3910,7 +3910,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     else if (cpType == CP_SINGLE)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, "
           "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
           "       mtMatch, "
           "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
@@ -3937,7 +3937,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd hh:mm'), cpName, "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, "
           "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
           "       mtMatch, "
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
