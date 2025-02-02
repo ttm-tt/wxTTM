@@ -120,7 +120,7 @@ bool  CNmEditXTSA::Edit(va_list vaList)
     
   for (int nmDouble = 1; nmDouble <= syDoubles; nmDouble++)
   {
-    str = ax ? "X-B\nA-G" : "A-B\nA-G";
+    str = ax ? "X-B\nX-G" : "A-B\nA-G";
 
     NmItem *itemPtr = new NmItem(str, false);
     itemPtr->nm.team.cpType = CP_DOUBLE;
