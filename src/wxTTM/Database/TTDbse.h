@@ -99,6 +99,8 @@ class  TTDbse
     // Update einer Datenbank
     bool  UpdateTables(long version);
 
+    bool EnableAllTriggers(bool enable);
+
     wxString GetDsnPart(const wxString &part) const;
 
   private:

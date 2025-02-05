@@ -543,6 +543,9 @@ bool  TTDbse::UpdateTables(long version)
     res = CreateTables();
   else if (version < DB_VERSION)
   {
+    // Disable all triggers
+    EnableAllTriggers(false);
+
     // Drop views before update
     res &= ReportStore::RemoveView();
 
@@ -637,10 +640,56 @@ bool  TTDbse::UpdateTables(long version)
     res &= RkEntryStore::CreateView();
     res &= MtEntryStore::CreateView();
     
-    res &= ReportStore::CreateView();    
+    res &= ReportStore::CreateView();   
+    
+    EnableAllTriggers(true);
   }
 
   return res;
+}
+
+
+bool TTDbse::EnableAllTriggers(bool enable)
+{
+  if (!defaultConnection)
+    return false;
+
+  wxString trg = (enable ? "ENABLE TRIGGER ON " : "DISABBLE TRIGGER ON ");
+  wxString sql = 
+    "SELECT TBL.name AS TableName, Schema_name(TBL.schema_id) AS Table_SchemaName, TRG.name AS TriggerName "
+    "  FROM sys.triggers TRG INNER JOIN sys.tables TBL ON TBL.OBJECT_ID = TRG.parent_id AND TBL.is_ms_shipped=0 "
+  ;
+
+  wxChar table[64], schema[64], name[64];
+
+  Statement *stmtPtr = defaultConnection->CreateStatement();
+  ResultSet *resPtr = stmtPtr->ExecuteQuery(sql);
+
+  std::list<wxString> triggers;
+  while (resPtr->Next())
+  {
+    resPtr->GetData(1, table, sizeof(table) / sizeof(table[0]));
+    resPtr->GetData(2, schema, sizeof(schema) / sizeof(schema[0]));
+    resPtr->GetData(3, name, sizeof(name) / sizeof(name[0]));
+
+    wxString trg = wxString::Format("%s TRIGGER %s ON %s.%s", enable ? "ENABLE" : "DISABLE", name, schema, table);
+    triggers.push_back(trg);
+  }
+
+  stmtPtr->Close();
+
+  delete resPtr;
+  delete stmtPtr;
+
+  stmtPtr = defaultConnection->CreateStatement();
+
+  for (auto it : triggers)
+    stmtPtr->Execute(it);
+
+  stmtPtr->Close();
+  delete stmtPtr;
+
+  return true;
 }
 
 
