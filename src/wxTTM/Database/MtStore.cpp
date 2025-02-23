@@ -2491,6 +2491,13 @@ bool  MtStore::UpdateScorePrinted(long id, bool printed)
   wxString  str = 
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE mtID = " + ltostr(id);
+
+    if (printed)
+      str += 
+        " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+        " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+      ;
+
   try
   {
     ExecuteUpdate(str);
@@ -2519,6 +2526,13 @@ bool  MtStore::UpdateScorePrintedForRound(long id, short round, bool printed)
   wxString  str = 
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id) + " AND mtRound = " + ltostr(round);
+
+  if (printed)
+    str +=
+      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    ;
+
   try
   {
     ExecuteUpdate(str);
@@ -2539,6 +2553,13 @@ bool  MtStore::UpdateScorePrintedForGroup(long id, bool printed)
   wxString  str = 
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id);
+
+  if (printed)
+    str +=
+      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    ;
+
   try
   {
     ExecuteUpdate(str);
@@ -2565,6 +2586,12 @@ bool  MtStore::UpdateScorePrintedScheduled(
     "   AND mtDateTime <= '" + tstostr(to.mtDateTime) + "'" +
     "   AND mtTable <= " + ltostr(to.mtTable);
 
+  if (printed)
+    str +=
+      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    ;
+
   try
   {
     ExecuteUpdate(str);
@@ -2584,7 +2611,13 @@ bool  MtStore::UpdateScorePrintedForTeam(const StRec &st, bool printed)
 {
   wxString  str = 
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
-    " WHERE stA = " + ltostr(st.stID) + " OR stX = " + ltostr(st.stID);
+    " WHERE (stA = " + ltostr(st.stID) + " OR stX = " + ltostr(st.stID) + ")";
+
+  if (printed)
+    str +=
+      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    ;
 
   try
   {
