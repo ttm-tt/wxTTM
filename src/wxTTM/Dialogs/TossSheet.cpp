@@ -433,11 +433,11 @@ unsigned CTossSheet::PrintScheduledThread(void *arg)
     
     RasterToss raster(printer, connPtr);
     raster.Print(cp, gr, tmp);
-    
-    printer->EndPage();
 
     if (!isPreview)
-      MtStore(connPtr).UpdateTossPrinted(tmp.mt.mtID, true);
+      MtStore(connPtr).UpdateTossPrinted((*it)->mtID, true);
+
+    printer->EndPage();
   }
   
   } // ]
