@@ -60,7 +60,7 @@ class  LtStore : public StoreObj, public LtRec
     bool SelectBuddy(const LtRec &);
 
     bool SelectByCpPl(long cpId, long plId);
-    bool SelectByCpPlNr(long cpId, long plNr);
+    bool SelectByCpPlNr(const CpRec &cp, long plNr);
 
   private:
     wxString  SelectString() const;

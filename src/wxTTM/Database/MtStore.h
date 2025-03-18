@@ -257,7 +257,6 @@ class  MtStore : public StoreObj, public MtRec
 
   public:
     bool  Insert(const GrRec &);
-    bool  Update();
     bool  Remove(const GrRec &);
 
   // Etwas API

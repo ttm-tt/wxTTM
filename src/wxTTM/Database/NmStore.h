@@ -62,6 +62,7 @@ class  NmSingleStore : public StoreObj, public NmSingle
 
   public:
     bool  Insert();
+    bool  Update();
     bool  Remove();
 
     bool  SelectAll();
@@ -90,6 +91,7 @@ class  NmDoubleStore : public StoreObj, public NmDouble
 
   public:
     bool  Insert();
+    bool  Update();
     bool  Remove();
 
     bool  SelectAll();
@@ -123,7 +125,6 @@ struct NmRec
   short GetNofSingles() const        {return nofSingles;}
   short GetNofDoubles() const        {return nofDoubles;}
 
-
   void  SetSingle(short idx, long lt, bool optional = false);
   void  SetDoubles(short idx, long ltA, long ltB, bool optional = false);
 
@@ -138,6 +139,8 @@ struct NmRec
   {
     long  ltA = 0;
     bool  nmOptional = false;
+
+    bool  isNew;        // Not persisted
   }  *nmSingle;
 
   struct  NmDouble
@@ -145,6 +148,8 @@ struct NmRec
     long  ltA = 0;
     long  ltB = 0;
     bool  nmOptional = false;
+
+    bool  isNew;        // Not persisted
   }  *nmDouble;
 };
 
@@ -161,6 +166,11 @@ class  NmStore : public StoreObj, public NmRec
     static  bool  CreateConstraints();
     static  bool  UpdateConstraints(long version);
 
+    // Import / Export
+    static bool Import(wxTextBuffer& is);
+    static bool Export(wxTextBuffer& is, short cpType, const std::vector<long> & idList, bool append, long version);
+    static long GetMaxSupportedExportVersion() { return 1; }
+
   public:
     NmStore(Connection * = 0);  // Defaultkonstruktor
    ~NmStore();
@@ -169,12 +179,15 @@ class  NmStore : public StoreObj, public NmRec
 
   public:
     bool  Insert(const MtRec &mt, const TmEntry &tm);
+    bool  Insert(long mtID, long tmID);
+    bool  Update();
     bool  Remove();
 
     bool  Next();
   
     bool  SelectByMtTm(const MtRec &mt, const TmEntry &tm);
-    
+    bool  SelectByMtTm(long mtID, long tmID);
+
   private:
     wxString  SelectString() const;
     void  BindRec();
@@ -207,7 +220,7 @@ inline  NmRec::~NmRec()
 }
 
 
-inline  void  NmRec::Init()
+inline  void  NmRec::  Init()
 {
   delete[] nmSingle; 
   delete[] nmDouble; 

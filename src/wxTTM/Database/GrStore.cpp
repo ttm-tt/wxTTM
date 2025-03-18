@@ -2679,7 +2679,7 @@ bool  GrStore::Import(wxTextBuffer &is)
       return false;
   }
 
-  if (version > 1)
+  if (version > GrStore::GetMaxSupportedExportVersion())
   {
     infoSystem.Error(_("Version %d of import file is not supported"), version);
     return false;

@@ -1277,12 +1277,6 @@ bool  MtStore::Insert(const GrRec &gr)
 }
 
 
-bool  MtStore::Update()
-{
-  return true;
-}
-
-
 bool  MtStore::Remove(const GrRec &gr)
 {
   // if ( !MtSetStore(*this, GetConnectionPtr()).Remove(gr) ||

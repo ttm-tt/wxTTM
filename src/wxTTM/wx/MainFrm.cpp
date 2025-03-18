@@ -22,6 +22,7 @@
 #include "PlStore.h"
 #include "RpStore.h"
 #include "LtStore.h"
+#include "NmStore.h"
 #include "StStore.h"
 #include "MtStore.h"
 #include "UpStore.h"
@@ -53,6 +54,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentImportEntriesMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportPositionsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportSchedulesMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentImportLineupsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportResultsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentImportOnlineEntriesMenuItem"), CMainFrame::OnMenuCommand)
   
@@ -65,6 +67,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentExportEntriesMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportPositionsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportSchedulesMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentExportLineupsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportResultsMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForRankingMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentExportForTTMMenuItem"), CMainFrame::OnMenuCommand)
@@ -221,6 +224,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     Import(_("Import Positions"), "st.csv", &StStore::Import);
   else if (evt.GetId() == XRCID("TournamentImportSchedulesMenuItem"))
     Import(_("Import Schedules"), "sc.csv", &MtStore::ImportSchedule);
+  else if (evt.GetId() == XRCID("TournamentImportLineupsMenuItem"))
+    Import(_("Import Schedules"), "lu.csv", &NmStore::Import);
   else if (evt.GetId() == XRCID("TournamentImportResultsMenuItem"))
     Import(_("Import Results"), "mt.csv", &MtStore::ImportResults);
   else if (evt.GetId() == XRCID("TournamentImportOnlineEntriesMenuItem"))
@@ -244,6 +249,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     CTT32App::instance()->OpenView(_("Export Positions"), wxT("GrExport"), &StStore::Export, StStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportSchedulesMenuItem"))
     CTT32App::instance()->OpenView(_("Export Schedules"), wxT("GrExport"), &MtStore::ExportSchedule, MtStore::GetMaxSupportedExportVersion());
+  else if (evt.GetId() == XRCID("TournamentExportLineupsMenuItem"))
+    CTT32App::instance()->OpenView(_("Export Lineups"), wxT("GrExport"), &NmStore::Export, NmStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportResultsMenuItem"))
     CTT32App::instance()->OpenView(_("Export Results"), wxT("GrExport"), &MtStore::ExportResults, MtStore::GetMaxSupportedExportVersion());
   else if (evt.GetId() == XRCID("TournamentExportForRankingMenuItem"))

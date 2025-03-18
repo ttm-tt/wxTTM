@@ -29,10 +29,10 @@ bool  NmEntryStore::CreateView()
   {
     str = 
       "CREATE VIEW NmSingleList (   "
-      "    nmType, nmNr, nmID, mtID, tmID,       "
+      "    nmType, nmNr, nmOptional, nmID, mtID, tmID,       "
       "    plID, plNr, psLast, psFirst, psSex, naName, naDesc, naRegion, plExtID, ltID ) "
       "AS "
-      "SELECT 1, nmSingle.nmNr, nm.nmID, nm.mtID, nm.tmID,       "
+      "SELECT 1, nmSingle.nmNr, nmSingle.nmOptional, nm.nmID, nm.mtID, nm.tmID,       "
       "       lt.plID, lt.plNr, lt.psLast, lt.psFirst, lt.psSex, lt.naName, lt.naDesc, lt.naRegion, lt.plExtID, lt.ltID "
       "  FROM NmSingle nmSingle INNER JOIN NmRec nm ON nmSingle.nmID = nm.nmID "
       "                    LEFT OUTER JOIN LtEntryList lt ON nmSingle.ltA = lt.ltID";
@@ -41,11 +41,11 @@ bool  NmEntryStore::CreateView()
 
     str = 
       "CREATE VIEW NmDoubleList (   "
-      "    nmType, nmNr, nmID, mtID, tmID,       "
+      "    nmType, nmNr, nmOptional, nmID, mtID, tmID,       "
       "    plAplID, plAplNr, plApsLast, plApsFirst, plApsSex, plAnaName, plAnaDesc, plAnaRegion, plAplExtID, plAltID, "
       "    plBplID, plBplNr, plBpsLast, plBpsFirst, plBpsSex, plBnaName, plBnaDesc, plBnaRegion, plBplExtID, plBltID) "
       "AS "
-      "SELECT 2, nmDouble.nmNr, nm.nmID, nm.mtID, nm.tmID, "
+      "SELECT 2, nmDouble.nmNr, nmDouble.nmOptional, nm.nmID, nm.mtID, nm.tmID, "
       "       ltA.plID, ltA.plNr, ltA.psLast, ltA.psFirst, ltA.psSex, ltA.naName, ltA.naDesc, ltA.naRegion, ltA.plExtID, ltA.ltID, "
       "       ltB.plID, ltB.plNr, ltB.psLast, ltB.psFirst, ltB.psSex, ltB.naName, ltB.naDesc, ltB.naRegion, ltB.plExtID, ltB.ltID  "
       "  FROM (NmDouble nmDouble INNER JOIN NmRec nm ON nmDouble.nmID = nm.nmID     "
@@ -56,18 +56,18 @@ bool  NmEntryStore::CreateView()
 
     str = 
       "CREATE VIEW NmEntryList (    "
-      "    nmType, nmNr, nmID, mtID, tmID,                       "
+      "    nmType, nmNr, nmOptional, nmID, mtID, tmID,                       "
       "    plAplID, plAplNr, plApsLast, plApsFirst, plApsSex, plAnaID, plAnaName,  plAnaDesc, plAnaRegion, plAplextID, ltAltID,  "
       "    plBplID, plBplNr, plBpsLast, plBpsFirst, plBpsSex, plBnaID, plBnaName,  plBnaDesc, plBnaRegion, plBplextID, ltBltID ) "
       "AS "
-      "SELECT 1, nmSingle.nmNr, nm.nmID, nm.mtID, nm.tmID,             "
+      "SELECT 1, nmSingle.nmNr, nmSingle.nmOptional, nm.nmID, nm.mtID, nm.tmID,             "
       "       lt.plID, lt.plNr, lt.psLast, lt.psFirst, lt.psSex, lt.naID, lt.naName, lt.naDesc, lt.naRegion, lt.plExtID, lt.ltID,  "
       "       NULL,    NULL,    NULL,      NULL,       NULL,     NULL,    NULL,      NULL,      NULL,        NULL,       NULL      "
       "  FROM NmSingle nmSingle INNER JOIN NmRec nm                    "
       "       ON nmSingle.nmID = nm.nmID                               "
       "       LEFT OUTER JOIN LtEntryList lt ON nmSingle.ltA = lt.ltID "
       "UNION "
-      "SELECT 2, nmDouble.nmNr, nm.nmID, nm.mtID, nm.tmID,               "
+      "SELECT 2, nmDouble.nmNr, nmDouble.nmOptional, nm.nmID, nm.mtID, nm.tmID,               "
       "       lta.plID, ltA.plNr, ltA.psLast, ltA.psFirst, ltA.psSex, ltA.naID, ltA.naName, ltA.naDesc, ltA.naRegion, ltA.plExtID, ltA.ltID,   "
       "       ltB.plID, ltB.plNr, ltB.psLast, ltB.psFirst, ltB.psSex, ltB.naID, ltB.naName, ltB.naDesc, ltB.naRegion, ltB.plExtID, ltB.ltID    "
       "  FROM (NmDouble nmDouble INNER JOIN NmRec nm                      "

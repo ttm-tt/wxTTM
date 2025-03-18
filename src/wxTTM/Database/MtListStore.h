@@ -30,6 +30,7 @@ struct  MtListRec : public MtRec
   short    syComplete;
   wxChar   cpName[9];
   wxChar   grName[9];
+  wxChar   syName[9];
   
   MtListRec()  {Init();}
  ~MtListRec()  {}

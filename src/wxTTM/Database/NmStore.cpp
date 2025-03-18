@@ -15,10 +15,20 @@
 #include  "Rec.h"
 
 #include  "IdStore.h"
+#include  "CpStore.h"
+#include  "GrStore.h"
+#include  "LtStore.h"
+#include  "MdStore.h"
 #include  "MtStore.h"
 #include  "TmStore.h"
 #include  "SyStore.h"
+
+#include  "MtListStore.h"
+#include  "MtEntryStore.h"
+#include  "GrListStore.h"
 #include  "TmEntryStore.h"
+
+#include  "wxStringTokenizerEx.h"
 
 
 // -----------------------------------------------------------------------
@@ -51,6 +61,7 @@ NmRec & NmRec::operator=(const NmRec &rec)
 }
 
 
+// idx is 0-based
 void  NmRec::SetSingle(short idx, long id, bool optional)
 {
   if (idx >= nofSingles)
@@ -58,9 +69,13 @@ void  NmRec::SetSingle(short idx, long id, bool optional)
     NmSingle * tmp = new NmSingle[idx + 1];
     memset(tmp, 0, (idx + 1) * sizeof(NmSingle));
     memcpy(tmp, nmSingle, nofSingles * sizeof(NmSingle));
-    nofSingles = idx + 1;
     delete[] nmSingle;
     nmSingle = tmp;
+
+    for (int i = nofSingles; i <= idx; ++i)
+      nmSingle[i].isNew = true;
+
+    nofSingles = idx + 1;
   }
 
   nmSingle[idx].ltA = id;
@@ -68,6 +83,7 @@ void  NmRec::SetSingle(short idx, long id, bool optional)
 }
 
 
+// idx is 0-based
 void  NmRec::SetDoubles(short idx, long idA, long idB, bool optional)
 {
   if (idx >= nofDoubles)
@@ -75,9 +91,13 @@ void  NmRec::SetDoubles(short idx, long idA, long idB, bool optional)
     NmDouble * tmp = new NmDouble[idx + 1];
     memset(tmp, 0, (idx + 1) * sizeof(NmDouble));
     memcpy(tmp, nmDouble, nofDoubles * sizeof(NmDouble));
-    nofDoubles = idx + 1;
     delete[] nmDouble;
     nmDouble = tmp;
+
+    for (int i = nofDoubles; i <= idx; ++i)
+      nmDouble[i].isNew = true;
+
+    nofDoubles = idx + 1;
   }
 
   nmDouble[idx].ltA = idA;
@@ -231,7 +251,7 @@ bool  NmSingleStore::UpdateConstraints(long version)
 }
 
 
-NmSingleStore::NmSingleStore(NmStore &nm)
+NmSingleStore::NmSingleStore(NmStore &nm) : StoreObj(nm.GetConnectionPtr())
 {
   nmID = nm.nmID;
 }
@@ -282,10 +302,42 @@ bool  NmSingleStore::Insert()
 }
 
 
+bool  NmSingleStore::Update()
+{
+  PreparedStatement* stmtPtr = 0;
+
+  wxString str = "UPDATE NmSingle SET ltA = ?, nmOptional = ? WHERE nmID = ? AND nmNr= ?";
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->PrepareStatement(str);
+    if (!stmtPtr)
+      return false;
+
+    stmtPtr->SetData(1, ltA ? &ltA : NULL);
+    stmtPtr->SetData(2, &nmOptional);
+    stmtPtr->SetData(3, &nmID);
+    stmtPtr->SetData(4, &nmNr);
+
+    stmtPtr->Execute();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+
+    delete stmtPtr;
+    return false;
+  }
+
+  delete stmtPtr;
+
+  return true;
+}
+
+
 bool  NmSingleStore::Remove()
 {
-  wxString  str = 
-      "DELETE FROM NmSingle WHERE nmID = " + ltostr(nmID);
+  wxString  str = "DELETE FROM NmSingle WHERE nmID = " + ltostr(nmID) + " AND nmNr = " + ltostr(nmNr);
 
   try
   {
@@ -461,7 +513,7 @@ bool  NmDoubleStore::UpdateConstraints(long version)
 }
 
 
-NmDoubleStore::NmDoubleStore(NmStore &nm)
+NmDoubleStore::NmDoubleStore(NmStore &nm) : StoreObj(nm.GetConnectionPtr())
 {
   nmID = nm.nmID;
 }
@@ -513,10 +565,44 @@ bool  NmDoubleStore::Insert()
 }
 
 
+bool  NmDoubleStore::Update()
+{
+  PreparedStatement* stmtPtr = 0;
+
+  wxString str = "UPDATE NmDouble SET ltA = ?, ltB = ?, nmOptional = ? WHERE nmID = ? AND nmNR = ?";
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->PrepareStatement(str);
+    if (!stmtPtr)
+      return false;
+
+    stmtPtr->SetData(1, ltA ? &ltA : NULL);
+    stmtPtr->SetData(2, ltB ? &ltB : NULL);
+    stmtPtr->SetData(3, &nmOptional);
+    stmtPtr->SetData(4, &nmID);
+    stmtPtr->SetData(5, &nmNr);
+
+    stmtPtr->Execute();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+
+    delete stmtPtr;
+    return false;
+  }
+
+  delete stmtPtr;
+
+  return true;
+}
+
+
 bool  NmDoubleStore::Remove()
 {
   wxString  str = 
-      "DELETE FROM NmDouble WHERE nmID = " + ltostr(nmID);
+      "DELETE FROM NmDouble WHERE nmID = " + ltostr(nmID) + " AND nmNr = " + ltostr(nmNr);
 
   try
   {
@@ -734,6 +820,12 @@ void  NmStore::Init()
 // -----------------------------------------------------------------------
 bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 {
+  return Insert(mt.mtID, tm.tmID);
+}
+
+
+bool NmStore::Insert(long mtID, long tmID)
+{
   PreparedStatement *stmtPtr = 0;
 
   wxString str = "INSERT INTO NmRec (mtID, tmID, nmID) "
@@ -741,8 +833,8 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 
   try
   {    
-    mtID = mt.mtID;
-    tmID = tm.tmID;
+    mtID = mtID;
+    tmID = tmID;
     nmID = IdStore::ID(GetConnectionPtr());
 
     stmtPtr = GetConnectionPtr()->PrepareStatement(str);
@@ -757,9 +849,6 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 
     for (short idxSingle = 0; idxSingle < nofSingles; idxSingle++)
     {
-      // if (!nmSingle[idxSingle].ltA)
-      //   continue;
-
       NmSingleStore  tmp(*this);
       tmp.nmNr = idxSingle+1;
       tmp.ltA = nmSingle[idxSingle].ltA;
@@ -767,13 +856,12 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 
       if (!tmp.Insert())
         return false;
+
+      nmSingle[idxSingle].isNew = false;
     }
 
     for (short idxDouble = 0; idxDouble < nofDoubles; idxDouble++)
     {
-      // if (!nmDouble[idxDouble].ltA || !nmDouble[idxDouble].ltB)
-      //   continue;
-
       NmDoubleStore  tmp(*this);
       tmp.nmNr = idxDouble+1;
       tmp.ltA  = nmDouble[idxDouble].ltA;
@@ -782,6 +870,8 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 
       if (!tmp.Insert())
         return false;
+
+      nmDouble[idxDouble].isNew = false;
     }
   }
   catch (SQLException &e)
@@ -798,7 +888,7 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
   CRequest update;
   update.type = CRequest::UPDATE_NOMINATION;
   update.rec  = CRequest::MTREC;
-  update.id   = mt.mtID;
+  update.id   = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -806,20 +896,68 @@ bool  NmStore::Insert(const MtRec &mt, const TmEntry &tm)
 }
 
 
+bool  NmStore::Update()
+{
+  // Does not change match or team nor type of entries, only the players
+  for (short idxSingle = 0; idxSingle < nofSingles; idxSingle++)
+  {
+    NmSingleStore  tmp(*this);
+    tmp.nmNr = idxSingle + 1;
+    tmp.ltA = nmSingle[idxSingle].ltA;
+    tmp.nmOptional = nmSingle[idxSingle].nmOptional;
+
+    bool ret = true;
+
+    if (nmSingle[idxSingle].isNew)
+      ret = tmp.Insert();
+    else 
+      ret = tmp.Update();
+
+    if (!ret)
+      return false;
+     
+    nmSingle[idxSingle].isNew = false;
+  }
+
+  for (short idxDouble = 0; idxDouble < nofDoubles; idxDouble++)
+  {
+    NmDoubleStore  tmp(*this);
+    tmp.nmNr = idxDouble + 1;
+    tmp.ltA = nmDouble[idxDouble].ltA;
+    tmp.ltB = nmDouble[idxDouble].ltB;
+    tmp.nmOptional = nmDouble[idxDouble].nmOptional;
+
+    bool ret = true;
+
+    if (nmDouble[idxDouble].isNew)
+      ret = tmp.Insert();
+    else
+      ret = tmp.Update();
+
+    if (!ret)
+      return false;
+
+    nmSingle[idxDouble].isNew = false;
+  }
+
+  // Notify Views
+  CRequest update;
+  update.type = CRequest::UPDATE_NOMINATION;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
+
+  CTT32App::NotifyChange(update);
+
+  return true;
+}
+
 bool  NmStore::Remove()
 {
   wxString  str;
 
   try
   {
-    NmSingleStore  tmpSingle(*this);
-    if (!tmpSingle.Remove())
-      return false;
-
-    NmDoubleStore  tmpDouble(*this);
-    if (!tmpDouble.Remove())
-      return false;
-
+    // NmSingle and NmDouble will be removed via constraints
     str = "DELETE FROM NmRec WHERE nmID = " + ltostr(nmID);
     ExecuteUpdate(str);
   }
@@ -864,11 +1002,17 @@ bool  NmStore::Next()
 
 
 // -----------------------------------------------------------------------
-bool  NmStore::SelectByMtTm(const MtRec &mt, const TmEntry &tm)
+bool  NmStore::SelectByMtTm(const MtRec& mt, const TmEntry& tm)
+{
+  return SelectByMtTm(mt.mtID, tm.tmID);
+}
+
+
+bool NmStore::SelectByMtTm(long mtID, long tmID)
 {
   wxString str = SelectString();
-  str += " WHERE mtID = " + ltostr(mt.mtID);
-  str += "   AND tmID = " + ltostr(tm.tmID);
+  str += " WHERE mtID = " + ltostr(mtID);
+  str += "   AND tmID = " + ltostr(tmID);
 
   try
   {
@@ -900,4 +1044,313 @@ void  NmStore::BindRec()
   BindCol(1, &nmID);
   BindCol(2, &mtID);
   BindCol(3, &tmID);
+}
+
+// -----------------------------------------------------------------------
+// Import / Export
+bool NmStore::Import(wxTextBuffer& is)
+{
+  long version = 1;
+
+  wxString line = is.GetFirstLine();
+
+  // Check header
+  if (!CheckImportHeader(line, "#LINEUPS", version))
+  {
+    is.Close();
+    if (!infoSystem.Question(_("First comment is not %s but \"%s\". Continue anyway?"), wxT("#LINEUPS"), line.wx_str()))
+      return false;
+  }
+
+  if (version > GrStore::GetMaxSupportedExportVersion())
+  {
+    infoSystem.Error(_("Version %d of import file is not supported"), version);
+    return false;
+  }
+
+  // Read all CP, SY, and MD: there are not so many
+  std::map<wxString, long> cpMap;
+  std::map<wxString, long> syMap;
+  std::map<wxString, long> mdMap;
+
+  Connection* connPtr = TTDbse::instance()->GetNewConnection();
+
+  connPtr->StartTransaction();
+
+  // HACK: Die Variablen duerfen nicht laenger leben als connPtr [
+  {
+    CpStore cp(connPtr);
+    GrStore gr(connPtr);
+    SyStore sy(connPtr);
+    MdStore md(connPtr);
+    MtStore mt(connPtr);
+    NmStore nm(connPtr);
+    LtStore ltA(connPtr), ltB(connPtr);
+
+    cp.SelectAll();
+    while (cp.Next())
+      cpMap[cp.cpName] = cp.cpID;
+    cp.Close();
+
+    cpMap[wxEmptyString] = 0;
+
+    sy.SelectAll();
+    while (sy.Next())
+      syMap[sy.syName] = sy.syID;
+    sy.Close();
+
+    syMap[wxEmptyString] = 0;
+
+    std::set<long> nmaSet, nmxSet;
+
+    bool ax = false;
+
+    // cpName, grName, sygrName, symtName, mtRound, mtChance, mtMatch, mtLeg, mtReverse,
+    // ax, nmNr, nmType, nmOptional, plAplNr, plBplNr
+    for (; !is.Eof(); line = is.GetNextLine())
+    {
+      CTT32App::ProgressBarStep();
+
+      if (line.GetChar(0) == '#')
+        continue;
+
+      // # Event; Group; Round; Chance; Match; Reverse; A / X; Nr; Optional; Type; Player A; Player B; "
+      
+      wxStringTokenizerEx tokens(line, wxT(",;  "));
+
+      wxString strCpName = tokens.GetNextToken();
+      wxString strGrName = tokens.GetNextToken();
+      wxString strMtRound = tokens.GetNextToken();
+      wxString strMtChance = tokens.GetNextToken();
+      wxString strMtMatch = tokens.GetNextToken();
+      wxString strMtReverse = tokens.GetNextToken();
+      wxString strAX = tokens.GetNextToken().Upper();;
+      wxString strNmNr = tokens.GetNextToken();
+      wxString strNmOptional = tokens.GetNextToken();
+      wxString strNmType = tokens.GetNextToken().Upper();
+      wxString strPlA = tokens.GetNextToken();
+      wxString strPlB = tokens.GetNextToken();
+
+      if (strCpName.IsEmpty() || strGrName.IsEmpty() ||
+          strMtRound.IsEmpty() || strMtMatch.IsEmpty())
+        continue;
+
+      if (wxStrcoll(strCpName, cp.cpName))
+      {
+        // Naechster WB
+        cp.SelectByName(strCpName);
+        if (!cp.Next() || cp.cpType != CP_TEAM)
+          continue;
+
+        // Ausserdem Gruppe lesen
+        gr.Init();
+      }
+
+      if (wxStrcoll(strGrName, gr.grName))
+      {
+        // Naechste Gruppe bei gleichem WB
+        gr.SelectByName(strGrName, cp);
+        if (!gr.Next())
+          continue;
+      }
+
+      // Event aufsetzen
+      MtStore::MtEvent  mtEvent;
+      mtEvent.grID = gr.grID;
+      mtEvent.mtRound = _strtos(strMtRound);
+      mtEvent.mtMatch = _strtos(strMtMatch);
+      mtEvent.mtChance = _strtos(strMtChance);
+
+      if (!mt.mtID ||
+        mt.mtEvent.grID != mtEvent.grID ||
+        mt.mtEvent.mtRound != mtEvent.mtRound ||
+        mt.mtEvent.mtChance != mtEvent.mtChance ||
+        mt.mtEvent.mtMatch != mtEvent.mtMatch ||
+        (mt.mtReverse != 0) != (strMtReverse == "1") ||
+        ax != (strAX == "X"))
+      {
+        // Next match, store old nm
+        if (nm.nmID)
+          nm.Update();
+
+        if (!mt.SelectByEvent(mtEvent) || !mt.Next())
+          continue;
+
+        mt.Close();
+
+        ax = (strAX == "X"); // true if for team X
+
+        nm.SelectByMtTm(mt.mtID, ax ? mt.tmX : mt.tmA);
+        if (nm.Next())        
+        {
+          nm.Close();
+          if (ax && nmxSet.find(nm.nmID) == nmxSet.end())
+          {
+            nm.Remove();
+            nm.Init();
+          }
+          else if (!ax && nmaSet.find(nm.nmID) == nmaSet.end())
+          {
+            nm.Remove();
+            nm.Init();
+          }
+        }
+        else
+        {
+          nm.Close();
+          nm.Init();
+        }
+
+        if (!nm.nmID)
+          nm.Insert(mt.mtID, ax ? mt.tmX : mt.tmA);
+      }
+
+      if (ax)
+        nmxSet.insert(nm.nmID);
+      else
+        nmaSet.insert(nm.nmID);
+
+      mt.mtReverse = (strMtReverse == "1") ? 1 : 0;
+      mt.UpdateReverseFlag();
+
+      int nmNr;
+      strNmNr.ToInt(&nmNr);
+
+      bool nmOptional = (strNmOptional == "1");
+
+      if (strNmType == "S")
+      {
+        int plAplNr = 0;
+        if (!strPlA.IsEmpty() && strPlA.ToInt(&plAplNr))
+        {
+          ltA.SelectByCpPlNr(cp, plAplNr);
+          ltA.Next();
+          ltA.Close();
+        }
+
+        nm.SetSingle(nmNr-1, ltA.ltID, nmOptional);
+      }
+      else
+      {
+        int plAplNr = 0, plBplNr = 0;
+        if (!strPlA.IsEmpty() && strPlA.ToInt(&plAplNr))
+        {
+          ltA.SelectByCpPlNr(cp, plAplNr);
+          ltA.Next();
+          ltA.Close();
+        }
+        if (!strPlB.IsEmpty() && strPlB.ToInt(&plBplNr))
+        {
+          ltB.SelectByCpPlNr(cp, plBplNr);
+          ltB.Next();
+          ltB.Close();
+        }
+
+        nm.SetDoubles(nmNr-1, ltA.ltID, ltB.ltID, nmOptional);
+      }
+    }
+
+    if (nm.nmID)
+      nm.Update();
+  } // end HACK ]
+
+  connPtr->Commit();
+  delete connPtr;
+
+  return true;
+}
+
+
+bool NmStore::Export(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
+{
+  if (!append)
+  {
+    os.AddLine(wxString::Format("#LINEUPS %d", version));
+    os.AddLine("# Event; Group; Round; Chance; Match; Reverse; A/X; Nr; Optional; Type; Player A; Player B;");
+  }
+
+  // cpName, grName, sygrName, symtName, mtRound, mtMatch, mtLeg, mtReverse, 
+  // ax, nmNr, nmType, nmOptional, plAplNr, plBplNr
+  wxString sql =
+      "SELECT cp.cpName AS cpName, gr.grName AS grName, NULL AS symtName, "
+      "       mtRound, mtChance, mtMatch, mtReverse, 0 AS ax,    "
+      "       nm.nmNr, nm.nmOptional, nm.nmType, nm.plAplNr, nm.plBplNr "
+      "  FROM NmEntryList nm "
+      "       INNER JOIN MtTeamList mt ON nm.mtID = mt.mtID AND nm.tmID = mt.tmAtmID "
+      "       INNER JOIN GrList gr ON mt.grID = gr.grID "
+      "       INNER JOIN CpList cp ON gr.cpID = cp.cpID "
+      "       LEFT OUTER JOIN SyList sy ON gr.syID = sy.syID "
+      " WHERE gr.grID IN (" + StoreObj::ltostr(idList) + ") AND cp.cpType = 4 "
+      "UNION "
+      "SELECT cp.cpName AS cpName, gr.grName AS grName, NULL AS symtName, "
+      "       mtRound, mtChance, mtMatch, mtReverse, 1 AS ax,    "
+      "       nm.nmNr, nm.nmOptional, nm.nmType, nm.plAplNr, nm.plBplNr "
+      "  FROM NmEntryList nm "
+      "       INNER JOIN MtTeamList mt ON nm.mtID = mt.mtID AND nm.tmID = mt.tmXtmID "
+      "       INNER JOIN GrList gr ON mt.grID = gr.grID "
+      "       INNER JOIN CpList cp ON gr.cpID = cp.cpID "
+      "       LEFT OUTER JOIN SyList sy ON gr.syID = sy.syID "
+      " WHERE gr.grID IN (" + StoreObj::ltostr(idList) + ") AND cp.cpType = 4 "
+   // 
+      "ORDER BY cpName, grName, mtRound, mtChance, mtMatch, ax, nm.nmNr "
+    ;
+
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+  Statement* stmtPtr = connPtr->CreateStatement();
+  ResultSet* resPtr = 0;
+
+
+  try
+  {
+    if (stmtPtr->Execute(sql))
+      resPtr = stmtPtr->GetResultSet(false);
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(sql, e);
+    return false;
+  }
+
+  wxChar cpName[9], grName[9], symtName[9];
+  short  mtRound, mtChance, mtMatch, mtReverse, nmNr, nmType, nmOptional, ax;
+  short  plAplNr, plBplNr; 
+
+  int idx = 0;
+
+  resPtr->BindCol(++idx, cpName, sizeof(cpName));
+  resPtr->BindCol(++idx, grName, sizeof(grName));
+  resPtr->BindCol(++idx, symtName, sizeof(symtName));
+  resPtr->BindCol(++idx, &mtRound);
+  resPtr->BindCol(++idx, &mtChance);
+  resPtr->BindCol(++idx, &mtMatch);
+  resPtr->BindCol(++idx, &mtReverse);
+  resPtr->BindCol(++idx, &ax);
+  resPtr->BindCol(++idx, &nmNr);
+  resPtr->BindCol(++idx, &nmOptional);
+  resPtr->BindCol(++idx, &nmType);
+  resPtr->BindCol(++idx, &plAplNr);
+  resPtr->BindCol(++idx, &plBplNr);
+
+  while (resPtr->Next())
+  {
+    wxString line;
+
+    // If optional and player A was NULL, then skip
+    if (nmOptional && resPtr->WasNull(13))
+      continue;
+
+    line << cpName << ";" << grName << ";" << mtRound << ";" << mtChance << ";" << mtMatch << ";"
+         << mtReverse << ";"
+         << (ax == 0 ? 'A' : 'X') << ";" << nmNr << ";" << nmOptional << ";" << (nmType == 1 ? 'S' : 'D') << ";"
+         << (resPtr->WasNull(12) ? "" : ltostr(plAplNr)) << ";"
+         << (resPtr->WasNull(13) || nmType == 1 ? "" : ltostr(plBplNr)) << ";"
+      ;
+
+    os.AddLine(line);
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return true;
 }

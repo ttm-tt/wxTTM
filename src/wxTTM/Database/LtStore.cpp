@@ -333,6 +333,30 @@ bool  LtStore::SelectByCpPl(long idCp, long idPl)
 }
 
 
+bool  LtStore::SelectByCpPlNr(const CpRec &cp, long plNr)
+{
+  wxString str = SelectString();
+  str += "WHERE lt.cpID = ";
+  str += ltostr(cp.cpID);
+  str += " AND lt.plID = (SELECT plID FROM PlRec WHERE plNr = " + ltostr(plNr) + ")";
+
+  try
+  {
+    if (!ExecuteQuery(str))
+      return false;
+
+    BindRec();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    return false;
+  }
+
+  return true;
+}
+
+
 // -----------------------------------------------------------------------
 bool  LtStore::SelectBuddy(const LtRec &lt)
 {

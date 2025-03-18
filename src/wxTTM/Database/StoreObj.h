@@ -17,12 +17,13 @@
 class  StoreObj
 {
   public:
-    static wxString  ltostr(const std::set<long> &list);
     static wxString  ltostr(long id);
-    static wxString  tstostr(const timestamp &ts);
-    static wxString  tstostr(const std::vector<timestamp> &list);
 
-    static wxString  ts2tostr(const timestamp &ts);
+    static wxString  ltostr(const std::set<long>& list);
+    static wxString  ltostr(const std::vector<long>& list);
+
+    static wxString  tstostr(const timestamp& ts);
+    static wxString  tstostr(const std::vector<timestamp> &list);
     
     static wxString  TransformString(const wxString &str);
 
@@ -231,6 +232,19 @@ inline wxString  StoreObj::ltostr(const std::set<long> &list)
 }
 
 
+inline wxString  StoreObj::ltostr(const std::vector<long>& list)
+{
+  wxString ret;
+  for (auto it = list.cbegin(); it != list.cend(); it++)
+    ret += ltostr(*it) + ",";
+
+  // Add dummy so we don't have to check for empty strings
+  ret += "0";
+
+  return ret;
+}
+
+
 inline  wxString StoreObj::tstostr(const timestamp &ts)
 {
   wxChar  buf[32];
@@ -240,6 +254,7 @@ inline  wxString StoreObj::tstostr(const timestamp &ts)
   return wxString(buf);
 }
 
+
 inline  wxString StoreObj::tstostr(const std::vector<timestamp> &list)
 {
   wxString ret;
@@ -247,23 +262,13 @@ inline  wxString StoreObj::tstostr(const std::vector<timestamp> &list)
   // Add impossible date so we don't have to check for empty strings
   ret = "'1970-01-01T00:00:00'";
 
-  for (const timestamp &ts : list)
-    ret += ",'" + tstostr(ts) + "'";
+  for (auto it = list.cbegin(); it != list.cend(); it++)
+    ret += ",'" + tstostr(*it) + "'";
 
   // FOR SYSTEM_TIME CONTAINING doesn't like 1-element arrays, so add a date in the future
   ret += ",'9999-12-31T23:59:59.999'";
 
   return ret;
-}
-
-
-inline  wxString StoreObj::ts2tostr(const timestamp &ts)
-{
-  wxChar  buf[32];
-  wxSprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%09d",
-            ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, ts.fraction);
-
-  return wxString(buf);
 }
 
 
