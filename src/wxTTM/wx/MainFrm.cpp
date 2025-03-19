@@ -225,7 +225,7 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
   else if (evt.GetId() == XRCID("TournamentImportSchedulesMenuItem"))
     Import(_("Import Schedules"), "sc.csv", &MtStore::ImportSchedule);
   else if (evt.GetId() == XRCID("TournamentImportLineupsMenuItem"))
-    Import(_("Import Schedules"), "lu.csv", &NmStore::Import);
+    Import(_("Import Lineups"), "lu.csv", &NmStore::Import);
   else if (evt.GetId() == XRCID("TournamentImportResultsMenuItem"))
     Import(_("Import Results"), "mt.csv", &MtStore::ImportResults);
   else if (evt.GetId() == XRCID("TournamentImportOnlineEntriesMenuItem"))
