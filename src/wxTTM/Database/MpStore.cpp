@@ -481,7 +481,10 @@ bool MpStore::Update()
     stmtPtr->SetData(2, mpDesc);
     stmtPtr->SetData(3, &mpID);
 
-    stmtPtr->Execute();    
+    stmtPtr->Execute();   
+    
+    MpItemStore().Remove(mpID);
+    MpItemStore().Insert(this);
   }
   catch (SQLException &e)
   {
