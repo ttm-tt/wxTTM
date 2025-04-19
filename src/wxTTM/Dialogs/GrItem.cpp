@@ -44,6 +44,9 @@ int  GrItem::Compare(const ListItem *itemPtr, int col) const
     }
 
     case 3 :
+      return gr.grSize - grItem->gr.grSize;
+
+    case 4 :
       return gr.grHasNotes - grItem->gr.grHasNotes;
 
     default :
@@ -69,11 +72,15 @@ void  GrItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawString(pDC, rcColumn, gr.grDesc);
       break;
 
-    case 2 :
+    case 2:
       DrawString(pDC, rcColumn, gr.grStage);
       break;
 
-    case 3 :
+    case 3:
+      DrawLong(pDC, rcColumn, gr.grSize);
+      break;
+
+    case 4 :
       if (gr.grHasNotes)
         DrawImage(pDC, rect, checkedImg);
       else

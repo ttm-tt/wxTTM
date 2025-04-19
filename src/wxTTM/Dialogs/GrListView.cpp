@@ -59,7 +59,7 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawImage(pDC, rect, gr.grPublished ? checkedImg : uncheckedImg);
       break;
 
-    case 5 :
+    case 6 :
       if (gr.grPrinted.year)
         DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
       break;
@@ -76,7 +76,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
   if (col == 0)
 	  return 0;
 
-  if (col == 5)
+  if (col == 6)
   {
     if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
       return 1;
@@ -165,15 +165,20 @@ void CGrListView::OnInitialUpdate()
   // Stufe
   m_listCtrl->InsertColumn(3, _("Stage"), wxALIGN_LEFT, 10 * cW);
 
-  // Notes
-  m_listCtrl->InsertColumn(4, _("Notes"), wxLIST_FORMAT_CENTER);
+  // Size
+  m_listCtrl->InsertColumn(4, _("Size"), wxALIGN_LEFT, 4 * cW);
   m_listCtrl->HideColumn(4);
   m_listCtrl->AllowHideColumn(4);
 
   // Notes
-  m_listCtrl->InsertColumn(5, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->InsertColumn(5, _("Notes"), wxLIST_FORMAT_CENTER);
   m_listCtrl->HideColumn(5);
   m_listCtrl->AllowHideColumn(5);
+
+  // Notes
+  m_listCtrl->InsertColumn(6, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->HideColumn(6);
+  m_listCtrl->AllowHideColumn(6);
 
   m_listCtrl->SetResizeColumn(2);
 
