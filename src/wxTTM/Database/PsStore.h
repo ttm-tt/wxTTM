@@ -28,7 +28,8 @@ struct PsRec
   wxChar psEmail[64]; 
   wxChar psPhone[64];
   short  psHasNote;       // Flag if there is a note attached
-  timestamp psTimestamp;
+  timestamp psTimestamp;  // Update timestamp
+  timestamp psDeleteTime; // Time recoord was deleted
 
   PsRec()       {Init();}
   

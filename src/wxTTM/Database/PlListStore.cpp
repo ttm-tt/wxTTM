@@ -32,7 +32,7 @@ bool  PlListStore::CreateView()
       " SELECT plID, plExtID, plNr, PlRec.psID, psLast, psFirst, psSex, "
       "        psBirthday, PlRec.naID, naName, naDesc, naRegion, plRankPts, "
       "        psTimestamp, psPhone, CASE WHEN psNote IS NULL THEN 0 ELSE 1 END AS psHasNote, "
-      "        plDeleted "
+      "        psDeleteTime, IIF(psDeleteTime IS NULL, 0, 1) AS plDeleted "
       " FROM (PsRec INNER JOIN PlRec ON PsRec.psID = PlRec.psID) "
       "       LEFT OUTER JOIN NaRec ON PlRec.naID = NaRec.naID";
 

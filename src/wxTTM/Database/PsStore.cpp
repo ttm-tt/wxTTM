@@ -42,6 +42,8 @@ bool  PsStore::CreateTable()
 	  "psFirst     "+WVARCHAR+"(64) NOT NULL, "
 	  "psSex       "+SMALLINT+"     NOT NULL, "
 	  "psBirthday  "+INTEGER+",     "
+    "psDeleteTime "+TIMESTAMP+"  DEFAULT NULL, "
+    "plDeleteTime "+TIMESTAMP+"  DEFAULT NULL, "
 	  "psArrived   "+SMALLINT+"     DEFAULT 0, "
     "psEmail     "+WVARCHAR+ "(64) DEFAULT NULL, "
     "psPhone     "+WVARCHAR+"(64) DEFAULT NULL, "

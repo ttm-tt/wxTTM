@@ -186,6 +186,7 @@ bool  PlStore::CreateTable()
   wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
   wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
   wxString  FLOAT    = connPtr->GetDataType(SQL_FLOAT);
+  wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
 
   wxString  sql = 
     "CREATE TABLE PlRec (       "
@@ -195,7 +196,6 @@ bool  PlStore::CreateTable()
     "plNr        "+INTEGER+"    NOT NULL,  "
     "plExtID     "+WVARCHAR+"(64),         "
     "plRankPts   "+FLOAT+"      DEFAULT 0, "
-    "plDeleted   "+SMALLINT+"   NOT NULL DEFAULT 0, "
     "CONSTRAINT plIdKey PRIMARY KEY (plID), "
     "plCreatedBy " + WVARCHAR + "(64) NOT NULL DEFAULT (SUSER_SNAME()), "
     "plModifiedBy AS (SUSER_SNAME()), "
@@ -321,6 +321,67 @@ bool  PlStore::UpdateTable(long version)
     }
     catch (SQLException &)
     {
+      delete tmp;
+      return false;
+    }
+  }
+
+  if (version < 181)
+  {
+    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Statement *tmp = connPtr->CreateStatement();
+
+    wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
+
+    wxString sql = "ALTER TABLE PsRec ADD psDeleteTime " + TIMESTAMP + " DEFAULT NULL";
+
+    try
+    {
+      tmp->ExecuteUpdate(sql);
+
+      // Update PsRec comes before PlRec
+      sql = "UPDATE PsRec SET psDeleteTime = GETUTCDATE() "
+            " WHERE psID IN (SELECT ps.psID FROM PlRec pl INNER JOIN PsRec ps ON pl.psID = ps.psID WHERE plDeleted = 1)";
+      tmp->ExecuteUpdate(sql);
+
+      // We must drop any constraints on the column we want to delete
+      // DROP CONTRAINT braucht den Namen, den vergebe ich aber nicht explizit
+      // Also in den Sys-Tabellen suchen
+      Statement *dstmt = connPtr->CreateStatement();
+      sql = 
+          "SELECT d.name, c.name "
+          "  FROM sys.tables t "
+          "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
+          "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
+          " WHERE t.name = 'PlRec' AND c.name IN ('plDeleted') "
+      ;
+      ResultSet *rs = dstmt->ExecuteQuery(sql);
+      std::map<wxString, wxString> dmap;
+      while (rs->Next())
+      {
+        wxChar d[128];
+        wxChar c[128];
+
+        rs->GetData(1, d, 128);
+        rs->GetData(2, c, 128);
+
+        dmap[wxString(d)] = wxString(c);
+      }
+
+      dstmt->Close();
+      delete rs;
+      delete dstmt;
+
+      for (auto it : dmap)
+        tmp->ExecuteQuery("ALTER TABLE PlRec DROP CONSTRAINT " + it.first);
+
+      sql = "ALTER TABLE PlRec DROP COLUMN plDeleted";
+      tmp->ExecuteUpdate(sql);
+    }
+    catch (SQLException &e)
+    {
+      infoSystem.Exception(sql, e);
+
       delete tmp;
       return false;
     }
@@ -709,7 +770,7 @@ bool  PlStore::Remove(long id, bool force)
       return false;
   }
 
-  wxString str = "UPDATE PlRec SET plDeleted = 1 WHERE plID = " + ltostr(id);
+  wxString str = "UPDATE PsRec SET psDeleteTime = GETUTCDATE() WHERE psID = " + ltostr(pl.psID);
 
   try
   {
@@ -751,7 +812,7 @@ bool PlStore::Restore(long id)
     pl.Close();
   }
 
-  wxString str = "UPDATE PlRec SET plDeleted = 0 WHERE plID = ?";
+  wxString str = "UPDATE PsRec SET psDeleteTime = NULL WHERE psID = ?";
 
   PreparedStatement *stmtPtr = nullptr;
 
@@ -761,7 +822,7 @@ bool PlStore::Restore(long id)
     if (!stmtPtr)
       return false;
 
-    stmtPtr->SetData(1, &id);
+    stmtPtr->SetData(1, &pl.psID);
     stmtPtr->Execute();
   }
   catch (SQLException &e)
@@ -944,7 +1005,8 @@ wxString  PlStore::SelectString() const
   return 
          " SELECT plID, plNr, PlRec.psID, "
          "        PsRec.psID, psLast, psFirst, psBirthday, psSex, psArrived, "
-         "        PlRec.naID, naName, naDesc, naRegion, plExtID, plRankPts, plDeleted "
+         "        PlRec.naID, naName, naDesc, naRegion, plExtID, plRankPts, "
+         "        psDeleteTime, IIF(psDeleteTime IS NULL, 0, 1) AS plDeleted "
          " FROM PlRec INNER JOIN PsRec ON PlRec.psID = PsRec.psID "
          "            LEFT OUTER JOIN NaRec ON PlRec.naID = NaRec.naID ";
 }
@@ -952,22 +1014,25 @@ wxString  PlStore::SelectString() const
 
 void  PlStore::BindRec()
 {
-  BindCol(1, &plID);
-  BindCol(2, &plNr);
-  BindCol(3, &(PlRec::psID));
-  BindCol(4, &(PsRec::psID));
-  BindCol(5, psName.psLast, sizeof(psName.psLast));
-  BindCol(6, psName.psFirst, sizeof(psName.psFirst));
-  BindCol(7, &psBirthday);
-  BindCol(8, &psSex);
-  BindCol(9, &psArrived);
-  BindCol(10, &naID);
-  BindCol(11, naName, sizeof(naName));
-  BindCol(12, naDesc, sizeof(naDesc));
-  BindCol(13, naRegion, sizeof(naRegion));
-  BindCol(14, plExtID, sizeof(plExtID));
-  BindCol(15, &plRankPts);
-  BindCol(16, &plDeleted);
+  int idx = 0;
+
+  BindCol(++idx, &plID);
+  BindCol(++idx, &plNr);
+  BindCol(++idx, &(PlRec::psID));
+  BindCol(++idx, &(PsRec::psID));
+  BindCol(++idx, psName.psLast, sizeof(psName.psLast));
+  BindCol(++idx, psName.psFirst, sizeof(psName.psFirst));
+  BindCol(++idx, &psBirthday);
+  BindCol(++idx, &psSex);
+  BindCol(++idx, &psArrived);
+  BindCol(++idx, &naID);
+  BindCol(++idx, naName, sizeof(naName));
+  BindCol(++idx, naDesc, sizeof(naDesc));
+  BindCol(++idx, naRegion, sizeof(naRegion));
+  BindCol(++idx, plExtID, sizeof(plExtID));
+  BindCol(++idx, &plRankPts);
+  BindCol(++idx, &psDeleteTime);
+  BindCol(++idx, &plDeleted);
 }
 
 
