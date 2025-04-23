@@ -33,12 +33,15 @@ bool  GrListStore::CreateView()
   Statement *tmp = connPtr->CreateStatement();
 
   wxString  str = "CREATE VIEW GrList AS "
-                     "SELECT grID, grName, grDesc, grStage, grModus, grSize, "
-                     "cpID, grWinner, mdID, syID, grBestOf, grQualRounds, "
-                     "grNofRounds, grNofMatches, grNoThirdPlace, grOnlyThirdPlace, "
-                     "grPublished, grNotes, grSortOrder, CASE WHEN grNotes IS NULL THEN 0 ELSE 1 END AS grHasNotes,  "
-                     "grPrinted "
-                     "FROM GrRec";
+                     "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, "
+                     "grBestOf, grQualRounds, grNofRounds, grNofMatches, "
+                     "grNoThirdPlace, grOnlyThirdPlace, "
+                     "grPublished, grNotes, grSortOrder, grPrinted, "
+                     "CASE WHEN grNotes IS NULL THEN 0 ELSE 1 END AS grHasNotes, "
+                     "cp.cpID, cpName, md.mdID, md.mdName, sy.syID, sy.syName "
+                     "FROM GrRec gr INNER JOIN CpRec cp ON gr.cpID = cp.cpID "
+                     "     LEFT OUTER JOIN SyRec sy ON gr.syID = sy.syID "
+                     "     LEFT OUTER JOIN MdRec md ON gr.mdID = md.mdID ";
 
   try
   {
@@ -449,7 +452,8 @@ short GrListStore::GetLastScheduledRound(long id)
 wxString  GrListStore::SelectString() const
 {
   wxString  str = 
-    "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, cpID, GrList.mdID, syID, grBestOf, "
+    "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, "
+    "       cpID, cpName, GrList.mdID, mdName, syID, syName, grBestOf, "
     "       grQualRounds, grNofRounds, grNofMatches, grNoThirdPlace, grOnlyThirdPlace, "
     "       grPublished, grHasNotes, grSortOrder, grPrinted "
     "  FROM GrList "
@@ -461,26 +465,31 @@ wxString  GrListStore::SelectString() const
 
 bool  GrListStore::BindRec()
 {
-  BindCol(1, &grID);
-  BindCol(2, grName, sizeof(grName));
-  BindCol(3, grDesc, sizeof(grDesc));
-  BindCol(4, grStage, sizeof(grStage));
-  BindCol(5, &grModus);
-  BindCol(6, &grSize);
-  BindCol(7, &grWinner);
-  BindCol(8, &cpID);
-  BindCol(9, &mdID);
-  BindCol(10, &syID);
-  BindCol(11, &grBestOf);
-  BindCol(12, &grQualRounds);
-  BindCol(13, &grNofRounds);
-  BindCol(14, &grNofMatches);
-  BindCol(15, &grNoThirdPlace);
-  BindCol(16, &grOnlyThirdPlace);
-  BindCol(17, &grPublished);
-  BindCol(18, &grHasNotes);
-  BindCol(19, &grSortOrder);
-  BindCol(20, &grPrinted);
+  int idx = 0;
+
+  BindCol(++idx, &grID);
+  BindCol(++idx, grName, sizeof(grName));
+  BindCol(++idx, grDesc, sizeof(grDesc));
+  BindCol(++idx, grStage, sizeof(grStage));
+  BindCol(++idx, &grModus);
+  BindCol(++idx, &grSize);
+  BindCol(++idx, &grWinner);
+  BindCol(++idx, &cpID);
+  BindCol(++idx, cpName, sizeof(cpName));
+  BindCol(++idx, &mdID);
+  BindCol(++idx, mdName, sizeof(mdName));
+  BindCol(++idx, &syID);
+  BindCol(++idx, syName, sizeof(syName));
+  BindCol(++idx, &grBestOf);
+  BindCol(++idx, &grQualRounds);
+  BindCol(++idx, &grNofRounds);
+  BindCol(++idx, &grNofMatches);
+  BindCol(++idx, &grNoThirdPlace);
+  BindCol(++idx, &grOnlyThirdPlace);
+  BindCol(++idx, &grPublished);
+  BindCol(++idx, &grHasNotes);
+  BindCol(++idx, &grSortOrder);
+  BindCol(++idx, &grPrinted);
 
   return true;
 }

@@ -14,6 +14,10 @@ struct MpRec;
 // Tabellendaten in eigene Struktur
 struct GrListRec : public GrRec
 {
+  wxChar cpName[9];
+  wxChar syName[9];
+  wxChar mdName[9];
+
   GrListRec()  {Init();}
 
   void  Init()  {memset(this, 0, sizeof(GrListRec));}

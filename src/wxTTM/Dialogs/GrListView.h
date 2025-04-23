@@ -43,8 +43,8 @@ class CGrListView : public CFormViewEx
 
   private:
     CpListStore  cp;
-    CComboBoxEx * m_cbCp;
-    CListCtrlEx * m_listCtrl;
+    CComboBoxEx * m_cbCp = nullptr;
+    CListCtrlEx * m_listCtrl = nullptr;
 	  
 	DECLARE_DYNAMIC_CLASS(CGrListView)
 	DECLARE_EVENT_TABLE()

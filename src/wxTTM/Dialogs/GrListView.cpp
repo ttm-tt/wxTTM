@@ -38,13 +38,47 @@ namespace
   class GrItemEx : public GrItem
   {
     public:
-      GrItemEx(const GrRec &gr) : GrItem(gr) { SetLabel(""); }  // Sonst hat man einen Tooltip
+      GrItemEx(const GrListRec &gr);
 
     public:
       void DrawColumn(wxDC *, int col, wxRect &rect);
 
       int  Compare(const ListItem *, int col) const;
+
+    private:
+      wxString cpName;
+      wxString syName;
+      wxString mdName;
   };
+}
+
+
+GrItemEx::GrItemEx(const GrListRec& gr) : GrItem(gr) 
+{ 
+  SetLabel(""); // Sonst hat man einen Tooltip
+
+  cpName = gr.cpName;
+  syName = gr.syName;
+  mdName = gr.mdName;
+
+  switch (gr.grModus)
+  {
+    case MOD_RR :
+      mdName = gr.mdName;
+      break;
+
+    case MOD_SKO :
+      mdName = "KO";
+      break;
+
+    case MOD_DKO :
+      mdName = "DK";
+      break;
+
+    case MOD_PLO :
+      mdName = "PO";
+      break;
+  }
 }
 
 
@@ -59,13 +93,30 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawImage(pDC, rect, gr.grPublished ? checkedImg : uncheckedImg);
       break;
 
+    // 1 (Name) - 4 (Size) -> 0 - 3
+    case 1 :
+    case 2 :
+    case 3 :
+    case 4 :
+      GrItem::DrawColumn(pDC, col - 1, rect);
+      break;
+
+    case 5 :
+      DrawString(pDC, rect, syName);
+      break;
+
     case 6 :
+      DrawString(pDC, rect, mdName);
+      break;
+
+    case 7 :
       if (gr.grPrinted.year)
         DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
       break;
 
-    default :
-      GrItem::DrawColumn(pDC, col - 1, rect);
+    // 8 Notes -> 4
+    case 8 : 
+      GrItem::DrawColumn(pDC, 4, rect);
       break;
   }
 }
@@ -73,20 +124,55 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 
 int GrItemEx::Compare(const ListItem *itemPtr, int col) const
 {
-  if (col == 0)
-	  return 0;
+  const GrItemEx *grItem = reinterpret_cast<const GrItemEx *>(itemPtr);
+  if (!grItem)
+    return -1;
 
-  if (col == 6)
+  switch (col)
   {
-    if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
-      return 1;
-    else if (gr.grPrinted < ((GrItemEx *)itemPtr)->gr.grPrinted)
-      return -1;
-    else
+    case 0 : // Pbl
+      return 0;
+
+    // 1 (Name) - 4 (Size) -> 0 - 3
+    case 1 :
+    case 2 :
+    case 3 :
+    case 4 :
+      return GrItem::Compare(itemPtr, col - 1);
+
+    case 5 :
+    {
+      int ret = wxStrcoll(syName, grItem->syName);
+
+      // If equal compare by name
+      if (ret == 0)
+        ret = wxStrcoll(gr.grName, grItem->gr.grName);
+
+      return ret;
+    }
+
+    case 6 :
+    {
+      int ret = wxStrcoll(mdName, grItem->mdName);
+
+      // If equal compare by name
+      if (ret == 0)
+        ret = wxStrcoll(gr.grName, grItem->gr.grName);
+
+      return ret;
+    }
+
+    case 7 :
+      if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
+        return 1;
+      else if (gr.grPrinted < ((GrItemEx *)itemPtr)->gr.grPrinted)
+        return -1;
+      else
+        return 0;
+
+    default :
       return 0;
   }
-
-  return GrItem::Compare(itemPtr, col - 1);
 }
 
 // -----------------------------------------------------------------------
@@ -166,19 +252,29 @@ void CGrListView::OnInitialUpdate()
   m_listCtrl->InsertColumn(3, _("Stage"), wxALIGN_LEFT, 10 * cW);
 
   // Size
-  m_listCtrl->InsertColumn(4, _("Size"), wxALIGN_LEFT, 4 * cW);
+  m_listCtrl->InsertColumn(4, _("Size"), wxALIGN_RIGHT, 4 * cW);
   m_listCtrl->HideColumn(4);
   m_listCtrl->AllowHideColumn(4);
 
-  // Notes
-  m_listCtrl->InsertColumn(5, _("Notes"), wxLIST_FORMAT_CENTER);
+  // System
+  m_listCtrl->InsertColumn(5, _("System"), wxALIGN_LEFT, 6 * cW);
   m_listCtrl->HideColumn(5);
   m_listCtrl->AllowHideColumn(5);
 
-  // Notes
-  m_listCtrl->InsertColumn(6, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  // Modus
+  m_listCtrl->InsertColumn(6, _("Modus"), wxALIGN_LEFT, 4 * cW);
   m_listCtrl->HideColumn(6);
   m_listCtrl->AllowHideColumn(6);
+
+  // Notes
+  m_listCtrl->InsertColumn(7, _("Notes"), wxLIST_FORMAT_CENTER);
+  m_listCtrl->HideColumn(7);
+  m_listCtrl->AllowHideColumn(7);
+
+  // Printed
+  m_listCtrl->InsertColumn(7, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->HideColumn(7);
+  m_listCtrl->AllowHideColumn(7);
 
   m_listCtrl->SetResizeColumn(2);
 
