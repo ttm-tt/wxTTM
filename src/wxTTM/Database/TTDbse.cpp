@@ -75,7 +75,7 @@
 
 #include  "Res.h"
 
-#define  DB_VERSION  180
+#define  DB_VERSION  181
 
 TTDbse * TTDbse::selfPtr = 0;
 
@@ -122,7 +122,6 @@ wxString  TTDbse::GetPassword(const wxString &connStr)
   static wxRegEx passwordRegEx("PWD=([^;]+);");
   return passwordRegEx.Matches(connStr) ? passwordRegEx.GetMatch(connStr, 1) : wxString();
 }
-
 
 // -----------------------------------------------------------------------
 
@@ -271,7 +270,10 @@ bool  TTDbse::OpenDatabase(const wxString &connStr, bool throwError)
 
   strDsn  = defaultConnection->GetConnectionString();
 
-  // Update DB-Tables
+  // Update DB-Tables, but only for local servers
+  if (!IsLocal())
+    return true;
+
   if (!UpdateTables(IdStore::IdVersion()))
     return true;   // XXX What to do?
     
@@ -539,6 +541,8 @@ bool  TTDbse::UpdateTables(long version)
 {
   bool res = true;
   
+  defaultConnection->StartTransaction();
+
   if (version == 0)
     res = CreateTables();
   else if (version < DB_VERSION)
@@ -644,6 +648,11 @@ bool  TTDbse::UpdateTables(long version)
     
     EnableAllTriggers(true);
   }
+
+  if (res)
+    defaultConnection->Commit();
+  else
+    defaultConnection->Rollback();
 
   return res;
 }

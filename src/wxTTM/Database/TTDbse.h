@@ -80,6 +80,9 @@ class  TTDbse
     // List all databases on server. Return a std::list<wxString>
     std::list<wxString> ListDatabases(const wxString &server, const wxString &connStr = wxEmptyString) const;
 
+    // Check if the touornament is on a local server
+    bool IsLocal() const {return IsLocalAddress(GetServer());}
+
     // Test if tournament has schedule
     bool IsScheduled() const;
 
