@@ -567,12 +567,19 @@ void CTT32App::ShowHtmlDialog(const wxString &filename)
 // -----------------------------------------------------------------------
 void CTT32App::ShowAboutDialog()
 {
+  wxString versionString;
+  int tourDbVersion = IdStore::IdVersion();
+  if (tourDbVersion)
+    versionString = wxString::Format("%s / local %u / remote %ld", version.c_str(), TTDbse::DbVersion, tourDbVersion);
+  else
+    versionString = wxString::Format("%s / local %u / remote unknown", version.c_str(), TTDbse::DbVersion);
+
   wxAboutDialogInfo info;
 
   info.SetName(wxT("TTM"));
   info.SetDescription(_T("Table Tennis Manager"));
   info.SetCopyright(copyright);
-  info.SetVersion(version);
+  info.SetVersion(versionString);
   info.SetWebSite("http://downloads.ttm.co.at/ttm/changes.html", _("View changes"));
 
 #if 0

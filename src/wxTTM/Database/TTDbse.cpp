@@ -77,6 +77,8 @@
 
 #define  DB_VERSION  181
 
+unsigned TTDbse::DbVersion = DB_VERSION;
+
 TTDbse * TTDbse::selfPtr = 0;
 
 

@@ -25,6 +25,9 @@ class  TTDbse
   public:
     static TTDbse * instance() {return selfPtr ? selfPtr : (selfPtr = new TTDbse);}
 
+    // DB version in this intance
+    static unsigned DbVersion;
+
  // Some helpers
     // Ist es eine lokale Adresse
     static bool  IsLocalAddress(const wxString &addr);

@@ -308,6 +308,9 @@ long  IdStore::ID(Connection *connPtr)
 // Versionsabfrage
 long  IdStore::IdVersion()
 {
+  if (!TTDbse::instance()->GetDefaultConnection())
+    return 0;
+
   long version = 0;
   Connection *connPtr  = TTDbse::instance()->GetDefaultConnection();
   Statement *stmtPtr   = connPtr->CreateStatement();
