@@ -31,6 +31,7 @@ bool  UpListStore::CreateView()
       "CREATE VIEW UpList AS "
       " SELECT upID, upNr, UpRec.psID, psLast, psFirst, psSex, "
       "        UpRec.naID, naName, naDesc, naRegion, psEmail, psPhone, "
+      "        psDeleteTime, IIF(psDeleteTime IS NULL, 0, 1) AS upDeleted, "
       "        psTimestamp "
       " FROM (PsRec INNER JOIN UpRec ON PsRec.psID = UpRec.psID) "
       "       LEFT OUTER JOIN NaRec ON UpRec.naID = NaRec.naID";
@@ -199,7 +200,8 @@ wxString  UpListStore::SelectString() const
 {
   wxString  str = 
       "SELECT upID, upNr, psID, psLast, psFirst, psSex, "
-      "       naID, naName, naDesc, naRegion, psEmail, psPhone "
+      "       naID, naName, naDesc, naRegion, psEmail, psPhone, "
+      "        psDeleteTime, IIF(psDeleteTime IS NULL, 0, 1) as upDeleted "
       "FROM UpList ";
 
   return str;  
@@ -208,18 +210,22 @@ wxString  UpListStore::SelectString() const
 
 bool  UpListStore::BindRec()
 {
-  BindCol(1, &upID);
-  BindCol(2, &upNr);
-  BindCol(3, &psID);
-  BindCol(4, psName.psLast, sizeof(psName.psLast));
-  BindCol(5, psName.psFirst, sizeof(psName.psFirst));
-  BindCol(6, &psSex);
-  BindCol(7, &naID);
-  BindCol(8, naName, sizeof(naName));
-  BindCol(9, naDesc, sizeof(naDesc));
-  BindCol(10, naRegion, sizeof(naRegion));
-  BindCol(12, psEmail, sizeof(psEmail));
-  BindCol(13, psPhone, sizeof(psPhone));
+  int idx = 0;
+
+  BindCol(++idx, &upID);
+  BindCol(++idx, &upNr);
+  BindCol(++idx, &psID);
+  BindCol(++idx, psName.psLast, sizeof(psName.psLast));
+  BindCol(++idx, psName.psFirst, sizeof(psName.psFirst));
+  BindCol(++idx, &psSex);
+  BindCol(++idx, &naID);
+  BindCol(++idx, naName, sizeof(naName));
+  BindCol(++idx, naDesc, sizeof(naDesc));
+  BindCol(++idx, naRegion, sizeof(naRegion));
+  BindCol(++idx, psEmail, sizeof(psEmail));
+  BindCol(++idx, psPhone, sizeof(psPhone));
+  BindCol(++idx, &psDeleteTime);
+  BindCol(++idx, &upDeleted);
 
   return true;
 }

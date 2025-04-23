@@ -38,6 +38,7 @@ class CUpListView : public CFormViewEx
   // Event handler
   private:
     void OnListColRightClick(wxListEvent &);
+    void OnRestore(wxCommandEvent &);
 
   private:
     static const char *  headers[];

@@ -475,7 +475,7 @@ bool  UpStore::Update()
 }
 
 
-bool  UpStore::Remove(long id)
+bool  UpStore::Remove(long id, bool force)
 {
   // ID-Check
   if (!id)
@@ -483,8 +483,21 @@ bool  UpStore::Remove(long id)
 
   if (!id)
     return true;
-  
-  wxString str = "DELETE FROM UpRec WHERE upID = " + ltostr(id);
+
+  UpStore up(GetConnectionPtr());
+  if (upID == id)
+    up = *this;
+  else
+  {
+    up.SelectById(id);
+    up.Next();
+    up.Close();
+  }
+
+  if (up.upDeleted || force)
+    return PsStore(GetConnectionPtr()).Remove(up.psID);
+
+  wxString str = "UPDATE PsRec SET psDeleteTime = GETUTCDATE() WHERE psID = " + ltostr(up.psID);
 
   try
   {
@@ -498,7 +511,7 @@ bool  UpStore::Remove(long id)
 
   // Notify Views
   CRequest update;
-  update.type = CRequest::REMOVE;
+  update.type = CRequest::UPDATE;
   update.rec  = CRequest::UPREC;
   update.id   = id;
 
@@ -508,7 +521,60 @@ bool  UpStore::Remove(long id)
 }
 
 
-// Check auf plExtID / plNr, ob WB existiert
+bool UpStore::Restore(long id)
+{
+  if (!id)
+    id = upID;
+
+  if (!id)
+    return true;
+  
+  UpStore up(GetConnectionPtr());
+  if (upID == id)
+    up = *this;
+  else
+  {
+    up.SelectById(id);
+    up.Next();
+    up.Close();
+  }
+
+  wxString str = "UPDATE PsRec SET psDeleteTime = NULL WHERE psID = ?";
+
+  PreparedStatement *stmtPtr = nullptr;
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->PrepareStatement(str);
+    if (!stmtPtr)
+      return false;
+
+    stmtPtr->SetData(1, &up.psID);
+    stmtPtr->Execute();
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);    
+    delete stmtPtr;
+    
+    return false;
+  }
+
+  delete stmtPtr;
+
+  // Notify Views
+  CRequest update;
+  update.type = CRequest::UPDATE;
+  update.rec  = CRequest::UPREC;
+  update.id   = id;
+
+  CTT32App::NotifyChange(update);
+
+  return true;
+}
+
+
+// Check auf upNr, ob Person existiert
 bool  UpStore::InsertOrUpdate()
 {
   UpStore up(GetConnectionPtr());
@@ -600,7 +666,8 @@ wxString  UpStore::SelectString() const
          " SELECT upID, upNr, UpRec.psID, "
          "        PsRec.psID, psLast, psFirst, psSex, "
          "        UpRec.naID, naName, naDesc, naRegion, "
-         "        psEmail, psPhone"
+         "        psEmail, psPhone, "
+         "        psDeleteTime, IIF(psDeleteTime IS NULL, 0, 1) as upDeleted "
          " FROM UpRec INNER JOIN PsRec ON UpRec.psID = PsRec.psID "
          "            LEFT OUTER JOIN NaRec ON UpRec.naID = NaRec.naID ";
 }
@@ -608,19 +675,22 @@ wxString  UpStore::SelectString() const
 
 void  UpStore::BindRec()
 {
-  BindCol(1, &upID);
-  BindCol(2, &upNr);
-  BindCol(3, &(UpRec::psID));
-  BindCol(4, &(PsRec::psID));
-  BindCol(5, psName.psLast, sizeof(psName.psLast));
-  BindCol(6, psName.psFirst, sizeof(psName.psFirst));
-  BindCol(7, &psSex);
-  BindCol(8, &naID);
-  BindCol(9, naName, sizeof(naName));
-  BindCol(10, naDesc, sizeof(naDesc));
-  BindCol(11, naRegion, sizeof(naRegion));
-  BindCol(12, psEmail, sizeof(psEmail));
-  BindCol(13, psPhone, sizeof(psPhone));
+  int idx = 0;
+  BindCol(++idx, &upID);
+  BindCol(++idx, &upNr);
+  BindCol(++idx, &(UpRec::psID));
+  BindCol(++idx, &(PsRec::psID));
+  BindCol(++idx, psName.psLast, sizeof(psName.psLast));
+  BindCol(++idx, psName.psFirst, sizeof(psName.psFirst));
+  BindCol(++idx, &psSex);
+  BindCol(++idx, &naID);
+  BindCol(++idx, naName, sizeof(naName));
+  BindCol(++idx, naDesc, sizeof(naDesc));
+  BindCol(++idx, naRegion, sizeof(naRegion));
+  BindCol(++idx, psEmail, sizeof(psEmail));
+  BindCol(++idx, psPhone, sizeof(psPhone));
+  BindCol(++idx, &psDeleteTime);
+  BindCol(++idx, &upDeleted);
 }
 
 

@@ -1196,7 +1196,7 @@ void CImportOnlineEntries::ClearTournament()
     up.Close();
 
     for (auto it : idList)
-      up.Remove(it);
+      up.Remove(it, true);
 
     idList.clear();
   

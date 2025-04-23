@@ -337,7 +337,7 @@ wxString  PlListStore::SelectString(const timestamp *when) const
   str += 
       "       plID, plExtID, plNr, psID, psLast, psFirst, psSex, psBirthday, "
       "       naID, naName, naDesc, naRegion, plRankPts, psPhone, psHasNote, "
-      "      plDeleted, psTimestamp "
+      "       psDeleteTime, plDeleted, psTimestamp "
       " FROM PlList " + ts;
 
   return str;  
@@ -346,23 +346,26 @@ wxString  PlListStore::SelectString(const timestamp *when) const
 
 bool  PlListStore::BindRec()
 {
-  BindCol(1, &plID);
-  BindCol(2, plExtID, sizeof(plExtID));
-  BindCol(3, &plNr);
-  BindCol(4, &psID);
-  BindCol(5, psName.psLast, sizeof(psName.psLast));
-  BindCol(6, psName.psFirst, sizeof(psName.psFirst));
-  BindCol(7, &psSex);
-  BindCol(8, &psBirthday);
-  BindCol(9, &naID);
-  BindCol(10, naName, sizeof(naName));
-  BindCol(11, naDesc, sizeof(naDesc));
-  BindCol(12, naRegion, sizeof(naRegion));
-  BindCol(13, &plRankPts);
-  BindCol(14, psPhone, sizeof(psPhone));
-  BindCol(15, &psHasNote);
-  BindCol(16, &plDeleted);
-  BindCol(17, &psTimestamp);
+  int idx = 0;
+
+  BindCol(++idx, &plID);
+  BindCol(++idx, plExtID, sizeof(plExtID));
+  BindCol(++idx, &plNr);
+  BindCol(++idx, &psID);
+  BindCol(++idx, psName.psLast, sizeof(psName.psLast));
+  BindCol(++idx, psName.psFirst, sizeof(psName.psFirst));
+  BindCol(++idx, &psSex);
+  BindCol(++idx, &psBirthday);
+  BindCol(++idx, &naID);
+  BindCol(++idx, naName, sizeof(naName));
+  BindCol(++idx, naDesc, sizeof(naDesc));
+  BindCol(++idx, naRegion, sizeof(naRegion));
+  BindCol(++idx, &plRankPts);
+  BindCol(++idx, psPhone, sizeof(psPhone));
+  BindCol(++idx, &psHasNote);
+  BindCol(++idx, &psDeleteTime);
+  BindCol(++idx, &plDeleted);
+  BindCol(++idx, &psTimestamp);
   
   return true;
 }

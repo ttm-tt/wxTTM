@@ -20,6 +20,7 @@
 IMPLEMENT_DYNAMIC_CLASS(CUpListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CUpListView, CFormViewEx)
+  EVT_BUTTON(XRCID("Restore"), CUpListView::OnRestore)
 END_EVENT_TABLE()
 
 
@@ -125,11 +126,35 @@ void  CUpListView::OnDelete()
               
         TTDbse::instance()->GetDefaultConnection()->StartTransaction();
         
-        if ( PsStore().Remove( ((UpItem *) itemPtr)->up.psID ) )
+        if ( UpStore().Remove( ((UpItem *) itemPtr)->up.upID ) )
           TTDbse::instance()->GetDefaultConnection()->Commit();
         else
           TTDbse::instance()->GetDefaultConnection()->Rollback();
       }
+    }
+  }
+}
+
+
+void CUpListView::OnRestore(wxCommandEvent&)
+{
+  bool doIt = true;
+
+  for (int idx = m_listCtrl->GetItemCount(); doIt && idx--; )
+  {
+    if (m_listCtrl->IsSelected(idx))
+    {
+      UpItem *itemPtr = (UpItem *) m_listCtrl->GetListItem(idx);
+
+      if (!itemPtr)
+        continue;
+
+      UpStore up;
+      up.SelectById(itemPtr->up.upID);
+      up.Next();
+      up.Close();
+
+      up.Restore();
     }
   }
 }

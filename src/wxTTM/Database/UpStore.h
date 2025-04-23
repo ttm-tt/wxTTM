@@ -18,13 +18,14 @@ class  ResultSet;
 // Tabellendaten in eigene Struktur
 struct UpRec : public PsRec
 {
-  long      upID;        // Unique ID
-  long      upNr;        // Spielernummer
-  long      psID;        // Foreign ID of PsRec
-  long      naID;        // Foreign ID of NaRec
-  wxChar    naName[9];   // Macht manches einfacher
-  wxChar    naDesc[65];  // dto.
+  long      upID;          // Unique ID
+  long      upNr;          // Umpire no
+  long      psID;          // Foreign ID of PsRec
+  long      naID;          // Foreign ID of NaRec
+  wxChar    naName[9];     // Assoc name to simplify stuff, not store
+  wxChar    naDesc[65];    // dto.
   wxChar    naRegion[65];  // dto.
+  bool      upDeleted;     // Flag if umpire was deleted
 
   UpRec()      {Init();}
   
@@ -66,7 +67,8 @@ class  UpStore : public StoreObj, public UpRec
 
     bool  Insert();
     bool  Update();
-    bool  Remove(long id = 0);
+    bool  Remove(long id = 0, bool force = false);
+    bool  Restore(long id = 0);
 
     // Check auf cpName, ob WB existiert
     bool  InsertOrUpdate();

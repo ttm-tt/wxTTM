@@ -98,7 +98,6 @@ void  PlItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
   wxRect    rcColumn = rect;
   wxChar    buf[130];
 
-
   switch (col)
   {
     case 0 :

@@ -23,6 +23,7 @@ class  UpItem : public ListItem
 
     virtual bool HasString(const wxString &str) const;
 
+    virtual bool IsDeleted() const { return up.upDeleted; }
   public:
     UpRec  up;
 };
