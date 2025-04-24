@@ -1368,8 +1368,6 @@ wxColor CTT32App::GetOvBkColor(const wxString &which) const
 }
 
 
-
-
 // -----------------------------------------------------------------------
 bool  CTT32App::CreateTournament(
     const wxString &name, 
