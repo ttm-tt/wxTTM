@@ -451,12 +451,17 @@ short GrListStore::GetLastScheduledRound(long id)
 // -----------------------------------------------------------------------
 wxString  GrListStore::SelectString() const
 {
+  // For baackward compatibility ínclude a join with CpList, MdList, SyList
+  // Remove them later
   wxString  str = 
     "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, "
-    "       cpID, cpName, GrList.mdID, mdName, syID, syName, grBestOf, "
+    "       cp.cpID, cp.cpName, md.mdID, md.mdName, sy.syID, sy.syName, grBestOf, "
     "       grQualRounds, grNofRounds, grNofMatches, grNoThirdPlace, grOnlyThirdPlace, "
     "       grPublished, grHasNotes, grSortOrder, grPrinted "
-    "  FROM GrList "
+    "  FROM GrList gr "
+    "       INNER JOIN CpList cp ON gr.cpID = cp.cpID "
+    "       LEFT OUTER JOIN MdList md ON gr.mdID = md.mdID "
+    "       LEFT OUTER JOIN SyList sy ON gr.syID = sy.syID "
     ;
 
   return str;
