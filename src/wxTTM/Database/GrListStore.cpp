@@ -102,7 +102,7 @@ void  GrListStore::Init()
 bool  GrListStore::SelectAll(const CpRec &cp)
 {
   wxString  str = SelectString();
-  str += " WHERE cpID = " + ltostr(cp.cpID) + " ORDER BY grSortOrder, grStage, grName";
+  str += " WHERE gr.cpID = " + ltostr(cp.cpID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {
@@ -124,7 +124,7 @@ bool  GrListStore::SelectAll(const CpRec &cp)
 bool  GrListStore::SelectAll(const MdRec& md)
 {
   wxString  str = SelectString();
-  str += " WHERE grModus =  " + ltostr(MOD_RR) + " AND mdID = " + ltostr(md.mdID) + " ORDER BY grSortOrder, grStage, grName";
+  str += " WHERE grModus =  " + ltostr(MOD_RR) + " AND gr.mdID = " + ltostr(md.mdID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {
@@ -146,8 +146,8 @@ bool  GrListStore::SelectAll(const MdRec& md)
 bool  GrListStore::SelectAll(const MpRec& mp)
 {
   wxString  str = SelectString();
-  str += " INNER JOIN MdList ON MdList.mdID = GrList.mdID ";
-  str += " WHERE MdList.mpID = " + ltostr(mp.mpID) + " ORDER BY grSortOrder, grStage, grName";
+  str += " INNER JOIN MdList md ON md.mdID = gr.mdID ";
+  str += " WHERE md.mpID = " + ltostr(mp.mpID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {
@@ -169,7 +169,7 @@ bool  GrListStore::SelectAll(const MpRec& mp)
 bool  GrListStore::SelectAll(const SyRec& sy)
 {
   wxString  str = SelectString();
-  str += " WHERE syID = " + ltostr(sy.syID) + " ORDER BY grSortOrder, grStage, grName";
+  str += " WHERE gr.syID = " + ltostr(sy.syID) + " ORDER BY grSortOrder, grStage, grName";
 
   try
   {
