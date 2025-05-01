@@ -3356,7 +3356,7 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
     if (cpType == CP_SINGLE)
       str = 
         "SELECT "
-        "mtDateTime, mtNr, cpName, grName, grStage, mtRound, mtMatch, NULL AS mtMS, "
+        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
         "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
         "NULL AS plBplExtId, NULL AS plBpsLast, NULL AS plBpsFirst, NULL AS plBnaName, NULL AS plBnaRegion, "
         "plXplExtID,  plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
@@ -3374,11 +3374,11 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
         "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
         "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
         "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
-        "ORDER BY cpName, mtDateTime, mtNr ";
+        "ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
       str = 
         "SELECT "
-        "mtDateTime, mtNr, cpName, grName, grStage, mtRound, mtMatch, NULL AS mtMS, "
+        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
         "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
         "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
         "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
@@ -3400,7 +3400,7 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
     else if (cpType == CP_TEAM)
       str = 
         "SELECT "
-        "mtDateTime, mtNr, cpName, grName, grStage, mtRound, mtMatch, mtSet1.mtMS, "
+        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, mtSet1.mtMS, "
         "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
         "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
         "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
@@ -3418,7 +3418,7 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
         "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 AND mtSet6.mtMS = mt.mtMS "
         "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 AND mtSet7.mtMS = mt.mtMS "
         "WHERE mtDateTime IS NOT NULL AND mtSet1.mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) +
-        "ORDER BY cpName, mtDateTime, mtNr, mt.mtMS";
+        "ORDER BY cp.cpName, mtDateTime, mtNr, mt.mtMS";
     else
       return false;
 
@@ -3493,7 +3493,7 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
     if (cpType == CP_SINGLE)
       str = 
         "SELECT "
-        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, NULL AS mtMS, "
+        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
         "       plAplExtID, NULL AS plBplExtId, plXplExtID, NULL AS plYplExtId, "
         "       stA.stPos, stX.stPos, "
         "       mtBestOf, "
@@ -3501,11 +3501,11 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
         "  FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
         "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
         " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cpName, mtDateTime, mtNr ";
+        " ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
       str = 
         "SELECT "
-        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, NULL AS mtMS, "
+        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
         "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
         "       stA.stPos, stX.stPos, "
         "       mtBestOf, "
@@ -3513,18 +3513,18 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
         "  FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
         "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
         " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cpName, mtDateTime, mtNr ";
+        " ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_TEAM)
       str = 
         "SELECT "
-        "       mtDateTime, cpName, grStage, grSortOrder, grName, grSize, grModus, mtRound, mtMatch, mtMS, "
+        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, mtMS, "
         "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
         "       NULL AS stAstPos, NULL AS stXstPos, "
         "       mtBestOf, "
         "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
         "  FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
         " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cpName, mtDateTime, mtNr, mtMS";
+        " ORDER BY cp.cpName, mtDateTime, mtNr, mtMS";
     else
       return false;
 
@@ -3628,9 +3628,9 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 
     wxString sql;
     wxString teamSql;
-    wxString event = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cpYear))), CASE cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'X' WHEN 4 THEN 'T' END) ";
-    wxString round = "IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound))";
-    wxString desc = "CONCAT(IIF(cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cpYear))), ' ', CASE cpSex WHEN 1 THEN 'Me\'\'s' WHEN 2 THEN 'Women\'\'s' ELSE 'Mixed' END, ' ', CASE cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
+    wxString event = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cp.cpYear))), CASE cp.cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'X' WHEN 4 THEN 'T' END) ";
+    wxString round = "IIF(gr.grModus = 2, CONCAT('Round of ', gr.grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound))";
+    wxString desc = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cp.cpYear))), ' ', CASE cp.cpSex WHEN 1 THEN 'Men\'\'s' WHEN 2 THEN 'Women\'\'s' ELSE 'Mixed' END, ' ', CASE cp.cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
 
     std::map<long, wxString> teamMatchMap;
 
@@ -3662,7 +3662,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
       "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
       "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
-      "ORDER BY cpName, mtDateTime, mtNr ";
+      "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
     {
@@ -3692,7 +3692,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
       "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
       "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
-      "ORDER BY cpName, mtDateTime, mtNr ";
+      "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_TEAM)
     {
@@ -3722,7 +3722,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
         "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
         "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-        "ORDER BY cpName, mtDateTime, mt.mtNr, mt.mtMS ";
+        "ORDER BY cp.cpName, mtDateTime, mt.mtNr, mt.mtMS ";
 
       teamSql =
         "SELECT "
@@ -3908,8 +3908,8 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     if (cpType == CP_TEAM)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, grName, grStage, "
-          "       IIF((grModus <> 2) OR (grWinner <> 1), CONCAT('', mtRound), CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, gr.grName, gr.grStage, "
+          "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), CONCAT('', mtRound), CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
           "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
@@ -3931,14 +3931,14 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
           "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
           " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cpName, mtDateTime, mt.mtNr "
+          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
       ;
     }
     else if (cpType == CP_SINGLE)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, "
-          "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
+          "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
           "       mtMatch, "
           "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
@@ -3958,7 +3958,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
           "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
           " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cpName, mtDateTime, mt.mtNr "
+          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
       ;
     }
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
