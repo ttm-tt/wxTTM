@@ -3,7 +3,7 @@
 
 #include "it_download.iss"
 
-#define Version '25.04.01'
+#define Version '25.05.01'
 
 [Setup]
 AppName=TTM
@@ -356,7 +356,7 @@ begin
 
   if ( FileExists(ExpandConstant('{src}\' + File)) ) then
   begin
-    FileCopy(ExpandConstant('{src}\' + File), ExpandConstant('{tmp}\' + File), False);
+    CopyFile(ExpandConstant('{src}\' + File), ExpandConstant('{tmp}\' + File), False);
   end
   else
   begin
