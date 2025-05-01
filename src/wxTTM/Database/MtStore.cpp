@@ -3964,8 +3964,8 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
     {
       sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cpName, "
-          "       IIF((grModus <> 2) OR (grWinner <> 1), grStage, CASE (grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', grSize / POWER(2, mtRound - 1)) END), "
+          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
+          "       IIF((grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
           "       mtMatch, "
           "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
           "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
@@ -3987,7 +3987,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
           "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
           "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
           " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cpName, mtDateTime, mt.mtNr "
+          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
       ;
     }
     else
