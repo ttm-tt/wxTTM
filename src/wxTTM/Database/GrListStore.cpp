@@ -235,8 +235,8 @@ bool  GrListStore::SelectById(const std::set<long> &idList)
 bool GrListStore::SelectByCpTm(const CpRec &cp, const TmRec &tm)
 {
   wxString str = SelectString();
-  str += " WHERE cpID = " + ltostr(cp.cpID) + 
-         "   AND grID IN (SELECT grID FROM StRec "
+  str += " WHERE cp.cpID = " + ltostr(cp.cpID) + 
+         "   AND gr.grID IN (SELECT grID FROM StRec "
          "                 WHERE tmID = " + ltostr(tm.tmID) + ")";
 
   try
