@@ -1131,6 +1131,9 @@
     <None Include="..\Reports\PlayerlistPerNumber.rep">
       <Filter>Resource Files\Reports</Filter>
     </None>
+    <None Include="..\Reports\Standings.rep">
+      <Filter>Resource Files\Reports</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources\wxTTM.rc">

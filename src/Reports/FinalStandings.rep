@@ -76,54 +76,55 @@ o;#34#</ADOCONNECTIONSTRING>
 <DATAINFO>
 <ALIAS type="String">TT32</ALIAS>
 <DATABASEALIAS type="String">TT32</DATABASEALIAS>
-<SQL type="WideString">SELECT#13##10#  cpType#44# cpYear#44# cpS
-ex#44##13##10#  cpName#44# grStage#44# gr
-Name#44# stPos#44# #13##10#  psFirst AS p
-lpsFirst#44# psLast AS plpsLast#44# naDes
-c AS plnaDesc#44# #13##10#  NULL AS bdpsF
-irst#44# NULL AS bdpsLast#44# NULL AS bdn
-aDesc#44##13##10#  tmID#44# NULL AS tmDes
-c#44# NULL AS tmnaDesc#13##10#FROM#13##10#
-  StSingleList st #13##10#  INNER JOIN Gr
-List gr on st.grid = gr.grid#13##10#  INN
-ER JOIN CpList cp on gr.cpid = cp.cpid#13#
-#10#  WHERE st.tmID IS NOT NULL #13##10# 
-     AND cpType = 1 #13##10#      AND grS
-tage IN (:PGRSTAGE)#13##10#      AND stpo
-s #60#= :PENDPOS AND grWinner = 1#13##10#
-#13##10#UNION#13##10##13##10#SELECT#13##10#
-  cpType#44# cpYear#44# cpSex#44##13##10#
-  cpName#44# grStage#44# grName#44# stPos
-#44# #13##10#  plpsFirst#44# plpsLast#44#
- plnaDesc#44# #13##10#  bdpsFirst#44# bdp
-sLast#44# bdnaDesc#44##13##10#  tmID#44# 
-NULL AS tmDesc#44# NULL AS tmnaDesc#13##10#
-FROM#13##10#  StDoubleList st #13##10#  I
+<SQL type="WideString">SELECT#13##10#  cp.cpType#44# cp.cpYear#44#
+ cp.cpSex#44##13##10#  cp.cpName#44# gr.g
+rStage#44# gr.grName#44# st.stPos#44# #13#
+#10#  psFirst AS plpsFirst#44# psLast AS 
+plpsLast#44# naDesc AS plnaDesc#44# #13##10#
+  NULL AS bdpsFirst#44# NULL AS bdpsLast#44#
+ NULL AS bdnaDesc#44##13##10#  tmID#44# N
+ULL AS tmDesc#44# NULL AS tmnaDesc#13##10#
+FROM#13##10#  StSingleList st #13##10#  I
 NNER JOIN GrList gr on st.grid = gr.grid#13#
 #10#  INNER JOIN CpList cp on gr.cpid = c
 p.cpid#13##10#  WHERE st.tmID IS NOT NULL
- #13##10#      AND (cpType = 2 OR cpType 
-= 3)#13##10#      AND grStage IN (:PGRSTA
-GE)#13##10#      AND stpos #60#= :PENDPOS
- AND grWinner = 1#13##10##13##10#UNION#13#
-#10##13##10#SELECT#13##10#  cpType#44# cp
-Year#44# cpSex#44##13##10#  cpname#44# gr
-Stage#44# grname#44# stpos#44# #13##10#  
-NULL AS plpsFirst#44# NULL AS plpsLast#44#
- NULL AS plnaDesc#44# #13##10#  NULL AS b
-dpsFirst#44# NULL AS bdpsLast#44# NULL AS
- bdnaDesc#44##13##10#  tmID#44# tmDesc#44#
- naDesc AS tmnaDesc#13##10#FROM#13##10#  
-StTeamList st #13##10#  INNER JOIN GrList
- gr on st.grid = gr.grid#13##10#  INNER J
-OIN CpList cp on gr.cpid = cp.cpid#13##10#
-  WHERE st.tmID IS NOT NULL#13##10#      
-AND cptype = 4 #13##10#      AND grStage 
-IN (:PGRSTAGE)#13##10#      AND stPos #60#
-= :PENDPOS AND grWinner = 1 #13##10##13##10#
-ORDER  BY cpType#44# grStage#44# cpYear D
-ESC#44# cpSex DESC#44# cpName#44# stPos A
-SC</SQL>
+ #13##10#      AND cpType = 1 #13##10#   
+   AND grStage IN (:PGRSTAGE)#13##10#    
+  AND stpos #60#= :PENDPOS AND grWinner =
+ 1#13##10##13##10#UNION#13##10##13##10#SE
+LECT#13##10#  cp.cpType#44# cp.cpYear#44#
+ cp.cpSex#44##13##10#  cp.cpName#44# gr.g
+rStage#44# gr.grName#44# st.stPos#44# #13#
+#10#  plpsFirst#44# plpsLast#44# plnaDesc
+#44# #13##10#  bdpsFirst#44# bdpsLast#44#
+ bdnaDesc#44##13##10#  tmID#44# NULL AS t
+mDesc#44# NULL AS tmnaDesc#13##10#FROM#13#
+#10#  StDoubleList st #13##10#  INNER JOI
+N GrList gr on st.grid = gr.grid#13##10# 
+ INNER JOIN CpList cp on gr.cpid = cp.cpi
+d#13##10#  WHERE st.tmID IS NOT NULL #13#
+#10#      AND (cpType = 2 OR cpType = 3)#13#
+#10#      AND grStage IN (:PGRSTAGE)#13##10#
+      AND stPos #60#= :PENDPOS AND grWinn
+er = 1#13##10##13##10#UNION#13##10##13##10#
+SELECT#13##10#  cp.cpType#44# cp.cpYear#44#
+ cp.cpSex#44##13##10#  cp.cpName#44# gr.g
+rStage#44# gr.grName#44# st.stPos#44# #13#
+#10#  NULL AS plpsFirst#44# NULL AS plpsL
+ast#44# NULL AS plnaDesc#44# #13##10#  NU
+LL AS bdpsFirst#44# NULL AS bdpsLast#44# 
+NULL AS bdnaDesc#44##13##10#  tmID#44# tm
+Desc#44# naDesc AS tmnaDesc#13##10#FROM#13#
+#10#  StTeamList st #13##10#  INNER JOIN 
+GrList gr on st.grid = gr.grid#13##10#  I
+NNER JOIN CpList cp on gr.cpid = cp.cpid#13#
+#10#  WHERE st.tmID IS NOT NULL#13##10#  
+    AND cptype = 4 #13##10#      AND grSt
+age IN (:PGRSTAGE)#13##10#      AND stPos
+ #60#= :PENDPOS AND grWinner = 1 #13##10#
+#13##10#ORDER  BY cp.cpType#44# gr.grStag
+e#44# cp.cpYear DESC#44# cp.cpSex DESC#44#
+ cp.cpName#44# st.stPos ASC</SQL>
 <DATASOURCE type="String"></DATASOURCE>
 <MYBASEFILENAME type="String"></MYBASEFILENAME>
 <MYBASEFIELDS type="String"></MYBASEFIELDS>

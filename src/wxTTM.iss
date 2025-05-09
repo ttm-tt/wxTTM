@@ -3,7 +3,7 @@
 
 #include "it_download.iss"
 
-#define Version '25.05.01'
+#define Version '25.05.02'
 
 [Setup]
 AppName=TTM
@@ -154,6 +154,7 @@ Source: src\Reports\ChampionshipEntries.rep; DestDir: {app}; Flags: ignoreversio
 Source: src\Reports\ConsolationEntries.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\MatchList.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\GroupResults.rep; DestDir: {app}; Flags: ignoreversion
+Source: src\Reports\Standings.rep; DestDir: {app}; Flags: ignoreversion
 Source: src\Reports\FinalStandings.rep; DestDir: {app}; Flags: ignoreversion
 ; Damit ich die Rechte setzen kann ("Users" im englischen, "Benutzer" im deutschen), ein leeres File kopieren
 ; Source: "Output\TT32.ini"; DestDir: "{code:GetIniDir}"; Flags: onlyifdoesntexist; Permissions: authusers-modify;

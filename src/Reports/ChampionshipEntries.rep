@@ -76,44 +76,44 @@ C2005;DRIVER=#123#SQL Server#125#;SERVER=
 <DATAINFO>
 <ALIAS type="String">TT32</ALIAS>
 <DATABASEALIAS type="String">TT32</DATABASEALIAS>
-<SQL type="WideString">SELECT#13##10#    cpName#44# cpDesc#44# c
-pType#44# grName#44# st.stPos#44##13##10#
-    st.plNr AS plplNr#44# st.psLast AS pl
-psLast#44# st.psFirst AS plpsFirst#44# st
-.naName AS plnaName#44# st.naDesc AS plna
-Desc#44# #13##10#    NULL AS bdplNr#44# N
-ULL AS bdpsLast#44# NULL AS bdpsFirst#44#
- NULL AS bdnaName#13##10#FROM#13##10#    
-StSingleList st INNER JOIN GrList gr ON (
-st.grID = gr.grID)#13##10#               
-            INNER JOIN CpList cp ON (gr.c
-pID = cp.cpID)#13##10##13##10#WHERE #13##10#
-    cp.cpType = 1 AND#13##10#    gr.cpID 
-= :PCPID AND #13##10#    gr.grStage = #39#
-Qualification#39# AND#13##10#    st.tmID 
-IS NOT NULL AND #13##10#    st.stPos #60#
-= (gr.grSize #43# 1) #47# 2 AND #13##10# 
-   st.stNoCons = 0 AND stDisqu = 0 AND st
-GaveUp = 0#13##10##13##10#UNION#13##10##13#
-#10#SELECT#13##10#    cpName#44# cpDesc#44#
- cpType#44# grName#44# st.stPos#44##13##10#
-    plplNr#44# plpsLast#44# plpsFirst#44#
- plnaName#44# plnaDesc#44# #13##10#    bd
-plNr#44# bdpsLast#44# bdpsFirst#44# bdnaN
-ame#13##10#FROM#13##10#    StDoubleList s
-t INNER JOIN GrList gr ON (st.grID = gr.g
-rID)#13##10#                           IN
-NER JOIN CpList cp ON (gr.cpID = cp.cpID)
-#13##10##13##10#WHERE #13##10#    (cp.cpT
-ype = 2 OR cp.cpType = 3) AND #13##10#   
- gr.cpID = :PCPID AND #13##10#    gr.grSt
-age = #39#Qualification#39# AND#13##10#  
-  st.tmID IS NOT NULL AND#13##10#    st.s
-tPos #60#= (gr.grSize #43# 1) #47# 2 AND 
-#13##10#    st.stNoCons = 0 AND stDisqu =
- 0 AND stGaveUp = 0#13##10##13##10##13##10#
-ORDER BY#13##10#    grName#44# stPos#13##10#
-</SQL>
+<SQL type="WideString">SELECT#13##10#    cp.cpName#44# cp.cpDesc
+#44# cp.cpType#44# gr.grName#44# st.stPos
+#44##13##10#    st.plNr AS plplNr#44# st.
+psLast AS plpsLast#44# st.psFirst AS plps
+First#44# st.naName AS plnaName#44# st.na
+Desc AS plnaDesc#44# #13##10#    NULL AS 
+bdplNr#44# NULL AS bdpsLast#44# NULL AS b
+dpsFirst#44# NULL AS bdnaName#13##10#FROM
+#13##10#    StSingleList st INNER JOIN Gr
+List gr ON (st.grID = gr.grID)#13##10#   
+                        INNER JOIN CpList
+ cp ON (gr.cpID = cp.cpID)#13##10##13##10#
+WHERE #13##10#    cp.cpType = 1 AND#13##10#
+    gr.cpID = :PCPID AND #13##10#    gr.g
+rStage = #39#Qualification#39# AND#13##10#
+    st.tmID IS NOT NULL AND #13##10#    s
+t.stPos #60#= (gr.grSize #43# 1) #47# 2 A
+ND #13##10#    st.stNoCons = 0 AND stDisq
+u = 0 AND stGaveUp = 0#13##10##13##10#UNI
+ON#13##10##13##10#SELECT#13##10#    cp.cp
+Name#44# cp.cpDesc#44# cp.cpType#44# gr.g
+rName#44# st.stPos#44##13##10#    plplNr#44#
+ plpsLast#44# plpsFirst#44# plnaName#44# 
+plnaDesc#44# #13##10#    bdplNr#44# bdpsL
+ast#44# bdpsFirst#44# bdnaName#13##10#FRO
+M#13##10#    StDoubleList st INNER JOIN G
+rList gr ON (st.grID = gr.grID)#13##10#  
+                         INNER JOIN CpLis
+t cp ON (gr.cpID = cp.cpID)#13##10##13##10#
+WHERE #13##10#    (cp.cpType = 2 OR cp.cp
+Type = 3) AND #13##10#    gr.cpID = :PCPI
+D AND #13##10#    gr.grStage = #39#Qualif
+ication#39# AND#13##10#    st.tmID IS NOT
+ NULL AND#13##10#    st.stPos #60#= (gr.g
+rSize #43# 1) #47# 2 AND #13##10#    st.s
+tNoCons = 0 AND stDisqu = 0 AND stGaveUp 
+= 0#13##10##13##10##13##10#ORDER BY#13##10#
+    grName#44# stPos#13##10#</SQL>
 <DATASOURCE type="String"></DATASOURCE>
 <MYBASEFILENAME type="String"></MYBASEFILENAME>
 <MYBASEFIELDS type="String"></MYBASEFIELDS>

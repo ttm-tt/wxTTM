@@ -36,7 +36,7 @@ static int defaultType  = TT_REGULAR;
 static int defaultTable = TT_ITTF;
 
 // Muss hier stehen, weil es sonst nicht compiliert
-static const wxString versionNumber = "25.05.01";
+static const wxString versionNumber = "25.05.02";
 static const wxString version = "Version " + versionNumber;
 
 static wxString licensee = " Christoph Theis";
@@ -195,6 +195,9 @@ bool CTT32App::OnInit()
 
   if ( wxStrlen(ttProfile.GetString(PRF_REPORTS, wxT("MatchList"))) == 0 )  
     ttProfile.AddString(PRF_REPORTS, wxT("MatchList"), _("List of Matches"));
+
+  if (wxStrlen(ttProfile.GetString(PRF_REPORTS, wxT("Standings"))) == 0)
+    ttProfile.AddString(PRF_REPORTS, wxT("Standings"), _("Standings"));
 
   if (wxStrlen(ttProfile.GetString(PRF_REPORTS, wxT("FinalStandings"))) == 0)
     ttProfile.AddString(PRF_REPORTS, wxT("FinalStandings"), _("Final Standings"));
