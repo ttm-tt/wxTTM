@@ -87,7 +87,7 @@ class  TmEntryStore : public StoreObj, public TmEntry
   public:
     bool  SelectTeamById(long id, short type, const timestamp * = NULL);
     bool  SelectTeamById(const std::set<long> &ids, short type);
-    bool  SelectTeamByCp(const CpRec &cp);
+    bool  SelectTeamByCp(const CpRec &cp, long naID = 0);
     bool  SelectTeamForSeeding(const GrRec &gr, short cpType);
     short CountTeams(const CpRec &cp);
 

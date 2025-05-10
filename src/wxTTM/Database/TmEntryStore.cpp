@@ -287,7 +287,7 @@ bool  TmEntryStore::SelectTeamById(const std::set<long> &ids, short type)
 }
 
 
-bool  TmEntryStore::SelectTeamByCp(const CpRec &cp)
+bool  TmEntryStore::SelectTeamByCp(const CpRec &cp, long naID)
 {
   team.cpType = cp.cpType;
 
@@ -296,21 +296,30 @@ bool  TmEntryStore::SelectTeamByCp(const CpRec &cp)
   switch (team.cpType)
   {
     case CP_SINGLE :
-      str += " WHERE cpID = ";
-      str += ltostr(cp.cpID);
+      str += " WHERE 1=1";
+      if (cp.cpID)
+        str += " AND cpID = " + ltostr(cp.cpID);
+      if (naID)
+        str += " AND tmnaID = " + ltostr(naID);
       str += " ORDER BY plNr";
       break;
 
     case CP_DOUBLE :
     case CP_MIXED  :
-      str += " WHERE cpID = ";
-      str += ltostr(cp.cpID);
+      str += " WHERE 1=1";
+      if (cp.cpID)
+        str += " AND cpID = " + ltostr(cp.cpID);
+      if (naID)
+        str += " AND tmnaID = " + ltostr(naID);
       str += " ORDER BY plplNr";
       break;
 
     case CP_TEAM  :
-      str += " WHERE cpID = ";
-      str += ltostr(cp.cpID);
+      str += " WHERE 1=1";
+      if (cp.cpID)
+        str += " AND cpID = " + ltostr(cp.cpID);
+      if (naID)
+        str += " AND tmnaID = " + ltostr(naID);
       str += " ORDER BY tmName";
       break;
 

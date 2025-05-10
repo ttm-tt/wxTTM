@@ -115,7 +115,10 @@ bool  TmListStore::SelectById(long id)
 bool  TmListStore::SelectByCp(const CpRec &cp, long naID)
 {
   wxString str = SelectString();
-  str += " WHERE cpType = " + ltostr(CP_TEAM) + " AND cpID = " + ltostr(cp.cpID);
+  str += " WHERE cpType = " + ltostr(CP_TEAM);
+  
+  if (cp.cpID)
+    str += " AND cpID = " + ltostr(cp.cpID);
 
   if (naID)
     str += " AND naID = " + ltostr(naID);

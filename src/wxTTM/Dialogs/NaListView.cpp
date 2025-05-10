@@ -84,7 +84,7 @@ void CNaListView::OnInitialUpdate()
 	CFormViewEx::OnInitialUpdate();
 
   // TODO: Show only when we have teams
-  XRCCTRL(*this, "Teams", wxButton)->Hide();
+  // XRCCTRL(*this, "Teams", wxButton)->Hide();
 	
 	m_listCtrl = XRCCTRL(*this, "Associations", CListCtrlEx);
 	

@@ -148,6 +148,7 @@ void CTmListView::OnInitialUpdate()
   m_listCtrl->InsertColumn(0, _("Name"), wxALIGN_LEFT);
   m_listCtrl->InsertColumn(1, _("Description"), wxALIGN_LEFT, GetClientSize().GetWidth());
   m_listCtrl->InsertColumn(2, _("Assoc."), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(3, _("Event"), wxALIGN_LEFT);
   
   m_listCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE_USEHEADER);
   m_listCtrl->SetColumnWidth(2, wxLIST_AUTOSIZE_USEHEADER);
@@ -164,15 +165,24 @@ void CTmListView::OnSelChangeCp(wxCommandEvent &)
   if (!itemPtr)
     return;
 
-  cp.SelectById(itemPtr->GetID());
-  cp.Next();
+  if (itemPtr->GetID())
+  {
+    cp.SelectById(itemPtr->GetID());
+    cp.Next();
+  } 
+  else
+  {
+    cp.Init();
+    cp.cpType = CP_TEAM;
+  }
 
   TmEntryStore  tmList;
-  tmList.SelectTeamByCp(cp);
+  tmList.team.cpType = CP_TEAM;
+  tmList.SelectTeamByCp(cp, naID);
 
   while (tmList.Next())
   {
-    m_listCtrl->AddListItem(new TdItem(tmList));
+    m_listCtrl->AddListItem(new TdItem(tmList, cp.cpName));
   }
   
   m_listCtrl->SortItems();

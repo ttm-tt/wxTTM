@@ -25,6 +25,13 @@ TdItem::TdItem(const TmEntry &rec)
 }
 
 
+TdItem::TdItem(const TmEntry& rec, const wxChar *cpName_)
+  : TmItem(rec)
+{
+  if (cpName_)
+    cpName = cpName_;
+}
+
 
 void  TdItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 {
@@ -44,6 +51,9 @@ void  TdItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawString(pDC, rcColumn, entry.team.tm.naName);
       break;
 
+    case 4:
+      DrawString(pDC, rcColumn, cpName);
+      break;
 
     default :
       break;
