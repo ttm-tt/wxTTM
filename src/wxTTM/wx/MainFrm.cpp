@@ -281,9 +281,9 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
   else if (evt.GetId() == XRCID("RegistrationAssociationsMenuItem"))
     CTT32App::instance()->OpenView(_("List of Associations"), wxT("NaListView"));
   else if (evt.GetId() == XRCID("RegistrationTeamsMenuItem"))
-    CTT32App::instance()->OpenView(_("List of Teams"), wxT("TmListView"));
+    CTT32App::instance()->OpenView(_("List of Teams"), wxT("TmListView"), (long) 0);
   else if (evt.GetId() == XRCID("RegistrationPlayersMenuItem"))  
-    CTT32App::instance()->OpenView(_("List of Players"), wxT("PlListView"));
+    CTT32App::instance()->OpenView(_("List of Players"), wxT("PlListView"), (long) 0);
   else if (evt.GetId() == XRCID("RegistrationUmpiresMenuItem"))  
     CTT32App::instance()->OpenView(_("List of Umpires"), wxT("UpListView"));
     

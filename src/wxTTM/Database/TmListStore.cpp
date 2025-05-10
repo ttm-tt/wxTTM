@@ -15,6 +15,8 @@
 #include  "LtStore.h"
 #include  "PlStore.h"
 
+#include  "Rec.h"
+
 #include  <stdio.h>
 #include  <stdlib.h>
 
@@ -110,10 +112,13 @@ bool  TmListStore::SelectById(long id)
 }
 
 
-bool  TmListStore::SelectByCp(const CpRec &cp)
+bool  TmListStore::SelectByCp(const CpRec &cp, long naID)
 {
   wxString str = SelectString();
-  str += " WHERE cpID = " + ltostr(cp.cpID);
+  str += " WHERE cpType = " + ltostr(CP_TEAM) + " AND cpID = " + ltostr(cp.cpID);
+
+  if (naID)
+    str += " AND naID = " + ltostr(naID);
 
   try
   {

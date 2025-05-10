@@ -43,6 +43,19 @@ CTmListView::~CTmListView()
 
 bool CTmListView::Edit(va_list vaList)
 {
+  naID = va_arg(vaList, long);
+
+  if (naID)
+  {
+    // "All Events" entry
+    cp.cpID = 0;
+    wxStrncpy(cp.cpDesc, _("All Events").c_str(), sizeof(cp.cpDesc) / sizeof(wxChar) - 1);
+    m_cbCp->AddListItem(new CpItem(cp));
+  }
+
+  // If we select by naID add otption to show show teams for all events, 
+  // but add column for event
+  // Otherwise hide that column and default to first / default event
   CpListStore  cp;
   cp.SelectAll();
   while (cp.Next())
@@ -54,7 +67,7 @@ bool CTmListView::Edit(va_list vaList)
   wxString cpName = CTT32App::instance()->GetDefaultCP();
 
   ListItem *cpItemPtr = m_cbCp->FindListItem(cpName);
-  if (!cpItemPtr)
+  if (naID || !cpItemPtr)
     cpItemPtr = m_cbCp->GetListItem(0);
     
   if (cpItemPtr)
@@ -140,7 +153,6 @@ void CTmListView::OnInitialUpdate()
   m_listCtrl->SetColumnWidth(2, wxLIST_AUTOSIZE_USEHEADER);
  
   m_listCtrl->SetResizeColumn(1);
-
 }
 
 

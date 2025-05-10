@@ -11,6 +11,9 @@
 #include "NaStore.h"
 #include "NaItem.h"
 
+#include "PlListStore.h"
+#include "TmListStore.h"
+
 #include "InfoSystem.h"
 #include "Request.h"
 
@@ -19,6 +22,8 @@
 IMPLEMENT_DYNAMIC_CLASS(CNaListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CNaListView, CFormViewEx)
+EVT_BUTTON(XRCID("Players"), CNaListView::OnPlayers)
+EVT_BUTTON(XRCID("Teams"), CNaListView::OnTeams)
 
 END_EVENT_TABLE()
 
@@ -77,6 +82,9 @@ bool CNaListView::Edit(va_list vaList)
 void CNaListView::OnInitialUpdate() 
 {
 	CFormViewEx::OnInitialUpdate();
+
+  // TODO: Show only when we have teams
+  XRCCTRL(*this, "Teams", wxButton)->Hide();
 	
 	m_listCtrl = XRCCTRL(*this, "Associations", CListCtrlEx);
 	
@@ -139,6 +147,30 @@ void  CNaListView::OnDelete()
   }
 }
 
+
+void CNaListView::OnPlayers(wxCommandEvent&)
+{
+  NaItem * itemPtr = (NaItem *) m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+  long  naID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Players from ") + itemPtr->na.naDesc, wxT("PlListView"), naID);
+}
+
+
+
+void CNaListView::OnTeams(wxCommandEvent&)
+{
+  NaItem * itemPtr = (NaItem *) m_listCtrl->GetCurrentItem();
+  if (!itemPtr)
+    return;
+
+  long  naID = itemPtr->GetID();
+
+  CTT32App::instance()->OpenView(_("Teams from ") + itemPtr->na.naDesc, wxT("TmListView"), naID);
+}
 
 // -----------------------------------------------------------------------
 void CNaListView::OnUpdate(CRequest *reqPtr) 

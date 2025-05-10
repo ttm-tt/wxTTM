@@ -92,9 +92,12 @@ void  PlListStore::Init()
 
 // -----------------------------------------------------------------------
 // Select-Statements
-bool  PlListStore::SelectAll()
+bool  PlListStore::SelectAll(long naID)
 {
   wxString  str = SelectString();
+  if (naID)
+    str += " WHERE naID = " + ltostr(naID);
+
   str += " ORDER BY plNr";
 
   try

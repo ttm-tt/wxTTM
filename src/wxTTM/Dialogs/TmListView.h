@@ -38,8 +38,10 @@ class CTmListView : public CFormViewEx
 
   private:
     CpListStore   cp;
-    CComboBoxEx * m_cbCp;
-	  CListCtrlEx * m_listCtrl;
+    CComboBoxEx * m_cbCp = nullptr;
+	  CListCtrlEx * m_listCtrl = nullptr;
+
+    long naID = 0;
 	  
 	DECLARE_DYNAMIC_CLASS(CTmListView)
 	DECLARE_EVENT_TABLE()

@@ -33,6 +33,9 @@ class CNaListView : public CFormViewEx
     virtual void OnEdit();
     virtual void OnDelete();
 
+    void OnPlayers(wxCommandEvent &);
+    void OnTeams(wxCommandEvent &);
+
   private:
 	  CListCtrlEx * m_listCtrl;
 	  

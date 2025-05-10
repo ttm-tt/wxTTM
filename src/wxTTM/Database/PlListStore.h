@@ -34,7 +34,7 @@ class  PlListStore : public StoreObj, public PlListRec
 
   // API: Wettbewerbe auswaehlen
   public:
-    bool  SelectAll(); // Alle Spieler
+    bool  SelectAll(long naID = 0); // Alle Spieler
     bool  SelectById(long id, const timestamp * = NULL);   // Spieler nach ID
     bool  SelectByNr(long nr);   // Spieler nach Nr
 

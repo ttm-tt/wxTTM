@@ -80,8 +80,10 @@ void CPlListView::RestoreSettings()
 // -----------------------------------------------------------------------
 bool CPlListView::Edit(va_list vaList)
 {
+  long naID = va_arg(vaList, long);
+
   PlListStore  plList;
-  plList.SelectAll();
+  plList.SelectAll(naID);
 
   while (plList.Next())
   {
