@@ -48,6 +48,7 @@ struct  TmEntry : public TmListRec
     TmGroup   gr;
   }  team;
 
+  wxChar cpName[9];
   double rankPts = 0.;
 
   TmEntry() {memset(this, 0, sizeof(TmEntry));}

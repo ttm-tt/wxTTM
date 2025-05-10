@@ -182,7 +182,7 @@ void CTmListView::OnSelChangeCp(wxCommandEvent &)
 
   while (tmList.Next())
   {
-    m_listCtrl->AddListItem(new TdItem(tmList, cp.cpName));
+    m_listCtrl->AddListItem(new TdItem(tmList));
   }
   
   m_listCtrl->SortItems();

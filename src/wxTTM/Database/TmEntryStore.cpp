@@ -141,11 +141,11 @@ bool  TmEntryStore::CreateView()
     str = "CREATE VIEW TmSingleList "
           "           (plID, plNr, psLast, psFirst, psSex,                  "
           "            naID, naName, naDesc, naRegion, plExtID, plRankPts, ltRankPts, ntNr, "
-          "            tmID, cpID, tmnaID, tmTimestamp)                     "
+          "            tmID, cpID, cpType, cpName, tmnaID, tmTimestamp)                     "
           "  AS SELECT PlRec.plID, plNr, psLast, psFirst, psSex,            "
           "            NaRec.naID, naName, naDesc, naRegion, plExtID, plRankPts,      "
           "            ISNULL((SELECT TOP 1 rpRankPts FROM RpRec rp WHERE rp.plID = PlRec.plID AND rp.rpYear <= CpRec.cpYear ORDER BY rp.rpYear DESC ), PlRec.plRankPts) AS ltRankPts, "
-          "            NtRec.ntNr, TmRec.tmID, TmRec.cpID, RkRec.naID, tmTimestamp      "
+          "            NtRec.ntNr, TmRec.tmID, TmRec.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, tmTimestamp  "
           "    FROM TmRec INNER JOIN NtRec ON TmRec.tmID = NtRec.tmID       "
           "               INNER JOIN LtRec ON NtRec.ltID = LtRec.ltID       "
           "               INNER JOIN PlRec ON LtRec.plID = PlRec.plID       "
@@ -161,26 +161,28 @@ bool  TmEntryStore::CreateView()
           "            plNaID, plnaName,  plnaDesc, plnaRegion, plplExtID, plRankPts, plltRankPts, plntNr, "
           "            bdplID, bdplNr,  bdpsLast,  bdpsFirst,  bdpsSex,           "
           "            bdnaID, bdnaName, bdnaDesc,  bdnaRegion, bdplExtID, bdRankPts, bdltRankPts, bdntNr, "
-          "            tmID, cpID, tmnaID, tmTimestamp) "
+          "            tmID, cpID, cpType, cpName, tmnaID, tmTimestamp) "
           "  AS SELECT pl.plID, pl.plNr, pl.psLast, pl.psFirst, pl.psSex,           "
           "            pl.naID, pl.naName, pl.naDesc, pl.naRegion, pl.plExtID, pl.plRankPts, pl.ltRankPts, "
           "            pl.ntNr, "
           "            bd.plID, bd.plNr, bd.psLast, bd.psFirst, bd.psSex,           "
           "            bd.naID, bd.naName, bd.naDesc, bd.naRegion, bd.plExtID, bd.plRankPts, bd.ltRankPts, "
           "            bd.ntNr, "
-          "            pl.tmID, pl.cpID, RkRec.naID, pl.tmTimestamp        "  // View pl.tmTimestamp und bd.tmTimestamp muessen gleich sein weil gleiches Team
+          "            pl.tmID, pl.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, pl.tmTimestamp "  // View pl.tmTimestamp und bd.tmTimestamp muessen gleich sein weil gleiches Team
           "       FROM TmSingleList pl INNER JOIN TmSingleList bd          "
           "            ON pl.tmID = bd.tmID AND pl.ntNr = 1 AND bd.ntNr = 2 "
+          "            INNER JOIN CpRec ON pl.cpID = CpRec.cpID            "
           "            LEFT OUTER JOIN RkRec ON pl.tmID = RkRec.tmID       "
     ;
     tmp->ExecuteUpdate(str);
 
     str = "CREATE VIEW TmTeamList                                           "
           "           (tmName, tmDesc, naID, naName, naDesc, naRegion,      "
-          "            tmID, cpID, tmnaID, tmTimestamp)                     "
+          "            tmID, cpID, cpType, cpName, tmnaID, tmTimestamp)                     "
           "  AS SELECT tmName, tmDesc, NaRec.naID, naName, naDesc, naRegion, "
-          "            TmRec.tmID, TmRec.cpID, RkRec.naID, tmTimestamp      "
-          "       FROM TmRec LEFT OUTER JOIN (                              "
+          "            TmRec.tmID, TmRec.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, tmTimestamp "
+          "       FROM TmRec INNER JOIN CpRec ON CpRec.cpID = TmRec.cpID    "
+          "                  LEFT OUTER JOIN("
           "                  RkRec INNER JOIN NaRec ON RkRec.naID = NaRec.naID) "
           "                  ON TmRec.tmID = RkRec.tmID                     "
      ;
@@ -296,31 +298,39 @@ bool  TmEntryStore::SelectTeamByCp(const CpRec &cp, long naID)
   switch (team.cpType)
   {
     case CP_SINGLE :
-      str += " WHERE 1=1";
+      str += " WHERE cpType = " + ltostr(CP_SINGLE);
       if (cp.cpID)
         str += " AND cpID = " + ltostr(cp.cpID);
       if (naID)
         str += " AND tmnaID = " + ltostr(naID);
-      str += " ORDER BY plNr";
+      str += " ORDER BY plNr, cpName";
       break;
 
     case CP_DOUBLE :
-    case CP_MIXED  :
-      str += " WHERE 1=1";
+      str += " WHERE cpType = " + ltostr(CP_DOUBLE);
       if (cp.cpID)
         str += " AND cpID = " + ltostr(cp.cpID);
       if (naID)
         str += " AND tmnaID = " + ltostr(naID);
-      str += " ORDER BY plplNr";
+      str += " ORDER BY plplNr, cpName";
+      break;
+
+    case CP_MIXED  :
+      str += " WHERE cpType = " + ltostr(CP_MIXED);
+      if (cp.cpID)
+        str += " AND cpID = " + ltostr(cp.cpID);
+      if (naID)
+        str += " AND tmnaID = " + ltostr(naID);
+      str += " ORDER BY plplNr, cpName";
       break;
 
     case CP_TEAM  :
-      str += " WHERE 1=1";
+      str += " WHERE cpType = " + ltostr(CP_TEAM);
       if (cp.cpID)
         str += " AND cpID = " + ltostr(cp.cpID);
       if (naID)
         str += " AND tmnaID = " + ltostr(naID);
-      str += " ORDER BY tmName";
+      str += " ORDER BY tmName, cpName";
       break;
 
     default :
@@ -452,7 +462,7 @@ wxString  TmEntryStore::SelectString(const timestamp *when) const
   {
     case CP_SINGLE :
       str += " plNr, psLast, psFirst, psSex, naID, naName, naDesc, ltRankPts,"
-             " tmID, cpID, tmnaID "
+             " tmID, cpID, cpName, tmnaID "
              "  FROM TmSingleList " + ts + " ";
 
       break;
@@ -461,13 +471,13 @@ wxString  TmEntryStore::SelectString(const timestamp *when) const
     case CP_MIXED :
       str += " plplNr, plpsLast, plpsFirst, plpsSex, plnaID, plnaName, plnaDesc, plltRankPts, "
              "       bdplNr, bdpsLast, bdpsFirst, bdpsSex, bdnaID, bdnaName, bdnaDesc, bdltRankpts, "
-             "       tmID, cpID, tmnaID  "
+             "       tmID, cpID, cpName, tmnaID  "
              "  FROM TmDoubleList " + ts + " ";
 
       break;
 
     case CP_TEAM :
-      str += "tmName, tmDesc, naID, naName, naDesc, tmID, cpID, tmnaID "
+      str += "tmName, tmDesc, naID, naName, naDesc, tmID, cpID, cpName, tmnaID "
              "FROM TmTeamList " + ts + " ";
       break;
 
@@ -497,6 +507,7 @@ bool  TmEntryStore::BindRec()
       BindCol(col++, &team.pl.plRankPts);
       BindCol(col++, &tmID);
       BindCol(col++, &cpID);
+      BindCol(col++, cpName, sizeof(cpName));
       BindCol(col++, &naID);
       break;
 
@@ -522,6 +533,7 @@ bool  TmEntryStore::BindRec()
 
       BindCol(col++, &tmID);
       BindCol(col++, &cpID);
+      BindCol(col++, cpName, sizeof(cpName));
       BindCol(col++, &naID);
 
       break;
@@ -534,6 +546,7 @@ bool  TmEntryStore::BindRec()
       BindCol(col++, team.tm.naDesc, sizeof(team.tm.naDesc));
       BindCol(col++, &tmID);
       BindCol(col++, &cpID);
+      BindCol(col++, cpName, sizeof(cpName));
       BindCol(col++, &naID);
 
       break;

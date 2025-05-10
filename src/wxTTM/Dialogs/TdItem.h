@@ -13,12 +13,8 @@ class  TdItem : public TmItem
     TdItem();
     TdItem(long id);
     TdItem(const TmEntry &);
-    TdItem(const TmEntry &, const wxChar *cpName);
 
     virtual void DrawColumn(wxDC *pDC, int col, wxRect &rect);
-
-  public:
-    wxString cpName;
 };
 
 

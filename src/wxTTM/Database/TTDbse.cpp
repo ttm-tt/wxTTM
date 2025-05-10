@@ -75,7 +75,7 @@
 
 #include  "Res.h"
 
-#define  DB_VERSION  181
+#define  DB_VERSION  182
 
 unsigned TTDbse::DbVersion = DB_VERSION;
 
