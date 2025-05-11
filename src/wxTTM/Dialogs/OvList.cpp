@@ -1857,16 +1857,26 @@ void  COvList::OnGridSizeChanged(wxCommandEvent &)
   switch (pos)
   {
     case 0 :
+      ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 10);
+      ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 3);
+      break;
+
+    case 1:
+      ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 30);
+      ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 5);
+      break;
+
+    case 2 :
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 50);
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 7);
       break;
 
-    case 1 :
+    case 3 :
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 60);
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 8);
       break;
 
-    case 2 :
+    case 4 :
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 80);
       ttProfile.AddInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 9);
       break;
