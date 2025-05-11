@@ -1386,7 +1386,7 @@ t</EXPRESSION>
 <PRINTCONDITION type="WideString"></PRINTCONDITION>
 <DOBEFOREPRINT type="WideString"></DOBEFOREPRINT>
 <DOAFTERPRINT type="WideString"></DOAFTERPRINT>
-<POSX type="Integer">6906</POSX>
+<POSX type="Integer">6900</POSX>
 <POSY type="Integer">225</POSY>
 <ALIGN type="Integer">0</ALIGN>
 <WFONTNAME type="WideString">Arial</WFONTNAME>
