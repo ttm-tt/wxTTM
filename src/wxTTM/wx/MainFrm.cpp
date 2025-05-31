@@ -39,6 +39,7 @@ BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
   EVT_MENU(XRCID("TournamentCloseMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentDetachMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentSettingsMenuItem"), CMainFrame::OnMenuCommand)
+  EVT_MENU(XRCID("TournamentDirectoryMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentBackupMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentRestoreMenuItem"), CMainFrame::OnMenuCommand)
   EVT_MENU(XRCID("TournamentCancelDoubleMenuItem"), CMainFrame::OnMenuCommand)
@@ -203,6 +204,8 @@ void CMainFrame::OnMenuCommand(wxCommandEvent &evt)
     CTT32App::instance()->OpenView(_("SQL Editor"), wxT("SQLEditorBook"));
   else if (evt.GetId() == XRCID("TournamentSettingsMenuItem"))
     CTT32App::instance()->OpenView(_("Tournament Settings"), wxT("Settings"));
+  else if (evt.GetId() == XRCID("TournamentDirectoryMenuItem"))
+    wxLaunchDefaultApplication(CTT32App::instance()->GetPath());
   else if (evt.GetId() == wxID_EXIT)
     Close();
 
