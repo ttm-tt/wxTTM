@@ -276,7 +276,13 @@ bool  TTDbse::OpenDatabase(const wxString &connStr, bool throwError)
   if (!IsLocal())
     return true;
 
-  if (!UpdateTables(IdStore::IdVersion()))
+  long version = IdStore::IdVersion();
+
+  if ((version > 0) && (version < DB_VERSION) && 
+      !infoSystem.Question(_("Do you want to update databasee from version %d to version %d?"), version, DB_VERSION))
+    return true;
+
+  if (!UpdateTables(version))
     return true;   // XXX What to do?
     
   return true;
