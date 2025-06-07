@@ -3,7 +3,7 @@
 
 #include "it_download.iss"
 
-#define Version '25.06.01'
+#define Version '25.06.02'
 
 [Setup]
 AppName=TTM
