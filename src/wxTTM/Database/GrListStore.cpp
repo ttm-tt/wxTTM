@@ -38,7 +38,7 @@ bool  GrListStore::CreateView()
                      "grNoThirdPlace, grOnlyThirdPlace, "
                      "grPublished, grNotes, grSortOrder, grPrinted, "
                      "CASE WHEN grNotes IS NULL THEN 0 ELSE 1 END AS grHasNotes, "
-                     "cp.cpID, cpName, md.mdID, md.mdName, sy.syID, sy.syName "
+                     "gr.cpID, cpName, gr.mdID, md.mdName, gr.syID, sy.syName "
                      "FROM GrRec gr INNER JOIN CpRec cp ON gr.cpID = cp.cpID "
                      "     LEFT OUTER JOIN SyRec sy ON gr.syID = sy.syID "
                      "     LEFT OUTER JOIN MdRec md ON gr.mdID = md.mdID ";
