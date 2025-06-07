@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 21:20+0200\n"
+"POT-Creation-Date: 2025-06-07 10:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -80,7 +80,6 @@ msgid "&Settings..."
 msgstr "&Settings..."
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:69
-#| msgid "Delete Directory"
 msgid "Open Directory"
 msgstr "Open Directory"
 
@@ -1237,7 +1236,6 @@ msgstr "Match No."
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6868
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:17270
-#| msgid "Schedule"
 msgid "Scheduled"
 msgstr "Scheduled"
 
@@ -1254,17 +1252,14 @@ msgid "Checked"
 msgstr "Checked"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:6995
-#| msgid "Start at:"
 msgid "Start Match"
 msgstr "Start Match"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7019
-#| msgid "Find Match"
 msgid "End Match"
 msgstr "End Match"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:7043
-#| msgid "Print Toss Sheet"
 msgid "Toss Sheet"
 msgstr "Toss Sheet"
 
@@ -1812,7 +1807,6 @@ msgid "Print Cards"
 msgstr "Print Cards"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:15126
-#| msgid "Print Umpires"
 msgid "Print Sides"
 msgstr "Print Sides"
 
@@ -1913,7 +1907,6 @@ msgid "Schedule"
 msgstr "Schedule"
 
 #: /user/cht/wxTTM/src/Resources/ttm.xrc:17239
-#| msgid "Print Toss Sheet"
 msgid "Print Toss Sheet of"
 msgstr "Print Toss Sheet of"
 
@@ -2012,6 +2005,11 @@ msgstr "Pos %d exceeds size of group %s of event %s. Continue anyway?"
 #: Database/StoreObj.cpp:20
 msgid "Tournament not opend"
 msgstr "Tournament not opend"
+
+#: Database/TTDbse.cpp:282
+#, c-format
+msgid "Do you want to update databasee from version %d to version %d?"
+msgstr "Do you want to update databasee from version %d to version %d?"
 
 #: Dialogs/CpEdit.cpp:160
 msgid "or before"
@@ -2115,12 +2113,10 @@ msgid "Size"
 msgstr "Size"
 
 #: Dialogs/GrListView.cpp:260
-#| msgid "TeamSystem"
 msgid "System"
 msgstr "System"
 
 #: Dialogs/GrListView.cpp:265
-#| msgid "Group Modus"
 msgid "Modus"
 msgstr "Modus"
 
@@ -2425,12 +2421,10 @@ msgid "Are you sure to delete selected association(s)?"
 msgstr "Are you sure to delete selected association(s)?"
 
 #: Dialogs/NaListView.cpp:159
-#| msgid "Players"
 msgid "Players from "
 msgstr "Players from "
 
 #: Dialogs/NaListView.cpp:172
-#| msgid "Team Groups"
 msgid "Teams from "
 msgstr "Teams from "
 
@@ -2552,7 +2546,6 @@ msgid "Overview"
 msgstr "Overview"
 
 #: Dialogs/OvList.cpp:1526 Dialogs/OvList.cpp:1657
-#| msgid "Print Tosssheet"
 msgid "Print Tossheet"
 msgstr "Print Tossheet"
 
@@ -2816,12 +2809,10 @@ msgid "Team Groups"
 msgstr "Team Groups"
 
 #: Dialogs/TossSheet.cpp:215 Dialogs/TossSheet.cpp:233
-#| msgid "Print Tosssheet"
 msgid "Print Toss sheet"
 msgstr "Print Toss sheet"
 
 #: Dialogs/TossSheet.cpp:351
-#| msgid "Print Tosssheet"
 msgid "Print toss sheets"
 msgstr "Print toss sheets"
 
@@ -3235,7 +3226,6 @@ msgid "Import Schedules"
 msgstr "Import Schedules"
 
 #: wx/MainFrm.cpp:231
-#| msgid "Import Singles"
 msgid "Import Lineups"
 msgstr "Import Lineups"
 
@@ -3280,7 +3270,6 @@ msgid "Export Schedules"
 msgstr "Export Schedules"
 
 #: wx/MainFrm.cpp:256
-#| msgid "Export Groups"
 msgid "Export Lineups"
 msgstr "Export Lineups"
 
@@ -3461,7 +3450,6 @@ msgid "List of Matches"
 msgstr "List of Matches"
 
 #: wx/TT32App.cpp:200
-#| msgid "Final Standings"
 msgid "Standings"
 msgstr "Standings"
 

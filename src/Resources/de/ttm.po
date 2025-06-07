@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 21:20+0200\n"
+"POT-Creation-Date: 2025-06-07 10:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -2011,6 +2011,11 @@ msgstr ""
 #: Database/StoreObj.cpp:20
 msgid "Tournament not opend"
 msgstr "Turnier ist nicht offen"
+
+#: Database/TTDbse.cpp:282
+#, c-format
+msgid "Do you want to update databasee from version %d to version %d?"
+msgstr "Möchten Sie Databasee von Version %d auf Version %d aktualisieren?"
 
 #: Dialogs/CpEdit.cpp:160
 msgid "or before"
