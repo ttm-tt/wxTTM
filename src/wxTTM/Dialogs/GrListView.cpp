@@ -98,25 +98,26 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
     case 2 :
     case 3 :
     case 4 :
+    case 5 :
       GrItem::DrawColumn(pDC, col - 1, rect);
       break;
 
-    case 5 :
+    case 6 :
       DrawString(pDC, rect, syName);
       break;
 
-    case 6 :
+    case 7 :
       DrawString(pDC, rect, mdName);
       break;
 
-    case 7 :
+    case 8 :
       if (gr.grPrinted.year)
         DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
       break;
 
-    // 8 Notes -> 4
-    case 8 : 
-      GrItem::DrawColumn(pDC, 4, rect);
+    // 6 Notes -> 5
+    case 9 : 
+      GrItem::DrawColumn(pDC, 5, rect);
       break;
   }
 }
@@ -133,14 +134,15 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
     case 0 : // Pbl
       return 0;
 
-    // 1 (Name) - 4 (Size) -> 0 - 3
+    // 1 (Name) - 5 (Sort) -> 0 - 4
     case 1 :
     case 2 :
     case 3 :
     case 4 :
+    case 5 :
       return GrItem::Compare(itemPtr, col - 1);
 
-    case 5 :
+    case 6 :
     {
       int ret = wxStrcoll(syName, grItem->syName);
 
@@ -151,7 +153,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
       return ret;
     }
 
-    case 6 :
+    case 7 :
     {
       int ret = wxStrcoll(mdName, grItem->mdName);
 
@@ -162,7 +164,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
       return ret;
     }
 
-    case 7 :
+    case 8 :
       if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
         return 1;
       else if (gr.grPrinted < ((GrItemEx *)itemPtr)->gr.grPrinted)
@@ -256,25 +258,30 @@ void CGrListView::OnInitialUpdate()
   m_listCtrl->HideColumn(4);
   m_listCtrl->AllowHideColumn(4);
 
-  // System
-  m_listCtrl->InsertColumn(5, _("System"), wxALIGN_LEFT, 6 * cW);
+  // Size
+  m_listCtrl->InsertColumn(5, _("Sort"), wxALIGN_RIGHT, 4 * cW);
   m_listCtrl->HideColumn(5);
   m_listCtrl->AllowHideColumn(5);
 
-  // Modus
-  m_listCtrl->InsertColumn(6, _("Modus"), wxALIGN_LEFT, 4 * cW);
+  // System
+  m_listCtrl->InsertColumn(6, _("System"), wxALIGN_LEFT, 6 * cW);
   m_listCtrl->HideColumn(6);
   m_listCtrl->AllowHideColumn(6);
 
-  // Notes
-  m_listCtrl->InsertColumn(7, _("Notes"), wxLIST_FORMAT_CENTER);
+  // Modus
+  m_listCtrl->InsertColumn(7, _("Modus"), wxALIGN_LEFT, 4 * cW);
   m_listCtrl->HideColumn(7);
   m_listCtrl->AllowHideColumn(7);
 
+  // Notes
+  m_listCtrl->InsertColumn(8, _("Notes"), wxLIST_FORMAT_CENTER);
+  m_listCtrl->HideColumn(8);
+  m_listCtrl->AllowHideColumn(8);
+
   // Printed
-  m_listCtrl->InsertColumn(7, _("Printed"), wxALIGN_LEFT, 10 * cW);
-  m_listCtrl->HideColumn(7);
-  m_listCtrl->AllowHideColumn(7);
+  m_listCtrl->InsertColumn(9, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->HideColumn(9);
+  m_listCtrl->AllowHideColumn(9);
 
   m_listCtrl->SetResizeColumn(2);
 
