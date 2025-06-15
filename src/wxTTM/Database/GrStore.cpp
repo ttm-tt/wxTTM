@@ -1939,7 +1939,7 @@ bool  GrStore::QryChecked()
         " WHERE mt.grID = " + ltostr(grID) + " AND "
         "   (stA.stID IS NULL OR stA.tmID IS NOT NULL) AND "
         "   (stX.stID IS NULL OR stX.tmID IS NOT NULL) AND "
-        "   mtCheckMatchTime IS NNULL "
+        "   mtCheckMatchTime IS NULL "
   ;
   long count;
 
