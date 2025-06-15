@@ -407,7 +407,7 @@ bool  TTDbse::CreateRoles()
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtSetResultProc TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtUpdateRasterProc TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtDateTime, mtTable, mtUmpire, mtUmpire2, mtReverse, mtBestOf) TO ttm_results");    
-    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results");
+    stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtPrintTossTime, mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON MtRec (mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE On StRec (stNoCons) TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT UPDATE ON IdRec (idLast) TO ttm_results");
