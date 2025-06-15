@@ -102,11 +102,11 @@ void CMtDetails::OnInitialUpdate()
   FindWindow("MatchNo")->SetValidator(CLongValidator(&mt.mtNr));
   FindWindow("Scheduled")->SetValidator(CDateTimeValidator(&mt.mtPlace.mtDateTime));
 
-  FindWindow("Score")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtPrintScoreTime));
-  FindWindow("Checked")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtCheckMatchTime));
-  FindWindow("Started")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtStartMatchTime));
-  FindWindow("Ended")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtEndMatchTime));
-  FindWindow("Toss")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtPrintTossTime));
+  FindWindow("Score")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtPrintScoreTime, true));
+  FindWindow("Checked")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtCheckMatchTime, true));
+  FindWindow("Started")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtStartMatchTime, true));
+  FindWindow("Ended")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtEndMatchTime, true));
+  FindWindow("Toss")->SetValidator(CDateTimeValidator(&mt.mtDetails.mtPrintTossTime, true));
 
   Layout();
 }

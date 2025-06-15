@@ -98,7 +98,6 @@ void CPlEdit::OnInitialUpdate()
 	CFormViewEx::OnInitialUpdate();	
 	
 	m_cbBox = XRCCTRL(*this, "Association", CComboBoxEx);
-	m_cbBox = XRCCTRL(*this, "Association", CComboBoxEx);
 	
 	FindWindow("PlNr")->SetValidator(CLongValidator(&pl.plNr));
 	FindWindow("ExtID")->SetValidator(CCharArrayValidator(pl.plExtID, sizeof(pl.plExtID) / sizeof(wxChar)));
@@ -108,6 +107,7 @@ void CPlEdit::OnInitialUpdate()
 	FindWindow("Year")->SetValidator(CLongValidator(&pl.psBirthday));
 	FindWindow("Male")->SetValidator(CEnumValidator(&pl.psSex, SEX_MALE));
 	FindWindow("Female")->SetValidator(CEnumValidator(&pl.psSex, SEX_FEMALE));
+  FindWindow("Deleted")->SetValidator(CDateTimeValidator(&pl.psDeleteTime, true, true));
 }
 
 

@@ -830,14 +830,14 @@ CDateTimeValidator::CDateTimeValidator()
 }
 
 
-CDateTimeValidator::CDateTimeValidator(timestamp* val)
-  : wxValidator(), m_val(val)
+CDateTimeValidator::CDateTimeValidator(timestamp* val, bool isUTF, bool fraction)
+  : wxValidator(), m_val(val), m_isUTF(isUTF), m_fraction(fraction)
 {
 }
 
 
 CDateTimeValidator::CDateTimeValidator(const CDateTimeValidator& val)
-  : wxValidator(), m_val(val.m_val)
+  : wxValidator(), m_val(val.m_val), m_isUTF(val.m_isUTF), m_fraction(val.m_fraction)
 {
 }
 
@@ -863,9 +863,16 @@ bool CDateTimeValidator::TransferToWindow()
     {
       wxDateTime dateTime(
         m_val->day, (wxDateTime::Month)(m_val->month - 1), m_val->year,
-        m_val->hour, m_val->minute, m_val->second
+        m_val->hour, m_val->minute, m_val->second, m_val->fraction / (1000 * 1000)
       );
-      ((wxTextCtrl*)m_validatorWindow)->SetValue(dateTime.Format("%d.%m.%Y %H:%M"));
+      if (m_fraction)
+        ((wxTextCtrl*)m_validatorWindow)->SetValue(
+          dateTime.Format("%d.%m.%Y %H:%M:%S") +
+          wxString::Format(".%03d", m_val->fraction / (1000 * 1000)) +
+          wxString(m_isUTF ? "Z" : ""));
+      else
+        ((wxTextCtrl*)m_validatorWindow)->SetValue(dateTime.Format(
+          m_isUTF ? "%d.%m.%Y %H:%MZ" : "%d.%m.%Y %H:%M"));
     }
     else
     {

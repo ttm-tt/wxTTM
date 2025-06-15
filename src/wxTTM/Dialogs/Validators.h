@@ -174,7 +174,7 @@ class CDateTimeValidator : public wxValidator
 {
 public:
   CDateTimeValidator();
-  CDateTimeValidator(timestamp* val);
+  CDateTimeValidator(timestamp* val, bool isUTF = false, bool fraction = false);
   CDateTimeValidator(const CDateTimeValidator&);
 
 public:
@@ -186,6 +186,8 @@ public:
 
 private:
   timestamp* m_val;
+  bool m_isUTF = false;
+  bool m_fraction = false;
 
   DECLARE_DYNAMIC_CLASS(CDateTimeValidator)
 };
