@@ -1926,6 +1926,7 @@ bool DrawLP::DrawImpl(long seed)
   #endif
 
 # ifdef DEBUG
+  wxFprintf(file, "%s - %s\n", cp.cpName, gr.grName);
   wxFprintf(file, "Seed: %ld\n", seed);
 # endif
 
