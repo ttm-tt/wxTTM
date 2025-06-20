@@ -144,15 +144,15 @@ bool  TmEntryStore::CreateView()
           "            tmID, cpID, cpType, cpName, tmnaID, tmTimestamp)                     "
           "  AS SELECT PlRec.plID, plNr, psLast, psFirst, psSex,            "
           "            NaRec.naID, naName, naDesc, naRegion, plExtID, plRankPts,      "
-          "            ISNULL((SELECT TOP 1 rpRankPts FROM RpRec rp WHERE rp.plID = PlRec.plID AND rp.rpYear <= CpRec.cpYear ORDER BY rp.rpYear DESC ), PlRec.plRankPts) AS ltRankPts, "
-          "            NtRec.ntNr, TmRec.tmID, TmRec.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, tmTimestamp  "
-          "    FROM TmRec INNER JOIN NtRec ON TmRec.tmID = NtRec.tmID       "
-          "               INNER JOIN LtRec ON NtRec.ltID = LtRec.ltID       "
-          "               INNER JOIN PlRec ON LtRec.plID = PlRec.plID       "
-          "               INNER JOIN PsRec ON PlRec.psID = PsRec.psID       "
-          "               INNER JOIN CpRec ON CpRec.cpID = TmRec.cpID       "
-          "               LEFT OUTER JOIN NaRec ON PlRec.naID = NaRec.naID  "
-          "               LEFT OUTER JOIN RkRec ON TmRec.tmID = RkRec.tmID  "
+          "            ISNULL((SELECT TOP 1 rpRankPts FROM RpRec rp WHERE rp.plID = pl.plID AND rp.rpYear <= cp.cpYear ORDER BY rp.rpYear DESC ), pl.plRankPts) AS ltRankPts, "
+          "            nt.ntNr, tm.tmID, tm.cpID, cp.cpType, cp.cpName, rk.naID, tmTimestamp  "
+          "    FROM TmRec tm INNER JOIN NtRec nt ON tm.tmID = nt.tmID       "
+          "                  INNER JOIN LtRec lt ON nt.ltID = lt.ltID       "
+          "                  INNER JOIN PlRec pl ON lt.plID = pl.plID       "
+          "                  INNER JOIN PsRec ps ON pl.psID = ps.psID       "
+          "                  INNER JOIN CpRec cp ON cp.cpID = tm.cpID       "
+          "                  LEFT OUTER JOIN NaRec na ON pl.naID = na.naID  "
+          "                  LEFT OUTER JOIN RkRec rk ON tm.tmID = rk.tmID  "
     ;
     tmp->ExecuteUpdate(str);
 
@@ -168,11 +168,11 @@ bool  TmEntryStore::CreateView()
           "            bd.plID, bd.plNr, bd.psLast, bd.psFirst, bd.psSex,           "
           "            bd.naID, bd.naName, bd.naDesc, bd.naRegion, bd.plExtID, bd.plRankPts, bd.ltRankPts, "
           "            bd.ntNr, "
-          "            pl.tmID, pl.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, pl.tmTimestamp "  // View pl.tmTimestamp und bd.tmTimestamp muessen gleich sein weil gleiches Team
+          "            pl.tmID, pl.cpID, cp.cpType, cp.cpName, rk.naID, pl.tmTimestamp "  // View pl.tmTimestamp und bd.tmTimestamp muessen gleich sein weil gleiches Team
           "       FROM TmSingleList pl INNER JOIN TmSingleList bd          "
           "            ON pl.tmID = bd.tmID AND pl.ntNr = 1 AND bd.ntNr = 2 "
-          "            INNER JOIN CpRec ON pl.cpID = CpRec.cpID            "
-          "            LEFT OUTER JOIN RkRec ON pl.tmID = RkRec.tmID       "
+          "            INNER JOIN CpRec cp ON pl.cpID = cp.cpID            "
+          "            LEFT OUTER JOIN RkRec rk ON pl.tmID = rk.tmID       "
     ;
     tmp->ExecuteUpdate(str);
 
@@ -180,11 +180,11 @@ bool  TmEntryStore::CreateView()
           "           (tmName, tmDesc, naID, naName, naDesc, naRegion,      "
           "            tmID, cpID, cpType, cpName, tmnaID, tmTimestamp)                     "
           "  AS SELECT tmName, tmDesc, NaRec.naID, naName, naDesc, naRegion, "
-          "            TmRec.tmID, TmRec.cpID, CpRec.cpType, CpRec.cpName, RkRec.naID, tmTimestamp "
-          "       FROM TmRec INNER JOIN CpRec ON CpRec.cpID = TmRec.cpID    "
-          "                  LEFT OUTER JOIN("
-          "                  RkRec INNER JOIN NaRec ON RkRec.naID = NaRec.naID) "
-          "                  ON TmRec.tmID = RkRec.tmID                     "
+          "            tm.tmID, tm.cpID, cp.cpType, cp.cpName, rk.naID, tmTimestamp "
+          "       FROM TmRec tm INNER JOIN CpRec cp ON cp.cpID = tm.cpID    "
+          "                     LEFT OUTER JOIN("
+          "                     RkRec rk INNER JOIN NaRec na ON rk.naID = na.naID) "
+          "                     ON tm.tmID = rk.tmID                     "
      ;
     tmp->ExecuteUpdate(str);
   }

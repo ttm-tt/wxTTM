@@ -181,7 +181,7 @@
         "         SET @stPos = 2 * (@offset + @chunk / 2) + 1; \n"
         "     END \n"
         "   --- Update record \n"
-        "     UPDATE StRec SET stPos = @stPos WHERE stID = @id AND NOT (stPos IS NULL AND @stPos IS NULL); \n"
+        "     UPDATE StRec SET stPos = @stPos WHERE stID = @id AND ISNULL(stPos, -1) <> ISNULL(@stPos, -1); \n"
         "   END \n"
         "   ELSE \n"
         "   BEGIN \n"
@@ -192,7 +192,7 @@
         "   ---   For KO and Play Off mtMatch equals the final position \n"
         "   SET @tmID = (SELECT tmID FROM StRec WHERE stID = @id); \n"
         "   UPDATE StRec SET tmID = @tmID \n"
-        "    WHERE stID = (SELECT stID FROM XxRec WHERE grID = @grID AND grPos = @stPos) AND NOT (tmID IS NULL AND @tmID IS NULL); \n"
+        "    WHERE stID = (SELECT stID FROM XxRec WHERE grID = @grID AND grPos = @stPos) AND ISNULL(tmID, 0) <> ISNULL(@tmID, 0); \n"
         
         "   ---   And finished \n"     
         "   IF @mtRound = @maxRounds OR \n"
@@ -269,9 +269,9 @@
         "                        mtChance = @mtChance); \n"
         
         "    IF @ax > 0 \n"
-        "      UPDATE MtRec SET stA = @id WHERE mtNr = @mtNr AND NOT (stA IS NULL AND @id IS NULL); \n"
+        "      UPDATE MtRec SET stA = @id WHERE mtNr = @mtNr AND ISNULL(stA, 0) <> ISNULL(@id, 0); \n"
         "    ELSE \n"
-        "      UPDATE MtRec SET stX = @id WHERE mtNr = @mtNr AND NOT (stX IS NULL AND @id IS NULL); \n"
+        "      UPDATE MtRec SET stX = @id WHERE mtNr = @mtNr AND ISNULL(stX, 0) <> ISNULL(@id, 0); \n"
         
         " --- Continue with next match \n"
         "    EXEC mtUpdateRasterProc @mtNr, 1; \n"
@@ -463,10 +463,12 @@
 
         " --- Update Start / End Match Time \n"
         "   UPDATE MtRec SET mtStartMatchTime = NULL WHERE \n"
+        "    mtID = @mtID AND mtStartMatchTime IS NOT NULL AND \n"
         "    (SELECT COUNT(*) FROM MtSet WHERE mtID = @mtID AND (mtResA > 0 OR mtResX > 0)) = 0 \n"
         
         "   UPDATE MtRec SET mtStartMatchTime = GETUTCDATE() \n"
-        "    WHERE mtID = @mtID AND mtStartMatchTime IS NULL AND \n"
+        "    WHERE mtID = @mtID AND \n" 
+        "          mtStartMatchTime IS NULL AND \n"
         "          (SELECT COUNT(*) FROM MtSet WHERE mtID = @mtID AND (mtResA > 0 OR mtResX > 0)) > 0 \n"
 
         "   UPDATE MtRec SET mtEndMatchTime = NULL \n"
@@ -530,7 +532,7 @@
         "   ---    Matches are msising, clear final position \n"
         "       UPDATE StRec SET stPos = 0 WHERE grID = @grID AND stPos <> 0 \n"
         "       UPDATE StRec SET tmID = NULL \n"
-        "        WHERE stID IN (SELECT stID FROM XxRec WHERE grID = @grID) \n"   
+        "        WHERE stID IN (SELECT stID FROM XxRec WHERE grID = @grID) AND tmID IS NOT NULL \n"   
         "     END \n"
         "   END \n"
         

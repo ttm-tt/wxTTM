@@ -1181,7 +1181,7 @@ bool  MtStore::UpdateStoredProcedure(long version)
         
         " --- Update printed flag if match data have changed but only if the match has not started yet \n"
         "UPDATE MtRec SET mtPrintScoreTime = NULL \n"
-        " WHERE mtResA = 0 AND mtResX = 0 AND mtID IN \n"
+        " WHERE mtPrintScoreTime IS NOT NULL AND mtResA = 0 AND mtResX = 0 AND mtID IN \n"
         "       (SELECT deleted.mtID FROM deleted INNER JOIN inserted ON deleted.mtID = inserted.mtID \n"
         "         WHERE deleted.mtDateTime != inserted.mtDateTime OR \n"
         "               deleted.mtTable != inserted.mtTable OR \n"
