@@ -641,18 +641,18 @@ bool COvList::Edit(va_list vaList)
 // COvList message handlers
 void COvList::OnInitialUpdate() 
 {
-  // Ich will die Variable nicht umbenennen ...
-  {
-    int fontSize = ttProfile.GetInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 8);
-    if (fontSize <= 7)
-      XRCCTRL(*this, "CellSize", wxComboBox)->Select(0);
-    else if (fontSize >= 9)
-      XRCCTRL(*this, "CellSize", wxComboBox)->Select(2);
-  }
-
-  // const int ppi = wxScreenDC().GetPPI().GetHeight();
   const int cellSize = ttProfile.GetInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_CELLSIZE, 60);
-  const int fontSize = ttProfile.GetInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 8);
+  int fontSize = ttProfile.GetInt(PRF_GLOBAL_SETTINGS, PRF_OVLIST_FONTSIZE, 8);
+  if (fontSize <= 3)
+    XRCCTRL(*this, "CellSize", wxComboBox)->Select(0);
+  else if (fontSize <= 5)
+    XRCCTRL(*this, "CellSize", wxComboBox)->Select(1);
+  else if (fontSize <= 7)
+    XRCCTRL(*this, "CellSize", wxComboBox)->Select(2);
+  else if (fontSize <= 8)
+    XRCCTRL(*this, "CellSize", wxComboBox)->Select(3);
+  else if (fontSize >= 9)
+    XRCCTRL(*this, "CellSize", wxComboBox)->Select(4);
 
 	CFormViewEx::OnInitialUpdate();	
 
