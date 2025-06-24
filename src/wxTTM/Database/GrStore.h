@@ -268,7 +268,7 @@ class  GrStore : public StoreObj, public GrRec
     // Flags berechnen
     bool  QryStarted();
     bool  QryFinished();
-    bool  QryChecked();
+    bool  QryUnchecked();
     bool  QryDraw();
     bool  QryScheduled();
     bool  QryCombined();

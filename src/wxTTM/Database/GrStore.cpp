@@ -1926,7 +1926,7 @@ bool  GrStore::QryFinished()
 }
 
 
-bool  GrStore::QryChecked()
+bool  GrStore::QryUnchecked()
 {
   Connection *connPtr = GetConnectionPtr();
   Statement  *stmtPtr = connPtr->CreateStatement();

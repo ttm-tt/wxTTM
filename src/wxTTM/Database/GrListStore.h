@@ -55,7 +55,7 @@ class  GrListStore : public StoreObj, public GrListRec
     
     bool  QryStarted();
     bool  QryFinished();
-    bool  QryChecked();
+    bool  QryUnchecked();
     bool  QryCombined();
 
     long  Count();

@@ -359,12 +359,12 @@ bool  GrListStore::QryFinished()
 }
 
 
-bool  GrListStore::QryChecked()
+bool  GrListStore::QryUnchecked()
 {
   GrStore gr(GetConnectionPtr());
   gr.grID = grID;
   
-  return gr.QryChecked();
+  return gr.QryUnchecked();
 }
 
 

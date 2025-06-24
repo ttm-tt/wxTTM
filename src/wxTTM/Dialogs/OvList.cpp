@@ -2031,7 +2031,7 @@ void COvList::OnUpdateMt(const MtListRec &mt_)
   {
     GrListStore gr;
     gr.grID = mt.mtEvent.grID;
-    if (gr.QryChecked())
+    if (gr.QryUnchecked())
       ovItem->SetOvType(OvItem::OVCHECKED);
     else if (gr.QryFinished())
       ovItem->SetOvType(OvItem::OVFINISHED);
