@@ -35,6 +35,7 @@ class CGrListView : public CFormViewEx
 
   private:
     void OnSelChangeCp(wxCommandEvent &);
+    void OnChangeState(wxCommandEvent &);
     void OnNotes(wxCommandEvent &);
     void OnPublish(wxCommandEvent &);
     void OnUnpublish(wxCommandEvent &);

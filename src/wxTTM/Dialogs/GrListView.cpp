@@ -25,6 +25,7 @@ IMPLEMENT_DYNAMIC_CLASS(CGrListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CGrListView, CFormViewEx)
   EVT_COMBOBOX(XRCID("Events"), CGrListView::OnSelChangeCp)
+  EVT_RADIOBOX(XRCID("State"), CGrListView::OnChangeState)
   EVT_BUTTON(XRCID("Notes"), CGrListView::OnNotes)
   EVT_BUTTON(XRCID("Publish"), CGrListView::OnPublish)
   EVT_BUTTON(XRCID("Unpublish"), CGrListView::OnUnpublish)
@@ -352,8 +353,6 @@ void  CGrListView::OnDelete()
 
 void CGrListView::OnSelChangeCp(wxCommandEvent &) 
 {
-  m_listCtrl->RemoveAllListItems();
-
   ListItem *itemPtr = m_cbCp->GetCurrentItem();
   if (!itemPtr)
     return;
@@ -363,11 +362,27 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
 
   CTT32App::instance()->SetDefaultCP(cp.cpName);
 
+  OnChangeState(wxCommandEvent_);
+}
+
+
+void CGrListView::OnChangeState(wxCommandEvent&)
+{
+  m_listCtrl->RemoveAllListItems();
+
+  bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
+  bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
+
   GrListStore  grList;
   grList.SelectAll(cp);
 
   while (grList.Next())
   {
+    if (grList.grPublished && !published)
+      continue;
+    if (!grList.grPublished && !unpublished)
+      continue;
+
     m_listCtrl->AddListItem(new GrItemEx(grList));
   }
 
