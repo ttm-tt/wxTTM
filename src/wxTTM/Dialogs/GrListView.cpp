@@ -29,6 +29,7 @@ BEGIN_EVENT_TABLE(CGrListView, CFormViewEx)
   EVT_BUTTON(XRCID("Notes"), CGrListView::OnNotes)
   EVT_BUTTON(XRCID("Publish"), CGrListView::OnPublish)
   EVT_BUTTON(XRCID("Unpublish"), CGrListView::OnUnpublish)
+  EVT_COLLAPSIBLEPANE_CHANGED(XRCID("Filter"), CGrListView::OnFilterCollapsibleChanged)
   END_EVENT_TABLE()
 
 
@@ -370,8 +371,13 @@ void CGrListView::OnChangeState(wxCommandEvent&)
 {
   m_listCtrl->RemoveAllListItems();
 
+  // wxCollapsiblePane *filter = XRCCTRL(*this, "Filter", wxCollapsiblePane);
+
   bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
   bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
+
+  // bool published = false;
+  // bool unpublished = true;
 
   GrListStore  grList;
   grList.SelectAll(cp);
@@ -534,3 +540,7 @@ void CGrListView::OnUpdate(CRequest *reqPtr)
     m_listCtrl->SetCurrentItem(id);
 }
 
+void CGrListView::OnFilterCollapsibleChanged(wxCollapsiblePaneEvent& evt)
+{
+  XRCCTRL(*this, "Filter", wxCollapsiblePane)->GetParent()->Layout();
+}

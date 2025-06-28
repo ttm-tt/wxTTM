@@ -40,6 +40,7 @@ class CGrListView : public CFormViewEx
     void OnPublish(wxCommandEvent &);
     void OnUnpublish(wxCommandEvent &);
 
+    void OnFilterCollapsibleChanged(wxCollapsiblePaneEvent &);
     void OnMouseLeftDown(wxMouseEvent &);
 
   private:

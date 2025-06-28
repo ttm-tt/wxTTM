@@ -10,6 +10,7 @@
 #include <wx/wx.h>
 
 #include <wx/aboutdlg.h>
+#include <wx/collpane.h>
 #include <wx/colordlg.h>
 #include <wx/datectrl.h>
 #include <wx/dir.h>
