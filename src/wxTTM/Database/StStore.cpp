@@ -1079,7 +1079,7 @@ bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & 
     switch (cpType)
     {
       case CP_SINGLE :      
-        str = "SELECT cpName, grName, stNr, "
+        str = "SELECT cp.cpName, gr.grName, stNr, "
               "       stPos, stSeeded, stGaveup, stDisqu, stNocons, "
               "       plNr "
               "  FROM StRec st INNER JOIN TmSingleList tm ON st.tmID = tm.tmID "
@@ -1091,7 +1091,7 @@ bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & 
         
       case CP_DOUBLE :
       case CP_MIXED  :
-        str = "SELECT cpName, grName, stNr, "
+        str = "SELECT cp.cpName, gr.grName, stNr, "
               "       stPos, stSeeded, stGaveup, stDisqu, stNocons, "
               "       plplNr, bdplNr "
               "  FROM StRec st INNER JOIN TmDoubleList tm ON st.tmID = tm.tmID "
@@ -1102,7 +1102,7 @@ bool  StStore::Export(wxTextBuffer &os, short cpType, const std::vector<long> & 
         break;
         
       case CP_TEAM :
-        str = "SELECT cpName, grName, stNr, "
+        str = "SELECT cp.cpName, gr.grName, stNr, "
               "       stPos, stSeeded, stGaveup, stDisqu, stNocons, "
               "       tmName "
               "  FROM StRec st "
