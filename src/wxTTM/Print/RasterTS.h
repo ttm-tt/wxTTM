@@ -12,10 +12,10 @@ class RasterToss : public RasterBase
    ~RasterToss();
 
   public:
-		int Print(const CpRec &, const GrRec &, const MtEntry &);
+		int Print(const CpRec &, const GrRec &, const MtEntry &, Connection * = nullptr);
 
   protected:
-    int PrintToss(const MtEntry &, const CRect &, bool ax);
+    int PrintToss(const MtEntry &, const CRect &, bool ax, Connection * = nullptr);
     int PrintHeader(const MtEntry &, const CRect &);
     int PrintTeam(const TmEntry &, const CRect &);
     int PrintSystem(const SyListRec &, const CRect &);

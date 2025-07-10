@@ -13,6 +13,7 @@
 #include  "ItemCtrl.h"
 
 
+class Connection;
 class COvGridCtrl;
 
 struct MtListRec;
@@ -47,7 +48,7 @@ class COvList : public CFormViewEx
     virtual void OnPrint();
 
   private:
-    void OnUpdateMt(const MtListRec &);
+    void OnUpdateMt(const MtListRec &, Connection * = nullptr);
     void OnUpdateTimer(wxTimerEvent &);
     void OnPopupTimer(wxTimerEvent &);
 

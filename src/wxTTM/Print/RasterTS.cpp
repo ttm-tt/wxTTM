@@ -34,7 +34,7 @@ RasterToss::~RasterToss()
 
 
 // -----------------------------------------------------------------------
-int  RasterToss::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt)
+int  RasterToss::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt, Connection *connPtr)
 {
   printer->StartPage();
 
@@ -64,8 +64,8 @@ int  RasterToss::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt)
   // Print a thick dashed line between
   printer->Line(top.left, top.bottom - printer->topMargin / 2, top.right, top.bottom - printer->topMargin / 2, THICK_FRAME, wxPENSTYLE_SHORT_DASH);
 
-  PrintToss(mt, top, false);
-  PrintToss(mt, bot, true);
+  PrintToss(mt, top, false, connPtr);
+  PrintToss(mt, bot, true, connPtr);
 
   printer->SelectFont(oldFont);
   printer->DeleteFont(textFont);
@@ -78,15 +78,15 @@ int  RasterToss::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt)
 
 // -----------------------------------------------------------------------
 // Print upper / lower half of toss sheet
-int RasterToss::PrintToss(const MtEntry& mt, const CRect& rect, bool ax)
+int RasterToss::PrintToss(const MtEntry& mt, const CRect& rect, bool ax, Connection *connPtr)
 {
   // Lookup team system
-  GrListStore gr;
+  GrListStore gr(connPtr);
   gr.SelectById(mt.mt.mtEvent.grID);
   gr.Next();
   gr.Close();
 
-  SyListStore sy;
+  SyListStore sy(connPtr);
   sy.SelectById(gr.syID);
   sy.Next();
   sy.Close();

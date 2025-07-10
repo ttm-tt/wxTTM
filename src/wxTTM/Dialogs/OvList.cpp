@@ -1939,7 +1939,7 @@ void  COvList::OnUpdate(CRequest *reqPtr)
 }
 
 
-void COvList::OnUpdateMt(const MtListRec &mt_)
+void COvList::OnUpdateMt(const MtListRec &mt_, Connection *connPtr)
 {
   MtListRec mt = mt_;
 
@@ -2029,7 +2029,7 @@ void COvList::OnUpdateMt(const MtListRec &mt_)
   // alten Typ lassen.
   if (mt.mtEvent.mtRound == 0 && type != OvItem::OVERROR)
   {
-    GrListStore gr;
+    GrListStore gr(connPtr);
     gr.grID = mt.mtEvent.grID;
     if (gr.QryUnchecked())
       ovItem->SetOvType(OvItem::OVCHECKED);
@@ -2052,17 +2052,18 @@ void COvList::OnUpdateMt(const MtListRec &mt_)
 // -----------------------------------------------------------------------
 void COvList::OnUpdateTimer(wxTimerEvent &)
 {
-  // Test if the connection is still valid
-  if ( !MtListStore().GetConnectionPtr()->IsValid() )
-    return;
+  // OnUpdateTimer may be called in an own thread, so use a new connection
+  Connection *connPtr = TTDbse::instance()->GetNewConnection();
 
-  timestamp ts = MtListStore().GetLastUpdateTime();
+  // Make local variable live no longer than livetime of connPtr
+  {
+  timestamp ts = MtListStore(connPtr).GetLastUpdateTime();
 
   std::list<MtListRec> list;
 
   if (ts > m_lastUpdateTime)
   {
-    MtListStore mt;
+    MtListStore mt(connPtr);
     mt.SelectByTimestamp(m_lastUpdateTime);
     while (mt.Next())
       list.push_back(mt);
@@ -2070,10 +2071,13 @@ void COvList::OnUpdateTimer(wxTimerEvent &)
     mt.Close();
 
     for (std::list<MtListRec>::iterator it = list.begin(); it != list.end(); it++)
-        OnUpdateMt((*it));
+        OnUpdateMt((*it), connPtr);
   }
 
   m_lastUpdateTime = ts;
+  }
+
+  delete connPtr;
 }
 
 

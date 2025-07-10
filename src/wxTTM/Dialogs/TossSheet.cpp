@@ -257,7 +257,7 @@ void  CTossSheet::DoPrintMatch()
   m_printer->StartPage();
 
   RasterToss  raster(m_printer, connPtr);
-  raster.Print(cp, gr, tmp);
+  raster.Print(cp, gr, tmp, connPtr);
   
   m_printer->EndPage();
 
@@ -432,7 +432,7 @@ unsigned CTossSheet::PrintScheduledThread(void *arg)
     MtEntry tmp(*(*it), tmA, tmX);
     
     RasterToss raster(printer, connPtr);
-    raster.Print(cp, gr, tmp);
+    raster.Print(cp, gr, tmp, connPtr);
 
     if (!isPreview)
       MtStore(connPtr).UpdateTossPrinted((*it)->mtID, true);
