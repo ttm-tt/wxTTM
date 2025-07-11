@@ -1925,13 +1925,19 @@ void  COvList::OnUpdate(CRequest *reqPtr)
     case CRequest::UPDATE :
     case CRequest::UPDATE_RESULT :
     {
-      MtListStore mt;
-      mt.SelectById(reqPtr->id);
-      if (!mt.Next())
-        return;
+      Connection* connPtr = TTDbse::instance()->GetNewConnection();
 
-      OnUpdateMt(mt);
+      MtListStore mt(connPtr);
+      mt.SelectById(reqPtr->id);
+      if (mt.Next())
+        OnUpdateMt(mt, connPtr);
+
+      mt.Close();
+      delete connPtr;
+
+      return;
     }
+
 
     default :
       return;
