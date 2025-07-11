@@ -39,10 +39,10 @@ bool UpRec::Read(const wxString &line)
 
   wxStringTokenizerEx tokens(line, sep);
 
-  wxString strNr    = tokens.GetNextToken();
+  wxString strNr    = tokens.GetNextToken().Strip(wxString::both);
   wxString strLast  = tokens.GetNextToken().Strip(wxString::both);
   wxString strFirst = tokens.GetNextToken().Strip(wxString::both);
-  wxString strSex   = tokens.GetNextToken();
+  wxString strSex   = tokens.GetNextToken().Strip(wxString::both);
   wxString strNa    = tokens.GetNextToken().Strip(wxString::both);
   wxString strEmail = tokens.GetNextToken().Strip(wxString::both);
   wxString strPhone = tokens.GetNextToken().Strip(wxString::both);
