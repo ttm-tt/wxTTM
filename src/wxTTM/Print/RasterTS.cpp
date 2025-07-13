@@ -68,7 +68,10 @@ int  RasterToss::Print(const CpRec& cp_, const GrRec& gr_, const MtEntry& mt, Co
   PrintToss(mt, bot, true, connPtr);
 
   printer->SelectFont(oldFont);
+
   printer->DeleteFont(textFont);
+  printer->DeleteFont(smallFont);
+  printer->DeleteFont(headerFont);
 
   printer->EndPage();
 
@@ -188,7 +191,7 @@ int RasterToss::PrintHeader(const MtEntry &mt, const CRect &rect)
 }
 
 
-// Print list of players in teeam
+// Print list of players in team
 int RasterToss::PrintTeam(const TmEntry& tm, const CRect& rect)
 {
   printer->SelectFont(headerFont);
@@ -565,6 +568,9 @@ int RasterToss::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
   }
 
   printer->SelectFont(textFont);
+
+  printer->DeleteFont(captionFont);
+  printer->DeleteFont(entryFont);
 
   return 0;
 }
