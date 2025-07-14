@@ -366,6 +366,8 @@ void  CScore::DoPrint()
     return;
   }
 
+  bool showDlg = !wxGetKeyState(WXK_SHIFT);
+
   if (CTT32App::instance()->GetPrintPreview())
     m_printer = new PrinterPreview(_("Print Scoresheet"));
   else if (CTT32App::instance()->GetPrintPdf())
@@ -379,7 +381,7 @@ void  CScore::DoPrint()
     m_printer = new PrinterPdf(fileDlg.GetPath());
   }
   else
-    m_printer = new Printer;
+    m_printer = new Printer(showDlg);
 
   if (m_printer->PrinterAborted())
     return;
