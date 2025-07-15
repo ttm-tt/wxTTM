@@ -599,6 +599,8 @@ void  CScore::DoPrintScheduled()
   char str[128];
   sprintf(str, "Print %d of %d score sheets", (int) (mtList->size() + printed), total);
 
+  bool showDlg = !wxGetKeyState(WXK_SHIFT);
+
   PrintScheduledScoreStruct *tmp = new PrintScheduledScoreStruct;
 
   if (CTT32App::instance()->GetPrintPreview())
@@ -614,7 +616,7 @@ void  CScore::DoPrintScheduled()
     tmp->printer = new PrinterPdf(fileDlg.GetPath());
   }
   else
-    tmp->printer = new Printer;
+    tmp->printer = new Printer(showDlg);
 
   if (tmp->printer->PrinterAborted())
   {
