@@ -307,6 +307,8 @@ void  CTossSheet::DoPrintScheduled()
 
   PrintScheduledTossStruct *tmp = new PrintScheduledTossStruct;
 
+  bool showDlg = !wxGetKeyState(WXK_SHIFT);
+
   if (CTT32App::instance()->GetPrintPreview())
     tmp->printer = new PrinterPreview(_("Print Scoresheets"));
   else if (CTT32App::instance()->GetPrintPdf())
@@ -320,7 +322,7 @@ void  CTossSheet::DoPrintScheduled()
     tmp->printer = new PrinterPdf(fileDlg.GetPath());
   }
   else
-    tmp->printer = new Printer;
+    tmp->printer = new Printer(showDlg);
 
   if (tmp->printer->PrinterAborted())
   {

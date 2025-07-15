@@ -1611,7 +1611,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
         timestamp fromTime = m_fromTime;
         timestamp toTime = m_toTime;
 
-        CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("TossSheet"), itemPtr ? itemPtr->mt.mtID : 0, 2, from, to, fromTime, toTime);
+        CTT32App::instance()->OpenDialog(true, _("Print Toss Sheet"), wxT("TossSheet"), itemPtr ? itemPtr->mt.mtID : 0, 2, from, to, fromTime, toTime);
 
         break;
       }
@@ -1624,7 +1624,7 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
         timestamp fromTime = m_fromTime;
         timestamp toTime = m_toTime;
         
-        CTT32App::instance()->OpenDialog(true, _("Print Scoresheet"), wxT("Score"), itemPtr ? itemPtr->mt.mtID : 0, 5, from, to, fromTime, toTime);
+        CTT32App::instance()->OpenDialog(true, _("Print Score Sheet"), wxT("Score"), itemPtr ? itemPtr->mt.mtID : 0, 5, from, to, fromTime, toTime);
         
         break;
       }
