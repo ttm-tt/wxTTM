@@ -150,7 +150,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
     case 4 :
     case 5 :
     case 6:
-      return GrItem::Compare(itemPtr, col - 1);
+      return GrItem::Compare(itemPtr, col - 2);
 
     case 7 :
     {
@@ -279,6 +279,8 @@ void CGrListView::OnInitialUpdate()
 
   // Stage
   m_listCtrl->InsertColumn(idx, _("Stage"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->SetSortColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
   idx++;
 
   // Size
@@ -289,9 +291,8 @@ void CGrListView::OnInitialUpdate()
 
   // Sort
   m_listCtrl->InsertColumn(idx, _("Sort"), wxALIGN_RIGHT, 1 * cW);
-  m_listCtrl->ShowColumn(idx);
+  m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
-  m_listCtrl->SetSortColumn(idx);
   idx++;
 
   // System
@@ -397,8 +398,9 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
 
     OnChangeState(wxCommandEvent_);
 
-    m_listCtrl->SortItems();
     m_listCtrl->SortItems(col);
+    m_listCtrl->SortItems(1);
+    m_listCtrl->SetSortColumn(col);
 
     return;
   }
