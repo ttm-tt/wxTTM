@@ -95,30 +95,35 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawImage(pDC, rect, gr.grPublished ? checkedImg : uncheckedImg);
       break;
 
-    // 1 (Name) - 4 (Size) -> 0 - 3
+    // 1 (Event)
     case 1 :
+      DrawString(pDC, rect, cpName);
+      break;
+
+    // 2 (Name) - 6 (Sort order) -> 0 - 4
     case 2 :
     case 3 :
     case 4 :
     case 5 :
-      GrItem::DrawColumn(pDC, col - 1, rect);
-      break;
-
     case 6 :
-      DrawString(pDC, rect, syName);
+      GrItem::DrawColumn(pDC, col - 2, rect);
       break;
 
     case 7 :
-      DrawString(pDC, rect, mdName);
+      DrawString(pDC, rect, syName);
       break;
 
     case 8 :
+      DrawString(pDC, rect, mdName);
+      break;
+
+    case 9 :
       if (gr.grPrinted.year)
         DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
       break;
 
     // 6 Notes -> 5
-    case 9 : 
+    case 10  : 
       GrItem::DrawColumn(pDC, 5, rect);
       break;
   }
@@ -136,15 +141,18 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
     case 0 : // Pbl
       return 0;
 
-    // 1 (Name) - 5 (Sort) -> 0 - 4
-    case 1 :
+    case 1:
+      return wxStrcoll(cpName, grItem->cpName);
+
+    // 2 (Name) - 6 (Sort) -> 0 - 4
     case 2 :
     case 3 :
     case 4 :
     case 5 :
+    case 6:
       return GrItem::Compare(itemPtr, col - 1);
 
-    case 6 :
+    case 7 :
     {
       int ret = wxStrcoll(syName, grItem->syName);
 
@@ -155,7 +163,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
       return ret;
     }
 
-    case 7 :
+    case 8 :
     {
       int ret = wxStrcoll(mdName, grItem->mdName);
 
@@ -166,7 +174,7 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
       return ret;
     }
 
-    case 8 :
+    case 9 :
       if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
         return 1;
       else if (gr.grPrinted < ((GrItemEx *)itemPtr)->gr.grPrinted)
@@ -211,6 +219,12 @@ void CGrListView::RestoreSettings()
 bool CGrListView::Edit(va_list vaList)
 {
   CpListStore  cp;
+
+  // "All Events" entry
+  cp.cpID = 0;
+  wxStrncpy(cp.cpDesc, _("All Events").c_str(), sizeof(cp.cpDesc) / sizeof(wxChar) - 1);
+  m_cbCp->AddListItem(new CpItem(cp));
+
   cp.SelectAll();
   while (cp.Next())
     m_cbCp->AddListItem(new CpItem(cp));
@@ -218,6 +232,8 @@ bool CGrListView::Edit(va_list vaList)
   wxString cpName = CTT32App::instance()->GetDefaultCP();
 
   ListItem *cpItemPtr = m_cbCp->FindListItem(cpName);
+  if (!cpItemPtr)
+    cpItemPtr = m_cbCp->GetListItem(1);
   if (!cpItemPtr)
     cpItemPtr = m_cbCp->GetListItem(0);
   if (!cpItemPtr)
@@ -243,51 +259,64 @@ void CGrListView::OnInitialUpdate()
   m_cbCp = XRCCTRL(*this, "Events", CComboBoxEx);
   m_listCtrl = XRCCTRL(*this, "Groups", CListCtrlEx);
   
+  int idx = 0;
+
   // Publish
-  m_listCtrl->InsertColumn(0, _("Pbl"), wxALIGN_CENTER, 3 * cW);
+  m_listCtrl->InsertColumn(idx, _("Pbl"), wxALIGN_CENTER, 3 * cW);
+  idx++;
+
+  // Event
+  m_listCtrl->InsertColumn(idx, _("Event"), wxALIGN_LEFT, 6 * cW);
+  idx++;
 
   // Name
-  m_listCtrl->InsertColumn(1, _("Name"), wxALIGN_LEFT, 6 * cW);
+  m_listCtrl->InsertColumn(idx++, _("Name"), wxALIGN_LEFT, 6 * cW);
 
   // Description
-  m_listCtrl->InsertColumn(2, _("Description"), wxALIGN_LEFT);
-  
+  m_listCtrl->InsertColumn(idx, _("Description"), wxALIGN_LEFT);
+  m_listCtrl->SetResizeColumn(idx);
+  idx++;
+
   // Stufe
-  m_listCtrl->InsertColumn(3, _("Stage"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->InsertColumn(idx, _("Stage"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->SetSortColumn(idx);
+  idx++;
 
   // Size
-  m_listCtrl->InsertColumn(4, _("Size"), wxALIGN_RIGHT, 4 * cW);
-  m_listCtrl->HideColumn(4);
-  m_listCtrl->AllowHideColumn(4);
+  m_listCtrl->InsertColumn(idx, _("Size"), wxALIGN_RIGHT, 4 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   // Size
-  m_listCtrl->InsertColumn(5, _("Sort"), wxALIGN_RIGHT, 4 * cW);
-  m_listCtrl->HideColumn(5);
-  m_listCtrl->AllowHideColumn(5);
+  m_listCtrl->InsertColumn(idx, _("Sort"), wxALIGN_RIGHT, 4 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   // System
-  m_listCtrl->InsertColumn(6, _("System"), wxALIGN_LEFT, 6 * cW);
-  m_listCtrl->HideColumn(6);
-  m_listCtrl->AllowHideColumn(6);
+  m_listCtrl->InsertColumn(idx, _("System"), wxALIGN_LEFT, 6 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   // Modus
-  m_listCtrl->InsertColumn(7, _("Modus"), wxALIGN_LEFT, 4 * cW);
-  m_listCtrl->HideColumn(7);
-  m_listCtrl->AllowHideColumn(7);
+  m_listCtrl->InsertColumn(idx, _("Modus"), wxALIGN_LEFT, 4 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   // Notes
-  m_listCtrl->InsertColumn(8, _("Notes"), wxLIST_FORMAT_CENTER);
-  m_listCtrl->HideColumn(8);
-  m_listCtrl->AllowHideColumn(8);
+  m_listCtrl->InsertColumn(idx, _("Notes"), wxLIST_FORMAT_CENTER);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   // Printed
-  m_listCtrl->InsertColumn(9, _("Printed"), wxALIGN_LEFT, 10 * cW);
-  m_listCtrl->HideColumn(9);
-  m_listCtrl->AllowHideColumn(9);
-
-  m_listCtrl->SetResizeColumn(2);
-
-  m_listCtrl->SetSortColumn(3);
+  m_listCtrl->InsertColumn(idx, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
 
   m_listCtrl->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(CGrListView::OnMouseLeftDown), NULL, this);
 }
@@ -357,6 +386,15 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
   ListItem *itemPtr = m_cbCp->GetCurrentItem();
   if (!itemPtr)
     return;
+
+  m_listCtrl->ShowColumn(1, itemPtr->GetID() == 0);
+  
+  if (!itemPtr->GetID())
+  {
+    cp.Init();
+    OnChangeState(wxCommandEvent_);
+    return;
+  }
 
   cp.SelectById(itemPtr->GetID());
   cp.Next();

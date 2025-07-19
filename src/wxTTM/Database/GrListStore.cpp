@@ -102,7 +102,10 @@ void  GrListStore::Init()
 bool  GrListStore::SelectAll(const CpRec &cp)
 {
   wxString  str = SelectString();
-  str += " WHERE gr.cpID = " + ltostr(cp.cpID) + " ORDER BY grSortOrder, grStage, grName";
+  if (cp.cpID)
+    str += " WHERE gr.cpID = " + ltostr(cp.cpID);
+    
+  str += " ORDER BY gr.cpName, grSortOrder, grStage, grName";
 
   try
   {
