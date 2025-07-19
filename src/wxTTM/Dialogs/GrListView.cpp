@@ -277,18 +277,18 @@ void CGrListView::OnInitialUpdate()
   m_listCtrl->SetResizeColumn(idx);
   idx++;
 
-  // Stufe
+  // Stage
   m_listCtrl->InsertColumn(idx, _("Stage"), wxALIGN_LEFT, 10 * cW);
   m_listCtrl->SetSortColumn(idx);
   idx++;
 
   // Size
-  m_listCtrl->InsertColumn(idx, _("Size"), wxALIGN_RIGHT, 4 * cW);
+  m_listCtrl->InsertColumn(idx, _("Size"), wxALIGN_RIGHT, 6 * cW);
   m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
   idx++;
 
-  // Size
+  // Sort
   m_listCtrl->InsertColumn(idx, _("Sort"), wxALIGN_RIGHT, 4 * cW);
   m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
@@ -306,14 +306,14 @@ void CGrListView::OnInitialUpdate()
   m_listCtrl->AllowHideColumn(idx);
   idx++;
 
-  // Notes
-  m_listCtrl->InsertColumn(idx, _("Notes"), wxLIST_FORMAT_CENTER);
+  // Printed
+  m_listCtrl->InsertColumn(idx, _("Printed"), wxALIGN_LEFT, 8 * cW);
   m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
   idx++;
 
-  // Printed
-  m_listCtrl->InsertColumn(idx, _("Printed"), wxALIGN_LEFT, 10 * cW);
+  // Notes
+  m_listCtrl->InsertColumn(idx, _("Notes"), wxLIST_FORMAT_CENTER);
   m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
   idx++;
