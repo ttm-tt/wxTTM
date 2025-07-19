@@ -90,6 +90,7 @@ class CListCtrlEx : public wxListCtrl
     // Sort items
     void  SortItems(int col = -1);
     void  SetSortColumn(int col) { m_sortIdx = col; }
+    int   GetSortColumn() const  { return m_sortIdx; }
 
     // Insert column
     long InsertColumn(long col, const wxString &heading, int format = wxLIST_FORMAT_LEFT, int width = -1);

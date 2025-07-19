@@ -279,7 +279,6 @@ void CGrListView::OnInitialUpdate()
 
   // Stage
   m_listCtrl->InsertColumn(idx, _("Stage"), wxALIGN_LEFT, 10 * cW);
-  m_listCtrl->SetSortColumn(idx);
   idx++;
 
   // Size
@@ -289,9 +288,10 @@ void CGrListView::OnInitialUpdate()
   idx++;
 
   // Sort
-  m_listCtrl->InsertColumn(idx, _("Sort"), wxALIGN_RIGHT, 4 * cW);
-  m_listCtrl->HideColumn(idx);
+  m_listCtrl->InsertColumn(idx, _("Sort"), wxALIGN_RIGHT, 1 * cW);
+  m_listCtrl->ShowColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
+  m_listCtrl->SetSortColumn(idx);
   idx++;
 
   // System
@@ -391,8 +391,15 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
   
   if (!itemPtr->GetID())
   {
+    int col = m_listCtrl->GetSortColumn();
+
     cp.Init();
+
     OnChangeState(wxCommandEvent_);
+
+    m_listCtrl->SortItems();
+    m_listCtrl->SortItems(col);
+
     return;
   }
 
