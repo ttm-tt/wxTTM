@@ -319,6 +319,8 @@ void CListCtrlEx::OnColumnRightClick(wxListEvent &evt)
 
   if (rc != wxID_NONE)
     ShowColumn(rc - 2000, menu.IsChecked(rc));
+
+  ResizeColumn();
 }
 
 
