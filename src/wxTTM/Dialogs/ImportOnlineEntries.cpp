@@ -606,6 +606,19 @@ bool CImportOnlineEntries::ImportThreadRead()
     delete connPtr;
   }
 
+  // If we don't have numbers yet start with log10 if numbers of players
+  if (maxStartNr)
+    ;
+  else if (players.size() >= 10000)
+    maxStartNr = 10000;
+  else if (players.size() >= 1000)
+    maxStartNr = 1000;
+  else if (players.size() >= 100)
+    maxStartNr = 100;
+  else if (players.size() >= 10)
+    maxStartNr = 10;
+
+
   wxDateTime cutoff = XRCCTRL(*this, "Created", wxDatePickerCtrl)->GetValue();
 
   std::vector<Person> plList;
