@@ -103,7 +103,7 @@ bool PlRecImpExp::Read(const wxString &line)
     }    
   }
 
-  // Gebrutstage auf Jahr beschraenken. Vorraussetzung ist ein 4-stelliges Jahr
+  // Geburtstage auf Jahr beschraenken. Vorraussetzung ist ein 4-stelliges Jahr
   if (strYear.Length() > 4)
   {
     wxStringTokenizerEx tokens(strYear, "./-");
@@ -909,6 +909,16 @@ bool  PlStore::InsertOrUpdate()
     // Dto. plExtID, we don't have it 
     if (!*plExtID && *pl.plExtID)
         wxStrcpy(plExtID, pl.plExtID);
+
+    // Dto all others if not set
+    if (!*psName.psFirst && !*psName.psLast)
+    {
+      wxStrcpy(psName.psLast, pl.psName.psLast);
+      wxStrcpy(psName.psFirst, pl.psName.psFirst);
+    }
+
+    if (naID)
+      naID = pl.naID;
     
     return Update();
   }
