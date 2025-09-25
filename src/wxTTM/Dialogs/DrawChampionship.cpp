@@ -382,6 +382,9 @@ void CDrawChampionship::OnSelChangeToStage(wxCommandEvent &)
   GrListStore gr;
   cbToGroup->AddListItem(new GrItem(gr));
 
+  if (cbToStage->IsListEmpty())
+    return;
+
   toStage = cbToStage->GetString(cbToStage->GetCurrentSelection());
   toGroup = 0;
 
