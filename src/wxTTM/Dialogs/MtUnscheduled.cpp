@@ -10,6 +10,7 @@
 #include "CpItem.h"
 #include "GrItem.h"
 #include "MtItem.h"
+#include "DateItem.h"
 
 #include "TTDbse.h"
 
@@ -20,6 +21,7 @@ IMPLEMENT_DYNAMIC_CLASS(CMtUnscheduled, CFormViewEx)
 BEGIN_EVENT_TABLE(CMtUnscheduled, CFormViewEx)
   EVT_COMBOBOX(XRCID("Event"), CMtUnscheduled::OnSelChangeCp)
   EVT_COMBOBOX(XRCID("Group"), CMtUnscheduled::OnSelChangeGr)
+  EVT_COMBOBOX(XRCID("Dates"), CMtUnscheduled::OnSelChangeDate)
 END_EVENT_TABLE()
 
 
@@ -161,6 +163,7 @@ void CMtUnscheduled::OnInitialUpdate()
 {
   m_cbCp = XRCCTRL(*this, "Event", CComboBoxEx);
   m_cbGr = XRCCTRL(*this, "Group", CComboBoxEx);
+  m_cbDate = XRCCTRL(*this, "Dates", CComboBoxEx);
   m_listCtrl = XRCCTRL(*this, "Matches", CListCtrlEx);
 
   m_listCtrl->SetItemHeight(1.5);
@@ -193,6 +196,8 @@ void CMtUnscheduled::OnInitialUpdate()
   m_cbCp->SetCurrentItem(m_cbCp->GetListItem(0));
   if (!CTT32App::instance()->GetDefaultCP().IsEmpty())
     m_cbCp->SetCurrentItem(CTT32App::instance()->GetDefaultCP());
+
+  m_cbDate->SetCurrentItem(m_cbDate->GetListItem(0));
 
   OnSelChangeCp(wxCommandEvent_);
 }
@@ -229,8 +234,6 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 {
   m_listCtrl->RemoveAllListItems();
 
-  MtEntryStore mt;
-
   CpItem *cpItemPtr = (CpItem *)m_cbCp->GetCurrentItem();
 
   if (!cpItemPtr)
@@ -245,9 +248,53 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 
   GrRec gr = grItemPtr->gr;
 
+  m_cbDate->Clear();
+
+  timestamp ts;
+  memset(&ts, 0, sizeof(ts));
+  ts.year = -1;
+  m_cbDate->AddListItem(new DateItem(ts));
+
+  std::list<timestamp> dates = MtListStore().ListUnscheduledDates(cp, gr);
+  for (auto &ts : dates)
+    m_cbDate->AddListItem(new DateItem(ts));
+
+  m_cbDate->SetCurrentItem(m_cbDate->GetListItem(0));
+
+  OnSelChangeDate(wxCommandEvent_);
+}
+
+
+void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
+{
+  MtEntryStore mt;
+
+  CpItem* cpItemPtr = (CpItem*)m_cbCp->GetCurrentItem();
+
+  if (!cpItemPtr)
+    return;
+
+  CpRec cp = cpItemPtr->cp;
+
+  GrItem* grItemPtr = (GrItem*)m_cbGr->GetCurrentItem();
+
+  if (!grItemPtr)
+    return;
+
+  GrRec gr = grItemPtr->gr;
+
+  timestamp ts;
+  memset(&ts, 0, sizeof(ts));
+  ts.year = -1;
+  DateItem* dateItemPtr = (DateItem*)m_cbDate->GetCurrentItem();
+  if (dateItemPtr)
+    ts = dateItemPtr->m_ts;
+
+  m_listCtrl->RemoveAllListItems();
+
   if (cp.cpID == 0 || cp.cpType == CP_SINGLE)
   {
-    mt.SelectUnscheduled(CP_SINGLE, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_SINGLE, ts, cp.cpID, gr.grID);
 
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
@@ -256,7 +303,7 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 
   if (cp.cpID == 0 || cp.cpType == CP_DOUBLE)
   {
-    mt.SelectUnscheduled(CP_DOUBLE, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_DOUBLE, ts, cp.cpID, gr.grID);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();
@@ -264,7 +311,7 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 
   if (cp.cpID == 0 || cp.cpType == CP_MIXED)
   {
-    mt.SelectUnscheduled(CP_MIXED, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_MIXED, ts, cp.cpID, gr.grID);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();
@@ -272,7 +319,7 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 
   if (cp.cpID == 0 || cp.cpType == CP_TEAM)
   {
-    mt.SelectUnscheduled(CP_TEAM, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_TEAM, ts, cp.cpID, gr.grID);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();
@@ -280,6 +327,7 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 
   m_listCtrl->SortItems(6);
 }
+
 
 void  CMtUnscheduled::OnEdit()
 {

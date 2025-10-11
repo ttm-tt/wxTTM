@@ -723,6 +723,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\CpEntries.h" />
     <ClInclude Include="Dialogs\CpListView.h" />
     <ClInclude Include="Dialogs\DatabaseLogin.h" />
+    <ClInclude Include="Dialogs\DateItem.h" />
     <ClInclude Include="Dialogs\DrawChampionship.h" />
     <ClInclude Include="Dialogs\GrEdit.h" />
     <ClInclude Include="Dialogs\GrFinished.h" />

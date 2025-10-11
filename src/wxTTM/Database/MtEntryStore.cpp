@@ -448,7 +448,7 @@ bool  MtEntryStore::SelectByTime(const timestamp &fromTime, short fromTable,
 }
 
 // -----------------------------------------------------------------------
-bool MtEntryStore::SelectUnscheduled(short cpType, long cpID, long grID)
+bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, long grID)
 {
   mt.cpType = cpType;
 
@@ -459,9 +459,20 @@ bool MtEntryStore::SelectUnscheduled(short cpType, long cpID, long grID)
     "   AND mtResA = 0 AND mtResX = 0 "
     // "   AND mtDateTime IS NOT NULL "
     "   AND (mtTable IS NULL OR mtTable = 0 OR (mtTable <> 0 AND mtDateTime IS NULL)) "
-    "   AND (gr.grNofRounds = 0 OR mt.mtRound <= gr.grNofRounds) "
+    "   AND (gr.grModus = 1 OR gr.grNofRounds = 0 OR mt.mtRound <= gr.grNofRounds) "
+    "   AND (gr.grModus = 1 OR gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) "
     "   AND cp.cpType = " + ltostr(cpType)
   ;
+
+  if (ts.year == 0)
+    sql += " AND mtDateTime IS NULL";
+  else if (ts.year < 0)
+    ;
+  else
+  {
+    wxString tmp = wxString::Format("%04d-%02d-%02d", ts.year, ts.month, ts.day);
+    sql += " AND CAST(mtDateTime AS DATE) = '" + tmp + "' ";
+  }
 
   if (cpID)
     sql += " AND cp.cpID = " + ltostr(cpID);

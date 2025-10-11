@@ -1000,6 +1000,9 @@
     <ClInclude Include="Dialogs\MpGroups.h">
       <Filter>Source Files\Dialogs\Tournament</Filter>
     </ClInclude>
+    <ClInclude Include="Dialogs\DateItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\TT32.fbp">

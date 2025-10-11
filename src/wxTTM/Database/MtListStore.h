@@ -10,6 +10,7 @@
 
 #include  <list>
 
+struct  CpRec;
 struct  GrRec;
 struct  TmRec;
 
@@ -75,6 +76,7 @@ class  MtListStore : public StoreObj, public MtListRec
     bool  SelectByTimestamp(const timestamp &ts);
     
     std::list<timestamp>  ListVenueDays(short fromTable = 0, short toTable = INT16_MAX);
+    std::list<timestamp>  ListUnscheduledDates(const CpRec&, const GrRec&);
 
     timestamp GetLastUpdateTime();
 

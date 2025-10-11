@@ -424,6 +424,71 @@ std::list<timestamp> MtListStore::ListVenueDays(short fromTable, short toTable)
 
 
 // -----------------------------------------------------------------------
+std::list<timestamp> MtListStore::ListUnscheduledDates(const CpRec& cp, const GrRec& gr)
+{
+  std::list<timestamp> tsList;
+  timestamp ts;
+  long year, month, day;
+
+  memset(&ts, 0, sizeof(timestamp));
+
+  wxString cond;
+  if (cp.cpID)
+    cond += "AND cp.cpID = " + ltostr(cp.cpID) + " ";
+  if (gr.grID)
+    cond += "AND gr.grID = " + ltostr(gr.grID) + " ";
+
+  wxString str =
+    "  SELECT DISTINCT YEAR(mtDateTime), MONTH(mtDateTime), DAY(mtDateTime)"
+    "    FROM MtList mt "
+    "         INNER JOIN GrList gr ON mt.grID = gr.grID "
+    "         INNER JOIN CpList cp ON gr.cpID = cp.cpID "
+    "   WHERE mtResA = 0 AND mtResX = 0 "
+    // "   AND mtDateTime IS NOT NULL "
+    "     AND (mtTable IS NULL OR mtTable = 0 OR (mtTable <> 0 AND mtDateTime IS NULL)) "
+    "     AND (gr.grModus = 1 OR gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) "
+    "     AND (gr.grModus = 1 OR gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) "
+    // "     AND tmA IS NOT NULL AND tmX IS NOT NULL "
+    + cond +
+    "   ORDER BY 1, 2, 3";
+
+  try
+  {
+    ExecuteQuery(str);
+    BindCol(1, &year);
+    BindCol(2, &month);
+    BindCol(3, &day);
+
+    while (Next())
+    {
+      if (WasNull(1))
+      {
+        ts.year = 0;
+        ts.month = 0;
+        ts.day = 0;
+      }
+      else
+      {
+        ts.year = year;
+        ts.month = month;
+        ts.day = day;
+      }
+
+      tsList.push_back(ts);
+    }
+
+    Close();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+  }
+
+  return tsList;
+}
+
+
+// -----------------------------------------------------------------------
 timestamp MtListStore::GetLastUpdateTime()
 {
   wxString str = "SELECT MAX(mtTimestamp) FROM MtList";
