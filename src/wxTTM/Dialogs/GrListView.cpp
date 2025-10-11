@@ -482,6 +482,9 @@ void CGrListView::OnNotes(wxCommandEvent &)
 
 void CGrListView::OnPublish(wxCommandEvent &)
 {
+  bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
+  bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
+
   for (int idx = m_listCtrl->GetItemCount(); idx--; )
   {
     if (!m_listCtrl->IsSelected(idx))
@@ -490,12 +493,18 @@ void CGrListView::OnPublish(wxCommandEvent &)
     GrItem *itemPtr = (GrItem *)m_listCtrl->GetListItem(idx);
     GrStore gr = itemPtr->gr;
     gr.SetPublish(true);
+
+    if (unpublished &&!published)
+      m_listCtrl->RemoveListItem(idx);
   }
 }
 
 
 void CGrListView::OnUnpublish(wxCommandEvent &)
 {
+  bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
+  bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
+
   for (int idx = m_listCtrl->GetItemCount(); idx--; )
   {
     if (!m_listCtrl->IsSelected(idx))
@@ -504,6 +513,10 @@ void CGrListView::OnUnpublish(wxCommandEvent &)
     GrItem *itemPtr = (GrItem *)m_listCtrl->GetListItem(idx);
     GrStore gr = itemPtr->gr;
     gr.SetPublish(false);
+
+    if (published && !unpublished)
+      m_listCtrl->RemoveListItem(idx);
+
   }
 }
 

@@ -522,6 +522,20 @@ void  CListCtrlEx::RemoveListItem(long id)
 }
 
 
+// Remove Item by idx
+void  CListCtrlEx::RemoveListItem(int idx)
+{
+  if (idx < 0 || idx >= GetItemCount())
+    return;
+
+  wxIntPtr param = GetItemData(idx);
+  if (param)
+    delete (ListItem*)param;
+
+  DeleteItem(idx);
+}
+
+
 void  CListCtrlEx::RemoveAllListItems()
 {
   for (int idx = GetItemCount(); idx--; )

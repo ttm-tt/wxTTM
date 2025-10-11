@@ -27,7 +27,8 @@ class CListCtrlEx : public wxListCtrl
     // Add Item at end / at position idx / sorted
     void  AddListItem(const ListItem *itemPtr, int idx = -1);
     void  InsertListItem(const ListItem *itemPtr) {AddListItem(itemPtr);}
-    void  RemoveListItem(long id);
+    void  RemoveListItem(long id);  // Remove by id
+    void  RemoveListItem(int idx);  // Remove by idx
     void  RemoveAllListItems();
 
     int   GetCount() const {return GetItemCount();}    
