@@ -609,6 +609,13 @@ bool  TTDbse::UpdateTables(long version)
     res &= RpStore::UpdateTable(version);
     res &= PoStore::UpdateTable(version);
 
+    // We need a commit to do all schema changes before we can continue
+    // to update constraints
+    if (res)
+      defaultConnection->Commit();
+    else
+      defaultConnection->Rollback();
+
     // Update Constraints
     res &= MdStore::UpdateConstraints(version);
     res &= SyStore::UpdateConstraints(version);
