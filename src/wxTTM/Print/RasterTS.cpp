@@ -479,9 +479,7 @@ int RasterToss::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
         {wxT("X"), wxT("Y"), wxT("Z")}
       };
 
-      str = ax ?
-        alpha[1][sy.syList[i].syPlayerX - 1] :
-        alpha[0][sy.syList[i].syPlayerA - 1];
+      str = alpha[ax ? 1 : 0][i];
     }
     else
     {
