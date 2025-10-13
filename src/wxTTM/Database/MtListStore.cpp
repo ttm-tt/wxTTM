@@ -383,7 +383,7 @@ std::list<timestamp> MtListStore::ListVenueDays(short fromTable, short toTable)
     "    FROM MtList mt INNER JOIN GrList gr ON mt.grID = gr.grID "
 	  "   WHERE (gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) AND "
 	  "         (gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) AND "
-	  "         (stA IS NULL OR tmA <> 0) AND (stX IS NULL OR tmX <> 0) AND"
+	  "         (((stA IS NULL OR tmA <> 0) AND (stX IS NULL OR tmX <> 0)) OR mtDateTime IS NOT NULL)  AND"
     "         (ISNULL(mt.mtTable, 0) >= " + ltostr(fromTable) + " AND ISNULL(mt.mtTable, 0x7FFFFFFF) <= " + ltostr(toTable) + ")"
     "   ORDER BY 1, 2, 3";
       
