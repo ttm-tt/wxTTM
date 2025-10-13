@@ -25,18 +25,31 @@ IMPLEMENT_DYNAMIC_CLASS(CGrListView, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CGrListView, CFormViewEx)
   EVT_COMBOBOX(XRCID("Events"), CGrListView::OnSelChangeCp)
+  EVT_COMBOBOX(XRCID("Stages"), CGrListView::OnSelChangeStage)
   EVT_RADIOBOX(XRCID("State"), CGrListView::OnChangeState)
   EVT_BUTTON(XRCID("Notes"), CGrListView::OnNotes)
   EVT_BUTTON(XRCID("Publish"), CGrListView::OnPublish)
   EVT_BUTTON(XRCID("Unpublish"), CGrListView::OnUnpublish)
   EVT_COLLAPSIBLEPANE_CHANGED(XRCID("Filter"), CGrListView::OnFilterCollapsibleChanged)
-  END_EVENT_TABLE()
-
+END_EVENT_TABLE()
 
 // -----------------------------------------------------------------------
 // Use namespace to make class declaration local to this file
 namespace
 {
+  class StageItem : public ListItem
+  {
+    public:
+      StageItem() : ListItem() {}
+      StageItem(const wxString& stage) : ListItem(0, stage) {}
+
+      virtual void DrawItem(wxDC* pDC, wxRect& rect)
+      {
+        DrawString(pDC, rect, m_label.IsEmpty() ? _("All Stages") : m_label);
+      }
+  };
+
+
   class GrItemEx : public GrItem
   {
     public:
@@ -257,6 +270,7 @@ void CGrListView::OnInitialUpdate()
   CFormViewEx::OnInitialUpdate();
   
   m_cbCp = XRCCTRL(*this, "Events", CComboBoxEx);
+  m_cbStage = XRCCTRL(*this, "Stages", CComboBoxEx);
   m_listCtrl = XRCCTRL(*this, "Groups", CListCtrlEx);
   
   int idx = 0;
@@ -412,6 +426,24 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
 
   CTT32App::instance()->SetDefaultCP(cp.cpName);
 
+  std::list<wxString> stages = GrListStore().ListStages(cp);
+
+  m_cbStage->Clear();
+
+  // The All Stages item
+  m_cbStage->AddListItem(new StageItem());
+
+  for (wxString stage : stages)
+    m_cbStage->AddListItem(new StageItem(stage));
+
+  m_cbStage->SetCurrentItem(0);
+
+  OnSelChangeStage(wxCommandEvent_);
+}
+
+
+void CGrListView::OnSelChangeStage(wxCommandEvent&)
+{
   OnChangeState(wxCommandEvent_);
 }
 
@@ -420,16 +452,17 @@ void CGrListView::OnChangeState(wxCommandEvent&)
 {
   m_listCtrl->RemoveAllListItems();
 
-  // wxCollapsiblePane *filter = XRCCTRL(*this, "Filter", wxCollapsiblePane);
-
   bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
   bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
 
-  // bool published = false;
-  // bool unpublished = true;
+  StageItem* stageItemPtr = (StageItem*)m_cbStage->GetCurrentItem();
+  if (!stageItemPtr)
+    return;
+
+  wxString stage = stageItemPtr->GetLabel();
 
   GrListStore  grList;
-  grList.SelectAll(cp);
+  grList.SelectByStage(cp, stage);
 
   while (grList.Next())
   {

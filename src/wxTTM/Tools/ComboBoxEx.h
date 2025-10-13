@@ -45,6 +45,7 @@ class CComboBoxEx : public wxOwnerDrawnComboBox
     // Set current selection to item with label "str" / id
     void  SetCurrentItem(const wxString &str);
     void  SetCurrentItem(long id);
+    void  SetCurrentItem(int idx);
     void  SetCurrentItem(const ListItem *);
 
     void  SetItemHeight(unsigned height);

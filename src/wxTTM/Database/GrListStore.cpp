@@ -286,7 +286,7 @@ bool  GrListStore::SelectByStage(const CpRec &cp, const wxString &stage)
 {
   wxString str = SelectString();
   str += " WHERE gr.cpID = " + ltostr(cp.cpID) + 
-         "   AND grStage = '" + TransformString(stage) + "'" +
+         (stage.IsEmpty() ? "" : "   AND grStage = '" + TransformString(stage) + "'") +
          " ORDER BY grName";
 
   try

@@ -35,6 +35,7 @@ class CGrListView : public CFormViewEx
 
   private:
     void OnSelChangeCp(wxCommandEvent &);
+    void OnSelChangeStage(wxCommandEvent &);
     void OnChangeState(wxCommandEvent &);
     void OnNotes(wxCommandEvent &);
     void OnPublish(wxCommandEvent &);
@@ -46,6 +47,7 @@ class CGrListView : public CFormViewEx
   private:
     CpListStore  cp;
     CComboBoxEx * m_cbCp = nullptr;
+    CComboBoxEx * m_cbStage = nullptr;
     CListCtrlEx * m_listCtrl = nullptr;
 	  
 	DECLARE_DYNAMIC_CLASS(CGrListView)

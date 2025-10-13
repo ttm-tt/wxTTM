@@ -220,6 +220,15 @@ void  CComboBoxEx::SetCurrentItem(long id)
 }
 
 
+void CComboBoxEx::SetCurrentItem(int idx)
+{
+  if (idx < 0 || idx >= GetCount())
+    return;
+
+  SetSelection(idx);
+}
+
+
 void  CComboBoxEx::SetCurrentItem(const ListItem *ptr)
 {
   if (GetCount() == 0)
