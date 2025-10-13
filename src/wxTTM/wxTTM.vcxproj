@@ -552,7 +552,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClCompile Include="Dialogs\MpListView.cpp" />
     <ClCompile Include="Dialogs\MtDetails.cpp" />
     <ClCompile Include="Dialogs\MtUnscheduled.cpp" />
-    <ClCompile Include="Dialogs\NmEditETS.cpp" />
+    <ClCompile Include="Dialogs\NmEditECC.cpp" />
     <ClCompile Include="Dialogs\NmEditOTS.cpp" />
     <ClCompile Include="Dialogs\NmEditXTS.cpp" />
     <ClCompile Include="Dialogs\NmEditXTSA.cpp" />
@@ -738,7 +738,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\MpListView.h" />
     <ClInclude Include="Dialogs\MtDetails.h" />
     <ClInclude Include="Dialogs\MtUnscheduled.h" />
-    <ClInclude Include="Dialogs\NmEditETS.h" />
+    <ClInclude Include="Dialogs\NmEditECC.h" />
     <ClInclude Include="Dialogs\NmEditOTS.h" />
     <ClInclude Include="Dialogs\NmEditXTS.h" />
     <ClInclude Include="Dialogs\NmEditXTSA.h" />

@@ -367,7 +367,7 @@ void CMtTeam::OnNomination(long tmID, int ax)
   if (wxStrcmp(sy.syName, wxT("OTS")) == 0)
     CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditOTS"), mt.mtID, tmID, ax);
   else if (wxStrcmp(sy.syName, wxT("ETS")) == 0)
-    CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditETS"), mt.mtID, tmID, ax);
+    CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditECC"), mt.mtID, tmID, ax);
   else if (wxStrcmp(sy.syName, wxT("XTS")) == 0)
     CTT32App::instance()->OpenView(_("Edit Nomination"), wxT("NmEditXTS"), mt.mtID, tmID, ax);
   else if (wxStrcmp(sy.syName, wxT("XTSA")) == 0)

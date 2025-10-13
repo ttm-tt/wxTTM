@@ -18,11 +18,11 @@
 #include  "SyStore.h"
 #include  "TmEntryStore.h"
 
-class CNmEditETS : public CFormViewEx
+class CNmEditECC : public CFormViewEx
 {
   public:
-	  CNmEditETS();           
-	 ~CNmEditETS(); 
+	  CNmEditECC();           
+	 ~CNmEditECC(); 
 
     virtual bool Edit(va_list);
 
@@ -51,7 +51,7 @@ class CNmEditETS : public CFormViewEx
     NmStore   nm;
     TmEntry   tm;
     
-  DECLARE_DYNAMIC_CLASS(CNmEditETS)
+  DECLARE_DYNAMIC_CLASS(CNmEditECC)
   DECLARE_EVENT_TABLE()    
 };
 

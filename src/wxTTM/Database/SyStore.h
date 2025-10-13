@@ -93,12 +93,12 @@ class  SyStore : public StoreObj, public SyRec
     static  bool  AddModifiedSwaythlingCup();
     static  bool  AddOlympicTeamSystem();
     static  bool  AddOlympicTeamSystem2Players();
-    static  bool  AddECTeamSystem();
+    static  bool  AddECCTeamSystem();
     static  bool  AddMixedTeamSystem();
     static  bool  AddMixedTeamSystemA();
     static  bool  AddYouthSeriesTeamSystem();
     static  bool  AddYouthSeriesTeamSystemA();
-    static  bool  AddEuropeanTeamChamionships();
+    static  bool  AddEuropeanTeamChampionshipsSystem();
 
   public:
     SyStore(Connection * = 0);  // Defaultkonstruktor

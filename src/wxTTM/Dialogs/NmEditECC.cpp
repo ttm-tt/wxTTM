@@ -1,6 +1,6 @@
 /* Copyright (C) 2020 Christoph Theis */
 
-// NmEditETS.cpp: Edit Nomination fuer EC Mannschaft
+// NmEditECC.cpp: Edit Nomination fuer EC Mannschaft
 // Mannschaft nominiert 4 Spieler. 
 // Nach dem zweiten Spiel kann sie entscheiden, ob der 4-te Spieler den ersten oder zweiten oder keinen ersetzt
 // Abgebildet wird es mit 6 Spielern: 1-4 aus der Nominierung, 5 und 6 sind entweder 1 und 2 oder der Ersatz
@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "TT32App.h"
-#include "NmEditETS.h"
+#include "NmEditECC.h"
 
 #include  "CpItem.h"
 #include  "GrItem.h"
@@ -19,27 +19,27 @@
 #include  "LtEntryStore.h"
 
 
-IMPLEMENT_DYNAMIC_CLASS(CNmEditETS, CFormViewEx)
+IMPLEMENT_DYNAMIC_CLASS(CNmEditECC, CFormViewEx)
 
-BEGIN_EVENT_TABLE(CNmEditETS, CFormViewEx)
-  EVT_LIST_ITEM_SELECTED(XRCID("NominatedPlayers"), CNmEditETS::OnSelChanged)
+BEGIN_EVENT_TABLE(CNmEditECC, CFormViewEx)
+  EVT_LIST_ITEM_SELECTED(XRCID("NominatedPlayers"), CNmEditECC::OnSelChanged)
 END_EVENT_TABLE()
 
 
 // -----------------------------------------------------------------------
-// CNmEditETS
+// CNmEditECC
 
-CNmEditETS::CNmEditETS() : CFormViewEx()
+CNmEditECC::CNmEditECC() : CFormViewEx()
 {
 }
 
 
-CNmEditETS::~CNmEditETS()
+CNmEditECC::~CNmEditECC()
 {
 }
 
 
-bool  CNmEditETS::Edit(va_list vaList)
+bool  CNmEditECC::Edit(va_list vaList)
 {
   long mtID = va_arg(vaList, long);
   long tmID = va_arg(vaList, long);
@@ -160,7 +160,7 @@ bool  CNmEditETS::Edit(va_list vaList)
 
 
 // -----------------------------------------------------------------------
-void CNmEditETS::OnInitialUpdate() 
+void CNmEditECC::OnInitialUpdate() 
 {
 	CFormViewEx::OnInitialUpdate();
 	
@@ -187,7 +187,7 @@ void CNmEditETS::OnInitialUpdate()
 
 
 // -----------------------------------------------------------------------
-void  CNmEditETS::OnSelChanged(wxListEvent &)
+void  CNmEditECC::OnSelChanged(wxListEvent &)
 {
   NmItem *nmItemPtr = (NmItem *) nmList->GetCurrentItem();
   if (!nmItemPtr)
@@ -222,7 +222,7 @@ void  CNmEditETS::OnSelChanged(wxListEvent &)
 
 
 // -----------------------------------------------------------------------
-void  CNmEditETS::OnAdd()
+void  CNmEditECC::OnAdd()
 {
   NmItem *nmItemPtr = (NmItem *) nmList->GetCurrentItem();
   if (!nmItemPtr)
@@ -265,7 +265,7 @@ void  CNmEditETS::OnAdd()
 }
 
 
-void  CNmEditETS::OnDelete()
+void  CNmEditECC::OnDelete()
 {
   NmItem *nmItemPtr = (NmItem *) nmList->GetCurrentItem();
   if (!nmItemPtr)
@@ -321,7 +321,7 @@ void  CNmEditETS::OnDelete()
 }
 
 
-void  CNmEditETS::OnOK()
+void  CNmEditECC::OnOK()
 {
   TTDbse::instance()->GetDefaultConnection()->StartTransaction();
   

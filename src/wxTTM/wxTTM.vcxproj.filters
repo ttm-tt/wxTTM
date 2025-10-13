@@ -458,7 +458,7 @@
     <ClCompile Include="Dialogs\Validators.cpp">
       <Filter>Source Files\Tools\Extension</Filter>
     </ClCompile>
-    <ClCompile Include="Dialogs\NmEditETS.cpp">
+    <ClCompile Include="Dialogs\NmEditECC.cpp">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClCompile>
     <ClCompile Include="Dialogs\NmEditOTS.cpp">
@@ -877,7 +877,7 @@
     <ClInclude Include="Dialogs\Validators.h">
       <Filter>Source Files\Tools\Extension</Filter>
     </ClInclude>
-    <ClInclude Include="Dialogs\NmEditETS.h">
+    <ClInclude Include="Dialogs\NmEditECC.h">
       <Filter>Source Files\Dialogs\Table</Filter>
     </ClInclude>
     <ClInclude Include="Dialogs\NmEditOTS.h">

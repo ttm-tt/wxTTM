@@ -305,11 +305,12 @@ bool  SyStore::CreateTable()
   AddModifiedSwaythlingCup();
   AddOlympicTeamSystem();
   // AddOlympicTeamSystem2Players();
-  AddECTeamSystem();
+  AddECCTeamSystem();
   AddMixedTeamSystem();
   AddMixedTeamSystemA();
   AddYouthSeriesTeamSystem();
   AddYouthSeriesTeamSystemA();
+  AddEuropeanTeamChampionshipsSystem();
 
   connPtr->Commit();
 
@@ -830,12 +831,12 @@ bool SyStore::AddOlympicTeamSystem2Players()
 }
  
 
-bool SyStore::AddECTeamSystem()
+bool SyStore::AddECCTeamSystem()
 {
   SyStore sy;
 
-	wxStrcpy((wxChar *) sy.syName, "ETS");
-	wxStrcpy((wxChar *) sy.syDesc, "EC Team System");
+	wxStrcpy((wxChar *) sy.syName, "ECC");
+	wxStrcpy((wxChar *) sy.syDesc, "ECC Team System");
 	sy.syMatches = 5;
 	sy.sySingles = 6;
 	sy.syDoubles = 0;
@@ -1020,7 +1021,7 @@ bool SyStore::AddYouthSeriesTeamSystem()
   return sy.InsertOrUpdate();
 }
 
-bool SyStore::AddEuropeanTeamChamionships()
+bool SyStore::AddEuropeanTeamChampionshipsSystem()
 {
   SyStore sy;
 
