@@ -389,6 +389,8 @@ void CGrListView::OnSelChangeCp(wxCommandEvent &)
     return;
 
   m_listCtrl->ShowColumn(1, itemPtr->GetID() == 0);
+
+  FindWindow(IDC_ADD)->Enable(itemPtr->GetID() != 0);
   
   if (!itemPtr->GetID())
   {
