@@ -455,7 +455,7 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
   wxString sql = SelectString();
 
   sql += 
-    " WHERE tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL "
+    " WHERE ((tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL) OR mtDateTime IS NOT NULL) "
     "   AND mtResA = 0 AND mtResX = 0 "
     // "   AND mtDateTime IS NOT NULL "
     "   AND (mtTable IS NULL OR mtTable = 0 OR (mtTable <> 0 AND mtDateTime IS NULL)) "
