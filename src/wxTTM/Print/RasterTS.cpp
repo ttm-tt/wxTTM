@@ -505,7 +505,7 @@ int RasterToss::PrintNomination(const SyListRec& sy, const CRect& rect, bool ax)
       wxString str;
 
       if (syDoubles > 1)
-        str = wxString::Format(ax ? "DX-%d" : "DA-%d");
+        str = wxString::Format(ax ? "DX-%d" : "DA-%d", (i+1));
       else
         str = ax ? "DX" : "DA";
 
