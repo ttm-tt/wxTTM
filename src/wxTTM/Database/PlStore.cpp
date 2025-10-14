@@ -76,8 +76,6 @@ bool PlRecImpExp::Read(const wxString &line)
   // Per Konvention ist der Nachname "all upper case" oder ein Zeichen lang.
   if (!strLast.IsEmpty() && strFirst.IsEmpty() && strLast.Find(' ') != wxNOT_FOUND)
   {
-    Init();
- 
     wxStringTokenizerEx tokens(strLast, " ");
     strLast = "";
 
@@ -118,7 +116,7 @@ bool PlRecImpExp::Read(const wxString &line)
     }
   }
   
-  if (!strLast.IsEmpty() && !strSex.IsEmpty())
+  if (!strNr.IsEmpty() || !strExtID.IsEmpty() || !strLast.IsEmpty())
   {
     Init();
 
@@ -917,9 +915,15 @@ bool  PlStore::InsertOrUpdate()
       wxStrcpy(psName.psFirst, pl.psName.psFirst);
     }
 
-    if (naID)
-      naID = pl.naID;
+    if (!naID)
+      wxStrcpy(naName, pl.naName);
     
+    if (!plRankPts && pl.plRankPts)
+      plRankPts = pl.plRankPts;
+
+    if (!psSex && pl.psSex)
+      psSex = pl.psSex;
+
     return Update();
   }
   else
