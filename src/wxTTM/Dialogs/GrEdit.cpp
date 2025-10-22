@@ -560,8 +560,13 @@ void  CGrEdit::OnTemplate(wxCommandEvent &)
 
   itemPtr = m_cbModus->GetCurrentItem();
   wxASSERT(itemPtr);
-  gr.grModus = ((MdItem *) itemPtr)->GetModus();
-  gr.mdID = ((MdItem *) itemPtr)->GetID();
+
+  // Assert should catch nullptr, but make compiler happy
+  if (itemPtr)
+  {
+    gr.grModus = ((MdItem *) itemPtr)->GetModus();
+    gr.mdID = ((MdItem *) itemPtr)->GetID();
+  }
 
   if (gr.grModus == MOD_RR)
   {
@@ -639,14 +644,7 @@ void  CGrEdit::OnTemplate(wxCommandEvent &)
       tmp = "%03i";
     }
     
-    if (cgs->nameTempl.length() == 0)
-    {    
-      if (cgs->numeric == 2)
-        cgs->nameTempl += "%c";
-      else
-        cgs->nameTempl += "%i";
-    }
-    else if (!strchr(cgs->nameTempl.data(), '%'))
+    if (!strchr(cgs->nameTempl.data(), '%'))
     {
       cgs->nameTempl += tmp;
     }

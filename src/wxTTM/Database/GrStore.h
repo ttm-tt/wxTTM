@@ -205,8 +205,8 @@ class  GrStore : public StoreObj, public GrRec
       Connection *connPtr;
       CpRec       cp;
       GrRec       gr;
-      wxString nameTempl;
-      wxString descTempl;
+      wxString    nameTempl;
+      wxString    descTempl;
       short       start;
       short       count;
       short       numeric;

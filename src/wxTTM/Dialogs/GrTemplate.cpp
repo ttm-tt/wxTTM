@@ -54,54 +54,63 @@ void CGrTemplate::OnInitDialog(wxInitDialogEvent &evt)
 
 void CGrTemplate::UpdateDialog()
 {
+  wxString name, desc;
+  int maxNameLen = sizeof(cgs->gr.grName) / sizeof(cgs->gr.grName[0]) - 1;
+  int maxDescLen = sizeof(cgs->gr.grDesc) / sizeof(cgs->gr.grDesc[0]) - 1;
+
   if (wxStrchr(cgs->gr.grName, wxT('%')))
   {
     FindWindow("Numeric")->Enable(false);
     FindWindow("Alpha")->Enable(false);
-    
-    wxString str = wxString::Format(cgs->gr.grName, cgs->start);
-    
+
     if (wxStrstr(cgs->gr.grName, wxT("%c")))
     {
+      name = wxString::Format(cgs->gr.grName, 'A' + cgs->start).RemoveLast(maxNameLen);
+      desc = wxString::Format(cgs->gr.grDesc, 'A' + cgs->start).RemoveLast(maxDescLen);
+    
       XRCCTRL(*this, "Numeric", wxRadioButton)->SetLabel("");
-      XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel(str);
+      XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel(name + " / " + desc);
+
       FindWindow("Numeric")->Enable(false);
     }
     else
     {
-      XRCCTRL(*this, "Numeric", wxRadioButton)->SetLabel(str);
+      name = wxString::Format(cgs->gr.grName, cgs->start).RemoveLast(maxNameLen);   
+      desc = wxString::Format(cgs->gr.grDesc, cgs->start).RemoveLast(maxDescLen);
+    
+      XRCCTRL(*this, "Numeric", wxRadioButton)->SetLabel(name + " / " + desc);
       XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel("");
       FindWindow("Alpha")->Enable(false);
     }
   }
   else
   {
-    wxString str;
-    if (wxStrlen(cgs->gr.grDesc) == 0)
-      str = wxString::Format("%d", cgs->start);
-    else if (cgs->start + cgs->count > 100)
-      str = wxString::Format("%s %03d", cgs->gr.grDesc, cgs->start);
+    if (cgs->start + cgs->count > 100)
+      name = wxString::Format("%s%03d", cgs->gr.grName, cgs->start);
     else if (cgs->start + cgs->count > 10)
-      str = wxString::Format("%s %02d", cgs->gr.grDesc, cgs->start);
+      name = wxString::Format("%s%02d", cgs->gr.grName, cgs->start);
     else
-      str = wxString::Format("%s %d", cgs->gr.grDesc, cgs->start);
+      name = wxString::Format("%s%d", cgs->gr.grName, cgs->start);
 
-    str.RemoveLast(63);
+    desc = wxString::Format("%s %d", cgs->gr.grDesc, cgs->start);
+
+    name.RemoveLast(maxNameLen);
+    desc.RemoveLast(maxDescLen);
     
-    XRCCTRL(*this, "Numeric", wxRadioButton)->SetLabel(str);      
-    
-    str = wxString::Format("%s %c", cgs->gr.grDesc, 'A' - 1 + cgs->start);
-    
-    XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel(str);
-    
+    XRCCTRL(*this, "Numeric", wxRadioButton)->SetLabel(name + " / " + desc);
+
     // Nicht auswaehlbar, wenn Alphabet nicht mehr ausreicht
     if (cgs->start + cgs->count <= 26)
     {
+      name = wxString::Format("%s%c", cgs->gr.grName, 'A' + cgs->start).RemoveLast(maxNameLen);
+      desc = wxString::Format("%s %c", cgs->gr.grDesc, 'A' + cgs->start).RemoveLast(maxDescLen);
+
+      XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel(name + " / " + desc);
       FindWindow("Alpha")->Enable(true);
     }
     else
     {
-      XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel(cgs->gr.grDesc);
+      XRCCTRL(*this, "Alpha", wxRadioButton)->SetLabel("");
       FindWindow("Alpha")->Enable(false);
     }
   }

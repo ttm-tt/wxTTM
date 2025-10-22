@@ -19,7 +19,7 @@ class CGrTemplate : public wxDialog
 	  void OnInitDialog(wxInitDialogEvent &);
 
   private:
-   void OnKillFocus(wxFocusEvent &);
+    void OnKillFocus(wxFocusEvent &);
 
   private:
     void UpdateDialog();
