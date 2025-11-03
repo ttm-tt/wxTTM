@@ -61,9 +61,11 @@ namespace
       int  Compare(const ListItem *, int col) const;
 
     private:
-      wxString cpName;
-      wxString syName;
-      wxString mdName;
+      wxString  cpName;
+      wxString  syName;
+      wxString  mdName;
+      timestamp stTimestamp = {0};
+      timestamp mtTimestamp = {0};
   };
 }
 
@@ -74,7 +76,8 @@ GrItemEx::GrItemEx(const GrListRec& gr) : GrItem(gr)
 
   cpName = gr.cpName;
   syName = gr.syName;
-  mdName = gr.mdName;
+  stTimestamp = gr.stTimestamp;
+  mtTimestamp = gr.mtTimestamp;
 
   switch (gr.grModus)
   {
@@ -132,11 +135,30 @@ void GrItemEx::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 
     case 9 :
       if (gr.grPrinted.year)
-        DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
+      {
+        DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", 
+          gr.grPrinted.year, gr.grPrinted.month, gr.grPrinted.day, gr.grPrinted.hour, gr.grPrinted.minute));
+      }
       break;
 
-    // 6 Notes -> 5
-    case 10  : 
+    case 10:
+      if (stTimestamp.year)
+      {
+        DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", 
+          stTimestamp.year, stTimestamp.month, stTimestamp.day, stTimestamp.hour, stTimestamp.minute));
+      }
+      break;
+
+    case 11:
+      if (mtTimestamp.year)
+      {
+        DrawString(pDC, rect, wxString::Format("%04d-%02d-%02d %02d:%02d", 
+          mtTimestamp.year, mtTimestamp.month, mtTimestamp.day, mtTimestamp.hour, mtTimestamp.minute));
+      }
+      break;
+
+    // 12 Notes -> 5
+    case 12  : 
       GrItem::DrawColumn(pDC, 5, rect);
       break;
   }
@@ -191,6 +213,22 @@ int GrItemEx::Compare(const ListItem *itemPtr, int col) const
       if (gr.grPrinted > ((GrItemEx *)itemPtr)->gr.grPrinted)
         return 1;
       else if (gr.grPrinted < ((GrItemEx *)itemPtr)->gr.grPrinted)
+        return -1;
+      else
+        return 0;
+
+    case 10:
+      if (stTimestamp > ((GrItemEx *) itemPtr)->stTimestamp)
+        return 1;
+      else if (stTimestamp < ((GrItemEx *) itemPtr)->stTimestamp)
+        return -1;
+      else
+        return 0;
+
+    case 11:
+      if (mtTimestamp > ((GrItemEx *) itemPtr)->mtTimestamp)
+        return 1;
+      else if (mtTimestamp < ((GrItemEx *) itemPtr)->mtTimestamp)
         return -1;
       else
         return 0;
@@ -323,6 +361,18 @@ void CGrListView::OnInitialUpdate()
 
   // Printed
   m_listCtrl->InsertColumn(idx, _("Printed"), wxALIGN_LEFT, 8 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
+
+  // Draws updated
+  m_listCtrl->InsertColumn(idx, _("Positions"), wxALIGN_LEFT, 8 * cW);
+  m_listCtrl->HideColumn(idx);
+  m_listCtrl->AllowHideColumn(idx);
+  idx++;
+
+  // Matches updated
+  m_listCtrl->InsertColumn(idx, _("Matches"), wxALIGN_LEFT, 8 * cW);
   m_listCtrl->HideColumn(idx);
   m_listCtrl->AllowHideColumn(idx);
   idx++;

@@ -17,6 +17,8 @@ struct GrListRec : public GrRec
   wxChar cpName[9];
   wxChar syName[9];
   wxChar mdName[9];
+  timestamp stTimestamp = {0};
+  timestamp mtTimestamp = {0};
 
   GrListRec()  {Init();}
 

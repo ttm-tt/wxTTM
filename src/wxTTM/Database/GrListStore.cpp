@@ -460,7 +460,9 @@ wxString  GrListStore::SelectString() const
     "SELECT grID, grName, grDesc, grStage, grModus, grSize, grWinner, "
     "       cp.cpID, cp.cpName, md.mdID, md.mdName, sy.syID, sy.syName, grBestOf, "
     "       grQualRounds, grNofRounds, grNofMatches, grNoThirdPlace, grOnlyThirdPlace, "
-    "       grPublished, grHasNotes, grSortOrder, grPrinted "
+    "       grPublished, grHasNotes, grSortOrder, grPrinted, "
+    "       (SELECT MAX(stTimestamp) AS stTimestamp FROM StList st WHERE st.grID = gr.grID), "
+    "       (SELECT MAX(mtTimestamp) AS mtTimestamp FROM MtList mt WHERE mt.grID = gr.grID) "
     "  FROM GrList gr "
     "       INNER JOIN CpList cp ON gr.cpID = cp.cpID "
     "       LEFT OUTER JOIN MdList md ON gr.mdID = md.mdID "
@@ -498,6 +500,8 @@ bool  GrListStore::BindRec()
   BindCol(++idx, &grHasNotes);
   BindCol(++idx, &grSortOrder);
   BindCol(++idx, &grPrinted);
+  BindCol(++idx, &stTimestamp);
+  BindCol(++idx, &mtTimestamp);
 
   return true;
 }
