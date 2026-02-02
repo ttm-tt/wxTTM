@@ -79,7 +79,7 @@ bool  CNmEditECC::Edit(va_list vaList)
   int sySingles = sy.sySingles;
   int syDoubles = sy.syDoubles;
   
-  // Versteckte Spieler in ETS
+  // Versteckte Spieler in CC
   sySingles = 4;
 
   const wxChar *alpha[] = {wxT("A"), wxT("B"), wxT("C"), wxT("X"), wxT("Y"), wxT("Z")};
