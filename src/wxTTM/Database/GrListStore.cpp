@@ -285,9 +285,15 @@ bool GrListStore::SelectByTm(const TmRec &tm)
 bool  GrListStore::SelectByStage(const CpRec &cp, const wxString &stage)
 {
   wxString str = SelectString();
-  str += " WHERE gr.cpID = " + ltostr(cp.cpID) + 
-         (stage.IsEmpty() ? "" : "   AND grStage = '" + TransformString(stage) + "'") +
-         " ORDER BY grName";
+  str += " WHERE 1=1 ";
+
+  if (cp.cpID)
+    str += " AND gr.cpID = " + ltostr(cp.cpID);
+    
+  if (!stage.IsEmpty())
+    str += "AND grStage = '" + TransformString(stage) + "'";
+
+  str += " ORDER BY grName";
 
   try
   {
