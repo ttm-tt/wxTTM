@@ -2149,10 +2149,8 @@ msgid "Print %d Result Form(s)"
 msgstr "Drucke %d Ergebnisraster"
 
 #: Dialogs/GrListView.cpp:48
-#, fuzzy
-#| msgid "All Dates"
 msgid "All Stages"
-msgstr "Alle Tage"
+msgstr "Alle Stufen"
 
 #: Dialogs/GrListView.cpp:276
 msgid "All Events"
@@ -2474,11 +2472,11 @@ msgstr "Wollen Sie die ausgewählte(n) Verbände löschen?"
 
 #: Dialogs/NaListView.cpp:159
 msgid "Players from "
-msgstr "Spieler"
+msgstr "Spieler aus "
 
 #: Dialogs/NaListView.cpp:172
 msgid "Teams from "
-msgstr "Mannschaften"
+msgstr "Mannschaften aus "
 
 #: Dialogs/NmEditECC.cpp:178
 msgid "Not decided"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 19:16+0100\n"
+"POT-Creation-Date: 2026-02-17 14:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -2143,10 +2143,8 @@ msgid "Print %d Result Form(s)"
 msgstr "Print %d Result Form(s)"
 
 #: Dialogs/GrListView.cpp:48
-#, fuzzy
-#| msgid "All Dates"
 msgid "All Stages"
-msgstr "All Dates"
+msgstr "All Stages"
 
 #: Dialogs/GrListView.cpp:276
 msgid "All Events"
