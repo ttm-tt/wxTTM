@@ -201,11 +201,12 @@ Filename: {tmp}\x64\vcredist_x64_2019.exe; Parameters: "/install /quiet"; Check:
 Filename: {tmp}\dotNetFx40_Full_x86_x64.exe; Parameters: /q /norestart; StatusMsg: Install .NET 4.0; Check: not CheckDotNET; Components: database
 
 ; SQL Server Native Client
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.3.1.1_x86.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.3.1.1_x64.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.6.2.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.6.2.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
 
-; SQL Server 2022 64 Bit
-Filename: {tmp}\x64\SQLEXPR_2022_x64_ENU.exe; Parameters: /QS /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER {code:UpgradeSQLServer|''}; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2022; Components: database
+; SQL Server 2025 64 Bit
+Filename: {tmp}\x64\SQLEXPR_2025_x64_ENU.exe; Parameters: /x:{tmp}/x64/SQLEXPR_2025 /Q; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2025; Components: database
+Filename: {tmp}\x64\SQLEXPR_2025\setup.exe; Parameters: /IACCEPTSQLSERVERLICENSETERMS /INSTANCENAME=MSSQLSERVER /QS {code:UpgradeSQLServer|''}; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2025; Components: database
 
 ; Berechtigungen setzen
 Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername}\SQLServerMSSQLUser${computername}$MSSQLSERVER:C"; Flags: runascurrentuser hidewizard skipifdoesntexist; StatusMsg: Set access rights; Components: database
@@ -254,7 +255,7 @@ begin
 end;
 
 
-{Prueft, ob .NET 3.5 SP1 installiert ist.}
+{Prueft, ob .NET 4.0 installiert ist.}
 function CheckDotNET(): Boolean;
 begin
   {Bedingung ist: Registry Eintrag existiert}
@@ -326,8 +327,8 @@ begin
     idx := Pos('.', tmp);
     tmpBuild := StrToInt(Copy(tmp, 1, idx - 1));
 
-    {Soll: 16.0.1000.x (2022)}
-    Result := (tmpMajor > 16) or ((tmpMajor = 16) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 1000) or ((tmpBuild = 1000))))));
+    {Soll: 17.0.1000.x (20225}
+    Result := (tmpMajor > 17) or ((tmpMajor = 17) and ((tmpMinor > 0) or ((tmpMinor = 0) and ((tmpBuild > 1000) or ((tmpBuild = 1000))))));
   end;    
 end;
 
@@ -350,6 +351,8 @@ end;
 procedure GetFile(File: String);
   var tmp : String; size : Cardinal;
 begin
+  {Log('Get file "' + File + '"');}
+  {MsgBox('Get file "' + File + '"', mbInformation, MB_OK);}
   if (Pos('\', File) > 0) then
   begin
     CreateDir( ExpandConstant('{tmp}\' + Copy(File, 1, Pos('\', File) - 1)) );
@@ -363,7 +366,7 @@ begin
   begin
     tmp := File;
     StringChangeEx(tmp, '\', '/', True);
-
+    
     if (not ITD_GetFileSize('http://downloads.ttm.co.at/ttm/' + tmp, size)) then
       size := 0;
 
@@ -514,7 +517,7 @@ begin
         GetFile('dotNetFx40_Full_x86_x64.exe');
       end;
 
-      GetFile('x64\SQLEXPR_2022_x64_ENU.exe');
+      GetFile('x64\SQLEXPR_2025_x64_ENU.exe');
     end;
 
     {Bei Bedarf den Windows Installer installieren}
@@ -543,11 +546,11 @@ begin
     begin
       if (Is64BitInstallMode()) then
       begin
-        GetFile('x64\msodbcsql_18.3.1.1_x64.msi');
+        GetFile('x64\msodbcsql_18.6.2.1.msi');
       end
       else
       begin
-        GetFile('x86\msodbcsql_18.3.1.1_x86.msi');
+        GetFile('x86\msodbcsql_18.6.2.1.msi');
       end;
     end;
   end;
