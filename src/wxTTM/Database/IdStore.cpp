@@ -36,6 +36,7 @@ bool  IdStore::CreateTable(long dbVersion)
       "idVersion  "+INTEGER+"  NOT NULL, "
       "idType     "+SMALLINT+" DEFAULT 1 NOT NULL,  "
       "idTable    "+SMALLINT+" DEFAULT 0 NOT NULL,  "
+      "idTournamentName "+WVARCHAR+"(8) DEFAULT '' NOT NULL, "
       "idTitle    "+WVARCHAR+"(64) DEFAULT '' NOT NULL, "
       "idSubTitle "+WVARCHAR+"(64) DEFAULT '' NOT NULL, "
       "idScoreExtras "+SMALLINT+" DEFAULT 0 NOT NULL, "
@@ -69,8 +70,8 @@ bool  IdStore::CreateTable(long dbVersion)
 
   // Tabelle initialisieren
   wxString sql = 
-    wxString::Format("INSERT INTO IdRec (idLast, idVersion, idLogo, idSponsor) "
-                     "VALUES (0, %d, NULL, NULL)", dbVersion);
+    wxString::Format("INSERT INTO IdRec (idLast, idVersion, idTournamentName, idLogo, idSponsor) "
+                     "VALUES (0, %d, '%S', NULL, NULL)", dbVersion, CTT32App::instance()->GetTournament().t_str());
 
   try
   {
@@ -273,6 +274,28 @@ bool  IdStore::UpdateTable(long version, long dbVersion)
     }
   }
 
+  if (version < 185)
+  {
+    wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
+    wxString str = "ALTER TABLE IdRec ADD idTournamentName " + WVARCHAR + "(8) DEFAULT '' NOT NULL ";
+    try
+    {
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException&)
+    {
+    }
+
+    str = "UPDATE IdRec SET idTournamentName = '" + TransformString(CTT32App::instance()->GetTournament()) + "'";
+    try
+    {
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException&)
+    {
+    }
+  }
+
   char  strUpdate[64];
   sprintf(strUpdate, "UPDATE IdRec SET idVersion = %d", dbVersion);
   stmtPtr->ExecuteUpdate(strUpdate);
@@ -424,6 +447,53 @@ short IdStore::GetTable()
   delete stmtPtr;
   
   return table;
+}
+
+
+void IdStore::SetTournamentName(const wxString &name)
+{
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Statement  *stmtPtr = connPtr->CreateStatement();
+  
+  wxString str = "UPDATE IdRec SET idTournamentName = '" + 
+                    TransformString(name) + "'";
+  
+  try
+  {
+    stmtPtr->ExecuteUpdate(str);
+  }
+  catch (SQLException &)
+  {
+  }
+  
+  delete stmtPtr;
+}
+
+
+wxString IdStore::GetTournamentName()
+{
+  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Statement  *stmtPtr = connPtr->CreateStatement();
+  ResultSet  *resultPtr = NULL;
+  
+  wxChar name[16];
+  
+  try
+  {
+    resultPtr = stmtPtr->ExecuteQuery("SELECT idTournamentName FROM IdRec");
+    resultPtr->BindCol(1, name, sizeof(name));
+    if (!resultPtr->Next() || resultPtr->WasNull(1))
+      *name = 0;
+  }
+  catch(SQLException &)
+  {
+    *name = 0;
+  }
+  
+  delete resultPtr;
+  delete stmtPtr;
+  
+  return wxString(name);
 }
 
 

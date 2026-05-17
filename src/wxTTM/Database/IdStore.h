@@ -42,6 +42,9 @@ class  IdStore : public StoreObj, public IdRec
     
     static void  SetTable(short table);
     static short GetTable();
+
+    static void  SetTournamentName(const wxString& name);
+    static wxString GetTournamentName();
     
     static void SetReportTitle(const wxString &title);
     static wxString GetReportTitle();
