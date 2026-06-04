@@ -1631,8 +1631,8 @@ bool  CTT32App::DetachTournament(const wxString &name, bool deleteDir)
   // Wenn es eine lokale DB ist, im Server austragen.
   if (TTDbse::IsLocalAddress(TTDbse::GetServer(connStr)))
   {
-    // Im Fehlerfall das ini-File belassen
-    if (!TTDbse::instance()->DetachDatabase(connStr))
+    // In case of error and when not deleting the directory, keep the ini file to be able to retry
+    if (!TTDbse::instance()->DetachDatabase(connStr) && !deleteDir)
       return false;
   }
 
