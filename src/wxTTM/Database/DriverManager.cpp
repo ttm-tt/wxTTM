@@ -63,8 +63,8 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
   if (ret == SQL_ERROR)
     throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, SQL_NULL_HANDLE, hEnv);
 
-	// Set login timeout to 10 seconds, ignore errors
-	ret = SQLSetConnectOption(hDbc, SQL_LOGIN_TIMEOUT, (UDWORD) 30);
+	// Set login timeout to 5 seconds, ignore errors
+	ret = SQLSetConnectOption(hDbc, SQL_LOGIN_TIMEOUT, (UDWORD) 5);
   if (ret == SQL_ERROR)
     throw SQLException(__TFILE__, __LINE__, SQL_NULL_HANDLE, hDbc, hEnv);
 
@@ -187,5 +187,6 @@ bool  DriverManager::GetNextDataSource(wxString &strDbse, wxString &strDesc)
   return false;
 # endif
 }
+
 
 
