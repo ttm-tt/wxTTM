@@ -633,6 +633,12 @@ bool LtStore::Import(wxTextBuffer &is)
           }
         }
 
+        if (pl.plDeleted)
+        {
+          unknownPlayerList.push_back(strCp + ": " + strPl);
+          break;
+        }
+
         if (!cp.EnlistPlayer(pl, lt))
         {
           unknownPlayerList.push_back(strCp + ": " + strPl);
@@ -690,6 +696,12 @@ bool LtStore::Import(wxTextBuffer &is)
           }
         }
 
+        if (pl.plDeleted)
+        {
+          unknownPlayerList.push_back(strCp + ": " + strPl);
+          break;
+        }
+
         if (!cp.EnlistPlayer(pl, ltpl))
         {
           unknownPlayerList.push_back(strCp + ": " + strPl);
@@ -736,6 +748,12 @@ bool LtStore::Import(wxTextBuffer &is)
         
         if (bd.plID)
         {
+          if (bd.plDeleted)
+          {
+            unknownPlayerList.push_back(strCp + ": " + strBd);
+            break;
+          }
+
           if (!cp.EnlistPlayer(bd, ltbd))
           {
             unknownPlayerList.push_back(strCp + ": " + strBd);
@@ -829,6 +847,12 @@ bool LtStore::Import(wxTextBuffer &is)
 
             pl.SelectByName(strPl);
             pl.Next();
+          }
+
+          if (pl.plDeleted)
+          {
+            unknownPlayerList.push_back(strCp + ": " + strPl);
+            break;
           }
 
           if (!cp.EnlistPlayer(pl, lt))
