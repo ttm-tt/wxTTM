@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxTTM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:05+0100\n"
+"POT-Creation-Date: 2026-06-10 08:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christoph Theis <theis@gmx.at>\n"
 "Language-Team: \n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-Basepath: F:/user/ChT/wxTTM/src/wxTTM\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-SearchPath-0: wx\n"
 "X-Poedit-SearchPath-1: Dialogs\n"
 "X-Poedit-SearchPath-2: Database\n"
@@ -1991,7 +1991,7 @@ msgstr "Could not update group %s - %s"
 msgid "Event %s does not exist"
 msgstr "Event %s does not exist"
 
-#: Database/LtStore.cpp:946
+#: Database/LtStore.cpp:970
 #, c-format
 msgid ""
 "The following player names were not found, are not unique, or are not "
@@ -2038,8 +2038,8 @@ msgstr "Tournament not opend"
 
 #: Database/TTDbse.cpp:282
 #, c-format
-msgid "Do you want to update databasee from version %d to version %d?"
-msgstr "Do you want to update databasee from version %d to version %d?"
+msgid "Do you want to update database from version %d to version %d?"
+msgstr "Do you want to update database from version %d to version %d?"
 
 #: Dialogs/CpEdit.cpp:160
 msgid "or before"

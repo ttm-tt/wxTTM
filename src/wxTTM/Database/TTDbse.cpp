@@ -279,7 +279,7 @@ bool  TTDbse::OpenDatabase(const wxString &connStr, bool throwError)
   long version = IdStore::IdVersion();
 
   if ((version > 0) && (version < DB_VERSION) && 
-      !infoSystem.Question(_("Do you want to update databasee from version %d to version %d?"), version, DB_VERSION))
+      !infoSystem.Question(_("Do you want to update database from version %d to version %d?"), version, DB_VERSION))
     return true;
 
   if (!UpdateTables(version))
@@ -934,6 +934,9 @@ bool  TTDbse::BackupDatabase(const wxString &fileName)
     
   wxString name = (ptr + wxStrlen("DATABASE="));
   free(tmp);
+
+  if (!IsBackupAllowed(name))
+    return false;
     
   Statement *stmt = defaultConnection->CreateStatement();
   
@@ -1092,4 +1095,36 @@ bool TTDbse::IsFinished() const
 
   // To avoid the unlikely situation that matches are finished but not scheduled
   return (countScheduled > 0) && (countFinished >= countScheduled);
+}
+
+
+bool TTDbse::IsBackupAllowed(const wxString &name)
+{
+  bool allowed = false;
+  if (!defaultConnection)
+    return false;
+
+  Statement* stmtPtr = defaultConnection->CreateStatement();
+  ResultSet* resPtr;
+
+  wxString str =
+    "SELECT HAS_PERMS_BY_NAME('" + name + "', 'DATABASE', 'BACKUP DATABASE') FROM sys.databases";
+
+  try
+  {
+    resPtr = stmtPtr->ExecuteQuery(str);
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    resPtr = nullptr;
+  }
+
+  if (!resPtr || !resPtr->Next() || !resPtr->GetData(1, allowed))
+    allowed = false;
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return allowed;
 }

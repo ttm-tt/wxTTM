@@ -109,6 +109,8 @@ class  TTDbse
 
     wxString GetDsnPart(const wxString &part) const;
 
+    bool IsBackupAllowed(const wxString & name);
+
   private:
     wxString  strDsn;
     wxString  strUser;
