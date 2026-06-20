@@ -94,6 +94,17 @@ bool  RkStore::UpdateTable(long version)
     wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
     wxString str;
 
+    // First we need a primary key
+    try
+    {
+      str = "ALTER TABLE RkRec ADD CONSTRAINT rkKey PRIMARY KEY (tmID)";
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException&)
+    {
+      // Ignore, we might tried to add it again
+    }
+
     try
     {
       str = "ALTER TABLE RkRec ADD "

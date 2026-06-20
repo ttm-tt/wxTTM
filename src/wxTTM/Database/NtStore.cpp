@@ -85,6 +85,17 @@ bool  NtStore::UpdateTable(long version)
     wxString  WVARCHAR = connPtr->GetDataType(SQL_WVARCHAR);
     wxString str;
 
+    // First we need a primary key
+    try
+    {
+      str = "ALTER TABLE NtRec ADD CONSTRAINT ntKey PRIMARY KEY (tmID, ntNr)";
+      stmtPtr->ExecuteUpdate(str);
+    }
+    catch (SQLException &)
+    {
+      // Ignore, we might tried to add it again
+    }
+
     try
     {
       str = "ALTER TABLE NtRec ADD "

@@ -38,7 +38,7 @@ bool  CpListStore::CreateView()
   wxString  str = "CREATE VIEW CpList AS "
                      "SELECT cpID, cpName, cpDesc, cpCategory, cpType, cpSex, cpYear, syID, "
                      "       cpBestOf, cpPtsToWin, cpPtsAhead, cpPtsToWinLast, cpPtsAheadLast "
-                     "FROM cpRec";
+                     "FROM CpRec";
 
   try
   {
@@ -63,9 +63,9 @@ bool  CpListStore::RemoveView()
 
   try
   {
-    tmp->ExecuteUpdate("DROP VIEW IF EXISTS CpList");
+    tmp->ExecuteUpdate("DROP VIEW CpList");
   }
-  catch(SQLException &)
+  catch(SQLException &e)
   {
   }
 

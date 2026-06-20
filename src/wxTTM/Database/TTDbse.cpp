@@ -402,7 +402,14 @@ bool  TTDbse::CreateRoles()
   try
   {
     // Default SQL Rollen
-    stmtPtr->ExecuteUpdate(str = "CREATE ROLE ttm_results AUTHORIZATION db_datareader");
+    try
+    {
+      stmtPtr->ExecuteUpdate(str = "CREATE ROLE ttm_results AUTHORIZATION db_datareader");
+    }
+    catch (SQLException&)
+    {
+      // Ignore error
+    }
 
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtSetResultProc TO ttm_results");
     stmtPtr->ExecuteUpdate(str = "GRANT EXECUTE ON mtUpdateRasterProc TO ttm_results");
@@ -587,6 +594,13 @@ bool  TTDbse::UpdateTables(long version)
     res &= NaListStore::RemoveView();
     res &= CpListStore::RemoveView();
 
+    if (res)
+      defaultConnection->Commit();
+    else
+      defaultConnection->Rollback();
+
+    defaultConnection->StartTransaction();
+
     // Update Tables
     res &= IdStore::UpdateTable(version, DB_VERSION);
     res &= CpStore::UpdateTable(version);
@@ -660,6 +674,9 @@ bool  TTDbse::UpdateTables(long version)
     res &= MtEntryStore::CreateView();
     
     res &= ReportStore::CreateView();   
+
+    // And create / update roles
+    res &= CreateRoles();
     
     EnableAllTriggers(true);
   }
