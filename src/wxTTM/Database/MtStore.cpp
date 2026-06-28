@@ -3631,9 +3631,9 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 
     wxString sql;
     wxString teamSql;
-    wxString event = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cp.cpYear))), CASE cp.cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'X' WHEN 4 THEN 'T' END) ";
+    wxString event = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR((SELECT MAX(mtDateTime) FROM MtList WHERE cpID = cp.cpID)) - cp.cpYear))), CASE cp.cpSex WHEN 1 THEN 'M' WHEN 2 THEN 'W' ELSE 'X' END, CASE cpType WHEN 1 THEN 'S' WHEN 2 THEN 'D' WHEN 3 THEN 'D' WHEN 4 THEN 'T' END) ";
     wxString round = "IIF(gr.grModus = 2, CONCAT('Round of ', gr.grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound))";
-    wxString desc = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR(mtDateTime) - cp.cpYear))), ' ', CASE cp.cpSex WHEN 1 THEN 'Men\'\'s' WHEN 2 THEN 'Women\'\'s' ELSE 'Mixed' END, ' ', CASE cp.cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
+    wxString desc = "CONCAT(IIF(cp.cpYear = 0, '', CONCAT('U', (YEAR((SELECT MAX(mtDateTime) FROM MtList WHERE cpID = cp.cpID)) - cp.cpYear))), ' ', CASE cp.cpSex WHEN 1 THEN 'Men\'\'s' WHEN 2 THEN 'Women\'\'s' ELSE 'Mixed' END, ' ', CASE cp.cpType WHEN 1 THEN 'Singles' WHEN 2 THEN 'Doubles' WHEN 3 THEN 'Doubles' WHEN 4 THEN 'Teams' END) ";
 
     std::map<long, wxString> teamMatchMap;
 
@@ -3644,7 +3644,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "mt.mtID, "
       "plAplExtID, plAnaName, NULL, NULL, plXplExtID, plXnaName, NULL, NULL, "
       + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
-      "CONCAT(" + desc + ", IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+      "CONCAT(" + desc + ", ' ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
       "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
       "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
       "mt.mtResA, mt.mtResX, "
@@ -3664,7 +3664,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
       "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
       "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-      "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
+      "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) +
       "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
@@ -3694,7 +3694,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
       "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
       "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
       "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-      "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
+      "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) +
       "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_TEAM)
@@ -3724,7 +3724,7 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtMS = mt.mtMS AND mtSet5.mtSet = 5 "
         "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
         "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
-        "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+        "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
         "ORDER BY cp.cpName, mtDateTime, mt.mtNr, mt.mtMS ";
 
       teamSql =
