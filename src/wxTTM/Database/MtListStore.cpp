@@ -424,7 +424,7 @@ std::list<timestamp> MtListStore::ListVenueDays(short fromTable, short toTable)
 
 
 // -----------------------------------------------------------------------
-std::list<timestamp> MtListStore::ListUnscheduledDates(const CpRec& cp, const GrRec& gr)
+std::list<timestamp> MtListStore::ListUnscheduledDates(const CpRec& cp, const GrRec& gr, const wxString &grStage)
 {
   std::list<timestamp> tsList;
   timestamp ts;
@@ -434,16 +434,19 @@ std::list<timestamp> MtListStore::ListUnscheduledDates(const CpRec& cp, const Gr
 
   wxString cond;
   if (cp.cpID)
-    cond += "AND cp.cpID = " + ltostr(cp.cpID) + " ";
+    cond += " AND cp.cpID = " + ltostr(cp.cpID) + " ";
   if (gr.grID)
-    cond += "AND gr.grID = " + ltostr(gr.grID) + " ";
+    cond += " AND gr.grID = " + ltostr(gr.grID) + " ";
+  if (!grStage.IsEmpty())
+    cond += " AND gr.grStage = '" + TransformString(grStage) + "' ";
 
   wxString str =
     "  SELECT DISTINCT YEAR(mtDateTime), MONTH(mtDateTime), DAY(mtDateTime)"
     "    FROM MtList mt "
     "         INNER JOIN GrList gr ON mt.grID = gr.grID "
     "         INNER JOIN CpList cp ON gr.cpID = cp.cpID "
-    "   WHERE mtResA = 0 AND mtResX = 0 "
+    "   WHERE 1 = 1 "
+    "     AND mtResA = 0 AND mtResX = 0 "
     // "   AND mtDateTime IS NOT NULL "
     "     AND (mtTable IS NULL OR mtTable = 0 OR (mtTable <> 0 AND mtDateTime IS NULL)) "
     "     AND (gr.grModus = 1 OR gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) "

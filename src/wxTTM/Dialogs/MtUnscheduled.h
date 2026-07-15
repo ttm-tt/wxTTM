@@ -20,11 +20,13 @@ class CMtUnscheduled : public CFormViewEx
 
   private:
     void OnSelChangeCp(wxCommandEvent &);
+    void OnSelChangeStage(wxCommandEvent &);
     void OnSelChangeGr(wxCommandEvent &);
     void OnSelChangeDate(wxCommandEvent &);
 
   private:
     CComboBoxEx * m_cbCp;
+    wxComboBox  * m_cbStage;
     CComboBoxEx * m_cbGr;
     CComboBoxEx * m_cbDate;
     CListCtrlEx * m_listCtrl;

@@ -5,6 +5,7 @@
 
 #include "TT32App.h"
 
+#include <GrListStore.h>
 #include "MtEntryStore.h"
 
 #include "CpItem.h"
@@ -20,10 +21,38 @@ IMPLEMENT_DYNAMIC_CLASS(CMtUnscheduled, CFormViewEx)
 
 BEGIN_EVENT_TABLE(CMtUnscheduled, CFormViewEx)
   EVT_COMBOBOX(XRCID("Event"), CMtUnscheduled::OnSelChangeCp)
+  EVT_COMBOBOX(XRCID("Stage"), CMtUnscheduled::OnSelChangeStage)
   EVT_COMBOBOX(XRCID("Group"), CMtUnscheduled::OnSelChangeGr)
   EVT_COMBOBOX(XRCID("Dates"), CMtUnscheduled::OnSelChangeDate)
 END_EVENT_TABLE()
 
+// namespace to keep the class local to this file
+namespace
+{
+  class GrItemEx : public GrItem
+  {
+    public:
+      GrItemEx(const GrListRec& gr) : GrItem(gr), cpName(gr.cpName)
+      {
+      }
+
+      void DrawItem(wxDC* pDC, wxRect& rect)
+      {
+        unsigned  cW = pDC->GetTextExtent("M").GetWidth();
+
+        wxRect  rcCp = rect;
+        wxRect  rcGr = rect;
+
+        rcCp.SetRight(rcCp.GetLeft() + 5 * cW);
+        rcGr.SetLeft(rcCp.GetRight());
+
+        DrawString(pDC, rcCp, cpName);
+        GrItem::DrawItem(pDC, rcGr);
+      }
+
+      wxString cpName;
+  };
+}
 
 class MtUnscheduledItem : public MtItem 
 {
@@ -44,15 +73,15 @@ int MtUnscheduledItem::Compare(const ListItem *itemPtr, int col) const
   switch (col)
   {
     // Erst nach Datum, Zeit und Tisch sortieren, dann nach WB, GR, ...
-    case 6 :
     case 7 :
+    case 8 :
       if ( (mt.mt.mtPlace.mtDateTime < other->mt.mt.mtPlace.mtDateTime) )
         return -1;
 
       if ( (mt.mt.mtPlace.mtDateTime > other->mt.mt.mtPlace.mtDateTime) )
         return +1;
 
-    case 8 :
+    case 9 :
       if ( (mt.mt.mtPlace.mtTable == 0 && other->mt.mt.mtPlace.mtTable > 0) )
         return +1;
 
@@ -70,18 +99,22 @@ int MtUnscheduledItem::Compare(const ListItem *itemPtr, int col) const
         return i;
 
     case 2 :
-      if ( (i = wxStrcoll(mt.mt.grName, other->mt.mt.grName)) )
+      if ((i = wxStrcoll(mt.mt.cpName, other->mt.mt.cpName)))
         return i;
 
     case 3 :
-      if ( (i = mt.mt.mtEvent.mtRound - other->mt.mt.mtEvent.mtRound) )
+      if ( (i = wxStrcoll(mt.mt.grName, other->mt.mt.grName)) )
         return i;
 
     case 4 :
-      if ( (i = mt.mt.mtEvent.mtMatch - other->mt.mt.mtEvent.mtMatch) )
+      if ( (i = mt.mt.mtEvent.mtRound - other->mt.mt.mtEvent.mtRound) )
         return i;
 
     case 5 :
+      if ( (i = mt.mt.mtEvent.mtMatch - other->mt.mt.mtEvent.mtMatch) )
+        return i;
+
+    case 6 :
       return 0;
 
     default :
@@ -105,11 +138,14 @@ void MtUnscheduledItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       DrawString(pDC, rc, mt.mt.cpName);
       break;
 
-    case 2 :
-      DrawString(pDC, rc, mt.mt.grName);
+    case 2:
       break;
 
     case 3 :
+      DrawString(pDC, rc, mt.mt.grName);
+      break;
+
+    case 4 :
     {
       wxString str;
 
@@ -125,23 +161,23 @@ void MtUnscheduledItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
       break;
     }
 
-    case 4 :
+    case 5 :
       DrawLong(pDC, rect, mt.mt.mtEvent.mtMatch);
       break;
 
-    case 5 :
+    case 6 :
       DrawPair(pDC, rc, mt);
       break;
 
-    case 6 :
+    case 7 :
       DrawString(pDC, rc, date);
       break;
 
-    case 7 :
+    case 8 :
       DrawString(pDC, rc, time);
       break;
 
-    case 8 :
+    case 9 :
       if (mt.mt.mtPlace.mtTable)
         DrawLong(pDC, rect, mt.mt.mtPlace.mtTable);
       break;
@@ -162,6 +198,7 @@ CMtUnscheduled::~CMtUnscheduled()
 void CMtUnscheduled::OnInitialUpdate()
 {
   m_cbCp = XRCCTRL(*this, "Event", CComboBoxEx);
+  m_cbStage = XRCCTRL(*this, "Stage", wxComboBox);
   m_cbGr = XRCCTRL(*this, "Group", CComboBoxEx);
   m_cbDate = XRCCTRL(*this, "Dates", CComboBoxEx);
   m_listCtrl = XRCCTRL(*this, "Matches", CListCtrlEx);
@@ -170,15 +207,16 @@ void CMtUnscheduled::OnInitialUpdate()
 
   m_listCtrl->InsertColumn(0, _("Mt.Nr"), wxALIGN_LEFT);
   m_listCtrl->InsertColumn(1, _("Event"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(2, _("Group"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(3, _("Round"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(4, _("Match"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(5, _("Players / Teams"), wxALIGN_LEFT);
-  m_listCtrl->InsertColumn(6, _("Date"), wxALIGN_LEFT, 6 * cW);
-  m_listCtrl->InsertColumn(7, _("Time"), wxALIGN_LEFT, 5 * cW);
-  m_listCtrl->InsertColumn(8, _("Table"), wxALIGN_LEFT, 5 * cW);
+  m_listCtrl->InsertColumn(2, _("Stage"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(3, _("Group"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(4, _("Round"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(5, _("Match"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(6, _("Players / Teams"), wxALIGN_LEFT);
+  m_listCtrl->InsertColumn(7, _("Date"), wxALIGN_LEFT, 6 * cW);
+  m_listCtrl->InsertColumn(8, _("Time"), wxALIGN_LEFT, 5 * cW);
+  m_listCtrl->InsertColumn(9, _("Table"), wxALIGN_LEFT, 5 * cW);
 
-  m_listCtrl->ResizeColumn(5);
+  m_listCtrl->ResizeColumn(6);
 
   // CP fuellen
   CpListStore  cpList;
@@ -212,15 +250,44 @@ void CMtUnscheduled::OnSelChangeCp(wxCommandEvent &)
 
   CpRec cp = cpItemPtr->cp;
 
+  m_cbStage->Clear();
+
+  m_cbStage->Append(wxEmptyString);
+
+  std::list<wxString> stages = GrListStore().ListStages(cp);
+  for (auto& stage : stages)
+    m_cbStage->Append(stage);
+
+  m_cbStage->SetSelection(0);
+
+  OnSelChangeStage(wxCommandEvent_);
+}
+
+void CMtUnscheduled::OnSelChangeStage(wxCommandEvent&)
+{
+  CpItem* cpItemPtr = (CpItem*)m_cbCp->GetCurrentItem();
+
+  if (!cpItemPtr)
+    return;
+
+  wxString stage = m_cbStage->GetValue();
+  m_listCtrl->ShowColumn(2, stage.IsEmpty());
+
+  CpRec cp = cpItemPtr->cp;
+
   m_cbGr->Clear();
   GrListStore grList;
 
   wxStrncpy(grList.grDesc, _("All Groups").c_str(), sizeof(grList.grDesc) / sizeof(wxChar) - 1);
   m_cbGr->AddListItem(new GrItem(grList));
 
-  grList.SelectAll(cp);
+  if (stage.IsEmpty())
+    grList.SelectAll(cp);
+  else
+    grList.SelectByStage(cp, stage);
+
   while (grList.Next())
-    m_cbGr->AddListItem(new GrItem(grList));
+    m_cbGr->AddListItem(new GrItemEx(grList));
 
   m_cbGr->SetCurrentItem(m_cbGr->GetListItem(0));
   if (cp.cpID && !CTT32App::instance()->GetDefaultGR().IsEmpty())
@@ -228,7 +295,6 @@ void CMtUnscheduled::OnSelChangeCp(wxCommandEvent &)
 
   OnSelChangeGr(wxCommandEvent_);
 }
-
 
 void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
 {
@@ -240,6 +306,8 @@ void CMtUnscheduled::OnSelChangeGr(wxCommandEvent &)
     return;
 
   CpRec cp = cpItemPtr->cp;
+
+  wxString stage = m_cbStage->GetValue();
 
   GrItem *grItemPtr = (GrItem *)m_cbGr->GetCurrentItem();
 
@@ -276,6 +344,8 @@ void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
 
   CpRec cp = cpItemPtr->cp;
 
+  wxString stage = m_cbStage->GetValue();
+
   GrItem* grItemPtr = (GrItem*)m_cbGr->GetCurrentItem();
 
   if (!grItemPtr)
@@ -294,7 +364,7 @@ void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
 
   if (cp.cpID == 0 || cp.cpType == CP_SINGLE)
   {
-    mt.SelectUnscheduled(CP_SINGLE, ts, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_SINGLE, ts, cp.cpID, gr.grID, stage);
 
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
@@ -303,7 +373,7 @@ void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
 
   if (cp.cpID == 0 || cp.cpType == CP_DOUBLE)
   {
-    mt.SelectUnscheduled(CP_DOUBLE, ts, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_DOUBLE, ts, cp.cpID, gr.grID, stage);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();
@@ -311,7 +381,7 @@ void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
 
   if (cp.cpID == 0 || cp.cpType == CP_MIXED)
   {
-    mt.SelectUnscheduled(CP_MIXED, ts, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_MIXED, ts, cp.cpID, gr.grID, stage);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();
@@ -319,7 +389,7 @@ void  CMtUnscheduled::OnSelChangeDate(wxCommandEvent&)
 
   if (cp.cpID == 0 || cp.cpType == CP_TEAM)
   {
-    mt.SelectUnscheduled(CP_TEAM, ts, cp.cpID, gr.grID);
+    mt.SelectUnscheduled(CP_TEAM, ts, cp.cpID, gr.grID, stage);
     while (mt.Next())
       m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
     mt.Close();

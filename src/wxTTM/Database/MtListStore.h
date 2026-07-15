@@ -30,6 +30,7 @@ struct  MtListRec : public MtRec
   short    grNofMatches;
   short    syComplete;
   wxChar   cpName[9];
+  wxChar   grStage[65];
   wxChar   grName[9];
   wxChar   syName[9];
   
@@ -76,7 +77,7 @@ class  MtListStore : public StoreObj, public MtListRec
     bool  SelectByTimestamp(const timestamp &ts);
     
     std::list<timestamp>  ListVenueDays(short fromTable = 0, short toTable = INT16_MAX);
-    std::list<timestamp>  ListUnscheduledDates(const CpRec&, const GrRec&);
+    std::list<timestamp>  ListUnscheduledDates(const CpRec&, const GrRec&, const wxString &grStage = wxEmptyString);
 
     timestamp GetLastUpdateTime();
 

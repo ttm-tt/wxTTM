@@ -448,7 +448,7 @@ bool  MtEntryStore::SelectByTime(const timestamp &fromTime, short fromTable,
 }
 
 // -----------------------------------------------------------------------
-bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, long grID)
+bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, long grID, const wxString &grStage)
 {
   mt.cpType = cpType;
 
@@ -465,7 +465,7 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
   ;
 
   if (ts.year == 0)
-    sql += " AND mtDateTime IS NULL";
+    sql += " AND mtDateTime IS NULL ";
   else if (ts.year < 0)
     ;
   else
@@ -479,6 +479,9 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
 
   if (grID)
     sql += " AND gr.grID = " + ltostr(grID);
+
+  if (!grStage.IsEmpty())
+  sql += " AND gr.grStage = '" + TransformString(grStage) + "' ";
 
   try
   {
