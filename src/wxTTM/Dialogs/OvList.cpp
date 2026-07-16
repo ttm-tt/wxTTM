@@ -468,8 +468,7 @@ COvList::COvList() : CFormViewEx(), m_popupTimer(this), m_updateTimer(this)
   m_toTime.minute = 59;
 
   m_fromTable = 0;
-  m_toTable = 999;
-  
+  m_toTable = 999;  
 }
 
 
@@ -654,6 +653,8 @@ void COvList::OnInitialUpdate()
 
   Connect(IDC_REFRESH, wxCommandEventHandler(COvList::OnCommand));
   Connect(wxID_PRINT, wxCommandEventHandler(COvList::OnCommand));
+  Connect(wxEVT_CHAR, wxKeyEventHandler(COvList::OnChar));
+
 }
 
 
@@ -1384,14 +1385,14 @@ void COvList::OnPopupTimer(wxTimerEvent &evt)
   if (!m_gridCtrl->HasFocus() && coords.GetCol() < 0)
     m_gridCtrl->SetFocus();
   
-  wxPopupTransientWindow *popup = new wxPopupTransientWindow(this);
+  m_popup = new wxPopupTransientWindow(this);
   
   if (itemPtr)
   {
-    ToolTipItem *toolTipItem = new ToolTipItem(popup, itemPtr);
+    ToolTipItem *toolTipItem = new ToolTipItem(m_popup, itemPtr);
     wxClientDC dc(this);
-    popup->SetSize(itemPtr->GetToolTipSize(&dc));
-    toolTipItem->SetSize(popup->GetSize());
+    m_popup->SetSize(itemPtr->GetToolTipSize(&dc));
+    toolTipItem->SetSize(m_popup->GetSize());
   }
   else
   {
@@ -1430,18 +1431,31 @@ void COvList::OnPopupTimer(wxTimerEvent &evt)
     // Letztes \n entfernen
     text.RemoveLast();
     
-    ToolTipItem *toolTipItem = new ToolTipItem(popup, text);
+    ToolTipItem *toolTipItem = new ToolTipItem(m_popup, text);
             
-    popup->SetSize(toolTipItem->GetSize());
+    m_popup->SetSize(toolTipItem->GetSize());
     
     toolTipItem->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_INFOBK));
     toolTipItem->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_INFOTEXT));
   }
   
-  pt.y -= popup->GetSize().GetHeight();
-  popup->Position(m_gridCtrl->ClientToScreen(pt), wxSize());
+  pt.y -= m_popup->GetSize().GetHeight();
+  m_popup->Position(m_gridCtrl->ClientToScreen(pt), wxSize());
   
-  popup->Popup();
+  m_popup->Popup();
+}
+
+
+void COvList::OnChar(wxKeyEvent& evt)
+{
+  if (!m_popup || !m_popup->IsShown())
+    return;
+
+  if (evt.GetKeyCode() != WXK_ESCAPE)
+    return;
+
+  m_popup->Dismiss();
+  evt.Skip();
 }
 
 

@@ -220,19 +220,19 @@ void CListCtrlEx::OnChar(wxKeyEvent &evt)
   {
     case 0x0 :
       break; // To make compilers happy
-      
-    // 0x7F: Liegt in den Grenzen unten
-    case WXK_DELETE :
-    case WXK_INSERT :
-      break;
+
+    case WXK_ESCAPE :
+    case WXK_DELETE : // 0x7F is within the limits below
+      // Don't process 
+      return;
 
     default :
     {
+      bool found = false; 
+
       if ( nChar >= 0x20 && nChar < 0xFF ) //  (stuerzt ab?)
       {
         m_editString.Append(nChar);
-
-        ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString(m_editString);
 
         for (idx = (m_lastIdx < 0 ? 0 : m_lastIdx); idx < GetItemCount(); idx++)
         {
@@ -243,21 +243,19 @@ void CListCtrlEx::OnChar(wxKeyEvent &evt)
           if (itemPtr->HasString(m_editString))
           {
             m_lastIdx = idx;
-            SetCurrentIndex(m_lastIdx);
+            found = true;
 
-            if (idx < GetItemCount() - 1)
-              EnsureVisible(idx + 1);
-
-            return;
+            break;
           }
         }
 
-        // Not found
-        m_editString.RemoveLast();
+        if (!found)
+          m_editString.RemoveLast();
+
         SetCurrentIndex(m_lastIdx);
 
-        if (idx < GetItemCount() - 1)
-          EnsureVisible(idx + 1);
+        if (m_lastIdx < GetItemCount() - 1)
+          EnsureVisible(m_lastIdx + 1);
 
         ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString(m_editString);
 
@@ -270,7 +268,7 @@ void CListCtrlEx::OnChar(wxKeyEvent &evt)
     break;
   }
   
-  evt.Skip();
+  // evt.Skip();
 }
 
 

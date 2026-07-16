@@ -20,7 +20,7 @@ class CSelect : public wxDialog
    
   protected:
 	  void OnCommand(wxMouseEvent &);
-	  void OnChar(wxKeyEvent &);
+	  void OnKeyDown(wxKeyEvent &);
 
   public:
     ListItem *  Select(long id = 0);

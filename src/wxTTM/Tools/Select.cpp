@@ -24,7 +24,7 @@ CSelect::CSelect(const wxString &title) : wxDialog()
   
   listBox->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(CSelect::OnCommand), NULL, this);
   
-  listBox->Connect(wxEVT_CHAR, wxCharEventHandler(CSelect::OnChar), NULL, this);
+  listBox->Connect(wxEVT_KEY_DOWN, wxCharEventHandler(CSelect::OnKeyDown), NULL, this);
     
   if (title != "")
     SetTitle(title);
@@ -33,6 +33,8 @@ CSelect::CSelect(const wxString &title) : wxDialog()
   listBox->ResizeColumn(0);
 
   listBox->SetItemHeight(1.5);
+
+  listBox->SetFocus();
 }
 
 
@@ -92,8 +94,8 @@ void CSelect::OnCommand(wxMouseEvent &)
 }
 
 
-
-void CSelect::OnChar(wxKeyEvent &evt)
+// WXK_ESCAPE and WXK_RETURN are handled in OnKeyDown, as they are in ListCtrlEx
+void CSelect::OnKeyDown(wxKeyEvent &evt)
 {
   if (evt.GetRawKeyCode() == WXK_ESCAPE)
     EndModal(wxID_CANCEL);

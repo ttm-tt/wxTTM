@@ -51,6 +51,7 @@ class COvList : public CFormViewEx
     void OnUpdateMt(const MtListRec &, Connection * = nullptr);
     void OnUpdateTimer(wxTimerEvent &);
     void OnPopupTimer(wxTimerEvent &);
+    void OnChar(wxKeyEvent &);
 
   private:
     void OnShowUmpire(wxCommandEvent &);
@@ -67,6 +68,8 @@ class COvList : public CFormViewEx
     // Grid-Ctrl
     COvGridCtrl * m_gridCtrl = nullptr;
     CComboBoxEx * m_cbDate = nullptr;
+
+    wxPopupTransientWindow *m_popup = nullptr;
     
     wxTimer      m_popupTimer;
     wxTimer      m_updateTimer;
