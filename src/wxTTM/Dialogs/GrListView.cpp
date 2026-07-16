@@ -647,7 +647,10 @@ void CGrListView::OnUpdate(CRequest *reqPtr)
   if (reqPtr->rec != CRequest::GRREC)
     return;
 
-  long id = m_listCtrl->GetCurrentItem() ? 
+  bool published = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 1;
+  bool unpublished = XRCCTRL(*this, "State", wxRadioBox)->GetSelection() != 2;
+
+  long id = m_listCtrl->GetCurrentItem() ?
             m_listCtrl->GetCurrentItem()->GetID() : 0;
 
   switch (reqPtr->type)
@@ -660,12 +663,18 @@ void CGrListView::OnUpdate(CRequest *reqPtr)
         return;
       if (!grList.Next())
         return;
-      if (grList.cpID != cp.cpID)
+      if (cp.cpID && grList.cpID != cp.cpID)
         return;
 
       // Add / Set Item Data
       m_listCtrl->RemoveListItem(reqPtr->id);
-      m_listCtrl->AddListItem(new GrItemEx(grList));
+      if (published && !grList.grPublished)
+        ;
+      else if (unpublished && grList.grPublished)
+        ;
+      else
+        m_listCtrl->AddListItem(new GrItemEx(grList));
+
       break;
     }
 
