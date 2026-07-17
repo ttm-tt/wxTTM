@@ -198,7 +198,6 @@ void CListCtrlEx::OnKeyDown(wxKeyEvent &evt)
   evt.Skip();
 }      
 
-
 // Eine Funktion fuer die normalen Zeichen.
 // OnKeyDown geht nicht, weil das die KbdCodes sind.
 // Alles in OnChar geht auch nicht, weil mir sonst die VK_XXX 
@@ -212,63 +211,45 @@ void CListCtrlEx::OnChar(wxKeyEvent &evt)
   }
 
   wxChar nChar = evt.GetKeyCode();
-  
-  // int    nFlags = evt.GetModifiers();
-  int    idx;
-  
-  switch (evt.GetKeyCode())
+
+  if (nChar < 0x20 || nChar >= 0xFF)
   {
-    case 0x0 :
-      break; // To make compilers happy
-
-    case WXK_ESCAPE :
-    case WXK_DELETE : // 0x7F is within the limits below
-      // Don't process 
-      return;
-
-    default :
-    {
-      bool found = false; 
-
-      if ( nChar >= 0x20 && nChar < 0xFF ) //  (stuerzt ab?)
-      {
-        m_editString.Append(nChar);
-
-        for (idx = (m_lastIdx < 0 ? 0 : m_lastIdx); idx < GetItemCount(); idx++)
-        {
-          ListItem *itemPtr = GetListItem(idx);
-          if (!itemPtr)
-            break;
-
-          if (itemPtr->HasString(m_editString))
-          {
-            m_lastIdx = idx;
-            found = true;
-
-            break;
-          }
-        }
-
-        if (!found)
-          m_editString.RemoveLast();
-
-        SetCurrentIndex(m_lastIdx);
-
-        if (m_lastIdx < GetItemCount() - 1)
-          EnsureVisible(m_lastIdx + 1);
-
-        ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString(m_editString);
-
-        wxBell();
-
-        return;
-      }
-    }
-
-    break;
+    evt.Skip();
+    return;
   }
   
-  // evt.Skip();
+  m_editString.Append(nChar);
+
+  bool found = false;
+
+  for (int idx = (m_lastIdx < 0 ? 0 : m_lastIdx); idx < GetItemCount(); idx++)
+  {
+    ListItem *itemPtr = GetListItem(idx);
+    if (!itemPtr)
+      break;
+
+    if (itemPtr->HasString(m_editString))
+    {
+      m_lastIdx = idx;
+      found = true;
+
+      break;
+    }
+  }
+
+  if (!found)
+    m_editString.RemoveLast();
+
+  SetCurrentIndex(m_lastIdx);
+
+  if (m_lastIdx < GetItemCount() - 1)
+    EnsureVisible(m_lastIdx + 1);
+
+  ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString(m_editString);
+
+  wxBell();
+
+  return;
 }
 
 
