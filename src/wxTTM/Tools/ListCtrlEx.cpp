@@ -104,20 +104,12 @@ void CListCtrlEx::OnKeyDown(wxKeyEvent &evt)
       
     case WXK_ESCAPE :
       // ESC : Stop find
-      if (m_lastIdx >= 0 || m_editString.Length())
-      {
-        ClearSelection();
-        EnsureVisible(m_lastIdx);
-    
-        m_editString[0] = 0;
-        m_lastIdx = -1;
+      if (m_editString.Length())
+        m_editString.Empty();
 
-        ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString("");
-        
-        return;
-      }
+      ((CMainFrame *) wxGetApp().GetTopWindow())->SetFindString(m_editString);
       
-      break;      
+      return;      
 
     case WXK_BACK :
       // BSP : Letztes Zeichen vom Suchstring loeschen
