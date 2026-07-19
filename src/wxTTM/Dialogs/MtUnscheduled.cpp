@@ -450,7 +450,7 @@ void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
       m_listCtrl->RemoveListItem(reqPtr->id);
     }
     else
-      itemPtr->mt = mt;
+      itemPtr->SetValue(mt);
   }
   else if (!mt.mt.mtPlace.mtTable)
     m_listCtrl->AddListItem(new MtUnscheduledItem(mt));
