@@ -942,7 +942,7 @@ bool  MtStore::UpdateTable(long version)
           tmp->ExecuteUpdate(sql);
 
           // And finally update role permissions
-          sql = "CREATE ROLE ttm_results AUTHORIZATION db_datareader";
+          sql = "IF DATABASE_PRINCIPAL_ID('ttm_results') IS NULL CREATE ROLE ttm_results AUTHORIZATION db_datareader";
           tmp->ExecuteUpdate(sql);
 
           sql = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results";
