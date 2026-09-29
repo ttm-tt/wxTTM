@@ -1014,7 +1014,8 @@ void COvList::OnRefresh()
   
   // m_gridCtrl->Fit();
 
-  m_updateTimer.Start(UPDATE_TIME, false);
+  // We start only onc and restart at the end of the update because DB access may take longer
+  m_updateTimer.StartOnce(UPDATE_TIME);
 }
 
 
@@ -2047,6 +2048,10 @@ void COvList::OnUpdateTimer(wxTimerEvent &)
   }
 
   delete connPtr;
+
+  // We start the update timer only once and restart at the end of the update 
+  // because DB access may take longer, esp. if server is not reachable
+  m_updateTimer.StartOnce(UPDATE_TIME);
 }
 
 
