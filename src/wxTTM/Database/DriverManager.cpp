@@ -91,6 +91,11 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
 
   if (false)
 	  ;
+  else if (RegOpenKey(HKEY_LOCAL_MACHINE, wxT("Software\\ODBC\\ODBCINST.INI\\ODBC Driver 18 for SQL Server"), &hkResult) == ERROR_SUCCESS)
+  {
+    RegCloseKey(hkResult);
+    driverRegEx.Replace(&tmp, "DRIVER=ODBC Driver 18 for SQL Server;");
+  }
   else if (RegOpenKey(HKEY_LOCAL_MACHINE, wxT("Software\\ODBC\\ODBCINST.INI\\ODBC Driver 17 for SQL Server"), &hkResult) == ERROR_SUCCESS)
   {
     RegCloseKey(hkResult);

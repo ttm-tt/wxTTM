@@ -201,8 +201,8 @@ Filename: {tmp}\x64\vcredist_x64_2019.exe; Parameters: "/install /quiet"; Check:
 Filename: {tmp}\dotNetFx40_Full_x86_x64.exe; Parameters: /q /norestart; StatusMsg: Install .NET 4.0; Check: not CheckDotNET; Components: database
 
 ; SQL Server Native Client
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.6.2.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.6.2.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
 
 ; SQL Server 2025 64 Bit
 Filename: {tmp}\x64\SQLEXPR_2025_x64_ENU.exe; Parameters: /x:{tmp}/x64/SQLEXPR_2025 /Q; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2025; Components: database
