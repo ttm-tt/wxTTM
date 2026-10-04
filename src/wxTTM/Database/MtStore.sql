@@ -472,12 +472,12 @@
         "          ((mtWalkOverA > 0 AND mtWalkOverX > 0) OR \n"
         "           (mtInjuredA > 0 AND mtInjuredX > 0) OR \n"
         "           (mtDisqualifiedA > 0 AND mtDisqualifiedX > 0) OR \n"
-        "           (SELECT COUNT(*) FROM MtSet n\"
+        "           (SELECT COUNT(*) FROM MtSet \n"
         "             WHERE mtID = @mtID AND \n"
         "                   mtWalkOverA = 0 AND mtWalkOverX = 0 \n"
         "                   (mtResA > 0 OR mtResX > 0) AND \n"
         "           ) > 0 \n"
-        "          ) 
+        "          )\n" 
 
         "   UPDATE MtRec SET mtEndMatchTime = NULL \n"
         "    WHERE mtID = @mtID AND \n"
