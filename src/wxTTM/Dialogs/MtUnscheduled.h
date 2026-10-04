@@ -23,12 +23,15 @@ class CMtUnscheduled : public CFormViewEx
     void OnSelChangeStage(wxCommandEvent &);
     void OnSelChangeGr(wxCommandEvent &);
     void OnSelChangeDate(wxCommandEvent &);
+    void OnSelChangeTime(wxCommandEvent&);
 
   private:
     CComboBoxEx * m_cbCp;
     wxComboBox  * m_cbStage;
     CComboBoxEx * m_cbGr;
     CComboBoxEx * m_cbDate;
+    CComboBoxEx * m_cbTime;
+
     CListCtrlEx * m_listCtrl;
 
 	DECLARE_DYNAMIC_CLASS(CMtUnscheduled)

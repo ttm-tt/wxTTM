@@ -1003,6 +1003,9 @@
     <ClInclude Include="Dialogs\DateItem.h">
       <Filter>Source Files\Dialogs\Items</Filter>
     </ClInclude>
+    <ClInclude Include="Dialogs\TimeItem.h">
+      <Filter>Source Files\Dialogs\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\TT32.fbp">

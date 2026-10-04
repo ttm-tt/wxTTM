@@ -492,6 +492,82 @@ std::list<timestamp> MtListStore::ListUnscheduledDates(const CpRec& cp, const Gr
 
 
 // -----------------------------------------------------------------------
+std::list<timestamp> MtListStore::ListUnscheduledTimes(const CpRec& cp, const GrRec& gr, const timestamp &date, const wxString& grStage)
+{
+  std::list<timestamp> tsList;
+  timestamp ts;
+  long hour, minute;
+
+  memset(&ts, 0, sizeof(timestamp));
+
+  wxString cond;
+  if (cp.cpID)
+    cond += " AND cp.cpID = " + ltostr(cp.cpID) + " ";
+  if (gr.grID)
+    cond += " AND gr.grID = " + ltostr(gr.grID) + " ";
+  if (!grStage.IsEmpty())
+    cond += " AND gr.grStage = '" + TransformString(grStage) + "' ";
+  if (date.year < 0)
+    cond += " AND mtDateTime IS NULL ";
+  else if (date.year > 0 && date.month && date.day)
+    cond += " AND YEAR(mtDateTime) = " + ltostr(date.year) + 
+            " AND MONTH(mtDateTime) = " + ltostr(date.month) + 
+            " AND DAY(mtDateTime) = " + ltostr(date.day) + 
+            " ";
+
+  wxString str =
+    "  SELECT DISTINCT DATEPART(hour, mtDateTime), DATEPART(minute, mtDateTime)"
+    "    FROM MtList mt "
+    "         INNER JOIN GrList gr ON mt.grID = gr.grID "
+    "         INNER JOIN CpList cp ON gr.cpID = cp.cpID "
+    "   WHERE 1 = 1 "
+    "     AND mtResA = 0 AND mtResX = 0 "
+    // "   AND mtDateTime IS NOT NULL "
+    "     AND (mtTable IS NULL OR mtTable = 0 OR (mtTable <> 0 AND mtDateTime IS NULL)) "
+    "     AND (gr.grModus = 1 OR gr.grNofRounds = 0 OR gr.grNofRounds >= mt.mtRound) "
+    "     AND (gr.grModus = 1 OR gr.grNofMatches = 0 OR gr.grNofMatches / POWER(2, mt.mtRound - 1) >= mt.mtMatch) "
+    // "     AND tmA IS NOT NULL AND tmX IS NOT NULL "
+    + cond +
+    "   ORDER BY 1, 2";
+
+  try
+  {
+    ExecuteQuery(str);
+    BindCol(1, &hour);
+    BindCol(2, &minute);
+
+    while (Next())
+    {
+      if (WasNull(1))
+      {
+        ts.hour = 0;
+        ts.minute = 0;
+        ts.second = 0;
+        ts.fraction = 0;
+      }
+      else
+      {
+        ts.hour = hour;
+        ts.minute = minute;
+        ts.second = 0;
+        ts.fraction = 0;
+      }
+
+      tsList.push_back(ts);
+    }
+
+    Close();
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+  }
+
+  return tsList;
+}
+
+
+// -----------------------------------------------------------------------
 timestamp MtListStore::GetLastUpdateTime()
 {
   wxString str = "SELECT MAX(mtTimestamp) FROM MtList";

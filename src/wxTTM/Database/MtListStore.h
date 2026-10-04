@@ -78,6 +78,7 @@ class  MtListStore : public StoreObj, public MtListRec
     
     std::list<timestamp>  ListVenueDays(short fromTable = 0, short toTable = INT16_MAX);
     std::list<timestamp>  ListUnscheduledDates(const CpRec&, const GrRec&, const wxString &grStage = wxEmptyString);
+    std::list<timestamp>  ListUnscheduledTimes(const CpRec&, const GrRec&, const timestamp &date, const wxString& grStage = wxEmptyString);
 
     timestamp GetLastUpdateTime();
 

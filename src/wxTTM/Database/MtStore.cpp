@@ -1,7 +1,7 @@
 /* Copyright (C) 2020 Christoph Theis */
 
 // Tabelle der Spiele
-// TODO: Import von Team-Events
+
 #include  "stdafx.h"
 #include  "MtStore.h"
 
@@ -30,7 +30,7 @@
 
 
 // -----------------------------------------------------------------------
-MtSet & MtSet::operator=(const MtSet &rec)
+MtSet& MtSet::operator=(const MtSet& rec)
 {
   if (this != &rec)
     memcpy(this, &rec, sizeof(MtSet));
@@ -39,7 +39,7 @@ MtSet & MtSet::operator=(const MtSet &rec)
 }
 
 
-MtMatch & MtMatch::operator=(const MtMatch &rec)
+MtMatch& MtMatch::operator=(const MtMatch& rec)
 {
   if (this != &rec)
     memcpy(this, &rec, sizeof(MtMatch));
@@ -49,7 +49,7 @@ MtMatch & MtMatch::operator=(const MtMatch &rec)
 
 
 // -----------------------------------------------------------------------
-MtRec & MtRec::operator=(const MtRec &rec)
+MtRec& MtRec::operator=(const MtRec& rec)
 {
   if (this != &rec)
     memcpy(this, &rec, sizeof(MtRec));
@@ -108,7 +108,7 @@ bool MtRec::IsFinished() const
 {
   if (QryWinnerAX() != 0)
     return true;
-    
+
   // Unentschieden in Mannschaftsspielen
   if (mtMatches > 1 && mtEvent.mtMS == 0 && (mtResA + mtResX) == mtMatches)
     return true;
@@ -122,7 +122,7 @@ bool MtRec::IsFinished() const
 
   if (mtDisqualifiedA || mtDisqualifiedX)
     return true;
-    
+
   return false;
 }
 
@@ -130,21 +130,21 @@ bool MtRec::IsFinished() const
 // -----------------------------------------------------------------------
 bool  MtSetStore::CreateTable()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
   wxASSERT(connPtr);
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
-  wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
+  wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
   wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
-  wxString  sql = 
+  wxString  sql =
     "CREATE TABLE MtSet (  "
-    "mtID        "+INTEGER+"      NOT NULL,  "
-    "mtMS        "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtSet       "+SMALLINT+"     NOT NULL,  "
-    "mtResA      "+SMALLINT+"     NOT NULL,  "
-    "mtResX      "+SMALLINT+"     NOT NULL,  "
+    "mtID        " + INTEGER + "      NOT NULL,  "
+    "mtMS        " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtSet       " + SMALLINT + "     NOT NULL,  "
+    "mtResA      " + SMALLINT + "     NOT NULL,  "
+    "mtResX      " + SMALLINT + "     NOT NULL,  "
     "CONSTRAINT mtSetKey PRIMARY KEY (mtID, mtMS, mtSet) "
 
     ")";
@@ -153,7 +153,7 @@ bool  MtSetStore::CreateTable()
   {
     tmp->ExecuteUpdate(sql);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
     delete tmp;
@@ -165,14 +165,14 @@ bool  MtSetStore::CreateTable()
   {
     tmp->ExecuteUpdate(sql = "CREATE INDEX mtSetIdKey ON MtSet (mtID)");
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
   };
 
   tmp->Close();
   delete tmp;
-  
+
   return true;
 }
 
@@ -185,27 +185,27 @@ bool  MtSetStore::UpdateTable(long version)
 
 bool  MtSetStore::CreateConstraints()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
   wxString  str;
-  
+
   try
   {
     tmp->ExecuteUpdate("ALTER TABLE MtSet DROP CONSTRAINT mtSetIdRef");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
   }
 
   try
   {
-    tmp->ExecuteUpdate(str = 
+    tmp->ExecuteUpdate(str =
       "ALTER TABLE MtSet ADD CONSTRAINT mtSetIdRef "
       "FOREIGN KEY (mtID) REFERENCES MtRec (mtID) ON DELETE CASCADE");
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
   };
@@ -219,21 +219,21 @@ bool  MtSetStore::UpdateConstraints(long version)
 {
   if (version < 112)
     return CreateConstraints();
-    
+
   return true;
 }
 
 
 // -----------------------------------------------------------------------
-MtSetStore::MtSetStore(Connection *ptr)
+MtSetStore::MtSetStore(Connection* ptr)
   : StoreObj(ptr)
 {
   Init();
 }
 
 
-MtSetStore::MtSetStore(const MtRec &mt, Connection *ptr)
-          : StoreObj(ptr)
+MtSetStore::MtSetStore(const MtRec& mt, Connection* ptr)
+  : StoreObj(ptr)
 {
   Init();
   mtID = mt.mtID;
@@ -252,7 +252,7 @@ void  MtSetStore::Init()
 bool  MtSetStore::SelectAll(short ms)
 {
   // XXX: PreparedStatement
-  wxString  str = 
+  wxString  str =
     "SELECT mtID, mtMS, mtSet, mtResA, mtResX "
     "  FROM MtSet WHERE mtID = " + ltostr(mtID);
 
@@ -271,7 +271,7 @@ bool  MtSetStore::SelectAll(short ms)
     BindCol(4, &mtResA);
     BindCol(5, &mtResX);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -281,14 +281,14 @@ bool  MtSetStore::SelectAll(short ms)
 }
 
 
-bool  MtSetStore::SelectAll(const std::set<long> &ids)
+bool  MtSetStore::SelectAll(const std::set<long>& ids)
 {
   // XXX: PreparedStatement
   wxString  str =
     "SELECT mtID, mtMS, mtSet, mtResA, mtResX "
     "  FROM MtSet WHERE mtID IN (" + ltostr(ids) + ") ";
 
-    str += " ORDER BY mtMS, mtSet";
+  str += " ORDER BY mtMS, mtSet";
 
   try
   {
@@ -300,7 +300,7 @@ bool  MtSetStore::SelectAll(const std::set<long> &ids)
     BindCol(4, &mtResA);
     BindCol(5, &mtResX);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -313,26 +313,26 @@ bool  MtSetStore::SelectAll(const std::set<long> &ids)
 // -----------------------------------------------------------------------
 bool  MtMatchStore::CreateTable()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
   wxASSERT(connPtr);
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
-  wxString  INTEGER  = connPtr->GetDataType(SQL_INTEGER);
+  wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
   wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
-  wxString  sql = 
+  wxString  sql =
     "CREATE TABLE MtMatch (  "
-    "mtID            "+INTEGER+"      NOT NULL,  "
-    "mtMS            "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtResA          "+SMALLINT+"     NOT NULL,  "
-    "mtResX          "+SMALLINT+"     NOT NULL,  "
-    "mtWalkOverA     "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtWalkOverX     "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtDisqualifiedA "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtDisqualifiedX "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtInjuredA      "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtInjuredX      "+SMALLINT+"     NOT NULL DEFAULT 0, "
+    "mtID            " + INTEGER + "      NOT NULL,  "
+    "mtMS            " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtResA          " + SMALLINT + "     NOT NULL,  "
+    "mtResX          " + SMALLINT + "     NOT NULL,  "
+    "mtWalkOverA     " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtWalkOverX     " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtDisqualifiedA " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtDisqualifiedX " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtInjuredA      " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtInjuredX      " + SMALLINT + "     NOT NULL DEFAULT 0, "
     // "mtNotPlayed "+SMALLINT+"     DEFAULT 0, "
     "CONSTRAINT mtMatchKey PRIMARY KEY (mtID, mtMS) "
     ")";
@@ -341,7 +341,7 @@ bool  MtMatchStore::CreateTable()
   {
     tmp->ExecuteUpdate(sql);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
     delete tmp;
@@ -353,14 +353,14 @@ bool  MtMatchStore::CreateTable()
   {
     tmp->ExecuteUpdate(sql = "CREATE INDEX mtMatchIdKey ON MtMatch (mtID)");
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
   };
 
   tmp->Close();
   delete tmp;
-  
+
   return true;
 }
 
@@ -372,29 +372,29 @@ bool  MtMatchStore::UpdateTable(long version)
 
   if (version < 99)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
     wxASSERT(connPtr);
 
-    Statement *tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
     wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
-    
-    wxString sql = 
-        "ALTER TABLE MtMatch ADD "
-          "mtWalkOverA " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtWalkOverX " + SMALLINT + " NOT NULL DEFAULT 0  ";
-    
+
+    wxString sql =
+      "ALTER TABLE MtMatch ADD "
+      "mtWalkOverA " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtWalkOverX " + SMALLINT + " NOT NULL DEFAULT 0  ";
+
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
-      
+
       delete tmp;
       return false;
-    }  
+    }
 
     sql = "UPDATE MtMatch SET mtWalkOverA = 1 "
       "WHERE MtMatch.mtMS > 0 AND MtMatch.mtID IN (SELECT mtID FROM MtRec WHERE MtRec.mtWalkOverA > 0) AND "
@@ -404,13 +404,13 @@ bool  MtMatchStore::UpdateTable(long version)
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
-      
+
       delete tmp;
       return false;
-    }  
+    }
 
     sql = "UPDATE MtMatch SET mtWalkOverX = 1 "
       "WHERE MtMatch.mtMS > 0 AND MtMatch.mtID IN (SELECT mtID FROM MtRec WHERE MtRec.mtWalkOverX > 0) AND "
@@ -420,38 +420,38 @@ bool  MtMatchStore::UpdateTable(long version)
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
-      
+
       delete tmp;
       return false;
-    }  
+    }
 
     delete tmp;
   }
 
   if (version < 104)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
     wxASSERT(connPtr);
 
-    Statement *tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
     wxString SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
-    wxString sql = 
-        "ALTER TABLE MtMatch ADD "
-          "mtInjuredA      " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtInjuredX      " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtDisqualifiedA " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtDisqualifiedX " + SMALLINT + " NOT NULL DEFAULT 0  ";
+    wxString sql =
+      "ALTER TABLE MtMatch ADD "
+      "mtInjuredA      " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtInjuredX      " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtDisqualifiedA " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtDisqualifiedX " + SMALLINT + " NOT NULL DEFAULT 0  ";
 
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -471,7 +471,7 @@ bool  MtMatchStore::UpdateTable(long version)
       tmp->ExecuteUpdate(sql = "ALTER TABLE MtMatch ALTER COLUMN mtWalkOverA " + SMALLINT + " NOT NULL");
       tmp->ExecuteUpdate(sql = "ALTER TABLE MtMatch ALTER COLUMN mtWalkOverX " + SMALLINT + " NOT NULL");
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -489,27 +489,27 @@ bool  MtMatchStore::UpdateTable(long version)
 
 bool  MtMatchStore::CreateConstraints()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
   wxString  str;
-  
+
   try
   {
     tmp->ExecuteUpdate("ALTER TABLE MtMatch DROP CONSTRAINT mtMatchIdRef");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
   }
 
   try
   {
-    tmp->ExecuteUpdate(str = 
+    tmp->ExecuteUpdate(str =
       "ALTER TABLE MtMatch ADD CONSTRAINT mtMatchIdRef "
       "FOREIGN KEY (mtID) REFERENCES MtRec (mtID) ON DELETE CASCADE");
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete tmp;
@@ -525,14 +525,14 @@ bool  MtMatchStore::UpdateConstraints(long version)
 {
   if (version < 104)
     return CreateConstraints();
-   
+
   return true;
 }
 
 
 // -----------------------------------------------------------------------
-MtMatchStore::MtMatchStore(const MtRec &mt, Connection *ptr)
-            : StoreObj(ptr)
+MtMatchStore::MtMatchStore(const MtRec& mt, Connection* ptr)
+  : StoreObj(ptr)
 {
   Init();
   mtID = mt.mtID;
@@ -551,7 +551,7 @@ void  MtMatchStore::Init()
 
 bool  MtMatchStore::SelectAll(short ms)
 {
-  wxString  str = 
+  wxString  str =
     "SELECT mtID, mtMS, mtResA, mtResX,       "
     "       mtWalkOverA, mtWalkOverX,         "
     "       mtInjuredA, mtInjuredX,           "
@@ -580,7 +580,7 @@ bool  MtMatchStore::SelectAll(short ms)
     BindCol(++col, &mtDisqualifiedA);
     BindCol(++col, &mtDisqualifiedX);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -593,46 +593,46 @@ bool  MtMatchStore::SelectAll(short ms)
 // -----------------------------------------------------------------------
 bool  MtStore::CreateTable()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
   wxASSERT(connPtr);
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
-  wxString  INTEGER   = connPtr->GetDataType(SQL_INTEGER);
-  wxString  SMALLINT  = connPtr->GetDataType(SQL_SMALLINT);
+  wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
+  wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
   wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
 
-  wxString  sql = 
+  wxString  sql =
     "CREATE TABLE MtRec (         "
-    "mtID            "+INTEGER+"      NOT NULL,  "
-    "mtNr            "+INTEGER+"      NOT NULL,  "
-    "stA             "+INTEGER+",     "
-    "stX             "+INTEGER+",     "
-    "grID            "+INTEGER+"      NOT NULL,  "
-    "mtRound         "+SMALLINT+"     NOT NULL,  "
-    "mtMatch         "+SMALLINT+"     NOT NULL,  "
-    "mtChance        "+SMALLINT+"     NOT NULL,  "
-    "mtDateTime      "+TIMESTAMP+",   "
-    "mtTable         "+SMALLINT+",    "
-    "mtUmpire        "+INTEGER+",     "
-    "mtUmpire2       "+INTEGER+",     "
-    "mtPrintTossTime      "+TIMESTAMP+"   DEFAULT NULL,       "
-    "mtPrintScoreTime     "+TIMESTAMP+"   DEFAULT NULL,       "
-    "mtStartMatchTime     "+TIMESTAMP+"   DEFAULT NULL,       "
-    "mtEndMatchTime       "+TIMESTAMP+"   DEFAULT NULL,       "
-    "mtCheckMatchTime     "+TIMESTAMP+"   DEFAULT NULL,       "
-    "mtReverse       "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtMatches       "+SMALLINT+"     NOT NULL,  "
-    "mtBestOf        "+SMALLINT+"     NOT NULL,  "
-    "mtWalkOverA     "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtWalkOverX     "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtInjuredA      "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtInjuredX      "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtDisqualifiedA "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtDisqualifiedX "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtResA          "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtResX          "+SMALLINT+"     NOT NULL DEFAULT 0, "
-    "mtTimestamp     "+TIMESTAMP+"    DEFAULT GETUTCDATE()"
+    "mtID            " + INTEGER + "      NOT NULL,  "
+    "mtNr            " + INTEGER + "      NOT NULL,  "
+    "stA             " + INTEGER + ",     "
+    "stX             " + INTEGER + ",     "
+    "grID            " + INTEGER + "      NOT NULL,  "
+    "mtRound         " + SMALLINT + "     NOT NULL,  "
+    "mtMatch         " + SMALLINT + "     NOT NULL,  "
+    "mtChance        " + SMALLINT + "     NOT NULL,  "
+    "mtDateTime      " + TIMESTAMP + ",   "
+    "mtTable         " + SMALLINT + ",    "
+    "mtUmpire        " + INTEGER + ",     "
+    "mtUmpire2       " + INTEGER + ",     "
+    "mtPrintTossTime      " + TIMESTAMP + "   DEFAULT NULL,       "
+    "mtPrintScoreTime     " + TIMESTAMP + "   DEFAULT NULL,       "
+    "mtStartMatchTime     " + TIMESTAMP + "   DEFAULT NULL,       "
+    "mtEndMatchTime       " + TIMESTAMP + "   DEFAULT NULL,       "
+    "mtCheckMatchTime     " + TIMESTAMP + "   DEFAULT NULL,       "
+    "mtReverse       " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtMatches       " + SMALLINT + "     NOT NULL,  "
+    "mtBestOf        " + SMALLINT + "     NOT NULL,  "
+    "mtWalkOverA     " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtWalkOverX     " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtInjuredA      " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtInjuredX      " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtDisqualifiedA " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtDisqualifiedX " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtResA          " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtResX          " + SMALLINT + "     NOT NULL DEFAULT 0, "
+    "mtTimestamp     " + TIMESTAMP + "    DEFAULT GETUTCDATE()"
     "CONSTRAINT mtIdKey PRIMARY KEY (mtID)   "
     ")";
 
@@ -640,7 +640,7 @@ bool  MtStore::CreateTable()
   {
     tmp->ExecuteUpdate(sql);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
     delete tmp;
@@ -659,7 +659,7 @@ bool  MtStore::CreateTable()
     // gleichmal 20 Sekunden statt 1 Sekunde!
     // tmp->ExecuteUpdate(sql = "CREATE INDEX mtGrKey  ON MtRec (grID)");
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
   };
@@ -667,12 +667,12 @@ bool  MtStore::CreateTable()
   MtSetStore::CreateTable();
 
   MtMatchStore::CreateTable();
-  
+
   UpdateStoredProcedure(0);
 
   tmp->Close();
   delete tmp;
-  
+
   return true;
 }
 
@@ -685,51 +685,51 @@ bool  MtStore::UpdateTable(long version)
   MtSetStore::UpdateTable(version);
 
   MtMatchStore::UpdateTable(version);
-  
+
   if (version < 60)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
-    Statement *stmtPtr = connPtr->CreateStatement();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+    Statement* stmtPtr = connPtr->CreateStatement();
 
     wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
     wxString str;
-    
-    try 
-    {      
-      str = "ALTER TABLE MtRec ADD mtTimestamp "+TIMESTAMP+" DEFAULT GETUTCDATE()";
-      stmtPtr->ExecuteUpdate(str);        
+
+    try
+    {
+      str = "ALTER TABLE MtRec ADD mtTimestamp " + TIMESTAMP + " DEFAULT GETUTCDATE()";
+      stmtPtr->ExecuteUpdate(str);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(str, e);
       delete stmtPtr;
       return false;
     }
-    
+
     delete stmtPtr;
   }
-  
+
   if (version < 104)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
     wxASSERT(connPtr);
 
-    Statement *tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
     wxString SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
-    wxString sql = 
-        "ALTER TABLE MtRec ADD "
-          "mtInjuredA      " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtInjuredX      " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtDisqualifiedA " + SMALLINT + " NOT NULL DEFAULT 0, "
-          "mtDisqualifiedX " + SMALLINT + " NOT NULL DEFAULT 0  ";
+    wxString sql =
+      "ALTER TABLE MtRec ADD "
+      "mtInjuredA      " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtInjuredX      " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtDisqualifiedA " + SMALLINT + " NOT NULL DEFAULT 0, "
+      "mtDisqualifiedX " + SMALLINT + " NOT NULL DEFAULT 0  ";
 
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -748,15 +748,15 @@ bool  MtStore::UpdateTable(long version)
 
       // DROP CONTRAINT braucht den Namen, den vergebe ich aber nicht explizit
       // Also in den Sys-Tabellen suchen
-      Statement *dstmt = connPtr->CreateStatement();
-      sql = 
-          "SELECT d.name, c.name "
-          "  FROM sys.tables t "
-          "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
-          "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
-          " WHERE t.name = 'MtRec' AND c.name IN ('mtPrinted', 'mtReverse', 'mtWalkOverA', 'mtWalkOverX') "
-      ;
-      ResultSet *rs = dstmt->ExecuteQuery(sql);
+      Statement* dstmt = connPtr->CreateStatement();
+      sql =
+        "SELECT d.name, c.name "
+        "  FROM sys.tables t "
+        "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
+        "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
+        " WHERE t.name = 'MtRec' AND c.name IN ('mtPrinted', 'mtReverse', 'mtWalkOverA', 'mtWalkOverX') "
+        ;
+      ResultSet* rs = dstmt->ExecuteQuery(sql);
       std::map<wxString, wxString> dmap;
       while (rs->Next())
       {
@@ -787,7 +787,7 @@ bool  MtStore::UpdateTable(long version)
       tmp->ExecuteUpdate(sql = "ALTER TABLE MtRec ALTER COLUMN mtWalkOverA " + SMALLINT + " NOT NULL");
       tmp->ExecuteUpdate(sql = "ALTER TABLE MtRec ALTER COLUMN mtWalkOverX " + SMALLINT + " NOT NULL");
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -801,22 +801,22 @@ bool  MtStore::UpdateTable(long version)
 
   if (version < 106)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
     wxASSERT(connPtr);
 
-    Statement *tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
     wxString SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
 
-    wxString sql = 
-        "ALTER TABLE MtRec ADD "
-          "mtChecked  " + SMALLINT + " NOT NULL DEFAULT 0 ";
+    wxString sql =
+      "ALTER TABLE MtRec ADD "
+      "mtChecked  " + SMALLINT + " NOT NULL DEFAULT 0 ";
 
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -825,16 +825,16 @@ bool  MtStore::UpdateTable(long version)
       return false;
     }
 
-    sql = 
+    sql =
       "UPDATE MtRec SET mtChecked = 1 "
       " WHERE (mtMatches = 1 AND (2 * mtResA > mtBestOf OR 2 * mtResX > mtBestOf)) OR "
-      "       (mtMatches > 1 ANd (2 * mtResA > mtMatches OR 2 * mtResX > mtMatches)) "; 
+      "       (mtMatches > 1 ANd (2 * mtResA > mtMatches OR 2 * mtResX > mtMatches)) ";
 
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -846,22 +846,22 @@ bool  MtStore::UpdateTable(long version)
 
   if (version < 120)
   {
-    Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
     wxASSERT(connPtr);
 
-    Statement *tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
-    wxString  INTEGER   = connPtr->GetDataType(SQL_INTEGER);
+    wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
 
-    wxString sql = 
-        "ALTER TABLE MtRec ADD "
-          "mtUmpire2  " + INTEGER;
+    wxString sql =
+      "ALTER TABLE MtRec ADD "
+      "mtUmpire2  " + INTEGER;
 
     try
     {
       tmp->ExecuteUpdate(sql);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
 
@@ -873,89 +873,89 @@ bool  MtStore::UpdateTable(long version)
 
   if (version < 177)
   {
-      Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
-      wxASSERT(connPtr);
+    Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+    wxASSERT(connPtr);
 
-      Statement* tmp = connPtr->CreateStatement();
+    Statement* tmp = connPtr->CreateStatement();
 
-      wxString  DATETIME = connPtr->GetDataType(SQL_DATETIME);
-      wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
+    wxString  DATETIME = connPtr->GetDataType(SQL_DATETIME);
+    wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
 
-      wxString sql;
-      
-      try
+    wxString sql;
+
+    try
+    {
+      sql =
+        "ALTER TABLE MtRec ADD "
+        "mtPrintTossTime   " + TIMESTAMP + " DEFAULT NULL, "
+        "mtPrintScoreTime  " + TIMESTAMP + " DEFAULT NULL, "
+        "mtStartMatchTime  " + TIMESTAMP + " DEFAULT NULL, "
+        "mtEndMatchTime    " + TIMESTAMP + " DEFAULT NULL,  "
+        "mtCheckMatchTime  " + TIMESTAMP + " DEFAULT NULL  "
+        ;
+      tmp->ExecuteUpdate(sql);
+
+      sql = "UPDATE MtRec SET mtPrintScoreTime = mtDateTime WHERE mtPrinted <> 0";
+      tmp->ExecuteUpdate(sql);
+      sql = "UPDATE MtRec SET mtStartMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
+      tmp->ExecuteUpdate(sql);
+      sql = "UPDATE MtRec SET mtEndMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
+      tmp->ExecuteUpdate(sql);
+      sql = "UPDATE MtRec SET mtCheckMatchTime = mtDateTime WHERE mtChecked <> 0";
+      tmp->ExecuteUpdate(sql);
+
+      // Before we can drop the column we have to drop the contraint
+      // DROP CONTRAINT braucht den Namen, den vergebe ich aber nicht explizit
+      // Also in den Sys-Tabellen suchen
+      Statement* dstmt = connPtr->CreateStatement();
+      sql =
+        "SELECT d.name, c.name "
+        "  FROM sys.tables t "
+        "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
+        "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
+        " WHERE t.name = 'MtRec' AND c.name IN ('mtPrinted', 'mtChecked') "
+        ;
+      ResultSet* rs = dstmt->ExecuteQuery(sql);
+      std::map<wxString, wxString> dmap;
+      while (rs->Next())
       {
-          sql =
-              "ALTER TABLE MtRec ADD "
-              "mtPrintTossTime   " + TIMESTAMP + " DEFAULT NULL, "
-              "mtPrintScoreTime  " + TIMESTAMP + " DEFAULT NULL, "
-              "mtStartMatchTime  " + TIMESTAMP + " DEFAULT NULL, "
-              "mtEndMatchTime    " + TIMESTAMP + " DEFAULT NULL,  "
-              "mtCheckMatchTime  " + TIMESTAMP + " DEFAULT NULL  "
-          ;
-          tmp->ExecuteUpdate(sql);
+        wxChar d[128];
+        wxChar c[128];
 
-          sql = "UPDATE MtRec SET mtPrintScoreTime = mtDateTime WHERE mtPrinted <> 0";
-          tmp->ExecuteUpdate(sql);
-          sql = "UPDATE MtRec SET mtStartMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
-          tmp->ExecuteUpdate(sql);
-          sql = "UPDATE MtRec SET mtEndMatchTime = mtDateTime WHERE ((mtResA + mtResX) > 0) OR (mtChecked <> 0)";
-          tmp->ExecuteUpdate(sql);
-          sql = "UPDATE MtRec SET mtCheckMatchTime = mtDateTime WHERE mtChecked <> 0";
-          tmp->ExecuteUpdate(sql);
+        rs->GetData(1, d, 128);
+        rs->GetData(2, c, 128);
 
-          // Before we can drop the column we have to drop the contraint
-          // DROP CONTRAINT braucht den Namen, den vergebe ich aber nicht explizit
-          // Also in den Sys-Tabellen suchen
-          Statement* dstmt = connPtr->CreateStatement();
-          sql =
-            "SELECT d.name, c.name "
-            "  FROM sys.tables t "
-            "       INNER JOIN sys.default_constraints d ON d.parent_object_id = t.object_id "
-            "       INNER JOIN sys.columns c ON c.object_id = t.object_id AND c.column_id = d.parent_column_id "
-            " WHERE t.name = 'MtRec' AND c.name IN ('mtPrinted', 'mtChecked') "
-            ;
-          ResultSet* rs = dstmt->ExecuteQuery(sql);
-          std::map<wxString, wxString> dmap;
-          while (rs->Next())
-          {
-            wxChar d[128];
-            wxChar c[128];
-
-            rs->GetData(1, d, 128);
-            rs->GetData(2, c, 128);
-
-            dmap[wxString(d)] = wxString(c);
-          }
-
-          dstmt->Close();
-          delete rs;
-          delete dstmt;
-
-          for (auto it : dmap)
-            tmp->ExecuteQuery("ALTER TABLE MtRec DROP CONSTRAINT " + it.first);
-
-          // And now we can
-          sql = "ALTER TABLE MtRec DROP COLUMN mtPrinted";
-          tmp->ExecuteUpdate(sql);
-          sql = "ALTER TABLE MtRec DROP COLUMN mtChecked";
-          tmp->ExecuteUpdate(sql);
-
-          // And finally update role permissions
-          sql = "IF DATABASE_PRINCIPAL_ID('ttm_results') IS NULL CREATE ROLE ttm_results AUTHORIZATION db_datareader";
-          tmp->ExecuteUpdate(sql);
-
-          sql = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results";
-          tmp->ExecuteUpdate(sql);
+        dmap[wxString(d)] = wxString(c);
       }
-      catch (SQLException& e)
-      {
-          infoSystem.Exception(sql, e);
 
-          delete tmp;
+      dstmt->Close();
+      delete rs;
+      delete dstmt;
 
-          return false;
-      }
+      for (auto it : dmap)
+        tmp->ExecuteQuery("ALTER TABLE MtRec DROP CONSTRAINT " + it.first);
+
+      // And now we can
+      sql = "ALTER TABLE MtRec DROP COLUMN mtPrinted";
+      tmp->ExecuteUpdate(sql);
+      sql = "ALTER TABLE MtRec DROP COLUMN mtChecked";
+      tmp->ExecuteUpdate(sql);
+
+      // And finally update role permissions
+      sql = "IF DATABASE_PRINCIPAL_ID('ttm_results') IS NULL CREATE ROLE ttm_results AUTHORIZATION db_datareader";
+      tmp->ExecuteUpdate(sql);
+
+      sql = "GRANT UPDATE ON MtRec (mtPrintScoreTime, mtStartMatchTime, mtEndMatchTime, mtCheckMatchTime) TO ttm_results";
+      tmp->ExecuteUpdate(sql);
+    }
+    catch (SQLException& e)
+    {
+      infoSystem.Exception(sql, e);
+
+      delete tmp;
+
+      return false;
+    }
   }
 
   if (!UpdateStoredProcedure(version))
@@ -967,39 +967,39 @@ bool  MtStore::UpdateTable(long version)
 
 bool  MtStore::CreateConstraints()
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
-  wxString  INTEGER   = connPtr->GetDataType(SQL_INTEGER);
+  wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
   wxString  str;
-  
+
   try
   {
     tmp->ExecuteUpdate("ALTER TABLE MtRec DROP CONSTRAINT mtGrRef");
     tmp->ExecuteUpdate("ALTER TABLE MtRec DROP CONSTRAINT mtStARef");
     tmp->ExecuteUpdate("ALTER TABLE MtRec DROP CONSTRAINT mtStXRef");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
   }
 
   try
   {
-    tmp->ExecuteUpdate(str = 
+    tmp->ExecuteUpdate(str =
       "ALTER TABLE MtRec Add CONSTRAINT mtGrRef "
       "FOREIGN KEY (grID) REFERENCES GrRec (grID) ON DELETE CASCADE");
 
-    tmp->ExecuteUpdate(str = 
+    tmp->ExecuteUpdate(str =
       "ALTER TABLE MtRec ADD CONSTRAINT mtStARef "
-      "FOREIGN KEY (stA) REFERENCES StRec (stID) ON DELETE NO ACTION");  
+      "FOREIGN KEY (stA) REFERENCES StRec (stID) ON DELETE NO ACTION");
 
-    tmp->ExecuteUpdate(str = 
+    tmp->ExecuteUpdate(str =
       "ALTER TABLE MtRec ADD CONSTRAINT mtStXRef "
       "FOREIGN KEY (stX) REFERENCES StRec (stID) ON DELETE NO ACTION");
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete tmp;
@@ -1007,9 +1007,9 @@ bool  MtStore::CreateConstraints()
   };
 
   delete tmp;
-  
-  return MtMatchStore::CreateConstraints() && 
-         MtSetStore::CreateConstraints();
+
+  return MtMatchStore::CreateConstraints() &&
+    MtSetStore::CreateConstraints();
 }
 
 
@@ -1017,147 +1017,147 @@ bool  MtStore::UpdateConstraints(long version)
 {
   if (version < 112)
     return CreateConstraints();
-    
+
   return true;
 }
 
 
-bool  MtStore::UpdateStoredProcedure(long version) 
+bool  MtStore::UpdateStoredProcedure(long version)
 {
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   // wirklich VARCHAR, wird in stored proc gebraucht
-  wxString  VARCHAR   = connPtr->GetDataType(SQL_VARCHAR);  
-  wxString  INTEGER   = connPtr->GetDataType(SQL_INTEGER);
-  wxString  SMALLINT  = connPtr->GetDataType(SQL_SMALLINT);
+  wxString  VARCHAR = connPtr->GetDataType(SQL_VARCHAR);
+  wxString  INTEGER = connPtr->GetDataType(SQL_INTEGER);
+  wxString  SMALLINT = connPtr->GetDataType(SQL_SMALLINT);
   wxString  TIMESTAMP = connPtr->GetDataType(SQL_TIMESTAMP);
 
-  Statement *tmp = connPtr->CreateStatement();
+  Statement* tmp = connPtr->CreateStatement();
 
   wxString  str;
-  
+
   try
   {
     tmp->ExecuteUpdate("DROP PROCEDURE mtUpdateRasterProc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP PROCEDURE mtSetResultProc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
-    
-  try 
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION DttbSortFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION DttbSortDirectCompFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION DttbCompFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION DttbDirectCompFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
-    
-  try 
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION IttfSortFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION IttfSortDirectCompFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
-    
-  try 
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION SumUpFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION mtResultsFunc");
   }
-  catch (SQLException &)
-  {
-    // infoSystem.Exception("DROP PROCEDURE ...", e);
-  }
-    
-  try 
-  {
-    tmp->ExecuteUpdate("DROP FUNCTION DiffFunc");
-  }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
 
-  try 
+  try
+  {
+    tmp->ExecuteUpdate("DROP FUNCTION DiffFunc");
+  }
+  catch (SQLException&)
+  {
+    // infoSystem.Exception("DROP PROCEDURE ...", e);
+  }
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION QuotFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
-    
-  try 
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION TbSortSubsetFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
-    
-  try 
+
+  try
   {
     tmp->ExecuteUpdate("DROP FUNCTION TbSortFunc");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
     // infoSystem.Exception("DROP PROCEDURE ...", e);
   }
@@ -1166,54 +1166,54 @@ bool  MtStore::UpdateStoredProcedure(long version)
   {
     tmp->ExecuteUpdate("DROP TRIGGER mtUpdateTrigger");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
   }
-  
+
   try
   {
 #   include "MtStore.sql"  
 #   include "TbSort.sql"
 
-    tmp->ExecuteUpdate(str = 
-        "CREATE OR ALTER TRIGGER mtUpdateTrigger ON MtRec FOR UPDATE AS \n"
-        " --- Update timestamp for last changed \n"
-        "DECLARE @mtNr " + INTEGER + ";\n"
-        "UPDATE MtRec SET mtTimestamp = GETUTCDATE() \n"
-        " WHERE mtID IN (SELECT mtID FROM deleted); \n"
-        
-        " --- Update printed flag if match data have changed but only if the match has not started yet \n"
-        "UPDATE MtRec SET mtPrintScoreTime = NULL \n"
-        " WHERE mtPrintScoreTime IS NOT NULL AND mtResA = 0 AND mtResX = 0 AND mtID IN \n"
-        "       (SELECT deleted.mtID FROM deleted INNER JOIN inserted ON deleted.mtID = inserted.mtID \n"
-        "         WHERE deleted.mtDateTime != inserted.mtDateTime OR \n"
-        "               deleted.mtTable != inserted.mtTable OR \n"
-        "               ISNULL(deleted.stA, 0) != ISNULL(inserted.stA, 0) OR \n"
-        "               ISNULL(deleted.stX, 0) != ISNULL(inserted.stX, 0) OR \n"
-        "               ISNULL(deleted.mtUmpire, 0) != ISNULL(inserted.mtUmpire, 0) OR \n"
-        "               ISNULL(deleted.mtUmpire2, 0) != ISNULL(inserted.mtUmpire2, 0) \n"
-        "       ); \n"
+    tmp->ExecuteUpdate(str =
+      "CREATE OR ALTER TRIGGER mtUpdateTrigger ON MtRec FOR UPDATE AS \n"
+      " --- Update timestamp for last changed \n"
+      "DECLARE @mtNr " + INTEGER + ";\n"
+      "UPDATE MtRec SET mtTimestamp = GETUTCDATE() \n"
+      " WHERE mtID IN (SELECT mtID FROM deleted); \n"
 
-        " DECLARE mtCheckedCursor CURSOR LOCAL FOR \n"
-        "   (SELECT inserted.mtNr \n"
-        "      FROM inserted LEFT OUTER JOIN deleted ON inserted.mtID = deleted.mtID \n"
-        "     WHERE IIF(inserted.mtCheckMatchTime IS NULL, 0, 1) <> IIF(deleted.mtCheckMatchTime IS NULL, 0, 1)) \n"
-        " OPEN mtCheckedCursor \n"
-        " FETCH NEXT FROM mtCheckedCursor INTO @mtNr \n"
-        " WHILE (@@FETCH_STATUS = 0) \n"
-        " BEGIN \n"
-        "   EXEC mtUpdateRasterProc @mtNr, 1; \n"
-        "   EXEC mtUpdateRasterProc @mtNr, 0; \n"
-        "   FETCH NEXT FROM mtCheckedCursor INTO  @mtNr \n"
-        " END \n"
+      " --- Update printed flag if match data have changed but only if the match has not started yet \n"
+      "UPDATE MtRec SET mtPrintScoreTime = NULL \n"
+      " WHERE mtPrintScoreTime IS NOT NULL AND mtResA = 0 AND mtResX = 0 AND mtID IN \n"
+      "       (SELECT deleted.mtID FROM deleted INNER JOIN inserted ON deleted.mtID = inserted.mtID \n"
+      "         WHERE deleted.mtDateTime != inserted.mtDateTime OR \n"
+      "               deleted.mtTable != inserted.mtTable OR \n"
+      "               ISNULL(deleted.stA, 0) != ISNULL(inserted.stA, 0) OR \n"
+      "               ISNULL(deleted.stX, 0) != ISNULL(inserted.stX, 0) OR \n"
+      "               ISNULL(deleted.mtUmpire, 0) != ISNULL(inserted.mtUmpire, 0) OR \n"
+      "               ISNULL(deleted.mtUmpire2, 0) != ISNULL(inserted.mtUmpire2, 0) \n"
+      "       ); \n"
+
+      " DECLARE mtCheckedCursor CURSOR LOCAL FOR \n"
+      "   (SELECT inserted.mtNr \n"
+      "      FROM inserted LEFT OUTER JOIN deleted ON inserted.mtID = deleted.mtID \n"
+      "     WHERE IIF(inserted.mtCheckMatchTime IS NULL, 0, 1) <> IIF(deleted.mtCheckMatchTime IS NULL, 0, 1)) \n"
+      " OPEN mtCheckedCursor \n"
+      " FETCH NEXT FROM mtCheckedCursor INTO @mtNr \n"
+      " WHILE (@@FETCH_STATUS = 0) \n"
+      " BEGIN \n"
+      "   EXEC mtUpdateRasterProc @mtNr, 1; \n"
+      "   EXEC mtUpdateRasterProc @mtNr, 0; \n"
+      "   FETCH NEXT FROM mtCheckedCursor INTO  @mtNr \n"
+      " END \n"
     );
   }
-  catch (SQLException &e) 
+  catch (SQLException& e)
   {
-     infoSystem.Exception(str, e);
-     return false;
+    infoSystem.Exception(str, e);
+    return false;
   }
-  
+
   // Update der Berechtigungen. Wenn die DB neu ist, geht es hier schief,
   // weil die Rollen noch nicht bekannt sind, sie werden aber spaeter vergeben.
   // D.h., einen Fehler hier kann man ignorieren.
@@ -1223,26 +1223,26 @@ bool  MtStore::UpdateStoredProcedure(long version)
     tmp->ExecuteUpdate(str = "GRANT EXECUTE ON mtSetResultProc TO ttm_results");
     tmp->ExecuteUpdate(str = "GRANT EXECUTE ON mtUpdateRasterProc TO ttm_results");
   }
-  catch (SQLException &)
+  catch (SQLException&)
   {
-  }  
+  }
 
   return true;
 }
 
 
 // -----------------------------------------------------------------------
-bool  MtStore::Insert(const GrRec &gr)
+bool  MtStore::Insert(const GrRec& gr)
 {
-  PreparedStatement *stmtPtr = 0;
+  PreparedStatement* stmtPtr = 0;
 
   wxString str = "INSERT INTO MtRec "
-                    "       (mtID, mtNr,    mtMatches, mtBestOf,  "
-                    "        grID, mtRound, mtMatch,   mtChance,  "
-                    "        mtReverse)                           "
-                    "VALUES (?,    ?,       ?,         ?,         "
-                    "        ?,    ?,       ?,         ?,         "
-                    "        ?        )                           ";
+    "       (mtID, mtNr,    mtMatches, mtBestOf,  "
+    "        grID, mtRound, mtMatch,   mtChance,  "
+    "        mtReverse)                           "
+    "VALUES (?,    ?,       ?,         ?,         "
+    "        ?,    ?,       ?,         ?,         "
+    "        ?        )                           ";
 
   try
   {
@@ -1266,7 +1266,7 @@ bool  MtStore::Insert(const GrRec &gr)
 
     stmtPtr->Execute();
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -1280,7 +1280,7 @@ bool  MtStore::Insert(const GrRec &gr)
 }
 
 
-bool  MtStore::Remove(const GrRec &gr)
+bool  MtStore::Remove(const GrRec& gr)
 {
   // if ( !MtSetStore(*this, GetConnectionPtr()).Remove(gr) ||
   //      !MtMatchStore(*this, GetConnectionPtr()).Remove(gr) )
@@ -1292,7 +1292,7 @@ bool  MtStore::Remove(const GrRec &gr)
   {
     ExecuteUpdate(str);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1310,18 +1310,18 @@ void  MtStore::Init()
 
 
 // -----------------------------------------------------------------------
-bool  MtStore::SelectByGr(const GrRec &gr)
+bool  MtStore::SelectByGr(const GrRec& gr)
 {
   wxString  str = SelectString();
   str += " WHERE mt.grID  = " + ltostr(gr.grID) +
-         " ORDER BY mtRound, mtMatch";
+    " ORDER BY mtRound, mtMatch";
 
   try
   {
     ExecuteQuery(str);
     BindRec();
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1331,20 +1331,20 @@ bool  MtStore::SelectByGr(const GrRec &gr)
 }
 
 
-bool  MtStore::SelectByEvent(const MtEvent &event)
+bool  MtStore::SelectByEvent(const MtEvent& event)
 {
   wxString  str = SelectString();
   str += " WHERE mt.grID  = " + ltostr(event.grID) +
-         "   AND mtRound  = " + ltostr(event.mtRound) + 
-         "   AND mtMatch  = " + ltostr(event.mtMatch) +
-         "   AND mtChance = " + ltostr(event.mtChance);
+    "   AND mtRound  = " + ltostr(event.mtRound) +
+    "   AND mtMatch  = " + ltostr(event.mtMatch) +
+    "   AND mtChance = " + ltostr(event.mtChance);
 
   try
   {
     ExecuteQuery(str);
     BindRec();
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1364,7 +1364,7 @@ bool  MtStore::SelectById(long id)
     ExecuteQuery(str);
     BindRec();
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1384,7 +1384,7 @@ bool  MtStore::SelectByNr(long nr)
     ExecuteQuery(str);
     BindRec();
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1418,7 +1418,7 @@ bool  MtStore::SetTeamAByNr(short stNr)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1427,8 +1427,8 @@ bool  MtStore::SetTeamAByNr(short stNr)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1459,7 +1459,7 @@ bool  MtStore::SetTeamXByNr(short stNr)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1468,8 +1468,8 @@ bool  MtStore::SetTeamXByNr(short stNr)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1511,7 +1511,7 @@ bool  MtStore::SetTeamsByNr(short stNrA, short stNrX)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1520,8 +1520,8 @@ bool  MtStore::SetTeamsByNr(short stNrA, short stNrX)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1547,7 +1547,7 @@ bool  MtStore::SetTeamAById(long  stID)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1556,8 +1556,8 @@ bool  MtStore::SetTeamAById(long  stID)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1583,7 +1583,7 @@ bool  MtStore::SetTeamXById(long stID)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1592,8 +1592,8 @@ bool  MtStore::SetTeamXById(long stID)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1612,7 +1612,7 @@ bool MtStore::SetBestOf(short bestOf)
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1621,8 +1621,8 @@ bool MtStore::SetBestOf(short bestOf)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1636,7 +1636,7 @@ bool  MtStore::UpdateReverseFlag()
   if (!mtID)
     return false;
 
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtReverse = " + ltostr(mtReverse) +
     " WHERE mtID = " + ltostr(mtID);
 
@@ -1644,7 +1644,7 @@ bool  MtStore::UpdateReverseFlag()
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1653,8 +1653,8 @@ bool  MtStore::UpdateReverseFlag()
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_REVERSE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1667,7 +1667,7 @@ bool  MtStore::UpdateWalkOver()
   if (!mtID)
     return false;
 
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET "
     "   mtWalkOverA = " + ltostr(mtWalkOverA) + ", "
     "   mtWalkOverX = " + ltostr(mtWalkOverX) +
@@ -1677,7 +1677,7 @@ bool  MtStore::UpdateWalkOver()
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     return false;
@@ -1686,8 +1686,8 @@ bool  MtStore::UpdateWalkOver()
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_REVERSE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1695,8 +1695,8 @@ bool  MtStore::UpdateWalkOver()
 }
 
 bool MtStore::UpdateResult(
-  short bestOf, MtSet *mtSets, 
-  short walkOverA, short walkOverX, 
+  short bestOf, MtSet* mtSets,
+  short walkOverA, short walkOverX,
   short injuredA, short injuredX,
   short disqualifiedA, short disqualifiedX
 )
@@ -1718,29 +1718,29 @@ bool MtStore::UpdateResult(
 
     sets += wxString::Format("%02d%02d", mtSets[i].mtResA, mtSets[i].mtResX);
   }
-  
-  wxString sql = "mtSetResultProc " + 
-        ltostr(mtNr) + ", " + ltostr(mtSets[0].mtMS) + ", " + 
-        ltostr(mtBestOf) + ", " + "'" + sets + "'" + ", " + 
-        ltostr(walkOverA ? 1 : 0) + ", " + ltostr(walkOverX ? 1 : 0) + ", " +
-        ltostr(injuredA ? 1 : 0) + ", " + ltostr(injuredX ? 1 : 0) + ", " +
-        ltostr(disqualifiedA ? 1 : 0) + ", " + ltostr(disqualifiedX ? 1 : 0);
+
+  wxString sql = "mtSetResultProc " +
+    ltostr(mtNr) + ", " + ltostr(mtSets[0].mtMS) + ", " +
+    ltostr(mtBestOf) + ", " + "'" + sets + "'" + ", " +
+    ltostr(walkOverA ? 1 : 0) + ", " + ltostr(walkOverX ? 1 : 0) + ", " +
+    ltostr(injuredA ? 1 : 0) + ", " + ltostr(injuredX ? 1 : 0) + ", " +
+    ltostr(disqualifiedA ? 1 : 0) + ", " + ltostr(disqualifiedX ? 1 : 0);
   try
   {
     ExecuteUpdate(sql);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(sql, e);
-    
+
     return false;
   }
 
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_RESULT;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1750,15 +1750,15 @@ bool MtStore::UpdateResult(
 
 bool  MtStore::UpdateSchedule()
 {
-  wxString  str = 
-    "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? WHERE mtID = "+ ltostr(mtID);
+  wxString  str =
+    "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? WHERE mtID = " + ltostr(mtID);
 
-  PreparedStatement *stmtPtr = 0;
+  PreparedStatement* stmtPtr = 0;
   try
   {
     // Leere Zeiten al <null> eintragen, sonst mault MS-SQL
-    timestamp *tmpPtr = mtPlace.mtDateTime.year ? 
-                        &mtPlace.mtDateTime     : 0;
+    timestamp* tmpPtr = mtPlace.mtDateTime.year ?
+      &mtPlace.mtDateTime : 0;
     stmtPtr = GetConnectionPtr()->PrepareStatement(str);
     stmtPtr->SetData(1, tmpPtr);
     stmtPtr->SetData(2, &mtPlace.mtTable);
@@ -1767,7 +1767,7 @@ bool  MtStore::UpdateSchedule()
     stmtPtr->Execute();
 
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -1780,8 +1780,8 @@ bool  MtStore::UpdateSchedule()
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = mtID;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
 
   CTT32App::NotifyChange(update);
 
@@ -1789,12 +1789,12 @@ bool  MtStore::UpdateSchedule()
 }
 
 
-bool  MtStore::UpdateScheduleMatch(MtStore::MtEvent &mtEv, 
-                                   MtStore::MtPlace &mtPl,
-                                   short umpire, short umpire2)
+bool  MtStore::UpdateScheduleMatch(MtStore::MtEvent& mtEv,
+  MtStore::MtPlace& mtPl,
+  short umpire, short umpire2)
 {
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   wxString str;
 
@@ -1817,14 +1817,14 @@ bool  MtStore::UpdateScheduleMatch(MtStore::MtEvent &mtEv,
   }
   else
   {
-    str = 
-        "SELECT mtID FROM MtRec "
-        " WHERE grID = "+ltostr(mtEv.grID) + 
-        "   AND mtRound = "+ltostr(mtEv.mtRound) +
-        "   AND mtMatch >= "+ltostr(mtEv.mtMatch) +
-        "   AND mtChance = "+ltostr(mtEv.mtChance) +
-        " ORDER BY mtMatch"
-    ;
+    str =
+      "SELECT mtID FROM MtRec "
+      " WHERE grID = " + ltostr(mtEv.grID) +
+      "   AND mtRound = " + ltostr(mtEv.mtRound) +
+      "   AND mtMatch >= " + ltostr(mtEv.mtMatch) +
+      "   AND mtChance = " + ltostr(mtEv.mtChance) +
+      " ORDER BY mtMatch"
+      ;
   }
 
 
@@ -1839,7 +1839,7 @@ bool  MtStore::UpdateScheduleMatch(MtStore::MtEvent &mtEv,
     if (!resPtr->Next() || !resPtr->GetData(1, id) || resPtr->WasNull())
       id = 0;
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -1857,10 +1857,10 @@ bool  MtStore::UpdateScheduleMatch(MtStore::MtEvent &mtEv,
   return id != 0;
 }
 
-bool  MtStore::UpdateScheduleRound(MtStore::MtEvent &mtEvFrom,
-                                   MtStore::MtPlace &mtPlFrom,
-                                   short &nofTables, bool decTable,
-                                   short umpire, short umpire2)
+bool  MtStore::UpdateScheduleRound(MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
 {
   if (nofTables == 1)
   {
@@ -1868,17 +1868,17 @@ bool  MtStore::UpdateScheduleRound(MtStore::MtEvent &mtEvFrom,
     return UpdateScheduleMatch(mtEvFrom, mtPlFrom, umpire, umpire2);
   }
 
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   // Auswahl aller Gruppenids
-  wxString  str = 
-      "SELECT mtID FROM MtRec "
-      " WHERE grID = "+ltostr(mtEvFrom.grID) + 
-      "   AND mtRound = "+ltostr(mtEvFrom.mtRound) +
-      "   AND mtMatch >= "+ltostr(mtEvFrom.mtMatch) +
-      "   AND mtChance = "+ltostr(mtEvFrom.mtChance) +
-      " ORDER BY mtMatch";
+  wxString  str =
+    "SELECT mtID FROM MtRec "
+    " WHERE grID = " + ltostr(mtEvFrom.grID) +
+    "   AND mtRound = " + ltostr(mtEvFrom.mtRound) +
+    "   AND mtMatch >= " + ltostr(mtEvFrom.mtMatch) +
+    "   AND mtChance = " + ltostr(mtEvFrom.mtChance) +
+    " ORDER BY mtMatch";
 
 
   long  id;
@@ -1893,7 +1893,7 @@ bool  MtStore::UpdateScheduleRound(MtStore::MtEvent &mtEvFrom,
     while (resPtr->Next())
       idList.push_back(id);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -1903,7 +1903,7 @@ bool  MtStore::UpdateScheduleRound(MtStore::MtEvent &mtEvFrom,
   }
 
   for (std::vector<long>::iterator it = idList.begin();
-       it != idList.end(); it++)
+    it != idList.end(); it++)
   {
     UpdateScheduleMatch((*it), mtPlFrom, umpire, umpire2);
 
@@ -1935,28 +1935,28 @@ bool  MtStore::UpdateScheduleRound(MtStore::MtEvent &mtEvFrom,
 
 
 bool  MtStore::UpdateScheduleRoundExcludeByes(
-                                   MtStore::MtEvent &mtEvFrom,
-                                   MtStore::MtPlace &mtPlFrom,
-                                   short &nofTables, bool decTable,
-                                   short umpire, short umpire2)
+  MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
 {
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   // Auswahl aller Match-IDs
-  wxString  str = 
-      "SELECT mtID "
-      "  FROM MtRec mt LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID "
-      "                LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID "
-      "                LEFT OUTER JOIN XxRec xxA ON mt.stA = xxA.stID "
-      "                LEFT OUTER JOIN XxRec xxX ON mt.stX = xxX.stID "
-      " WHERE mt.grID = "+ltostr(mtEvFrom.grID) + 
-      "   AND mt.mtRound  = "+ltostr(mtEvFrom.mtRound) +
-      "   AND mt.mtMatch >= "+ltostr(mtEvFrom.mtMatch) +
-      "   AND mt.mtChance = "+ltostr(mtEvFrom.mtChance) +
-      "   AND (mt.stA IS NULL OR stA.tmID IS NOT NULL OR xxA.stID IS NOT NULL) "
-      "   AND (mt.stX IS NULL OR stX.tmID IS NOT NULL OR xxX.stID IS NOT NULL) "
-      " ORDER BY mtMatch";
+  wxString  str =
+    "SELECT mtID "
+    "  FROM MtRec mt LEFT OUTER JOIN StRec stA ON mt.stA = stA.stID "
+    "                LEFT OUTER JOIN StRec stX ON mt.stX = stX.stID "
+    "                LEFT OUTER JOIN XxRec xxA ON mt.stA = xxA.stID "
+    "                LEFT OUTER JOIN XxRec xxX ON mt.stX = xxX.stID "
+    " WHERE mt.grID = " + ltostr(mtEvFrom.grID) +
+    "   AND mt.mtRound  = " + ltostr(mtEvFrom.mtRound) +
+    "   AND mt.mtMatch >= " + ltostr(mtEvFrom.mtMatch) +
+    "   AND mt.mtChance = " + ltostr(mtEvFrom.mtChance) +
+    "   AND (mt.stA IS NULL OR stA.tmID IS NOT NULL OR xxA.stID IS NOT NULL) "
+    "   AND (mt.stX IS NULL OR stX.tmID IS NOT NULL OR xxX.stID IS NOT NULL) "
+    " ORDER BY mtMatch";
 
 
   long  id;
@@ -1971,7 +1971,7 @@ bool  MtStore::UpdateScheduleRoundExcludeByes(
     while (resPtr->Next())
       idList.push_back(id);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -1981,7 +1981,7 @@ bool  MtStore::UpdateScheduleRoundExcludeByes(
   }
 
   for (std::vector<long>::iterator it = idList.begin();
-       it != idList.end(); it++)
+    it != idList.end(); it++)
   {
     UpdateScheduleMatch((*it), mtPlFrom, umpire, umpire2);
 
@@ -2008,8 +2008,8 @@ bool  MtStore::UpdateScheduleRoundExcludeByes(
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = 0;
+  update.rec = CRequest::MTREC;
+  update.id = 0;
 
   CTT32App::NotifyChange(update);
 
@@ -2017,15 +2017,15 @@ bool  MtStore::UpdateScheduleRoundExcludeByes(
 }
 
 
-bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEv,
-                                   MtStore::MtPlace &mtPl,
-                                   short umpire, short umpire2)
+bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent& mtEv,
+  MtStore::MtPlace& mtPl,
+  short umpire, short umpire2)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? "
-    " WHERE grID     = "+ltostr(mtEv.grID);
+    " WHERE grID     = " + ltostr(mtEv.grID);
 
-  PreparedStatement *stmtPtr = 0;
+  PreparedStatement* stmtPtr = 0;
   try
   {
     // Leere Zeiten und Tische als <null> eintragen. Bei den Zeiten mault sonst MS-SQL
@@ -2034,11 +2034,11 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEv,
     stmtPtr->SetData(2, mtPl.mtTable ? &mtPl.mtTable : 0);
     stmtPtr->SetData(3, umpire ? &umpire : 0);
     stmtPtr->SetData(4, umpire2 ? &umpire2 : 0);
-    
+
     stmtPtr->Execute();
 
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2051,8 +2051,8 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEv,
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = 0;
+  update.rec = CRequest::MTREC;
+  update.id = 0;
 
   CTT32App::NotifyChange(update);
 
@@ -2060,10 +2060,10 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEv,
 }
 
 
-bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
-                                   MtStore::MtPlace &mtPlFrom,
-                                   short &nofTables, bool decTable,
-                                   short umpire, short umpire2)
+bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
 {
   if (nofTables == 1)
   {
@@ -2071,16 +2071,16 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
     return UpdateScheduleGroup(mtEvFrom, mtPlFrom, umpire, umpire2);
   }
 
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   // Auswahl aller Gruppenids
-  wxString  str = 
-      "SELECT grID FROM GrRec "
-      " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
-      "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
-      "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
-      " ORDER BY grName";
+  wxString  str =
+    "SELECT grID FROM GrRec "
+    " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    " ORDER BY grName";
 
 
   long  id;
@@ -2095,7 +2095,7 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
     while (resPtr->Next())
       idList.push_back(id);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2105,7 +2105,7 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
   }
 
   for (std::vector<long>::iterator it = idList.begin();
-       it != idList.end(); it++)
+    it != idList.end(); it++)
   {
     mtEvFrom.grID = (*it);
     UpdateScheduleGroup(mtEvFrom, mtPlFrom, umpire, umpire2);
@@ -2133,8 +2133,8 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = 0;
+  update.rec = CRequest::MTREC;
+  update.id = 0;
 
   CTT32App::NotifyChange(update);
 
@@ -2143,20 +2143,20 @@ bool  MtStore::UpdateScheduleGroup(MtStore::MtEvent &mtEvFrom,
 
 
 bool  MtStore::UpdateScheduleRoundsGroup(
-                                   MtStore::MtEvent &mtEv,
-                                   MtStore::MtPlace &mtPl, 
-                                   short umpire, short umpire2)
+  MtStore::MtEvent& mtEv,
+  MtStore::MtPlace& mtPl,
+  short umpire, short umpire2)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? "
     " WHERE grID  = " + ltostr(mtEv.grID) +
     " AND mtRound = " + ltostr(mtEv.mtRound);
 
-  PreparedStatement *stmtPtr = 0;
+  PreparedStatement* stmtPtr = 0;
   try
   {
     // Leere Zeiten al <null> eintragen, sonst mault MS-SQL
-    timestamp *tmpPtr = mtPl.mtDateTime.year ? &mtPl.mtDateTime : 0;
+    timestamp* tmpPtr = mtPl.mtDateTime.year ? &mtPl.mtDateTime : 0;
     stmtPtr = GetConnectionPtr()->PrepareStatement(str);
     stmtPtr->SetData(1, tmpPtr);
     stmtPtr->SetData(2, &mtPl.mtTable);
@@ -2165,7 +2165,7 @@ bool  MtStore::UpdateScheduleRoundsGroup(
     stmtPtr->Execute();
 
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2178,8 +2178,8 @@ bool  MtStore::UpdateScheduleRoundsGroup(
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = 0;
+  update.rec = CRequest::MTREC;
+  update.id = 0;
 
   CTT32App::NotifyChange(update);
 
@@ -2188,78 +2188,16 @@ bool  MtStore::UpdateScheduleRoundsGroup(
 
 
 bool  MtStore::UpdateScheduleRoundsGroup(
-                                   MtStore::MtEvent &mtEvFrom,
-                                   MtStore::MtPlace &mtPlFrom,
-                                   short &nofTables, bool decTable,
-                                   short umpire, short umpire2)
+  MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
 {
   if (nofTables == 1)
     return UpdateScheduleRound(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
 
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
-
-  // Auswahl aller Gruppenids
-  wxString  str = 
-      "SELECT grID FROM GrRec "
-      " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      " ORDER BY grName";
-
-
-  long  id;
-  std::vector<long> idList;
-
-  try
-  {
-    stmtPtr = GetConnectionPtr()->CreateStatement();
-    resPtr = stmtPtr->ExecuteQuery(str);
-    resPtr->BindCol(1, &id);
-
-    while (resPtr->Next())
-      idList.push_back(id);
-  }
-  catch(SQLException &e)
-  {
-    infoSystem.Exception(str, e);
-    delete stmtPtr;
-    delete resPtr;
-
-    return false;
-  }
-
-  delete stmtPtr;
-  delete resPtr;
-
-  for (std::vector<long>::iterator it = idList.begin();
-       it != idList.end(); it++)
-  {
-    mtEvFrom.grID = (*it);
-    UpdateScheduleRound(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
-
-    // Naechste Gruppe wieder mit erstem Spiel starten
-    mtEvFrom.mtMatch = 1;
-
-    if (!nofTables)
-      break;
-  }
-
-  return true;
-}
-
-
-bool  MtStore::UpdateScheduleRoundsGroupExcludeByes(
-  MtStore::MtEvent &mtEvFrom,
-  MtStore::MtPlace &mtPlFrom,
-  short &nofTables, bool decTable,
-  short umpire, short umpire2)
-{
-  if (nofTables == 1)
-    return UpdateScheduleRoundExcludeByes(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
-
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   // Auswahl aller Gruppenids
   wxString  str =
@@ -2282,7 +2220,69 @@ bool  MtStore::UpdateScheduleRoundsGroupExcludeByes(
     while (resPtr->Next())
       idList.push_back(id);
   }
-  catch (SQLException &e)
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+    delete stmtPtr;
+    delete resPtr;
+
+    return false;
+  }
+
+  delete stmtPtr;
+  delete resPtr;
+
+  for (std::vector<long>::iterator it = idList.begin();
+    it != idList.end(); it++)
+  {
+    mtEvFrom.grID = (*it);
+    UpdateScheduleRound(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
+
+    // Naechste Gruppe wieder mit erstem Spiel starten
+    mtEvFrom.mtMatch = 1;
+
+    if (!nofTables)
+      break;
+  }
+
+  return true;
+}
+
+
+bool  MtStore::UpdateScheduleRoundsGroupExcludeByes(
+  MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
+{
+  if (nofTables == 1)
+    return UpdateScheduleRoundExcludeByes(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
+
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
+
+  // Auswahl aller Gruppenids
+  wxString  str =
+    "SELECT grID FROM GrRec "
+    " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    " ORDER BY grName";
+
+
+  long  id;
+  std::vector<long> idList;
+
+  try
+  {
+    stmtPtr = GetConnectionPtr()->CreateStatement();
+    resPtr = stmtPtr->ExecuteQuery(str);
+    resPtr->BindCol(1, &id);
+
+    while (resPtr->Next())
+      idList.push_back(id);
+  }
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2312,24 +2312,24 @@ bool  MtStore::UpdateScheduleRoundsGroupExcludeByes(
 
 
 bool  MtStore::UpdateScheduleMatchesGroup(
-                                   MtStore::MtEvent &mtEvFrom,
-                                   MtStore::MtPlace &mtPlFrom,
-                                   short &nofTables, bool decTable,
-                                   short umpire, short umpire2)
+  MtStore::MtEvent& mtEvFrom,
+  MtStore::MtPlace& mtPlFrom,
+  short& nofTables, bool decTable,
+  short umpire, short umpire2)
 {
   if (nofTables == 1)
     return UpdateScheduleRound(mtEvFrom, mtPlFrom, nofTables, decTable, umpire, umpire2);
 
-  Statement *stmtPtr = 0;
-  ResultSet *resPtr  = 0;
+  Statement* stmtPtr = 0;
+  ResultSet* resPtr = 0;
 
   // Auswahl aller Gruppenids
-  wxString  str = 
-      "SELECT grID FROM GrRec "
-      " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = "+ltostr(mtEvFrom.grID)+") "
-      " ORDER BY grName";
+  wxString  str =
+    "SELECT grID FROM GrRec "
+    " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    "   AND grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(mtEvFrom.grID) + ") "
+    " ORDER BY grName";
 
 
   long  id;
@@ -2344,7 +2344,7 @@ bool  MtStore::UpdateScheduleMatchesGroup(
     while (resPtr->Next())
       idList.push_back(id);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2357,7 +2357,7 @@ bool  MtStore::UpdateScheduleMatchesGroup(
   delete resPtr;
 
   for (std::vector<long>::iterator it = idList.begin();
-       it != idList.end(); it++)
+    it != idList.end(); it++)
   {
     mtEvFrom.grID = (*it);
     UpdateScheduleMatch(mtEvFrom, mtPlFrom, umpire, umpire2);
@@ -2384,16 +2384,16 @@ bool  MtStore::UpdateScheduleMatchesGroup(
 
 
 bool  MtStore::UpdateScheduleMatch(
-    long id, MtStore::MtPlace &mtPl, short umpire, short umpire2)
+  long id, MtStore::MtPlace& mtPl, short umpire, short umpire2)
 {
-  wxString  str = 
-    "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? WHERE mtID = "+ ltostr(id);
+  wxString  str =
+    "UPDATE MtRec SET mtDateTime = ?, mtTable = ?, mtUmpire = ?, mtUmpire2 = ? WHERE mtID = " + ltostr(id);
 
-  PreparedStatement *stmtPtr = 0;
+  PreparedStatement* stmtPtr = 0;
   try
   {
     // Leere Zeiten al <null> eintragen, sonst mault MS-SQL
-    timestamp *tmpPtr = mtPl.mtDateTime.year ? &mtPl.mtDateTime : 0;
+    timestamp* tmpPtr = mtPl.mtDateTime.year ? &mtPl.mtDateTime : 0;
     stmtPtr = GetConnectionPtr()->PrepareStatement(str);
     stmtPtr->SetData(1, tmpPtr);
     stmtPtr->SetData(2, &mtPl.mtTable);
@@ -2402,7 +2402,7 @@ bool  MtStore::UpdateScheduleMatch(
     stmtPtr->Execute();
 
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
     delete stmtPtr;
@@ -2415,8 +2415,8 @@ bool  MtStore::UpdateScheduleMatch(
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE_SCHEDULE;
-  update.rec  = CRequest::MTREC;
-  update.id   = id;
+  update.rec = CRequest::MTREC;
+  update.id = id;
 
   CTT32App::NotifyChange(update);
 
@@ -2427,14 +2427,14 @@ bool  MtStore::UpdateScheduleMatch(
 // -----------------------------------------------------------------------
 bool  MtStore::UpdateScoreChecked(long id, bool checked)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtCheckMatchTime = " + wxString(checked ? "GETUTCDATE() " : "NULL ") +
     " WHERE mtID = " + ltostr(id);
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2444,8 +2444,8 @@ bool  MtStore::UpdateScoreChecked(long id, bool checked)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = id;
+  update.rec = CRequest::MTREC;
+  update.id = id;
 
   CTT32App::NotifyChange(update);
 
@@ -2485,21 +2485,21 @@ bool  MtStore::UpdateTossPrinted(long id, bool printed)
 // -----------------------------------------------------------------------
 bool  MtStore::UpdateScorePrinted(long id, bool printed)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE mtID = " + ltostr(id);
 
-    if (printed)
-      str += 
-        " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
-        " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
-      ;
+  if (printed)
+    str +=
+    " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+    " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    ;
 
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2509,8 +2509,8 @@ bool  MtStore::UpdateScorePrinted(long id, bool printed)
   // Notify Views
   CRequest update;
   update.type = CRequest::UPDATE;
-  update.rec  = CRequest::MTREC;
-  update.id   = id;
+  update.rec = CRequest::MTREC;
+  update.id = id;
 
   CTT32App::NotifyChange(update);
 
@@ -2520,21 +2520,21 @@ bool  MtStore::UpdateScorePrinted(long id, bool printed)
 
 bool  MtStore::UpdateScorePrintedForRound(long id, short round, bool printed)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id) + " AND mtRound = " + ltostr(round);
 
   if (printed)
     str +=
-      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
-      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+    " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
     ;
 
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2547,21 +2547,21 @@ bool  MtStore::UpdateScorePrintedForRound(long id, short round, bool printed)
 
 bool  MtStore::UpdateScorePrintedForGroup(long id, bool printed)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE grID = " + ltostr(id);
 
   if (printed)
     str +=
-      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
-      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+    " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
     ;
 
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2573,10 +2573,10 @@ bool  MtStore::UpdateScorePrintedForGroup(long id, bool printed)
 
 
 bool  MtStore::UpdateScorePrintedScheduled(
-    const MtStore::MtPlace &from,
-    const MtStore::MtPlace &to, bool printed)
+  const MtStore::MtPlace& from,
+  const MtStore::MtPlace& to, bool printed)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE mtDateTime >= '" + tstostr(from.mtDateTime) + "'" +
     "   AND mtTable >= " + ltostr(from.mtTable) +
@@ -2585,15 +2585,15 @@ bool  MtStore::UpdateScorePrintedScheduled(
 
   if (printed)
     str +=
-      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
-      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+    " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
     ;
 
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2604,23 +2604,23 @@ bool  MtStore::UpdateScorePrintedScheduled(
 }
 
 
-bool  MtStore::UpdateScorePrintedForTeam(const StRec &st, bool printed)
+bool  MtStore::UpdateScorePrintedForTeam(const StRec& st, bool printed)
 {
-  wxString  str = 
+  wxString  str =
     "UPDATE MtRec SET mtPrintScoreTime = " + wxString(printed ? " GETUTCDATE() " : " NULL ") +
     " WHERE (stA = " + ltostr(st.stID) + " OR stX = " + ltostr(st.stID) + ")";
 
   if (printed)
     str +=
-      " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
-      " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
+    " AND stA IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stA) IS NOT NULL"
+    " AND stX IS NOT NULL AND (SELECT tmID FROM StRec WHERE StRec.stID = MtRec.stX) IS NOT NULL"
     ;
 
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2632,16 +2632,16 @@ bool  MtStore::UpdateScorePrintedForTeam(const StRec &st, bool printed)
 
 
 // -----------------------------------------------------------------------
-bool  MtStore::UpdateTimestamp(const StRec &st)
+bool  MtStore::UpdateTimestamp(const StRec& st)
 {
-  wxString  str = 
-    "UPDATE MtRec SET mtTimestamp = GETUTCDATE() " 
+  wxString  str =
+    "UPDATE MtRec SET mtTimestamp = GETUTCDATE() "
     " WHERE stA = " + ltostr(st.stID) + " OR stX = " + ltostr(st.stID);
   try
   {
     ExecuteUpdate(str);
   }
-  catch(SQLException &e)
+  catch (SQLException& e)
   {
     infoSystem.Exception(str, e);
 
@@ -2652,126 +2652,126 @@ bool  MtStore::UpdateTimestamp(const StRec &st)
 }
 
 // -----------------------------------------------------------------------
-timestamp MtStore::GetEarliestMatchTime(const MtEvent &event)
+timestamp MtStore::GetEarliestMatchTime(const MtEvent& event)
 {
   timestamp ts;
-  
+
   memset(&ts, 0, sizeof(ts));
-  
-  wxString str = 
+
+  wxString str =
     "SELECT MIN(mtDateTime) FROM MtRec "
-    " WHERE grId = " + ltostr(event.grID) + 
-    "   AND mtRound = " + ltostr(event.mtRound) + 
-    "   AND mtChance = " + ltostr(event.mtChance) + 
+    " WHERE grId = " + ltostr(event.grID) +
+    "   AND mtRound = " + ltostr(event.mtRound) +
+    "   AND mtChance = " + ltostr(event.mtChance) +
     "   AND DAY(mtDateTime) <> 0";
-    
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (resPtr->Next())
   {
     if (!resPtr->GetData(1, ts) || resPtr->WasNull(1))
       memset(&ts, 0, sizeof(ts));
   }
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return ts;
 }
 
 
-timestamp MtStore::GetLatestMatchTime(const MtEvent &event)
+timestamp MtStore::GetLatestMatchTime(const MtEvent& event)
 {
   timestamp ts;
-  
+
   memset(&ts, 0, sizeof(ts));
-  
-  wxString str = 
+
+  wxString str =
     "SELECT MAX(mtDateTime) FROM MtRec "
-    " WHERE grId = " + ltostr(event.grID) + 
-    "   AND mtRound = " + ltostr(event.mtRound) + 
+    " WHERE grId = " + ltostr(event.grID) +
+    "   AND mtRound = " + ltostr(event.mtRound) +
     "   AND mtChance = " + ltostr(event.mtChance);
-    
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (resPtr->Next())
   {
     if (!resPtr->GetData(1, ts) || resPtr->WasNull(1))
       memset(&ts, 0, sizeof(ts));
   }
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return ts;
 }
 
 
-short MtStore::GetLastPlayedRound(const MtEvent &event)
+short MtStore::GetLastPlayedRound(const MtEvent& event)
 {
   short rd = 0;
-  
-  wxString str = 
+
+  wxString str =
     "SELECT MAX(mtRound) FROM MtRec "
     " WHERE grID = " + ltostr(event.grID) +
-    "   AND mtChance = " + ltostr(event.mtChance) + 
+    "   AND mtChance = " + ltostr(event.mtChance) +
     "   AND (mtResA > 0 OR mtResX > 0)";
-    
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (!resPtr->Next() || !resPtr->GetData(1, rd) || resPtr->WasNull())
     rd = 0;
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return rd;
 }
 
 
 
-short MtStore::CountMatchesInGroupGroup(const MtEvent &evt)
+short MtStore::CountMatchesInGroupGroup(const MtEvent& evt)
 {
-  wxString  str = 
+  wxString  str =
     "SELECT COUNT(*) FROM GrRec "
     " WHERE cpID IN   (SELECT cpID    FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") AND "
     "       grName >= (SELECT grName  FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") AND "
     "       grStage = (SELECT grStage FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") "
-  ;
+    ;
 
   short count = 0;
 
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
     count = 0;
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return count;
 
 }
 
-short MtStore::CountMatchesInRoundGroup(const MtEvent &evt)
+short MtStore::CountMatchesInRoundGroup(const MtEvent& evt)
 {
-  wxString str = 
+  wxString str =
     "SELECT COUNT(*) FROM MtRec mt INNER JOIN GrRec gr ON mt.grID = gr.grID "
     " WHERE (gr.grNofMatches = 0 OR mt.mtMatch <= (gr.grNofMatches / POWER(2, mt.mtRound - 1))) AND "
     "       mt.mtRound = " + ltostr(evt.mtRound) + " AND "
@@ -2781,26 +2781,26 @@ short MtStore::CountMatchesInRoundGroup(const MtEvent &evt)
 
   short count = 0;
 
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
     count = 0;
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return count;
 
 }
 
 
-short MtStore::CountMatchesInMatchGroup(const MtEvent &evt)
+short MtStore::CountMatchesInMatchGroup(const MtEvent& evt)
 {
-  wxString str = 
+  wxString str =
     "SELECT COUNT(*) FROM MtRec mt INNER JOIN GrRec gr ON mt.grID = gr.grID "
     " WHERE mt.mtRound = " + ltostr(evt.mtRound) + " AND mt.mtMatch = " + ltostr(evt.mtMatch) + " AND "
     "       gr.cpID = (SELECT cpID FROM GrRec WHERE grID = " + ltostr(evt.grID) + ") AND "
@@ -2809,30 +2809,30 @@ short MtStore::CountMatchesInMatchGroup(const MtEvent &evt)
 
   short count = 0;
 
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
-  
+
   if (!resPtr->Next() || !resPtr->GetData(1, count) || resPtr->WasNull())
     count = 0;
-    
+
   delete resPtr;
   delete stmtPtr;
-  
+
   return count;
 
 }
 
 
-short MtStore::GetHighestTableNumber(const MtPlace &place)
+short MtStore::GetHighestTableNumber(const MtPlace& place)
 {
   short maxTable = 0;
 
   wxString str = "SELECT MAX(mtTable) FROM MtRec WHERE mtDateTime = '" + tstostr(place.mtDateTime) + "'";
-  Statement *stmtPtr = GetConnectionPtr()->CreateStatement();
-  ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
 
   if (!resPtr->Next() || !resPtr->GetData(1, maxTable) || resPtr->WasNull())
     maxTable = 0;
@@ -2847,14 +2847,14 @@ short MtStore::GetHighestTableNumber(const MtPlace &place)
 // -----------------------------------------------------------------------
 long  MtStore::GetNextNumber()
 {
-  Statement *stmtPtr;
-  ResultSet *resPtr;
+  Statement* stmtPtr;
+  ResultSet* resPtr;
 
   wxString  str = "SELECT MAX(mtNr) FROM MtRec";
 
   stmtPtr = GetConnectionPtr()->CreateStatement();
   wxASSERT(stmtPtr);
-  
+
   resPtr = stmtPtr->ExecuteQuery(str);
   wxASSERT(resPtr);
 
@@ -2864,15 +2864,15 @@ long  MtStore::GetNextNumber()
 
   delete resPtr;
   delete stmtPtr;
-  
-  return nr+1;
+
+  return nr + 1;
 }
 
 
 // -----------------------------------------------------------------------
 wxString  MtStore::SelectString() const
 {
-  wxString  str = 
+  wxString  str =
     "SELECT mt.mtID, mtNr, stA, stX, mtReverse,       "
     "       mtUmpire, mtUmpire2,                      "
     "       mt.mtPrintTossTime,                       "
@@ -2954,7 +2954,7 @@ bool  MtStore::BindRec()
 //         mtBallsA[0], mtBallsX[0], ...
 
 // Siehe PlStore zur Verwendung von std::ifstream
-bool MtStore::ImportResults(wxTextBuffer &is)
+bool MtStore::ImportResults(wxTextBuffer& is)
 {
   long version = 1;
 
@@ -2973,186 +2973,186 @@ bool MtStore::ImportResults(wxTextBuffer &is)
     return false;
   }
 
-  Connection *connPtr = TTDbse::instance()->GetNewConnection();
+  Connection* connPtr = TTDbse::instance()->GetNewConnection();
 
   connPtr->StartTransaction();
 
   // HACK: Die Variablen duerfen nicht laenger leben als connPtr [
   {
-  CpStore  cp(connPtr);
-  GrStore  gr(connPtr);
-  MtStore  mt(connPtr);
+    CpStore  cp(connPtr);
+    GrStore  gr(connPtr);
+    MtStore  mt(connPtr);
 
-  for (; !is.Eof(); line = is.GetNextLine())
-  {   
-    CTT32App::ProgressBarStep();
+    for (; !is.Eof(); line = is.GetNextLine())
+    {
+      CTT32App::ProgressBarStep();
 
-    if (line.GetChar(0) == '#')
-      continue;
+      if (line.GetChar(0) == '#')
+        continue;
 
-    // WB, Gruppe, Position auslesen
-    wxStringTokenizerEx tokens(line, ",;\t");
-    wxString strCp = tokens.GetNextToken();
-    wxString strGr = tokens.GetNextToken();
-    wxString strMtRound = tokens.GetNextToken();
-    wxString strMtMatch = tokens.GetNextToken();
-    wxString strMtMS    = tokens.GetNextToken();
+      // WB, Gruppe, Position auslesen
+      wxStringTokenizerEx tokens(line, ",;\t");
+      wxString strCp = tokens.GetNextToken();
+      wxString strGr = tokens.GetNextToken();
+      wxString strMtRound = tokens.GetNextToken();
+      wxString strMtMatch = tokens.GetNextToken();
+      wxString strMtMS = tokens.GetNextToken();
 
-    if (strCp.IsEmpty() || strGr.IsEmpty() || 
+      if (strCp.IsEmpty() || strGr.IsEmpty() ||
         strMtRound.IsEmpty() || strMtMatch.IsEmpty() || strMtMS.IsEmpty())
-      continue;
-
-    if ( gr.grID && gr.grModus == MOD_RR &&
-         (wxStrcoll(strCp, cp.cpName) || wxStrcoll(strGr, gr.grName)) )
-    {
-      gr.SetTable();
-    }
-
-    if (wxStrcoll(strCp, cp.cpName))
-    {
-      // Naechster WB
-      cp.SelectByName(strCp);
-      if (!cp.Next())
         continue;
 
-      // Ausserdem Gruppe lesen
-      gr.SelectByName(strGr, cp);
-      if (!gr.Next())
-        continue;
-    }
-    
-    if (wxStrcoll(strGr, gr.grName))
-    {
-      // Naechste Gruppe bei gleichem WB
-      gr.SelectByName(strGr, cp);
-      if (!gr.Next())
-        continue;
-    }
-
-    // Event aufsetzen
-    MtEvent  mtEvent;
-    mtEvent.grID = gr.grID;
-    mtEvent.mtRound  = _strtos(strMtRound);
-    mtEvent.mtMatch  = _strtos(strMtMatch);
-    mtEvent.mtChance = 0;
-
-    if (!mt.SelectByEvent(mtEvent) || !mt.Next())
-      continue;
-
-    mt.Close();
-
-    wxString strMtPointsA = tokens.GetNextToken();
-    wxString strMtPointsX = tokens.GetNextToken();
-    
-    if (strMtPointsA.IsEmpty() || strMtPointsX.IsEmpty())
-      continue;
-
-    wxString strMtSetsA = tokens.GetNextToken();
-    wxString strMtSetsX = tokens.GetNextToken();
-
-    if (strMtSetsA.IsEmpty() || strMtSetsX.IsEmpty())
-      continue;
-
-    // mt.mtResA = _strtos(strMtSetsA);
-    // mt.mtResX = _strtos(strMtSetsX);
-
-    MtSet *mtSets = new MtSet[mt.mtBestOf];
-    memset(mtSets, 0, mt.mtBestOf * sizeof(MtSet));
-    
-    wxString strMtReverse;
-    wxString strMtWalkOver;
-
-    for (int nr = 0; ; nr++)
-    {
-      wxString strMtSetA = tokens.GetNextToken();
-      wxString strMtSetX = tokens.GetNextToken();
-      
-      if (strMtSetA.IsEmpty())
-        break;
-        
-      if (strMtSetX.IsEmpty())
+      if (gr.grID && gr.grModus == MOD_RR &&
+        (wxStrcoll(strCp, cp.cpName) || wxStrcoll(strGr, gr.grName)))
       {
-        strMtReverse = strMtSetA;
-        break;
+        gr.SetTable();
       }
 
-      if (!isdigit(*strMtSetA.t_str()))
+      if (wxStrcoll(strCp, cp.cpName))
       {
-        strMtWalkOver = strMtSetA;
-        break;
+        // Naechster WB
+        cp.SelectByName(strCp);
+        if (!cp.Next())
+          continue;
+
+        // Ausserdem Gruppe lesen
+        gr.SelectByName(strGr, cp);
+        if (!gr.Next())
+          continue;
       }
-      
-      if (!isdigit(*strMtSetX.t_str()))
+
+      if (wxStrcoll(strGr, gr.grName))
       {
-        strMtReverse = strMtSetA;
-        strMtWalkOver = strMtSetX;
-        break;
+        // Naechste Gruppe bei gleichem WB
+        gr.SelectByName(strGr, cp);
+        if (!gr.Next())
+          continue;
       }
-      
-      if (nr >= mt.mtBestOf)
+
+      // Event aufsetzen
+      MtEvent  mtEvent;
+      mtEvent.grID = gr.grID;
+      mtEvent.mtRound = _strtos(strMtRound);
+      mtEvent.mtMatch = _strtos(strMtMatch);
+      mtEvent.mtChance = 0;
+
+      if (!mt.SelectByEvent(mtEvent) || !mt.Next())
         continue;
-        
-      mtSets[nr].mtID = mt.mtID;
-      mtSets[nr].mtMS = _strtos(strMtMS);
-      mtSets[nr].mtSet = nr+1;
-      mtSets[nr].mtResA = _strtos(strMtSetA);
-      mtSets[nr].mtResX = _strtos(strMtSetX);
-    }
-    
-    mt.mtWalkOverA = mt.mtWalkOverX = 0;
-    
-    if (strMtReverse.IsEmpty())
-      strMtReverse = tokens.GetNextToken();
-      
-    if (strMtWalkOver.IsEmpty())
-      strMtWalkOver = tokens.GetNextToken();
-      
-    if (!strMtReverse.IsEmpty())
-    {
-      mt.mtReverse = _strtos(strMtReverse) ? 1 : 0;
-    }
-    else
-    {
-      mt.mtReverse = 0;
-    }
-    
-    mt.UpdateReverseFlag();
-      
-    if (!strMtWalkOver.IsEmpty())
-    {
-      if (*strMtWalkOver.t_str() == 'A' || *strMtWalkOver.t_str() == 'a')      
-        mt.mtWalkOverA = 1;
-      else if (*strMtWalkOver.t_str() == 'X' || *strMtWalkOver.t_str() == 'x')
-        mt.mtWalkOverX = 1;
-    }
-    else
-    {
+
+      mt.Close();
+
+      wxString strMtPointsA = tokens.GetNextToken();
+      wxString strMtPointsX = tokens.GetNextToken();
+
+      if (strMtPointsA.IsEmpty() || strMtPointsX.IsEmpty())
+        continue;
+
+      wxString strMtSetsA = tokens.GetNextToken();
+      wxString strMtSetsX = tokens.GetNextToken();
+
+      if (strMtSetsA.IsEmpty() || strMtSetsX.IsEmpty())
+        continue;
+
+      // mt.mtResA = _strtos(strMtSetsA);
+      // mt.mtResX = _strtos(strMtSetsX);
+
+      MtSet* mtSets = new MtSet[mt.mtBestOf];
+      memset(mtSets, 0, mt.mtBestOf * sizeof(MtSet));
+
+      wxString strMtReverse;
+      wxString strMtWalkOver;
+
+      for (int nr = 0; ; nr++)
+      {
+        wxString strMtSetA = tokens.GetNextToken();
+        wxString strMtSetX = tokens.GetNextToken();
+
+        if (strMtSetA.IsEmpty())
+          break;
+
+        if (strMtSetX.IsEmpty())
+        {
+          strMtReverse = strMtSetA;
+          break;
+        }
+
+        if (!isdigit(*strMtSetA.t_str()))
+        {
+          strMtWalkOver = strMtSetA;
+          break;
+        }
+
+        if (!isdigit(*strMtSetX.t_str()))
+        {
+          strMtReverse = strMtSetA;
+          strMtWalkOver = strMtSetX;
+          break;
+        }
+
+        if (nr >= mt.mtBestOf)
+          continue;
+
+        mtSets[nr].mtID = mt.mtID;
+        mtSets[nr].mtMS = _strtos(strMtMS);
+        mtSets[nr].mtSet = nr + 1;
+        mtSets[nr].mtResA = _strtos(strMtSetA);
+        mtSets[nr].mtResX = _strtos(strMtSetX);
+      }
+
       mt.mtWalkOverA = mt.mtWalkOverX = 0;
+
+      if (strMtReverse.IsEmpty())
+        strMtReverse = tokens.GetNextToken();
+
+      if (strMtWalkOver.IsEmpty())
+        strMtWalkOver = tokens.GetNextToken();
+
+      if (!strMtReverse.IsEmpty())
+      {
+        mt.mtReverse = _strtos(strMtReverse) ? 1 : 0;
+      }
+      else
+      {
+        mt.mtReverse = 0;
+      }
+
+      mt.UpdateReverseFlag();
+
+      if (!strMtWalkOver.IsEmpty())
+      {
+        if (*strMtWalkOver.t_str() == 'A' || *strMtWalkOver.t_str() == 'a')
+          mt.mtWalkOverA = 1;
+        else if (*strMtWalkOver.t_str() == 'X' || *strMtWalkOver.t_str() == 'x')
+          mt.mtWalkOverX = 1;
+      }
+      else
+      {
+        mt.mtWalkOverA = mt.mtWalkOverX = 0;
+      }
+
+      mt.UpdateResult(mt.mtBestOf, mtSets, mt.mtWalkOverA, mt.mtWalkOverX);
+
+      // Update mtChecked. Das Flag wird gesetzt, wenn das Spiel fertig ist, dafuer muss es aber nochmal gelesen werden
+      {
+        MtStore mtMatch(connPtr);
+        mtMatch.SelectById(mt.mtID);
+        mtMatch.Next();
+
+        mt.UpdateScoreChecked(mt.mtID, mtMatch.IsFinished());
+      }
+
+      if (gr.grModus != MOD_RR)
+      {
+        gr.SetWinner(mt);
+        gr.SetLoser(mt);
+      }
+
+      delete[] mtSets;
     }
 
-    mt.UpdateResult(mt.mtBestOf, mtSets, mt.mtWalkOverA, mt.mtWalkOverX);
-
-    // Update mtChecked. Das Flag wird gesetzt, wenn das Spiel fertig ist, dafuer muss es aber nochmal gelesen werden
-    {
-      MtStore mtMatch(connPtr);
-      mtMatch.SelectById(mt.mtID);
-      mtMatch.Next();
-
-      mt.UpdateScoreChecked(mt.mtID, mtMatch.IsFinished());
-    }
-
-    if (gr.grModus != MOD_RR)
-    {
-      gr.SetWinner(mt);
-      gr.SetLoser(mt);
-    }
-
-    delete[] mtSets;
-  }
-
-  // Abschliesendes Berechnen der Tabelle
-  if (gr.grModus == MOD_RR)
-    gr.SetTable();
+    // Abschliesendes Berechnen der Tabelle
+    if (gr.grModus == MOD_RR)
+      gr.SetTable();
 
   } // end HACK ]
 
@@ -3163,13 +3163,13 @@ bool MtStore::ImportResults(wxTextBuffer &is)
 }
 
 
-bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportResults(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
-  
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
   {
@@ -3177,25 +3177,25 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
 
     wxString line;
     line << "# Event; Group; Round; Match; Team Match; Result A; Result X; Games A; Games X; ";
-  
+
     for (int i = 0; i < 9; i++)
       line << " Game " << i << " Points A; Game " << i << " Points X;";
-    
+
     line << " Reverse Flag; Walk over A/X";
 
     os.AddLine(line);
   }
-        
+
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
     //  A line spans several records so we have to clear it each time we add it to the output
     wxString line;
     long grID = (*it);
 
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr  = 0;
-    
-    wxString str = 
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
+
+    wxString str =
       "SELECT mtNr, cpName, grName, mtRound, mtMatch, mtMS, mtSet, "
       "       mtResA, mtResX, mtSetsA, mtSetsX, mtBallsA, mtBallsX, "
       "       mtReverse, "
@@ -3205,19 +3205,19 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
       "  FROM MtList mt "
       " WHERE mt.grID = " + ltostr(grID) +
       "   AND mtSet <> 0 AND (mtResA <> 0 OR mtResX <> 0) "
-      " ORDER BY mtRound, mtMatch, mtMS, mtSet" ;
+      " ORDER BY mtRound, mtMatch, mtMS, mtSet";
 
     try
     {
-      if ( stmtPtr->Execute(str) )
+      if (stmtPtr->Execute(str))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(str, e);
       return false;
     }
-    
+
     long    mtNr = 0, lastMtNr = 0;
     wxChar  cpName[9];
     wxChar  grName[9];
@@ -3234,7 +3234,7 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
     short   mtReverse;
     short   mtWalkOverA, lastMtWalkOverA = 0;
     short   mtWalkOverX, lastMtWalkOverX = 0;
-    
+
     resPtr->BindCol(1, &mtNr);
     resPtr->BindCol(2, cpName, sizeof(cpName));
     resPtr->BindCol(3, grName, sizeof(grName));
@@ -3252,7 +3252,7 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
     resPtr->BindCol(15, &mtWalkOverA);
     resPtr->BindCol(16, &mtWalkOverX);
 
-    
+
     short set = 0;
     while (resPtr->Next())
     {
@@ -3260,55 +3260,55 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
         continue;
 
       if (mtNr != lastMtNr || mtMS != lastMtMS)
-      {      
+      {
         if (lastMtNr)
         {
           while (set++ < 9)
             line << "0;0;";
-            
+
           line << mtReverse << ";";
           if (lastMtWalkOverA)
             line << "A;";
           else if (lastMtWalkOverX)
-            line << "X;";          
+            line << "X;";
         }
-        
+
         set = 0;
-        
+
         if (!line.IsEmpty())
           os.AddLine(line);
         // Explicitely clear the line
         line.Clear();
-        
-        line << cpName << ";" << grName << ";" 
-            << mtRound << ";" << mtMatch << ";" << mtMS << ";" 
-            << mtResA << ";" << mtResX << ";" << mtSetsA << ";" << mtSetsX << ";" ;
+
+        line << cpName << ";" << grName << ";"
+          << mtRound << ";" << mtMatch << ";" << mtMS << ";"
+          << mtResA << ";" << mtResX << ";" << mtSetsA << ";" << mtSetsX << ";";
       }
 
       lastMtNr = mtNr;
       lastMtMS = mtMS;
-      
+
       lastMtWalkOverA = mtWalkOverA;
       lastMtWalkOverX = mtWalkOverX;
 
       ++set;
       line << mtBallsA << ";" << mtBallsX << ";";
     }
-    
+
     while (set++ < 9)
       line << "0;0;";
-            
+
     line << mtReverse << ";";
-    
+
     if (lastMtWalkOverA)
       line << "A;";
     else if (lastMtWalkOverX)
-      line << "X;";          
+      line << "X;";
 
     os.AddLine(line);
     // Explicitely clear the line
     line.Clear();
-    
+
     delete resPtr;
     delete stmtPtr;
   }
@@ -3317,125 +3317,125 @@ bool  MtStore::ExportResults(wxTextBuffer &os, short cpType, const std::vector<l
 }
 
 
-bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportForRanking(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
-  
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
-  {    
+  {
     os.AddLine(
-          "# Scheduled;Match No;Event;Group;Stage;Round;Match;Indiv. Match;"
-          "Pl. A ID;Pl. A Family Name;Pl. A Given Name;Pl. A Association;Pl. A Region;"
-          "Pl. B ID;Pl. B Family Name;Pl. B Given Name;Pl. B Association;Pl. B Region;"
-          "Pl. X ID;Pl. X Family Name;Pl. X Given Name;Pl. X Association;Pl. X Region;"
-          "Pl. Y ID;Pl. Y Family Name;Pl. Y Given Name;Pl. Y Association;Pl. Y Region;"
-          "Best Of;"
-          "Game 1 Points A;Game 1 Points X;"
-          "Game 2 Points A;Game 2 Points X;"
-          "Game 3 Points A;Game 3 Points X;"
-          "Game 4 Points A;Game 4 Points X;"
-          "Game 5 Points A;Game 5 Points X;"
-          "Game 6 Points A;Game 6 Points X;"
-          "Game 7 Points A;Game 7 Points X;"
-          "Result A;Result X;"
-          "Lost by w/o A;Lost by w/o X;"
-          "InjuredA;InjuredX;"
-          "DisqualifiedA;DisqualifiedX"
+      "# Scheduled;Match No;Event;Group;Stage;Round;Match;Indiv. Match;"
+      "Pl. A ID;Pl. A Family Name;Pl. A Given Name;Pl. A Association;Pl. A Region;"
+      "Pl. B ID;Pl. B Family Name;Pl. B Given Name;Pl. B Association;Pl. B Region;"
+      "Pl. X ID;Pl. X Family Name;Pl. X Given Name;Pl. X Association;Pl. X Region;"
+      "Pl. Y ID;Pl. Y Family Name;Pl. Y Given Name;Pl. Y Association;Pl. Y Region;"
+      "Best Of;"
+      "Game 1 Points A;Game 1 Points X;"
+      "Game 2 Points A;Game 2 Points X;"
+      "Game 3 Points A;Game 3 Points X;"
+      "Game 4 Points A;Game 4 Points X;"
+      "Game 5 Points A;Game 5 Points X;"
+      "Game 6 Points A;Game 6 Points X;"
+      "Game 7 Points A;Game 7 Points X;"
+      "Result A;Result X;"
+      "Lost by w/o A;Lost by w/o X;"
+      "InjuredA;InjuredX;"
+      "DisqualifiedA;DisqualifiedX"
     );
   }
-  
+
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr  = 0;
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
 
     wxString str;
     long grID = (*it);
 
     if (cpType == CP_SINGLE)
-      str = 
-        "SELECT "
-        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
-        "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
-        "NULL AS plBplExtId, NULL AS plBpsLast, NULL AS plBpsFirst, NULL AS plBnaName, NULL AS plBnaRegion, "
-        "plXplExtID,  plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
-        "NULL AS plYplExtId, NULL AS plYpsLast, NULL AS plYpsFirst, NULL AS plYnaName, NULL AS plYnaRegion, "
-        "mtBestOf, "
-        "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
-        "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-        "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
-        "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-        "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-        "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-        "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-        "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-        "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-        "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-        "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
-        "ORDER BY cp.cpName, mtDateTime, mtNr ";
+      str =
+      "SELECT "
+      "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
+      "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
+      "NULL AS plBplExtId, NULL AS plBpsLast, NULL AS plBpsFirst, NULL AS plBnaName, NULL AS plBnaRegion, "
+      "plXplExtID,  plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
+      "NULL AS plYplExtId, NULL AS plYpsLast, NULL AS plYpsFirst, NULL AS plYnaName, NULL AS plYnaRegion, "
+      "mtBestOf, "
+      "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
+      "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
+      "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+      "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+      "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+      "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+      "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+      "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+      "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+      "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+      "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
+      "ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
-      str = 
-        "SELECT "
-        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
-        "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
-        "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
-        "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
-        "plYplExtId, plYpsLast, plYpsFirst, plYnaName, plYnaRegion, "
-        "mtBestOf, "
-        "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
-        "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-        "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
-        "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-        "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-        "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-        "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-        "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-        "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-        "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-        "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
-        "ORDER BY cpName, mtDateTime, mtNr ";
+      str =
+      "SELECT "
+      "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, NULL AS mtMS, "
+      "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
+      "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
+      "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
+      "plYplExtId, plYpsLast, plYpsFirst, plYnaName, plYnaRegion, "
+      "mtBestOf, "
+      "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
+      "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
+      "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
+      "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+      "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+      "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+      "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+      "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+      "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+      "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+      "WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) +
+      "ORDER BY cpName, mtDateTime, mtNr ";
     else if (cpType == CP_TEAM)
-      str = 
-        "SELECT "
-        "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, mtSet1.mtMS, "
-        "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
-        "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
-        "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
-        "plYplExtId, plYpsLast, plYpsFirst, plYnaName, plYnaRegion, "
-        "mtBestOf, "
-        "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
-        "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-        "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
-        "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 AND mtSet1.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 AND mtSet2.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 AND mtSet3.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 AND mtSet4.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 AND mtSet5.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 AND mtSet6.mtMS = mt.mtMS "
-        "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 AND mtSet7.mtMS = mt.mtMS "
-        "WHERE mtDateTime IS NOT NULL AND mtSet1.mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) +
-        "ORDER BY cp.cpName, mtDateTime, mtNr, mt.mtMS";
+      str =
+      "SELECT "
+      "mtDateTime, mtNr, cp.cpName, gr.grName, gr.grStage, mtRound, mtMatch, mtSet1.mtMS, "
+      "plAplExtID, plApsLast, plApsFirst, plAnaName, plAnaRegion, "
+      "plBplExtId, plBpsLast, plBpsFirst, plBnaName, plBnaRegion, "
+      "plXplExtID, plXpsLast, plXpsFirst, plXnaName, plXnaRegion, "
+      "plYplExtId, plYpsLast, plYpsFirst, plYnaName, plYnaRegion, "
+      "mtBestOf, "
+      "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
+      "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
+      "mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+      "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 AND mtSet1.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 AND mtSet2.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 AND mtSet3.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 AND mtSet4.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 AND mtSet5.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 AND mtSet6.mtMS = mt.mtMS "
+      "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 AND mtSet7.mtMS = mt.mtMS "
+      "WHERE mtDateTime IS NOT NULL AND mtSet1.mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) +
+      "ORDER BY cp.cpName, mtDateTime, mtNr, mt.mtMS";
     else
       return false;
 
     try
     {
-      if ( stmtPtr->Execute(str) )
+      if (stmtPtr->Execute(str))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(str, e);
       return false;
     }
-    
+
     while (resPtr->Next())
     {
       if (resPtr->WasNull(1))
@@ -3453,8 +3453,8 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
 
       os.AddLine(line);
     }
-    
-    
+
+
     delete resPtr;
     delete stmtPtr;
   }
@@ -3463,85 +3463,85 @@ bool  MtStore::ExportForRanking(wxTextBuffer &os, short cpType, const std::vecto
 }
 
 
-bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportForRankingTTM(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
-  
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
-  {    
+  {
     os.AddLine(
-          "# Scheduled;Event;Stage;Seq;Group;Size;Modus;Round;Match;Indiv. Match;"
-          "Pl. A ID;Pl. B ID;Pl. X ID;Pl. Y ID;"
-          "Stdg A;Stdg B;"
-          "Best Of;"
-          "Result A;Result X;"
-          "Lost by w/o A;Lost by w/o X;"
-          "Injured A;Injured X;"
-          "Disqualified A;Disqualified X"
+      "# Scheduled;Event;Stage;Seq;Group;Size;Modus;Round;Match;Indiv. Match;"
+      "Pl. A ID;Pl. B ID;Pl. X ID;Pl. Y ID;"
+      "Stdg A;Stdg B;"
+      "Best Of;"
+      "Result A;Result X;"
+      "Lost by w/o A;Lost by w/o X;"
+      "Injured A;Injured X;"
+      "Disqualified A;Disqualified X"
     );
   }
-  
+
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
   {
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr  = 0;
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
 
     wxString str;
     long grID = (*it);
 
     if (cpType == CP_SINGLE)
-      str = 
-        "SELECT "
-        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
-        "       plAplExtID, NULL AS plBplExtId, plXplExtID, NULL AS plYplExtId, "
-        "       stA.stPos, stX.stPos, "
-        "       mtBestOf, "
-        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "  FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
-        "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
-        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cp.cpName, mtDateTime, mtNr ";
+      str =
+      "SELECT "
+      "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
+      "       plAplExtID, NULL AS plBplExtId, plXplExtID, NULL AS plYplExtId, "
+      "       stA.stPos, stX.stPos, "
+      "       mtBestOf, "
+      "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "  FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+      "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
+      " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
+      " ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
-      str = 
-        "SELECT "
-        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
-        "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
-        "       stA.stPos, stX.stPos, "
-        "       mtBestOf, "
-        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "  FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
-        "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
-        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cp.cpName, mtDateTime, mtNr ";
+      str =
+      "SELECT "
+      "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, NULL AS mtMS, "
+      "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
+      "       stA.stPos, stX.stPos, "
+      "       mtBestOf, "
+      "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "  FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3)"
+      "                       INNER JOIN StList stA ON stA.stID = mt.stA INNER JOIN StList stX ON stX.stID = mt.stX "
+      " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
+      " ORDER BY cp.cpName, mtDateTime, mtNr ";
     else if (cpType == CP_TEAM)
-      str = 
-        "SELECT "
-        "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, mtMS, "
-        "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
-        "       NULL AS stAstPos, NULL AS stXstPos, "
-        "       mtBestOf, "
-        "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
-        "  FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
-        " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
-        " ORDER BY cp.cpName, mtDateTime, mtNr, mtMS";
+      str =
+      "SELECT "
+      "       mtDateTime, cp.cpName, gr.grStage, gr.grSortOrder, gr.grName, gr.grSize, gr.grModus, mtRound, mtMatch, mtMS, "
+      "       plAplExtID, plBplExtId, plXplExtID, plYplExtId, "
+      "       NULL AS stAstPos, NULL AS stXstPos, "
+      "       mtBestOf, "
+      "       mt.mtResA, mt.mtResX, mtWalkOverA, mtWalkOverX, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX "
+      "  FROM MtIndividualList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+      " WHERE mtDateTime IS NOT NULL AND mtMS IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND plAplExtID IS NOT NULL AND plXplExtID IS NOT NULL AND (mt.mtResA > 0 OR mt.mtResX > 0) "
+      " ORDER BY cp.cpName, mtDateTime, mtNr, mtMS";
     else
       return false;
 
     try
     {
-      if ( stmtPtr->Execute(str) )
+      if (stmtPtr->Execute(str))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(str, e);
       return false;
     }
-    
+
     while (resPtr->Next())
     {
       if (resPtr->WasNull(1))
@@ -3559,8 +3559,8 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
 
       os.AddLine(line);
     }
-    
-    
+
+
     delete resPtr;
     delete stmtPtr;
   }
@@ -3569,13 +3569,13 @@ bool  MtStore::ExportForRankingTTM(wxTextBuffer &os, short cpType, const std::ve
 }
 
 
-bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportForRankingITTF(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   // Aufbau: cpName, grName, mtRound, mtMatch, mtMs, \
   //         mtPointsA, mtPointsX, mtSetsA, mtSetsX, \
   //         mtBallsA[0], mtBallsX[0], ...
 
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
   {
@@ -3603,28 +3603,28 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
     // Ich brauche die "Gruppennummer", das ist "die wievielte Gruppe ist dieses"
     long seq = 0;
 
-    try 
+    try
     {
       GrListStore gr(connPtr);
       gr.SelectById(grID);
       gr.Next();
       gr.Close();
 
-      Statement *stmtPtr = connPtr->CreateStatement();
+      Statement* stmtPtr = connPtr->CreateStatement();
       wxString str = "SELECT COUNT(*) FROM GrList gr "
-          "WHERE gr.cpID = " + ltostr(gr.cpID) + " "
-          "  AND ((grStage = '" + TransformString(gr.grStage) + "' AND grName <= '" + TransformString(gr.grName) + "') "
-          "   OR (grStage < '" + TransformString(gr.grStage) + "')) "
-      ;
+        "WHERE gr.cpID = " + ltostr(gr.cpID) + " "
+        "  AND ((grStage = '" + TransformString(gr.grStage) + "' AND grName <= '" + TransformString(gr.grName) + "') "
+        "   OR (grStage < '" + TransformString(gr.grStage) + "')) "
+        ;
 
-      ResultSet *resPtr = stmtPtr->ExecuteQuery(str);
+      ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
       if (!resPtr->Next() || !resPtr->GetData(1, seq) || resPtr->WasNull(1))
         seq = 1;
 
       delete resPtr;
       delete stmtPtr;
     }
-    catch (SQLException &) 
+    catch (SQLException&)
     {
       seq = 1;
     }
@@ -3640,75 +3640,87 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
     if (cpType == CP_SINGLE)
     {
       sql =
-      "SELECT "
-      "mt.mtID, "
-      "plAplExtID, plAnaName, NULL, NULL, plXplExtID, plXnaName, NULL, NULL, "
-      + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
-      "CONCAT(" + desc + ", ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
-      "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
-      "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-      "mt.mtResA, mt.mtResX, "
-      "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), NULL, "
-      "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-      "'SINGLES', "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
-      "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
-      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
-      "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
-      "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
-      "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
-      "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-      "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-      "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-      "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-      "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-      "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-      "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-      "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) +
-      "ORDER BY cp.cpName, mtDateTime, mtNr ";
+        "SELECT "
+        "mt.mtID, "
+        "plAplExtID, ISNULL(plAnaName, 'BYE'), NULL, NULL, "
+        "plXplExtID, ISNULL(plXnaName, 'BYE'), NULL, NULL, "
+        + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
+        "CONCAT(" + desc + ", ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+        "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
+        "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
+        "IIF(plXplID IS NULL, (mt.mtBestOf +1) / 2, mt.mtResA), IIF(plAplID IS NULL, (mt.mtBestOf + 1) / 2, mt.mtResX), "
+        "IIF(plXplID IS NULL OR mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), NULL, "
+        "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
+        "'SINGLES', "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+        "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
+        "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
+        "FROM MtSingleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+        "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+        "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+        "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+        "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+        "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+        "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+        "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+        "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+        "WHERE "
+        "  mt.grID = " + ltostr(grID) +
+        // I may create groups of 4 with only 3 entries in, so I have to skip last match of each round
+        "  AND (gr.grModus > 1 OR tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL) "
+        "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
     {
       sql =
-      "SELECT "
-      "mt.mtID, "
-      "plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
-      + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
-      "CONCAT(" + desc + ", ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
-      "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
-      "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-      "mt.mtResA, mt.mtResX, "
-      "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
-      "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
-      "CASE cpType WHEN 2 THEN 'DOUBLES' ELSE 'MIXED' END, "
-      "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
-      "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
-      "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
-      "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cpType = 3) "
-      "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
-      "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
-      "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-      "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-      "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-      "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-      "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-      "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-      "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-      "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) +
-      "ORDER BY cp.cpName, mtDateTime, mtNr ";
+        "SELECT "
+        "mt.mtID, "
+        "plAplExtID, ISNULL(plAnaName, 'BYE'), plBplExtID, ISNULL(plBnaName, 'BYE'), "
+        "plXplExtID, ISNULL(plXnaName, 'BYE'), plYplExtID, ISNULL(plYnaName, 'BYE'), "
+        + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
+        "CONCAT(" + desc + ", ' - ', IIF(grModus = 2, CONCAT('Round of ', grSize / POWER(2, (mtRound - 1))), CONCAT('Round ', mtRound)), ' - Match - ', mt.mtMatch), "
+        "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
+        "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
+        "IIF(plXplID IS NULL, (mt.mtBestOf +1) / 2, mt.mtResA), IIF( plAplID IS NULL, (mt.mtBestOf + 1) / 2, mt.mtResX), "
+        "IIF(plXplID IS NULL OR mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), "
+        "IIF(plXplID IS NULL OR mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
+        "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
+        // In ITTF Mixed Doubles are named DOUBLES, too
+        "CASE cpType WHEN 2 THEN 'DOUBLES' ELSE 'DOUBLES' END, "
+        "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
+        "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
+        "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
+        "FROM MtDoubleList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cpType = 3) "
+        "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+        "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+        "LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+        "LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+        "LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+        "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+        "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+        "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+        "WHERE "
+        "  mt.grID = " + ltostr(grID) +
+        // I may create groups of 4 with only 3 entries in, so I have to skip last match of each round
+        "  AND (gr.grModus > 1 OR tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL) "
+        "ORDER BY cp.cpName, mtDateTime, mtNr ";
     }
     else if (cpType == CP_TEAM)
     {
       sql =
         "SELECT "
         "mt.mtID, "
-        "plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
+        "plAplExtID, ISNULL(plAnaName, 'BYE'), plBplExtID, ISNULL(plBnaName, 'BYE'), "
+        "plXplExtID, ISNULL(plXnaName, 'BYE'), plYplExtID, ISNULL(plYnaName, 'BYE'), "
         + event + ", grStage, IIF(grModus = 1, " + ltostr(seq) + ", NULL), IIF(grModus = 2, grSize / POWER(2, (mtRound - 1)), mtRound), "
         "CONCAT('Match ', mt.mtMatch, ' M', mt.mtMS), "
         "mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, "
         "mtSet4.mtResA, mtSet4.mtResX, mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, "
-        "mt.mtResA, mt.mtResX, "
-        "IIF(mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), IIF(mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
+        "IIF(plXplID IS NULL, (mt.mtBestOf +1) / 2, mt.mtResA), IIF(plAplID IS NULL, (mt.mtBestOf + 1) / 2, mt.mtResX), "
+        "IIF(tmXtmID IS NULL OR mt.mtResA > mt.mtResX, plAplExtID, plXplExtID), "
+        "IIF(tmXtmID IS NULL OR mt.mtResA > mt.mtResX, plBplExtID, plYplExtID), "
         "CASE WHEN mtWalkOverA > 0 OR mtWalkOverX > 0 THEN 'WO' WHEN mtInjuredA > 0 OR mtInjuredX > 0 THEN 'INJ' WHEN mtDisqualifiedA > 0 OR mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
         "CASE nmType WHEN 1 THEN 'SINGLES' ELSE 'DOUBLES' END, "
         "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
@@ -3724,7 +3736,10 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtMS = mt.mtMS AND mtSet5.mtSet = 5 "
         "LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
         "LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
-        "WHERE (mtDateTime IS NOT NULL OR tmAtmID IS NULL OR tmXtmID IS NULL) AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+        "WHERE "
+        "  mt.grID = " + ltostr(grID) +
+        // I may create groups of 4 with only 3 entries in, so I have to skip last match of each round
+        "  AND (gr.grModus > 1 OR tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL) "
         "ORDER BY cp.cpName, mtDateTime, mt.mtNr, mt.mtMS ";
 
       teamSql =
@@ -3748,16 +3763,22 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
         "IIF(mt.mtResA + mt.mtResX < 6, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 6 AND MtMatch.mtResA < MtMatch.mtResX) AS VARCHAR(2))), "
         "IIF(mt.mtResA + mt.mtResX < 7, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 7 AND MtMatch.mtResA > MtMatch.mtResX) AS VARCHAR(2))), "
         "IIF(mt.mtResA + mt.mtResX < 7, '', CAST((SELECT COUNT(*) FROM MtMatch WHERE MtMatch.mtID = mt.mtID AND MtMatch.mtMS > 0 AND MtMatch.mtMS <= 7 AND MtMatch.mtResA < MtMatch.mtResX) AS VARCHAR(2))), "
-        "mt.mtResA, mt.mtResX, "
-        "IIF(mt.mtResA > mt.mtResX, CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmAnaName, FORMAT(mt.tmAtmID, '0000')), CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmXnaName, FORMAT(mt.tmXtmID, '0000'))), NULL, "
+        "IIF(tmXtmID IS NULL, (mt.mtMatches +1) / 2, mt.mtResA), IIF(tmAtmID IS NULL, (mt.mtMatches + 1) / 2, mt.mtResX), "
+        "IIF(tmXtmID IS NULL OR mt.mtResA > mt.mtResX, CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmAnaName, FORMAT(mt.tmAtmID, '0000')), CONCAT('T', IIF(cp.cpSex = 1, 'M', 'W'), mt.tmXnaName, FORMAT(mt.tmXtmID, '0000'))), NULL, "
         "CASE WHEN mt.mtWalkOverA > 0 OR mt.mtWalkOverX > 0 THEN 'WO' WHEN mt.mtInjuredA > 0 OR mt.mtInjuredX > 0 THEN 'INJ' WHEN mt.mtDisqualifiedA > 0 OR mt.mtDisqualifiedX > 0 THEN 'DSQ' ELSE NULL END, "
         "'TEAM', "
         "YEAR(mt.mtDateTime), FORMAT(mtDateTime,'dd-MM-yyyy'), FORMAT(mtDateTime, 'HH\\:mm'), FORMAT(mt.mtTable, '\\T00'), "
         "IIF(grModus = 1, stA.stPos + grWinner - 1, NULL), IIF(grModus = 1, stX.stPos + grWinner - 1, NULL), "
         "IIF(grModus = 1, NULL, stA.stPos + grWinner - 1), IIF(grModus = 1, NULL, stX.stPos + grWinner - 1)  "
-        "FROM MtTeamList mt INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+        "FROM MtTeamList mt INNER JOIN GrList gr ON mt.grID = gr.grID "
+        "INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
         "LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
         "LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "WHERE "
+        "  mt.grID = " + ltostr(grID) +
+        // I may create groups of 4 with only 3 entries in, so I have to skip last match of each round
+        "  AND (gr.grModus > 1 OR tmAtmID IS NOT NULL AND tmXtmID IS NOT NULL) "
+        "ORDER BY cp.cpName, mtDateTime, mt.mtNr ";
       ;
     }
     else
@@ -3766,15 +3787,15 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
     // Zuerst die Zeilen fuer die Teammatches lesen
     if (cpType == CP_TEAM)
     {
-      Statement  *stmtPtr = connPtr->CreateStatement();
-      ResultSet  *resPtr = 0;
+      Statement* stmtPtr = connPtr->CreateStatement();
+      ResultSet* resPtr = 0;
 
       try
       {
         if (stmtPtr->Execute(teamSql))
           resPtr = stmtPtr->GetResultSet(false);
       }
-      catch (SQLException &e)
+      catch (SQLException& e)
       {
         infoSystem.Exception(teamSql, e);
         return false;
@@ -3809,15 +3830,15 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 
     long lastMtID = 0;
 
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr = 0;
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
 
     try
     {
       if (stmtPtr->Execute(sql))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
       return false;
@@ -3859,37 +3880,37 @@ bool  MtStore::ExportForRankingITTF(wxTextBuffer &os, short cpType, const std::v
 }
 
 
-bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportForRankingETTU(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   /*
     Format Individual
-    ID  date_time  event  rnd  match  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
-    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x  
+    ID  date_time  event  rnd  match  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y
+    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x
     res_a  res_x  wo_a  wo_x  yr  type winner_id loser_id
- 
+
     Format Team
-    ID  date_time  event  group_  stage  rnd  match_no  match_  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y  
-    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x  
+    ID  date_time  event  group_  stage  rnd  match_no  match_  player_id_a  assoc_a  player_id_b  assoc_b  player_id_x  assoc_x  player_id_y  assoc_y
+    g1_a  g1_x  g2_a  g2_x  g3_a  g3_x  g4_a  g4_x  g5_a  g5_x  g6_a  g6_x  g7_a  g7_x
     res_a  res_x  wo_a  wo_x  res_team_a  res_team_x  yr  type
   */
 
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
 
   if (!append)
   {
     if (cpType == CP_TEAM)
       os.AddLine(
-          "ID;date_time;event;group_;stage;rnd;match_no;match_;"
-          "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
-          "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
-          "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"         
+        "ID;date_time;event;group_;stage;rnd;match_no;match_;"
+        "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
+        "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
+        "res_a;res_x;wo_a;wo_x;res_team_a;res_team_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"
       );
     else
       os.AddLine(
-          "ID;date_time;event;rnd;match;"
-          "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
-          "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
-          "res_a;res_x;wo_a;wo_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"   
+        "ID;date_time;event;rnd;match;"
+        "player_id_a;assoc_a;player_id_b;assoc_b;player_id_x;assoc_x;player_id_y;assoc_y;"
+        "g1_a;g1_x;g2_a;g2_x;g3_a;g3_x;g4_a;g4_x;g5_a;g5_x;g6_a;g6_x;g7_a;g7_x;"
+        "res_a;res_x;wo_a;wo_x;yr;type;winner_id;winner_id_b;loser_id;loser_id_b"
       );
   }
 
@@ -3910,101 +3931,101 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
     wxString sql;
     if (cpType == CP_TEAM)
     {
-      sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, gr.grName, gr.grStage, "
-          "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), CONCAT('', mtRound), CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
-          "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
-          "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
-          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
-          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, mt.mttmResA, mt.mttmResX, YEAR(mtDateTime), '" + type + "', "
-          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
-          "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
-          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
-          "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
-          "  FROM MtIndividualList mt "
-          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
-          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
-          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
-          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtMS = mt.mtMS AND mtSet1.mtSet = 1 "
-          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtMS = mt.mtMS AND mtSet2.mtSet = 2 "
-          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtMS = mt.mtMS AND mtSet3.mtSet = 3 "
-          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtMS = mt.mtMS AND mtSet4.mtSet = 4 "
-          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtMS = mt.mtMS AND mtSet5.mtSet = 5 "
-          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
-          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
-          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
-      ;
+      sql =
+        "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, gr.grName, gr.grStage, "
+        "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), CONCAT('', mtRound), CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
+        "       CONCAT(mtNr, YEAR(mtDateTime), '" + type + "'), mtMatch, "
+        "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, plYnaName, "
+        "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+        "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+        "       mt.mtWalkOverA, mt.mtWalkOverX, mt.mttmResA, mt.mttmResX, YEAR(mtDateTime), '" + type + "', "
+        "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
+        "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
+        "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
+        "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
+        "  FROM MtIndividualList mt "
+        "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 4 "
+        "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+        "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtMS = mt.mtMS AND mtSet1.mtSet = 1 "
+        "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtMS = mt.mtMS AND mtSet2.mtSet = 2 "
+        "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtMS = mt.mtMS AND mtSet3.mtSet = 3 "
+        "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtMS = mt.mtMS AND mtSet4.mtSet = 4 "
+        "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtMS = mt.mtMS AND mtSet5.mtSet = 5 "
+        "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtMS = mt.mtMS AND mtSet6.mtSet = 6 "
+        "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtMS = mt.mtMS AND mtSet7.mtSet = 7 "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+        " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
+        ;
     }
     else if (cpType == CP_SINGLE)
     {
-      sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
-          "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
-          "       mtMatch, "
-          "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
-          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
-          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
-          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), NULL, "
-          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), NULL "
-          "  FROM MtSingleList mt "
-          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
-          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
-          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
-          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
-      ;
+      sql =
+        "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
+        "       IIF((gr.grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
+        "       mtMatch, "
+        "       plAplExtID, plAnaName, NULL AS plBplExtID, NULL AS plBnaName, plXplExtID, plXnaName, NULL AS plYplExtID, NULL AS plYnaName, "
+        "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+        "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+        "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
+        "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), NULL, "
+        "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), NULL "
+        "  FROM MtSingleList mt "
+        "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND cp.cpType = 1 "
+        "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+        "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+        "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+        "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+        "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+        "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+        "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+        "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+        " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
+        ;
     }
     else if (cpType == CP_DOUBLE || cpType == CP_MIXED)
     {
-      sql = 
-          "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
-          "       IIF((grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
-          "       mtMatch, "
-          "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
-          "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
-          "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
-          "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
-          "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
-          "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
-          "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
-          "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
-          "  FROM MtDoubleList mt "
-          "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3) "
-          "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
-          "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
-          "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
-          "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
-          "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
-          "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
-          "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
-          "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
-          "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
-          " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
-          " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
-      ;
+      sql =
+        "SELECT FORMAT(mtDateTime, 'yyyy-MM-dd HH:mm'), cp.cpName, "
+        "       IIF((grModus <> 2) OR (gr.grWinner <> 1), gr.grStage, CASE (gr.grSize / POWER(2, mtRound)) WHEN 1 THEN 'F' WHEN 2 THEN 'SF' WHEN 4 THEN 'QF' ELSE CONCAT('R', gr.grSize / POWER(2, mtRound - 1)) END), "
+        "       mtMatch, "
+        "       plAplExtID, plAnaName, plBplExtID, plBnaName, plXplExtID, plXnaName, plYplExtID, 2plYnaName, "
+        "       mtSet1.mtResA, mtSet1.mtResX, mtSet2.mtResA, mtSet2.mtResX, mtSet3.mtResA, mtSet3.mtResX, mtSet4.mtResA, mtSet4.mtResX, "
+        "       mtSet5.mtResA, mtSet5.mtResX, mtSet6.mtResA, mtSet6.mtResX, mtSet7.mtResA, mtSet7.mtResX, mt.mtResA, mt.mtResX, "
+        "       mt.mtWalkOverA, mt.mtWalkOverX, YEAR(mtDateTime), '" + type + "', "
+        "       IIF(mt.mtResA > mt.mtResX, plAplExtID, IIF(mt.mtResX > mt.mtResA, plXplExtID, NULL)), "
+        "       IIF(mt.mtResA > mt.mtResX, plBplExtID, IIF(mt.mtResX > mt.mtResA, plYplExtID, NULL)), "
+        "       IIF(mt.mtResA < mt.mtResX, plAplExtID, IIF(mt.mtResX < mt.mtResA, plXplExtID, NULL)), "
+        "       IIF(mt.mtResA < mt.mtResX, plBplExtID, IIF(mt.mtResX < mt.mtResA, plYplExtID, NULL))  "
+        "  FROM MtDoubleList mt "
+        "       INNER JOIN GrList gr ON mt.grID = gr.grID INNER JOIN CpList cp ON gr.cpID = cp.cpID AND (cp.cpType = 2 OR cp.cpType = 3) "
+        "       LEFT OUTER JOIN StList stA ON mt.stA = stA.stID "
+        "       LEFT OUTER JOIN StList stX ON mt.stX = stX.stID "
+        "       LEFT OUTER JOIN MtSet mtSet1 ON mtSet1.mtID = mt.mtID AND mtSet1.mtSet = 1 "
+        "       LEFT OUTER JOIN MtSet mtSet2 ON mtSet2.mtID = mt.mtID AND mtSet2.mtSet = 2 "
+        "       LEFT OUTER JOIN MtSet mtSet3 ON mtSet3.mtID = mt.mtID AND mtSet3.mtSet = 3 "
+        "       LEFT OUTER JOIN MtSet mtSet4 ON mtSet4.mtID = mt.mtID AND mtSet4.mtSet = 4 "
+        "       LEFT OUTER JOIN MtSet mtSet5 ON mtSet5.mtID = mt.mtID AND mtSet5.mtSet = 5 "
+        "       LEFT OUTER JOIN MtSet mtSet6 ON mtSet6.mtID = mt.mtID AND mtSet6.mtSet = 6 "
+        "       LEFT OUTER JOIN MtSet mtSet7 ON mtSet7.mtID = mt.mtID AND mtSet7.mtSet = 7 "
+        " WHERE mtDateTime IS NOT NULL AND gr.grID = " + ltostr(grID) + " AND (mt.mtResA + mt.mtResX) > 0 "
+        " ORDER BY cp.cpName, mtDateTime, mt.mtNr "
+        ;
     }
     else
       continue;
 
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr = 0;
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
 
     try
     {
       if (stmtPtr->Execute(sql))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(sql, e);
       return false;
@@ -4041,7 +4062,7 @@ bool  MtStore::ExportForRankingETTU(wxTextBuffer &os, short cpType, const std::v
 
 // -----------------------------------------------------------------------
 // Import / Export Schedule
-bool  MtStore::ImportSchedule(wxTextBuffer &is)
+bool  MtStore::ImportSchedule(wxTextBuffer& is)
 {
   long version = 1;
 
@@ -4061,166 +4082,166 @@ bool  MtStore::ImportSchedule(wxTextBuffer &is)
     return false;
   }
 
-  Connection *connPtr = TTDbse::instance()->GetNewConnection();
+  Connection* connPtr = TTDbse::instance()->GetNewConnection();
 
   connPtr->StartTransaction();
 
   // HACK: Die Variablen duerfen nicht laenger leben als connPtr [
   {
-  CpStore  cp(connPtr);
-  GrStore  gr(connPtr);
-  MtStore  mt(connPtr);
+    CpStore  cp(connPtr);
+    GrStore  gr(connPtr);
+    MtStore  mt(connPtr);
 
-  for(; !is.Eof(); line = is.GetNextLine())
-  {   
-    CTT32App::ProgressBarStep();
+    for (; !is.Eof(); line = is.GetNextLine())
+    {
+      CTT32App::ProgressBarStep();
 
-    if (line.GetChar(0) == '#')
-      continue;
+      if (line.GetChar(0) == '#')
+        continue;
 
-    // WB, Gruppe, Position auslesen
-    wxStringTokenizerEx tokens(line, ",;\t");
-    wxString strCp = tokens.GetNextToken();
-    wxString strGr = tokens.GetNextToken();
-    wxString strMtRound = tokens.GetNextToken();
-    wxString strMtMatch = tokens.GetNextToken();
-    wxString strMtChance = tokens.GetNextToken();
+      // WB, Gruppe, Position auslesen
+      wxStringTokenizerEx tokens(line, ",;\t");
+      wxString strCp = tokens.GetNextToken();
+      wxString strGr = tokens.GetNextToken();
+      wxString strMtRound = tokens.GetNextToken();
+      wxString strMtMatch = tokens.GetNextToken();
+      wxString strMtChance = tokens.GetNextToken();
 
-    if (strCp.IsEmpty() || strGr.IsEmpty() || 
+      if (strCp.IsEmpty() || strGr.IsEmpty() ||
         strMtRound.IsEmpty() || strMtMatch.IsEmpty())
-      continue;
-
-    if (wxStrcoll(strCp, cp.cpName))
-    {
-      // Naechster WB
-      cp.SelectByName(strCp);
-      if (!cp.Next())
         continue;
 
-      cp.Close();
+      if (wxStrcoll(strCp, cp.cpName))
+      {
+        // Naechster WB
+        cp.SelectByName(strCp);
+        if (!cp.Next())
+          continue;
 
-      // Ausserdem Gruppe lesen
-      gr.SelectByName(strGr, cp);
-      if (!gr.Next())
+        cp.Close();
+
+        // Ausserdem Gruppe lesen
+        gr.SelectByName(strGr, cp);
+        if (!gr.Next())
+          continue;
+
+        gr.Close();
+      }
+
+      if (wxStrcoll(strGr, gr.grName))
+      {
+        // Naechste Gruppe bei gleichem WB
+        gr.SelectByName(strGr, cp);
+        if (!gr.Next())
+          continue;
+
+        gr.Close();
+      }
+
+      // Event aufsetzen
+      MtRec::MtEvent  mtEvent;
+      mtEvent.grID = gr.grID;
+      mtEvent.mtRound = _strtos(strMtRound);
+      mtEvent.mtMatch = _strtos(strMtMatch);
+      mtEvent.mtChance = strMtChance.IsEmpty() ? 0 : _strtos(strMtChance);
+
+      wxString strMtDate = tokens.GetNextToken();
+      wxString strMtTime = tokens.GetNextToken();
+      wxString strMtTable = tokens.GetNextToken();
+      wxString strMtUmpire = tokens.GetNextToken();
+      wxString strMtUmpire2 = tokens.GetNextToken();
+
+      if (strMtDate.IsEmpty() || strMtTime.IsEmpty() || strMtTable.IsEmpty())
         continue;
 
-      gr.Close();
+      if (strMtDate.Find(wxT('.')) != wxNOT_FOUND)
+      {
+        wxStringTokenizer tokens(strMtDate, wxT("."));
+        wxString tmp = "";
+        wxString day = tokens.GetNextToken();
+        wxString month = tokens.GetNextToken();
+        wxString year = tokens.GetNextToken();
+
+        tmp += year;
+
+        if (month.Length() == 1)
+          tmp += "0";
+        tmp += month;
+
+        if (day.Length() == 1)
+          tmp += "0";
+        tmp += day;
+
+        strMtDate = tmp;
+      }
+      else if (strMtDate.Find(wxT('-')) != wxNOT_FOUND)
+      {
+        wxStringTokenizer tokens(strMtDate, wxT("-"));
+        wxString tmp = "";
+        wxString year = tokens.GetNextToken();
+        wxString month = tokens.GetNextToken();
+        wxString day = tokens.GetNextToken();
+
+        tmp += year;
+
+        if (month.Length() == 1)
+          tmp += "0";
+        tmp += month;
+
+        if (day.Length() == 1)
+          tmp += "0";
+        tmp += day;
+
+        strMtDate = tmp;
+      }
+
+      if (strMtTime.Find(wxT(':')) != wxNOT_FOUND)
+      {
+        wxStringTokenizer tokens(strMtTime, wxT(":"));
+        wxString tmp = "";
+        wxString token = tokens.GetNextToken();
+        tmp += token;
+
+        token = tokens.GetNextToken();
+        if (token.Length() == 1)
+          tmp += "0";
+        tmp += token;
+
+        strMtTime = tmp;
+      }
+
+
+      long  lDate = _strtol(strMtDate);
+      long  lTime = _strtol(strMtTime);
+
+      MtRec::MtPlace  mtPlace;
+
+      mtPlace.mtDateTime.year = lDate / 10000;
+      mtPlace.mtDateTime.month = (lDate % 10000) / 100;
+      mtPlace.mtDateTime.day = (lDate % 100);
+
+      // Y2K mit zweistelligen Jahren
+      if (lDate != 0)
+      {
+        if (mtPlace.mtDateTime.year < 70)
+          mtPlace.mtDateTime.year += 2000;
+        else if (mtPlace.mtDateTime.year < 100)
+          mtPlace.mtDateTime.year += 1900;
+      }
+
+      mtPlace.mtDateTime.hour = (lTime / 100);
+      mtPlace.mtDateTime.minute = (lTime % 100);
+      mtPlace.mtDateTime.second = 0;
+
+      mtPlace.mtDateTime.fraction = 0;
+
+      mtPlace.mtTable = _strtos(strMtTable);
+
+      short umpire = strMtUmpire.IsEmpty() ? 0 : _strtos(strMtUmpire);
+      short umpire2 = strMtUmpire2.IsEmpty() ? 0 : _strtos(strMtUmpire2);
+
+      mt.UpdateScheduleMatch(mtEvent, mtPlace, umpire, umpire2);
     }
-    
-    if (wxStrcoll(strGr, gr.grName))
-    {
-      // Naechste Gruppe bei gleichem WB
-      gr.SelectByName(strGr, cp);
-      if (!gr.Next())
-        continue;
-
-      gr.Close();
-    }
-
-    // Event aufsetzen
-    MtRec::MtEvent  mtEvent;
-    mtEvent.grID = gr.grID;
-    mtEvent.mtRound  = _strtos(strMtRound);
-    mtEvent.mtMatch  = _strtos(strMtMatch);
-    mtEvent.mtChance = strMtChance.IsEmpty() ? 0 : _strtos(strMtChance);
-
-    wxString strMtDate  = tokens.GetNextToken();
-    wxString strMtTime  = tokens.GetNextToken();
-    wxString strMtTable = tokens.GetNextToken();
-    wxString strMtUmpire = tokens.GetNextToken();
-    wxString strMtUmpire2 = tokens.GetNextToken();
-
-    if (strMtDate.IsEmpty() || strMtTime.IsEmpty() || strMtTable.IsEmpty())
-      continue;
-
-    if (strMtDate.Find(wxT('.')) != wxNOT_FOUND)
-    {
-      wxStringTokenizer tokens(strMtDate, wxT("."));
-      wxString tmp = "";
-      wxString day = tokens.GetNextToken();
-      wxString month = tokens.GetNextToken();
-      wxString year = tokens.GetNextToken();
-
-      tmp += year;
-
-      if (month.Length() == 1)
-        tmp += "0";
-      tmp += month;
-
-      if (day.Length() == 1)
-        tmp += "0";
-      tmp += day;
-
-      strMtDate = tmp;
-    }
-    else if (strMtDate.Find(wxT('-')) != wxNOT_FOUND)
-    {
-      wxStringTokenizer tokens(strMtDate, wxT("-"));
-      wxString tmp = "";
-      wxString year = tokens.GetNextToken();
-      wxString month = tokens.GetNextToken();
-      wxString day = tokens.GetNextToken();
-
-      tmp += year;
-
-      if (month.Length() == 1)
-        tmp += "0";
-      tmp += month;
-
-      if (day.Length() == 1)
-        tmp += "0";
-      tmp += day;
-
-      strMtDate = tmp;
-    }
-
-    if (strMtTime.Find(wxT(':')) != wxNOT_FOUND)
-    {
-      wxStringTokenizer tokens(strMtTime, wxT(":"));
-      wxString tmp = "";
-      wxString token = tokens.GetNextToken();
-      tmp += token;
-
-      token = tokens.GetNextToken();
-      if (token.Length() == 1)
-        tmp += "0";
-      tmp += token;
-
-      strMtTime = tmp;
-    } 
-
-        
-    long  lDate = _strtol(strMtDate);
-    long  lTime = _strtol(strMtTime);
-
-    MtRec::MtPlace  mtPlace;
-
-    mtPlace.mtDateTime.year  = lDate / 10000;
-    mtPlace.mtDateTime.month = (lDate % 10000) / 100;
-    mtPlace.mtDateTime.day   = (lDate % 100);
-
-    // Y2K mit zweistelligen Jahren
-    if (lDate != 0)
-    {
-      if (mtPlace.mtDateTime.year < 70)
-        mtPlace.mtDateTime.year += 2000;
-      else if (mtPlace.mtDateTime.year < 100)
-        mtPlace.mtDateTime.year += 1900;
-    }
-    
-    mtPlace.mtDateTime.hour   = (lTime / 100);
-    mtPlace.mtDateTime.minute = (lTime % 100);
-    mtPlace.mtDateTime.second = 0;
-    
-    mtPlace.mtDateTime.fraction = 0;
-
-    mtPlace.mtTable = _strtos(strMtTable);
-
-    short umpire = strMtUmpire.IsEmpty() ? 0 : _strtos(strMtUmpire);
-    short umpire2 = strMtUmpire2.IsEmpty() ? 0 : _strtos(strMtUmpire2);
-
-    mt.UpdateScheduleMatch(mtEvent, mtPlace, umpire, umpire2);
-  }
   } // end HACK ]
 
   connPtr->Commit();
@@ -4230,12 +4251,12 @@ bool  MtStore::ImportSchedule(wxTextBuffer &is)
 }
 
 
-bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<long> &idList, bool append, long version)
+bool  MtStore::ExportSchedule(wxTextBuffer& os, short cpType, const std::vector<long>& idList, bool append, long version)
 {
   // Format: CP;GR;RD;MT;MS;Date;Time;Table
 
-  Connection *connPtr = TTDbse::instance()->GetDefaultConnection();
-  
+  Connection* connPtr = TTDbse::instance()->GetDefaultConnection();
+
   if (!append)
   {
     os.AddLine(wxString::Format("#SCHEDULE %d", version));
@@ -4244,30 +4265,30 @@ bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<
   }
 
   for (std::vector<long>::const_iterator it = idList.begin(); it != idList.end(); it++)
-  {  
+  {
     long grID = (*it);
 
-    Statement  *stmtPtr = connPtr->CreateStatement();
-    ResultSet  *resPtr  = 0;
-    
-    wxString str = 
+    Statement* stmtPtr = connPtr->CreateStatement();
+    ResultSet* resPtr = 0;
+
+    wxString str =
       "SELECT cpName, grName, mtRound, mtMatch, mtDateTime, mtTable, mtUmpire, mtUmpire2 "
       "  FROM MtList mt "
       " WHERE mt.grID = " + ltostr(grID) +
       "       AND (mtMS IS NULL OR mtMS = 0) AND (mtSet IS NULL OR mtSet = 0) "
-    ;
+      ;
 
     try
     {
-      if ( stmtPtr->Execute(str) )
+      if (stmtPtr->Execute(str))
         resPtr = stmtPtr->GetResultSet(false);
     }
-    catch (SQLException &e)
+    catch (SQLException& e)
     {
       infoSystem.Exception(str, e);
       return false;
     }
-    
+
     wxChar  cpName[9];
     wxChar  grName[9];
     short   mtRound;
@@ -4276,7 +4297,7 @@ bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<
     short   mtTable;
     long    mtUmpire;
     long    mtUmpire2;
-    
+
     resPtr->BindCol(1, cpName, sizeof(cpName));
     resPtr->BindCol(2, grName, sizeof(grName));
     resPtr->BindCol(3, &mtRound);
@@ -4290,24 +4311,24 @@ bool  MtStore::ExportSchedule(wxTextBuffer &os, short cpType, const std::vector<
     mtUmpire = 0;
     mtUmpire2 = 0;
     memset(&mtDateTime, 0, sizeof(mtDateTime));
-    
+
     while (resPtr->Next())
     {
       wxString line;
 
-      line << cpName << ";" << grName << ";" << mtRound << ";" << mtMatch << ";0;";      
+      line << cpName << ";" << grName << ";" << mtRound << ";" << mtMatch << ";0;";
       line << mtDateTime.day + 100 * mtDateTime.month + 10000 * mtDateTime.year << ";";
       line << mtDateTime.minute + 100 * mtDateTime.hour << ";" << mtTable << ";" << mtUmpire << ";" << mtUmpire2 << ";";
 
       os.AddLine(line);
 
       mtTable = 0;
-      memset(&mtDateTime, 0, sizeof(mtDateTime));    
+      memset(&mtDateTime, 0, sizeof(mtDateTime));
     }
-    
+
     delete resPtr;
     delete stmtPtr;
   }
-  
+
   return true;
 }

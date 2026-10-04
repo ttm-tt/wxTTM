@@ -468,10 +468,15 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
     sql += " AND mtDateTime IS NULL ";
   else if (ts.year < 0)
     ;
-  else
+  else if (ts.hour == 0 && ts.minute == 0)
   {
     wxString tmp = wxString::Format("%04d-%02d-%02d", ts.year, ts.month, ts.day);
     sql += " AND CAST(mtDateTime AS DATE) = '" + tmp + "' ";
+  }
+  else
+  {
+    wxString tmp = wxString::Format("%04d-%02d-%02d %02d:%02d", ts.year, ts.month, ts.day, ts.hour, ts.minute);
+    sql += " AND FORMAT(CAST(mtDateTime AS DATETIME), 'yyyy-MM-dd HH\\:mm') = '" + tmp + "' ";
   }
 
   if (cpID)

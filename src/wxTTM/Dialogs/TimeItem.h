@@ -1,14 +1,14 @@
-/* Copyright (C) 2025 Christoph Theis */
+/* Copyright (C) 2026 Christoph Theis */
 
 #pragma once
 #include <stdafx.h>
-#include  "ListItem.h"
+#include "ListItem.h"
 
 // =======================================================================
-class DateItem : public ListItem
+class TimeItem : public ListItem
 {
 public:
-  DateItem() : ListItem()
+  TimeItem() : ListItem()
   {
     SetLabel(_("No Time"));
 
@@ -16,14 +16,14 @@ public:
     m_ts.hour = m_ts.minute = m_ts.second = 0;
   }
 
-  DateItem(const timestamp& ts) : ListItem(), m_ts(ts)
+  TimeItem(const timestamp& ts) : ListItem(), m_ts(ts)
   {
     if (ts.year == 0)
       SetLabel(_("No Time"));
-    else if (ts.year < 0)
-      SetLabel(_("All Dates"));
+    else if (ts.hour < 0)
+      SetLabel(_("All Times"));
     else
-      SetLabel(wxString::Format(" %d.%d.%d", ts.day, ts.month, ts.year));
+      SetLabel(wxString::Format(" %02d:%02d", ts.hour, ts.minute));
   };
 
 public:
@@ -44,14 +44,13 @@ public:
 
   void DrawItem(wxDC* pDC, wxRect& rect)
   {
-    if (m_ts.year == 0)
+    if (m_ts.year < 0)
+      DrawStringCentered(pDC, rect, _("All Times"));
+    else if (m_ts.hour == 0 && m_ts.minute == 0)
       DrawStringCentered(pDC, rect, _("No Time"));
-    else if (m_ts.year < 0)
-      DrawStringCentered(pDC, rect, _("All Dates"));
     else
     {
-      wxDateTime dt(m_ts.day, (wxDateTime::Month)(m_ts.month - 1), m_ts.year);
-      DrawString(pDC, rect, dt.Format(" %d.%m.%Y, %a"));
+      DrawString(pDC, rect, wxString::Format(" %02d:%02d", m_ts.hour, m_ts.minute));
     }
   }
 

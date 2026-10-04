@@ -749,6 +749,7 @@ rem "$(WindowsSdkDir)\bin\$(PreferredToolArchitecture)\signtool.exe" sign /a /n 
     <ClInclude Include="Dialogs\RpEdit.h" />
     <ClInclude Include="Dialogs\SQLEditorBook.h" />
     <ClInclude Include="Dialogs\SyGroups.h" />
+    <ClInclude Include="Dialogs\TimeItem.h" />
     <ClInclude Include="Dialogs\TmGroups.h" />
     <ClInclude Include="Dialogs\TossSheet.h" />
     <ClInclude Include="Dialogs\UpEdit.h" />
