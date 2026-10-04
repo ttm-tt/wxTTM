@@ -16,6 +16,8 @@
 #include "CpItem.h"
 #include "GrItem.h"
 
+#include "InfoSystem.h"
+
 #include <wx/progdlg.h>
 
 #include <fstream>
@@ -76,6 +78,12 @@ void CGrExport::OnBrowse(wxCommandEvent &evt)
 void CGrExport::OnExport(wxCommandEvent &evt)
 {
   evt.Skip();
+
+  if (lbGR->GetSelectedCount() == 0)
+  {
+    infoSystem.Information(_("You have not selected any groups"));
+    return;
+  }
 
   fileName = XRCCTRL(*this, "File", wxTextCtrl)->GetValue();
 
