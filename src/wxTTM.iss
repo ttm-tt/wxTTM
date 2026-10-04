@@ -194,15 +194,18 @@ Filename: {sys}\cmd.exe; Parameters: /c del {app}\en_US.dll; Check: FileExists(E
 
 ; Supportprogramme installieren
 ; Redistributable fuer VS 2019, wir brauchen nur x86 fuer 32 Bit TTM
-Filename: {tmp}\x86\vcredist_x86_2019.exe; Parameters: "/install /quiet"; Check: not Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
-Filename: {tmp}\x64\vcredist_x64_2019.exe; Parameters: "/install /quiet"; Check: Is64BitInstallMode() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
+; 32 bit Windows
+Filename: "{tmp}\x86\vcredist_x86_2022.exe"; Parameters: "/install /quiet /norestart"; Check: not IsWin64() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
+; 64 bit windows
+Filename: "{tmp}\x86\vcredist_x86_2022.exe"; Parameters: "/install /quiet /norestart"; Check: IsWin64() and not CheckVCRedistributables();  StatusMsg: Install VC2019 redistributables; Components: client
+Filename: "{tmp}\x64\vcredist_x64_2022.exe"; Parameters: "/install /quiet /norestart"; Flags: 64bit; Check: IsWin64() and not CheckVCRedistributables(); StatusMsg: Install VC2019 redistributables; Components: client
 
 ; .NET 4.0
 Filename: {tmp}\dotNetFx40_Full_x86_x64.exe; Parameters: /q /norestart; StatusMsg: Install .NET 4.0; Check: not CheckDotNET; Components: database
 
 ; SQL Server Native Client
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
-Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES "; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: Install SQL Server Native Client; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x86\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES"; Flags: runascurrentuser hidewizard; Check: not IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: "Install Microsoft ODBC Driver for SQL Server..."; Components: not Database
+Filename: msiexec.exe; Parameters: "/qb /norestart /i ""{tmp}\x64\msodbcsql_18.7.1.1.msi"" IACCEPTMSODBCSQLLICENSETERMS=YES"; Flags: runascurrentuser hidewizard 64bit; Check: IsWin64() and not CheckSQLNativeClientVersion(); StatusMsg: "Install Microsoft ODBC Driver for SQL Server..."; Components: not Database
 
 ; SQL Server 2025 64 Bit
 Filename: {tmp}\x64\SQLEXPR_2025_x64_ENU.exe; Parameters: /x:{tmp}/x64/SQLEXPR_2025 /Q; Flags: runascurrentuser hidewizard; Check: IsWin64() and not CheckSQLServerVersion(); StatusMsg: Install SQL Server 2025; Components: database
@@ -532,25 +535,25 @@ begin
 
     if ( not CheckVCRedistributables() ) then
     begin
-      if (Is64BitInstallMode()) then
+      if (IsWin64()) then
       begin
-        GetFile('x64\vcredist_x64_2019.exe')
-      end
-      else
-      begin
-        GetFile('x86\vcredist_x86_2019.exe')
+        {e.g. msodbc would ask for it}
+        GetFile('x64\vcredist_x64_2022.exe');
       end;
+      {We need x86 even on Win64}
+      GetFile('x86\vcredist_x86_2022.exe');
     end;
   
     if ( not CheckSQLNativeClientVersion() ) then
     begin
-      if (Is64BitInstallMode()) then
+      if (IsWin64()) then
       begin
-        GetFile('x64\msodbcsql_18.6.2.1.msi');
+        {Contains x86 as well}
+        GetFile('x64\msodbcsql_18.7.1.1.msi');
       end
       else
       begin
-        GetFile('x86\msodbcsql_18.6.2.1.msi');
+        GetFile('x86\msodbcsql_18.7.1.1.msi');
       end;
     end;
   end;
