@@ -89,6 +89,10 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
 	  wxRegEx("PWD=[^;]*;").Replace(&tmp, "");
   }
 
+  // msodbc 18 insists on TrustServerCertificate=yes;, those before allow it
+  if (!tmp.Contains("TrustServerCertificate=Yes;"))
+    tmp += "TrustServerCertificate=Yes;";
+
   if (false)
 	  ;
   else if (RegOpenKey(HKEY_LOCAL_MACHINE, wxT("Software\\ODBC\\ODBCINST.INI\\ODBC Driver 18 for SQL Server"), &hkResult) == ERROR_SUCCESS)
