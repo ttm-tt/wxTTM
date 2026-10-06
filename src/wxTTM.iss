@@ -222,7 +222,9 @@ Filename: {sys}\cacls.exe; Parameters: """{code:GetIniDir}"" /E /G {computername
 [Code]
 const
   {Von hier werden die Files geholt, die nicht neben dem Setup liegen}
-  DownloadBaseUrl = 'http://downloads.ttm.co.at/ttm/';
+  DownloadBaseUrl = 'https://s3.eu-west-1.amazonaws.com/downloads.ttm.co.at/ttm/';  
+  {Die URL ist das gleiche wie die unten, unterstuetzt jetzt aber https}
+  {DownloadBaseUrl = 'http://downloads.ttm.co.at/ttm/';}
 
 var
   {Globale Variable fuer die Passwortseite}
