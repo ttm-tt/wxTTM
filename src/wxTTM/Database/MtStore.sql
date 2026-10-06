@@ -474,8 +474,7 @@
         "           (mtDisqualifiedA > 0 AND mtDisqualifiedX > 0) OR \n"
         "           (SELECT COUNT(*) FROM MtSet \n"
         "             WHERE mtID = @mtID AND \n"
-        "                   mtWalkOverA = 0 AND mtWalkOverX = 0 \n"
-        "                   (mtResA > 0 OR mtResX > 0) AND \n"
+        "                   (mtResA > 0 OR mtResX > 0) \n"
         "           ) > 0 \n"
         "          )\n" 
 
