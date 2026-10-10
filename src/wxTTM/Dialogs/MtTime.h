@@ -37,8 +37,6 @@ class CMtTime : public CFormViewEx
 	  short	m_availTables;
 	  bool	m_decTables;
 
-    bool  m_noSchedule;
-
     short m_sequence;
 
   protected:
@@ -48,6 +46,7 @@ class CMtTime : public CFormViewEx
     void OnBnClickedApplyTo(wxCommandEvent &);
     void OnBnClickedAssign(wxCommandEvent &);
 
+    void OnSetFocusTime(wxFocusEvent &);
     void OnSetFocusTable(wxFocusEvent &);
     void OnKeyDownTable(wxKeyEvent &);
 

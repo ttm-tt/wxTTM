@@ -2715,6 +2715,35 @@ timestamp MtStore::GetLatestMatchTime(const MtEvent& event)
 }
 
 
+timestamp MtStore::GetLatestMatchTime(const MtPlace &place)
+{
+  wxString str = "SELECT MAX(mtDateTime) FROM MtRec "
+    " WHERE YEAR(mtDateTime) = " + ltostr(place.mtDateTime.year) +
+    "   AND MONTH(mtDateTime) = " + ltostr(place.mtDateTime.month) +
+    "   AND DAY(mtDateTime) = " + ltostr(place.mtDateTime.day);
+
+  Statement* stmtPtr = GetConnectionPtr()->CreateStatement();
+  wxASSERT(stmtPtr);
+
+  ResultSet* resPtr = stmtPtr->ExecuteQuery(str);
+  wxASSERT(resPtr);
+
+  timestamp ts;
+  memset(&ts, 0, sizeof(ts));
+
+  if (resPtr->Next())
+  {
+    if (!resPtr->GetData(1, ts) || resPtr->WasNull(1))
+      memset(&ts, 0, sizeof(ts));
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return ts;
+}
+
+
 short MtStore::GetLastPlayedRound(const MtEvent& event)
 {
   short rd = 0;

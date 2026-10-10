@@ -108,25 +108,34 @@ bool  CMtTime::Edit(va_list vaList)
   // Fokus auf wahrscheinliche Eingabe setzen
   // TransferDataToWindow setzt einen "Pending Focus" fuer spaeter, das wuerde SetFocus ueberschreiben.
   // Als workaround selbst WXSetPendingFocus aufrufen
-  if (mt.mtPlace.mtDateTime.day)
-  {
-    if (mt.mtPlace.mtDateTime.hour)
-      FindWindow("Table")->SetFocus();
-    else
-      FindWindow("Time")->SetFocus();
-  }
-  else
+  bool noDate =
+    mt.mtPlace.mtDateTime.year == 0 &&
+    mt.mtPlace.mtDateTime.month == 0 &&
+    mt.mtPlace.mtDateTime.day == 0;
+
+  bool noTime =
+    mt.mtPlace.mtDateTime.hour == 0 &&
+    mt.mtPlace.mtDateTime.minute == 0;
+
+  bool noTable = mt.mtPlace.mtTable == 0;
+
+  if (noTime)
+    FindWindow(XRCID("Time"))->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(CMtTime::OnSetFocusTime), NULL, this);
+  
+  if (noTable)
+    FindWindow(XRCID("Table"))->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(CMtTime::OnSetFocusTable), NULL, this);
+  
+  FindWindow(XRCID("Table"))->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(CMtTime::OnKeyDownTable), NULL, this);
+
+  if (noDate)
     FindWindow("Date")->SetFocus();
+  else if (noTime)
+    FindWindow("Time")->SetFocus();
+  else if (noTable)
+    FindWindow("Table")->SetFocus();
 
   if (FindFocus()->IsKindOf(CLASSINFO(wxTextCtrl)))
-    ((wxTextCtrl *)FindFocus())->SetSelection(-1, -1);
-
-  m_noSchedule = mt.mtPlace.mtDateTime.hour == 0;
-
-  if (m_noSchedule)
-    FindWindow(XRCID("Table"))->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(CMtTime::OnSetFocusTable), NULL, this);
-  else if (mt.mtPlace.mtTable == 0)
-    FindWindow(XRCID("Table"))->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(CMtTime::OnKeyDownTable), NULL, this);
+    ((wxTextCtrl*)FindFocus())->SetSelection(-1, -1);
 
   return true;
 }
@@ -472,6 +481,32 @@ void CMtTime::OnBnClickedAssign(wxCommandEvent &)
   FindWindow("Umpire")->Enable(!m_assignPlayer);
   
   TransferDataToWindow();
+}
+
+
+void CMtTime::OnSetFocusTime(wxFocusEvent& evt)
+{
+  evt.Skip();
+
+  TransferDataFromWindow();
+
+  if (mt.mtPlace.mtDateTime.year == 0)
+    return;
+
+  if (mt.mtPlace.mtDateTime.hour != 0 || mt.mtPlace.mtDateTime.minute != 0)
+    return;
+
+  timestamp ts = mt.GetLatestMatchTime(mt.mtPlace);
+
+  if (ts.hour == 0 && ts.minute == 0)
+    return;
+
+  mt.mtPlace.mtDateTime.hour = ts.hour;
+  mt.mtPlace.mtDateTime.minute = ts.minute;
+
+  TransferDataToWindow();
+
+  ((wxTextCtrl*)FindWindow("Time"))->SetSelection(-1, -1);
 }
 
 

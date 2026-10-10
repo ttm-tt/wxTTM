@@ -273,6 +273,7 @@ class  MtStore : public StoreObj, public MtRec
     // Erste / Letzte Spielzeit einer Runde abfragen
     timestamp GetEarliestMatchTime(const MtEvent &event);
     timestamp GetLatestMatchTime(const MtEvent &event);
+    timestamp GetLatestMatchTime(const MtPlace& event);
     short GetLastPlayedRound(const MtEvent &event);
 
     short GetHighestTableNumber(const MtPlace &place);
