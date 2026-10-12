@@ -250,19 +250,51 @@ CShortValidator::CShortValidator(const CShortValidator &val)
 wxObject * CShortValidator::Clone() const
 {
   return new CShortValidator(*this);
-}              
+}  
+
+
+void CShortValidator::SetMin(short min)
+{
+  if (!min || !m_max || min <= m_max)
+    m_min = min;
+}
+
+
+void CShortValidator::SetMax(short max)
+{
+  if (!m_min || max >= m_min)
+    m_max = max;
+}
+
+
+void CShortValidator::SetRange(short min, short max)
+{
+  if (min >= *m_val && min <= max)
+    m_min = min;
+
+  if (max >= *m_val && max >= m_min)
+    m_max = max;
+}
 
 
 bool CShortValidator::TransferFromWindow()
 {
+  short val = *m_val;
+
   if (m_val && m_validatorWindow->IsKindOf(CLASSINFO(wxTextCtrl)))
   {
     if ( ((wxTextCtrl *) m_validatorWindow)->GetValue() == "")
-      *m_val = 0;
+      val = 0;
     else
-      *m_val = (short) wxAtoi( ((wxTextCtrl *) m_validatorWindow)->GetValue() );
+      val = (short) wxAtoi( ((wxTextCtrl *) m_validatorWindow)->GetValue() );
 
-    return true;
+    if (val >= m_min && val <= m_max)
+    {
+      *m_val = val;
+      return true;
+    }
+
+    return false;
   }
   else if (m_val && m_validatorWindow->IsKindOf(CLASSINFO(wxSpinCtrl)))
   {

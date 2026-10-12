@@ -215,7 +215,21 @@ bool CGrEdit::Edit(va_list vaList)
   FindWindow("NofEntries")->Enable( (gr.grModus == MOD_SKO || gr.grModus == MOD_PLO) && !grStarted );
 
   FindWindow("QualRounds")->Enable(gr.grModus == MOD_SKO);
-  FindWindow("NofRounds")->Enable( (gr.grModus == MOD_SKO || gr.grModus == MOD_PLO) && !grStarted );
+  FindWindow("NofRounds")->Enable( (gr.grModus == MOD_SKO || gr.grModus == MOD_PLO) );
+  // If the group has started restrict allowed range of rounds to be more than last payed round
+  if (grStarted && FindWindow("NofRounds")->IsEnabled())
+  {
+    short min = gr.QryLastPlayedRound();
+    short max = gr.NofRounds();
+
+    wxValidator *validator = FindWindow("NofRounds")->GetValidator();
+    if (validator && validator->IsKindOf(CLASSINFO(CShortValidator)))
+    {
+      CShortValidator* shortValidator = (CShortValidator*)validator;
+      shortValidator->SetValue(gr.grNofRounds);
+      shortValidator->SetRange(min, max);
+    }
+  }
 
   FindWindow("NoThirdPlace")->Enable(gr.grModus == MOD_PLO);
   FindWindow("OnlyThirdPlace")->Enable(gr.grModus == MOD_PLO);

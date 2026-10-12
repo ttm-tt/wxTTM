@@ -273,6 +273,9 @@ class  GrStore : public StoreObj, public GrRec
     bool  QryScheduled();
     bool  QryCombined();
 
+    // 
+    short QryLastPlayedRound();
+
     // Fuer die Auslosung, Drucken, ...
     short CountGroups();
     short CountGroups(const CpRec &);

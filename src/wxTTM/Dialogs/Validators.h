@@ -16,12 +16,22 @@ class CShortValidator : public wxValidator
     bool TransferFromWindow();
     bool TransferToWindow();
     bool Validate(wxWindow *parent);
+
+    void SetRange(short min, short max);
+    void SetMin(short min);
+    short GetMin() const {return m_min;}
+    void SetMax(short max);
+    short GetMax() const {return m_max;}
+    void SetValue(short val) { *m_val = val; }
+    short GetValue() const { return *m_val; }
     
   private:
     void OnChar(wxKeyEvent &);
     
   private:
     short *m_val;
+    short  m_min = 0;
+    short  m_max = 0x7FFF;
     bool   m_suppressNull;
     
   DECLARE_DYNAMIC_CLASS(CShortValidator)

@@ -1926,6 +1926,43 @@ bool  GrStore::QryFinished()
 }
 
 
+short GrStore::QryLastPlayedRound()
+{
+  Connection* connPtr = GetConnectionPtr();
+  Statement* stmtPtr = connPtr->CreateStatement();
+  ResultSet* resPtr = 0;
+
+  wxString str = 
+      "SELECT MAX(mtRound) FROM MtRec "
+      "WHERE grID = " + ltostr(grID) + " AND mtResA > 0 AND mtResX > 0";  
+
+  short val = 0;
+
+  try
+  {
+    resPtr = stmtPtr->ExecuteQuery(str);
+    wxASSERT(resPtr);
+
+    if (!resPtr->Next() || !resPtr->GetData(1, val) || resPtr->WasNull())
+      val = 0;
+
+    delete resPtr;
+    delete stmtPtr;
+  }
+  catch (SQLException& e)
+  {
+    infoSystem.Exception(str, e);
+
+    delete resPtr;
+    delete stmtPtr;
+
+    return val;
+  }
+
+  return val;
+}
+
+
 bool  GrStore::QryUnchecked()
 {
   Connection *connPtr = GetConnectionPtr();
