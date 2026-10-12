@@ -432,6 +432,8 @@ BEGIN_EVENT_TABLE(COvList, CFormViewEx)
   EVT_BUTTON(IDC_REFRESH, CFormViewEx::OnCommand)
   EVT_BUTTON(XRCID("Umpire"), COvList::OnShowUmpire)
 
+  EVT_CHAR_HOOK(COvList::OnCharHook)
+
   EVT_GRID_CELL_LEFT_CLICK(COvList::OnCellLeftClick)
   EVT_GRID_CELL_LEFT_DCLICK(COvList::OnCellDoubleClick)
 
@@ -1460,12 +1462,46 @@ void COvList::OnChar(wxKeyEvent& evt)
 }
 
 
+// MtListView gets ALT+Enter from the accelerator of CChildFrame, which clicks
+// the "Edit" button. There is no such button here, so catch the key directly.
+void COvList::OnCharHook(wxKeyEvent &evt)
+{
+  if ( (evt.GetKeyCode() == WXK_RETURN || evt.GetKeyCode() == WXK_NUMPAD_ENTER) &&
+       evt.GetModifiers() == wxMOD_ALT )
+  {
+    OnEdit();
+    return;
+  }
+
+  // Continue with CFormViewEx::OnCharHook
+  evt.Skip();
+}
+
+
 void  COvList::OnCellDoubleClick(wxGridEvent &evt)
+{
+  EditCell(evt.GetRow(), evt.GetCol());
+}
+
+
+void  COvList::OnEdit()
+{
+  if (!m_gridCtrl)
+    return;
+
+  EditCell(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+}
+
+
+void  COvList::EditCell(int row, int col)
 {
   if (m_popupTimer.IsRunning())
     m_popupTimer.Stop();
     
-  OvItem *itemPtr = m_gridCtrl->GetItem(evt.GetRow(), evt.GetCol());
+  if (row < 0 || col < 0)
+    return;
+
+  OvItem *itemPtr = m_gridCtrl->GetItem(row, col);
   
   if (!itemPtr || !itemPtr->mt.mtNr)
     return;

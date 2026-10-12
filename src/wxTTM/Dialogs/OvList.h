@@ -42,6 +42,9 @@ class COvList : public CFormViewEx
 
     virtual void OnUpdate(CRequest *);
 
+    // Alt+Enter: edit the match at the grid cursor
+    virtual void OnEdit();
+
   public:
     // public, weil sie von OvListBook aus aufgerufen werden
     virtual void OnRefresh();
@@ -52,6 +55,10 @@ class COvList : public CFormViewEx
     void OnUpdateTimer(wxTimerEvent &);
     void OnPopupTimer(wxTimerEvent &);
     void OnChar(wxKeyEvent &);
+    void OnCharHook(wxKeyEvent &);
+
+    // Open the edit view for the match in this cell, if there is one
+    void EditCell(int row, int col);
 
   private:
     void OnShowUmpire(wxCommandEvent &);
