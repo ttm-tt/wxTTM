@@ -131,7 +131,7 @@ bool  CMtTime::Edit(va_list vaList)
     FindWindow("Date")->SetFocus();
   else if (noTime)
     FindWindow("Time")->SetFocus();
-  else if (noTable)
+  else
     FindWindow("Table")->SetFocus();
 
   if (FindFocus()->IsKindOf(CLASSINFO(wxTextCtrl)))
@@ -317,6 +317,9 @@ void  CMtTime::OnOK()
   // matchDate.GetDateTime(mt.mtPlace.mtDateTime);
   // matchTime.GetDateTime(mt.mtPlace.mtDateTime);
 
+  // Store this time as latestTime
+  lastTime = mt.mtPlace.mtDateTime;
+
   switch (m_applyTo)
   {
     case APPLY_TO_MATCH : // This match
@@ -489,14 +492,20 @@ void CMtTime::OnSetFocusTime(wxFocusEvent& evt)
   evt.Skip();
 
   TransferDataFromWindow();
-
   if (mt.mtPlace.mtDateTime.year == 0)
     return;
 
   if (mt.mtPlace.mtDateTime.hour != 0 || mt.mtPlace.mtDateTime.minute != 0)
     return;
 
-  timestamp ts = mt.GetLatestMatchTime(mt.mtPlace);
+  if (lastTime.year != mt.mtPlace.mtDateTime.year)
+    return;
+  if (lastTime.month != mt.mtPlace.mtDateTime.month)
+    return;
+  if (lastTime.day != mt.mtPlace.mtDateTime.day)
+    return;
+
+  timestamp ts = lastTime;
 
   if (ts.hour == 0 && ts.minute == 0)
     return;

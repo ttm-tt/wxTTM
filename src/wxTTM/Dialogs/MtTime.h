@@ -22,6 +22,9 @@ class CDateTimeEdit;
 
 class CMtTime : public CFormViewEx
 {
+  private:
+    static inline timestamp lastTime{};
+
   public:
 	  CMtTime();           
 	 ~CMtTime(); 
