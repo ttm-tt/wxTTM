@@ -335,6 +335,35 @@ class COvGridCtrl : public wxGrid
     void SetItem(int row, int col, OvItem *item); 
     
     void Clear() {GetTable()->Clear();}
+
+    // Marker for inserting a dragged match: 0 = normal cursor (thick border),
+    // -1 / +1 = thick line on the left / right side of the cursor cell
+    void SetInsertSide(int side) {m_insertSide = side;}
+    int  GetInsertSide() const   {return m_insertSide;}
+
+    virtual void DrawCellHighlight(wxDC &dc, const wxGridCellAttr *attr)
+    {
+      if (m_insertSide == 0)
+      {
+        wxGrid::DrawCellHighlight(dc, attr);
+        return;
+      }
+
+      // Like wxGrid: only while the grid has the focus
+      if (!HasFocus())
+        return;
+
+      // Draw inside the cell, so repainting the cell removes it again
+      const int width = 4;
+      wxRect rect = CellToRect(GetGridCursorRow(), GetGridCursorCol());
+      if (m_insertSide > 0)
+        rect.x = rect.GetRight() - width + 1;
+      rect.width = width;
+
+      dc.SetPen(*wxTRANSPARENT_PEN);
+      dc.SetBrush(*wxBLACK_BRUSH);
+      dc.DrawRectangle(rect);
+    }
     
     virtual void DoSetSize(int x, int y,
                            int width, int height,
@@ -391,6 +420,9 @@ class COvGridCtrl : public wxGrid
       //                rect, hAlign, vAlign, wxHORIZONTAL);
     }
     
+  private:
+    int m_insertSide = 0;
+
   DECLARE_DYNAMIC_CLASS(COvGridCtrl)
   DECLARE_EVENT_TABLE()
 };
@@ -666,6 +698,18 @@ void COvList::SwapTable(short row, short oldTable, short newTable)
     m_gridCtrl->Refresh();
   else
     OnRefresh();
+}
+
+
+// Move the match in fromCol to toCol, the matches (and empty tables) in between
+// move one table towards fromCol. Done as a series of swaps with the neighbour,
+// so the dragged match is always the "old" one in SwapTable.
+void COvList::InsertMatch(int row, int fromCol, int toCol)
+{
+  int step = toCol > fromCol ? +1 : -1;
+
+  for (int col = fromCol; col != toCol; col += step)
+    SwapTable(row, col + m_fromTable, col + step + m_fromTable);
 }
 
 
@@ -1667,7 +1711,8 @@ void COvList::OnCellBeginDrag(wxGridEvent &)
   // skip, so the grid doesn't see the mouse while dragging
   gridWin->Bind(wxEVT_MOTION, &COvList::OnDragMotion, this);
   gridWin->Bind(wxEVT_LEFT_UP, &COvList::OnDragLeftUp, this);
-  gridWin->Bind(wxEVT_KEY_DOWN, &COvList::OnDragKeyDown, this);
+  gridWin->Bind(wxEVT_KEY_DOWN, &COvList::OnDragKey, this);
+  gridWin->Bind(wxEVT_KEY_UP, &COvList::OnDragKey, this);
   gridWin->Bind(wxEVT_MOUSE_CAPTURE_CHANGED, &COvList::OnDragCaptureChanged, this);
 }
 
@@ -1690,25 +1735,82 @@ void COvList::OnDragMotion(wxMouseEvent &evt)
 }
 
 
-// Move the picture to the mouse position and the thick border to the target cell
+// Move the picture to the mouse position and the marker to the target:
+// the thick border on the target cell, or with SHIFT a thick line at the gap
+// where the match will be inserted.
 void COvList::DragTo(const wxPoint &mousePos)
 {
   // For now horizontal only, i.e. same time, other table:
   // the picture stays in its row
   wxPoint pt(mousePos.x, m_dragStart.y);
 
-  // Target is the column under the mouse, or the outermost visible one
+  int row     = m_dragFrom.GetRow();
+  int fromCol = m_dragFrom.GetCol();
+
+  // Never drop onto (or insert into) "No Table", which is column 0 if shown
+  int firstCol = (m_fromTable == 0 ? 1 : 0);
+  bool fromNoTable = fromCol < firstCol;
+
+  // Column under the mouse, or the outermost visible one
   // if the mouse is beyond the edge
   int width = m_gridCtrl->GetGridWindow()->GetClientSize().GetWidth();
   int x = std::max(0, std::min(pt.x, width - 1));
-  int col = m_gridCtrl->XToCol(m_gridCtrl->CalcUnscrolledPosition(wxPoint(x, 0)).x);
+  wxPoint pos = m_gridCtrl->CalcUnscrolledPosition(wxPoint(x, 0));
+  int col = m_gridCtrl->XToCol(pos.x);
 
-  if (col != wxNOT_FOUND && col != m_gridCtrl->GetGridCursorCol())
+  int targetCol = fromCol;   // no target: the border goes back to the source
+  int gap = -1;
+
+  if (col != wxNOT_FOUND)
+  {
+    if (wxGetKeyState(WXK_SHIFT) && !fromNoTable)
+    {
+      // Insert into the gap left or right of the column under the mouse
+      wxRect rect = m_gridCtrl->CellToRect(row, col);
+      gap = (pos.x < rect.x + rect.width / 2 ? col : col + 1);
+      gap = std::max(gap, firstCol);
+    }
+    else if (col >= firstCol && (!fromNoTable || !m_gridCtrl->GetItem(row, col)))
+    {
+      // A match without table may only go to a free table,
+      // else the other match would end up in "No Table"
+      targetCol = col;
+    }
+  }
+
+  // Inserting: thick line on the left side of the cell right of the gap,
+  // or on the right side of the last cell
+  int cursorCol = targetCol;
+  int side = 0;
+  if (gap >= 0)
+  {
+    if (gap < m_gridCtrl->GetNumberCols())
+    {
+      cursorCol = gap;
+      side = -1;
+    }
+    else
+    {
+      cursorCol = m_gridCtrl->GetNumberCols() - 1;
+      side = +1;
+    }
+  }
+
+  m_dragInsertGap = gap;
+
+  if (cursorCol != m_gridCtrl->GetGridCursorCol() || side != m_gridCtrl->GetInsertSide())
   {
     // The picture must be hidden while the grid repaints (and maybe scrolls)
     m_dragImage->Hide();
-    m_gridCtrl->SetGridCursor(m_dragFrom.GetRow(), col);
+
+    bool sameCell = (cursorCol == m_gridCtrl->GetGridCursorCol());
+    m_gridCtrl->SetInsertSide(side);
+    if (sameCell)
+      m_gridCtrl->RefreshBlock(row, cursorCol, row, cursorCol);
+    else
+      m_gridCtrl->SetGridCursor(row, cursorCol);
     m_gridCtrl->Update();
+
     m_dragImage->Move(pt);
     m_dragImage->Show();
   }
@@ -1770,10 +1872,14 @@ void COvList::OnDragLeftUp(wxMouseEvent &)
 // ESC cancels the drag. This can't be done in OnCharHook: wx doesn't send
 // wxEVT_CHAR_HOOK while a window has captured the mouse. The grid window has
 // the focus (the drag started with a click into it), so it gets the key.
-void COvList::OnDragKeyDown(wxKeyEvent &evt)
+// SHIFT switches between dropping and inserting. Pressing or releasing it
+// doesn't move the mouse, so update the target here, too.
+void COvList::OnDragKey(wxKeyEvent &evt)
 {
-  if (evt.GetKeyCode() == WXK_ESCAPE)
+  if (evt.GetEventType() == wxEVT_KEY_DOWN && evt.GetKeyCode() == WXK_ESCAPE)
     EndDrag(false);
+  else if (evt.GetKeyCode() == WXK_SHIFT)
+    DragTo(m_dragPos);
   else
     evt.Skip();
 }
@@ -1795,7 +1901,8 @@ void COvList::EndDrag(bool drop)
   wxWindow *gridWin = m_gridCtrl->GetGridWindow();
   gridWin->Unbind(wxEVT_MOTION, &COvList::OnDragMotion, this);
   gridWin->Unbind(wxEVT_LEFT_UP, &COvList::OnDragLeftUp, this);
-  gridWin->Unbind(wxEVT_KEY_DOWN, &COvList::OnDragKeyDown, this);
+  gridWin->Unbind(wxEVT_KEY_DOWN, &COvList::OnDragKey, this);
+  gridWin->Unbind(wxEVT_KEY_UP, &COvList::OnDragKey, this);
   gridWin->Unbind(wxEVT_MOUSE_CAPTURE_CHANGED, &COvList::OnDragCaptureChanged, this);
 
   m_dragScrollTimer.Stop();
@@ -1804,11 +1911,27 @@ void COvList::EndDrag(bool drop)
   m_dragImage->EndDrag();   // releases the mouse
   wxDELETE(m_dragImage);
 
+  int row = m_dragFrom.GetRow();
+  int fromCol = m_dragFrom.GetCol();
   int col = m_gridCtrl->GetGridCursorCol();
-  OvItem *itemPtr = m_gridCtrl->GetItem(m_dragFrom.GetRow(), m_dragFrom.GetCol());
+  int gap = m_dragInsertGap;
+  OvItem *itemPtr = m_gridCtrl->GetItem(row, fromCol);
 
-  if (drop && itemPtr && col != m_dragFrom.GetCol())
-    OnDropMatch(itemPtr->mt.mtID, m_dragFrom.GetRow(), col);
+  // Back to the normal cursor
+  m_gridCtrl->SetInsertSide(0);
+  m_dragInsertGap = -1;
+
+  if (drop && itemPtr && gap >= 0)
+  {
+    // The gaps right before and after the source don't move anything
+    int toCol = (gap > fromCol ? gap - 1 : gap);
+    if (toCol != fromCol)
+      InsertMatch(row, fromCol, toCol);
+
+    m_gridCtrl->SetGridCursor(row, toCol);   // where the match is now
+  }
+  else if (drop && itemPtr && col != fromCol)
+    OnDropMatch(itemPtr->mt.mtID, row, col);
   else
     m_gridCtrl->SetGridCursor(m_dragFrom);   // cancelled or not moved
 

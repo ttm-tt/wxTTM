@@ -66,6 +66,9 @@ class COvList : public CFormViewEx
 
     void SwapTable(short row, short oldTable, short newTable);
 
+    // Move the match in fromCol to toCol, everything in between moves one table towards fromCol
+    void InsertMatch(int row, int fromCol, int toCol);
+
   private:
     void OnShowUmpire(wxCommandEvent &);
     void OnCellLeftClick(wxGridEvent &);
@@ -79,7 +82,7 @@ class COvList : public CFormViewEx
     void OnCellBeginDrag(wxGridEvent&);
     void OnDragMotion(wxMouseEvent &);
     void OnDragLeftUp(wxMouseEvent &);
-    void OnDragKeyDown(wxKeyEvent &);
+    void OnDragKey(wxKeyEvent &);
     void OnDragScrollTimer(wxTimerEvent &);
     void DragTo(const wxPoint &);
     int  GetDragScrollDir(int x) const;
@@ -105,6 +108,7 @@ class COvList : public CFormViewEx
     wxPoint          m_dragStart;
     wxPoint          m_dragPos;           // last mouse position while dragging
     wxTimer          m_dragScrollTimer;   // scrolls while the mouse is at the edge
+    int              m_dragInsertGap = -1; // SHIFT: insert before this column, else -1
 
     // Einstellungen
     timestamp    m_fromTime;
