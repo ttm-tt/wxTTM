@@ -32,7 +32,7 @@
 #include "Request.h"
 #include "Res.h"
 
-#include <wx/dnd.h>
+#include <wx/dragimag.h>
 
 #include <set>
 #include <map>
@@ -426,92 +426,6 @@ inline void COvGridCtrl::SetItem(int row, int col, OvItem *item)
 
 
 // -----------------------------------------------------------------------
-// Drag and drop of matches in the grid
-
-// Private format, so the data can't be dropped into other programs
-static const wxDataFormat & OvItemFormat()
-{
-  static wxDataFormat format("wxTTM-OvItem");
-  return format;
-}
-
-
-class OvItemDataObject : public wxCustomDataObject
-{
-  public:
-    OvItemDataObject(long mtID = 0) : wxCustomDataObject(OvItemFormat())
-    {
-      if (mtID)
-        SetData(sizeof(mtID), &mtID);
-    }
-
-    long GetMtID() const
-    {
-      return GetSize() == sizeof(long) ? *(const long *) GetData() : 0;
-    }
-};
-
-
-class OvItemDropTarget : public wxDropTarget
-{
-  public:
-    OvItemDropTarget(COvList *list) : wxDropTarget(new OvItemDataObject()), m_list(list) {}
-
-    virtual wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
-    {
-      wxGridCellCoords cell = GetCell(x, y);
-      
-      // Thick border on the target, or back on the source if there is none.
-      // wxDragNone shows the "no drop" cursor
-      MarkCell(cell != wxGridNoCellCoords ? cell : m_list->m_dragFrom);
- 
-      return cell != wxGridNoCellCoords ? def : wxDragNone;
-    }
-
-    virtual void OnLeave()
-    {
-      MarkCell(m_list->m_dragFrom);
-    }
-
-    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def)
-    {
-      wxGridCellCoords cell = GetCell(x, y);
-      if (cell == wxGridNoCellCoords || !GetData())
-        return wxDragNone;
-
-      long mtID = ((OvItemDataObject *) GetDataObject())->GetMtID();
-      m_list->OnDropMatch(mtID, cell.GetRow(), cell.GetCol());
-
-      return def;
-    }
-
-  private:
-    // x, y are relative to the grid window, which may be scrolled
-    wxGridCellCoords GetCell(wxCoord x, wxCoord y)
-    {
-      COvGridCtrl *grid = m_list->m_gridCtrl;
-      wxGridCellCoords cell = grid->XYToCell(grid->CalcUnscrolledPosition(wxPoint(x, y)));
-
-      // For now horizontal only, i.e. same time, other table.
-      // A drag from another overview has no source row here, refuse it.
-      const wxGridCellCoords& from = m_list->m_dragFrom;
-      if (from == wxGridNoCellCoords || cell.GetRow() != from.GetRow())
-        return wxGridNoCellCoords;
-      
-      return cell;
-    }
-
-    void MarkCell(const wxGridCellCoords& cell)
-    {
-      if (cell != wxGridNoCellCoords)
-        m_list->m_gridCtrl->SetGridCursor(cell);
-    }
-
-    COvList *m_list;
-};
-
-
-// -----------------------------------------------------------------------
 // COvList
 
 IMPLEMENT_DYNAMIC_CLASS(COvList, CFormViewEx)
@@ -791,10 +705,8 @@ void COvList::OnInitialUpdate()
   // gets its border in the selection colour
   m_gridCtrl->SetSelectionMode(wxGrid::wxGridSelectNone);
 
-  // Enable d&d of cells
+  // Enable d&d of cells, see OnCellBeginDrag
   m_gridCtrl->EnableDragCell();
-  // Matches can be dragged to other cells, see OnCellBeginDrag
-  m_gridCtrl->GetGridWindow()->SetDropTarget(new OvItemDropTarget(this));
 
   // Kann ein wxGrid kein wxEVT_CONTEXT_MENU?
   m_gridCtrl->GetGridCornerLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
@@ -1700,19 +1612,138 @@ void COvList::OnCellBeginDrag(wxGridEvent &)
   if (m_popupTimer.IsRunning())
     m_popupTimer.Stop();
 
+  if (m_dragImage)
+    return;
+
   // Left down made the clicked cell current; evt.GetRow/Col() is the cell
   // under the mouse after it moved, which can already be the neighbour
-  OvItem *itemPtr = 
-      m_gridCtrl->GetItem(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+  wxGridCellCoords from(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+
+  OvItem *itemPtr = m_gridCtrl->GetItem(from.GetRow(), from.GetCol());
   if (!itemPtr || !itemPtr->mt.mtID)
     return;   // handled: no drag for empty cells or "n Mts." cells
 
-  m_dragFrom = 
-      wxGridCellCoords(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+  wxWindow *gridWin = m_gridCtrl->GetGridWindow();
 
-  OvItemDataObject data(itemPtr->mt.mtID);
-  wxDropSource source(data, m_gridCtrl->GetGridWindow());
-  source.DoDragDrop(wxDrag_DefaultMove);   // blocks until dropped or cancelled
+  // Picture of the cell, drawn like OvItemGridCellRenderer does, plus a frame
+  wxRect cellRect = m_gridCtrl->CellToRect(from);
+  wxBitmap bmp(cellRect.GetSize());
+  {
+    wxMemoryDC dc(bmp);
+    wxRect rect(wxPoint(0, 0), cellRect.GetSize());
+
+    dc.SetBrush(wxBrush(itemPtr->GetBkColor()));
+    dc.SetPen(*wxTRANSPARENT_PEN);
+    dc.DrawRectangle(rect);
+
+    dc.SetPen(wxPen(itemPtr->GetFgColor()));
+    dc.SetFont(m_gridCtrl->GetDefaultCellFont());
+    itemPtr->DrawItem(&dc, rect);
+
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    dc.SetPen(wxPen(*wxBLACK, 2));
+    dc.DrawRectangle(wxRect(wxPoint(0, 0), cellRect.GetSize()));
+  }
+
+  // Grab the picture where the mouse is. The mouse has already moved a few
+  // pixels and may have left the cell, so keep the hotspot inside the picture
+  m_dragStart = gridWin->ScreenToClient(wxGetMousePosition());
+
+  wxPoint hotspot = m_gridCtrl->CalcUnscrolledPosition(m_dragStart) - cellRect.GetTopLeft();
+  hotspot.x = std::max(0, std::min(hotspot.x, cellRect.GetWidth() - 1));
+  hotspot.y = std::max(0, std::min(hotspot.y, cellRect.GetHeight() - 1));
+
+  m_dragFrom = from;
+  m_dragImage = new wxDragImage(bmp);
+
+  m_dragImage->BeginDrag(hotspot, gridWin);   // captures the mouse
+  m_dragImage->Move(m_dragStart);
+  m_dragImage->Show();
+
+  // Dynamic handlers come before wxGrid's own mouse handling. They don't
+  // skip, so the grid doesn't see the mouse while dragging
+  gridWin->Bind(wxEVT_MOTION, &COvList::OnDragMotion, this);
+  gridWin->Bind(wxEVT_LEFT_UP, &COvList::OnDragLeftUp, this);
+  gridWin->Bind(wxEVT_KEY_DOWN, &COvList::OnDragKeyDown, this);
+  gridWin->Bind(wxEVT_MOUSE_CAPTURE_CHANGED, &COvList::OnDragCaptureChanged, this);
+}
+
+
+void COvList::OnDragMotion(wxMouseEvent &evt)
+{
+  if (!m_dragImage)
+    return;
+
+  // For now horizontal only, i.e. same time, other table:
+  // the picture stays in its row
+  wxPoint pt(evt.GetPosition().x, m_dragStart.y);
+
+  // Thick border on the target cell
+  int col = m_gridCtrl->XToCol(m_gridCtrl->CalcUnscrolledPosition(pt).x);
+  if (col != wxNOT_FOUND && col != m_gridCtrl->GetGridCursorCol())
+  {
+    // The picture must be hidden while the grid repaints (and maybe scrolls)
+    m_dragImage->Hide();
+    m_gridCtrl->SetGridCursor(m_dragFrom.GetRow(), col);
+    m_gridCtrl->Update();
+    m_dragImage->Move(pt);
+    m_dragImage->Show();
+  }
+  else
+  {
+    m_dragImage->Move(pt);
+  }
+}
+
+
+void COvList::OnDragLeftUp(wxMouseEvent &)
+{
+  EndDrag(true);
+}
+
+
+// ESC cancels the drag. This can't be done in OnCharHook: wx doesn't send
+// wxEVT_CHAR_HOOK while a window has captured the mouse. The grid window has
+// the focus (the drag started with a click into it), so it gets the key.
+void COvList::OnDragKeyDown(wxKeyEvent &evt)
+{
+  if (evt.GetKeyCode() == WXK_ESCAPE)
+    EndDrag(false);
+  else
+    evt.Skip();
+}
+
+
+void COvList::OnDragCaptureChanged(wxMouseCaptureChangedEvent &)
+{
+  // Someone else took the mouse, e.g. ALT+TAB
+  EndDrag(false);
+}
+
+
+void COvList::EndDrag(bool drop)
+{
+  if (!m_dragImage)
+    return;
+
+  // Unbind first: EndDrag releases the mouse, which sends another capture changed
+  wxWindow *gridWin = m_gridCtrl->GetGridWindow();
+  gridWin->Unbind(wxEVT_MOTION, &COvList::OnDragMotion, this);
+  gridWin->Unbind(wxEVT_LEFT_UP, &COvList::OnDragLeftUp, this);
+  gridWin->Unbind(wxEVT_KEY_DOWN, &COvList::OnDragKeyDown, this);
+  gridWin->Unbind(wxEVT_MOUSE_CAPTURE_CHANGED, &COvList::OnDragCaptureChanged, this);
+
+  m_dragImage->Hide();
+  m_dragImage->EndDrag();   // releases the mouse
+  wxDELETE(m_dragImage);
+
+  int col = m_gridCtrl->GetGridCursorCol();
+  OvItem *itemPtr = m_gridCtrl->GetItem(m_dragFrom.GetRow(), m_dragFrom.GetCol());
+
+  if (drop && itemPtr && col != m_dragFrom.GetCol())
+    OnDropMatch(itemPtr->mt.mtID, m_dragFrom.GetRow(), col);
+  else
+    m_gridCtrl->SetGridCursor(m_dragFrom);   // cancelled or not moved
 
   m_dragFrom = wxGridNoCellCoords;
 }

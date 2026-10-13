@@ -14,6 +14,7 @@
 
 
 class Connection;
+class wxDragImage;
 class COvGridCtrl;
 
 struct MtListRec;
@@ -21,7 +22,6 @@ struct MtListRec;
 class COvList : public CFormViewEx
 {
   friend COvGridCtrl;
-  friend class OvItemDropTarget;
 
   public:
 	  COvList();           
@@ -61,7 +61,7 @@ class COvList : public CFormViewEx
     // Open the edit view for the match in this cell, if there is one
     void EditCell(int row, int col);
 
-    // Called by OvItemDropTarget when a match was dropped on a cell
+    // Called when a dragged match was dropped on another cell in its row
     void OnDropMatch(long mtID, int row, int col);
 
     void SwapTable(short row, short oldTable, short newTable);
@@ -77,6 +77,11 @@ class COvList : public CFormViewEx
     void OnGridSizeChanged(wxCommandEvent &);
     void OnCommand(wxCommandEvent &);
     void OnCellBeginDrag(wxGridEvent&);
+    void OnDragMotion(wxMouseEvent &);
+    void OnDragLeftUp(wxMouseEvent &);
+    void OnDragKeyDown(wxKeyEvent &);
+    void OnDragCaptureChanged(wxMouseCaptureChangedEvent &);
+    void EndDrag(bool drop);
 
   private:
     // Grid-Ctrl
@@ -90,7 +95,11 @@ class COvList : public CFormViewEx
 
     timestamp    m_lastUpdateTime;
 
+    // Drag of a match: source cell, picture following the mouse and
+    // mouse position in the grid window when the drag started
     wxGridCellCoords m_dragFrom = wxGridNoCellCoords;
+    wxDragImage *    m_dragImage = nullptr;
+    wxPoint          m_dragStart;
 
     // Einstellungen
     timestamp    m_fromTime;
