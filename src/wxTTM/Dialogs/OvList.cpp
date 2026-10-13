@@ -32,9 +32,10 @@
 #include "Request.h"
 #include "Res.h"
 
+#include <wx/dnd.h>
+
 #include <set>
 #include <map>
-
 
 typedef  std::map<long, StEntry, std::less<long> >  StEntryMap;
 
@@ -422,6 +423,94 @@ inline void COvGridCtrl::SetItem(int row, int col, OvItem *item)
 {
   ((OvItemGridTable *) GetTable())->SetItem(row, col, item);
 }
+
+
+// -----------------------------------------------------------------------
+// Drag and drop of matches in the grid
+
+// Private format, so the data can't be dropped into other programs
+static const wxDataFormat & OvItemFormat()
+{
+  static wxDataFormat format("wxTTM-OvItem");
+  return format;
+}
+
+
+class OvItemDataObject : public wxCustomDataObject
+{
+  public:
+    OvItemDataObject(long mtID = 0) : wxCustomDataObject(OvItemFormat())
+    {
+      if (mtID)
+        SetData(sizeof(mtID), &mtID);
+    }
+
+    long GetMtID() const
+    {
+      return GetSize() == sizeof(long) ? *(const long *) GetData() : 0;
+    }
+};
+
+
+class OvItemDropTarget : public wxDropTarget
+{
+  public:
+    OvItemDropTarget(COvList *list) : wxDropTarget(new OvItemDataObject()), m_list(list) {}
+
+    virtual wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
+    {
+      wxGridCellCoords cell = GetCell(x, y);
+      
+      // Thick border on the target, or back on the source if there is none.
+      // wxDragNone shows the "no drop" cursor
+      MarkCell(cell != wxGridNoCellCoords ? cell : m_list->m_dragFrom);
+ 
+      return cell != wxGridNoCellCoords ? def : wxDragNone;
+    }
+
+    virtual void OnLeave()
+    {
+      MarkCell(m_list->m_dragFrom);
+    }
+
+    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def)
+    {
+      wxGridCellCoords cell = GetCell(x, y);
+      if (cell == wxGridNoCellCoords || !GetData())
+        return wxDragNone;
+
+      long mtID = ((OvItemDataObject *) GetDataObject())->GetMtID();
+      m_list->OnDropMatch(mtID, cell.GetRow(), cell.GetCol());
+
+      return def;
+    }
+
+  private:
+    // x, y are relative to the grid window, which may be scrolled
+    wxGridCellCoords GetCell(wxCoord x, wxCoord y)
+    {
+      COvGridCtrl *grid = m_list->m_gridCtrl;
+      wxGridCellCoords cell = grid->XYToCell(grid->CalcUnscrolledPosition(wxPoint(x, y)));
+
+      // For now horizontal only, i.e. same time, other table.
+      // A drag from another overview has no source row here, refuse it.
+      const wxGridCellCoords& from = m_list->m_dragFrom;
+      if (from == wxGridNoCellCoords || cell.GetRow() != from.GetRow())
+        return wxGridNoCellCoords;
+      
+      return cell;
+    }
+
+    void MarkCell(const wxGridCellCoords& cell)
+    {
+      if (cell != wxGridNoCellCoords)
+        m_list->m_gridCtrl->SetGridCursor(cell);
+    }
+
+    COvList *m_list;
+};
+
+
 // -----------------------------------------------------------------------
 // COvList
 
@@ -436,6 +525,7 @@ BEGIN_EVENT_TABLE(COvList, CFormViewEx)
 
   EVT_GRID_CELL_LEFT_CLICK(COvList::OnCellLeftClick)
   EVT_GRID_CELL_LEFT_DCLICK(COvList::OnCellDoubleClick)
+  EVT_GRID_CELL_BEGIN_DRAG(COvList::OnCellBeginDrag)
 
   EVT_GRID_LABEL_LEFT_CLICK(COvList::OnCellLeftClick)
   
@@ -587,6 +677,84 @@ bool COvList::Edit(va_list vaList)
 }
 
 
+void COvList::SwapTable(short row, short oldTable, short newTable)
+{
+  if (newTable < 0 || newTable == oldTable)
+    return;
+
+  // Zu tauschendes Spiel ermitteln
+  OvItem* newItemPtr = m_gridCtrl->GetItem(row, newTable - m_fromTable);
+  OvItem* oldItemPtr = m_gridCtrl->GetItem(row, oldTable - m_fromTable);
+
+  // Neuen Tisch setzen und printed Flag zuruecksetzen
+  oldItemPtr->mt.mtPlace.mtTable = newTable;
+  oldItemPtr->mt.mtScorePrinted = 0;
+
+  // Combined haben Runde auf 0 gesetzt (s.o.)
+  if (oldItemPtr->mt.mtEvent.mtRound == 0)
+    MtStore().UpdateScheduleGroup(oldItemPtr->mt.mtEvent, oldItemPtr->mt.mtPlace, oldItemPtr->mt.mtUmpire, oldItemPtr->mt.mtUmpire2);
+  else
+    MtStore().UpdateScheduleMatch(oldItemPtr->mt.mtEvent, oldItemPtr->mt.mtPlace, oldItemPtr->mt.mtUmpire, oldItemPtr->mt.mtUmpire2);
+
+  if (newItemPtr)
+  {
+    // Anderes Spiel existiert, setzen. Und printed flag loeschen
+    newItemPtr->mt.mtPlace.mtTable = oldTable;
+    newItemPtr->mt.mtScorePrinted = 0;
+
+    // Combined haben Runde auf 0 gesetzt (s.o.)
+    if (newItemPtr->mt.mtEvent.mtRound == 0)
+      MtStore().UpdateScheduleGroup(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
+    else
+      MtStore().UpdateScheduleMatch(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
+
+    // Spiel tauschen
+    MtListRec oldMt = oldItemPtr->mt;
+    MtListRec newMt = newItemPtr->mt;
+
+    oldItemPtr->SetValue(newMt);
+    newItemPtr->SetValue(oldMt);
+
+    // Spieler / Team tauschen
+    TmEntry oldTm, newTm;
+
+    oldTm = oldItemPtr->tmA;
+    newTm = newItemPtr->tmA;
+    oldItemPtr->tmA = newTm;
+    newItemPtr->tmA = oldTm;
+
+    oldTm = oldItemPtr->tmX;
+    newTm = newItemPtr->tmX;
+    oldItemPtr->tmX = newTm;
+    newItemPtr->tmX = oldTm;
+  }
+  else
+  {
+    // Anderes Spiel existiert nicht, das heisst, es ist nur eine Spielverlegung
+    OvItem::OvType newOvType = 
+        oldItemPtr->GetOvType() == OvItem::OVPRINTED ? 
+          OvItem::OVNOTPRINTED : oldItemPtr->GetOvType();
+    OvItem * newItemPtr = 
+        new OvItem(oldItemPtr->mt, newOvType);
+
+    newItemPtr->SetShowUmpire(&m_showUmpire);
+
+    newItemPtr->tmA = oldItemPtr->tmA;
+    newItemPtr->tmX = oldItemPtr->tmX;
+
+    m_gridCtrl->SetItem(row, newTable - m_fromTable, newItemPtr);
+    m_gridCtrl->SetItem(row, oldTable - m_fromTable, nullptr);
+  }
+
+  // Wenn das neue Spiel innerhalb des angezeigten Rasters liegt, reicht ein redraw
+  // Ansonsten muss ich das Grid neu aufbauen
+  if (newTable < m_fromTable + m_gridCtrl->GetNumberCols())
+    m_gridCtrl->Refresh();
+  else
+    OnRefresh();
+}
+
+
 // -----------------------------------------------------------------------
 // COvList message handlers
 void COvList::OnInitialUpdate() 
@@ -620,8 +788,13 @@ void COvList::OnInitialUpdate()
   m_gridCtrl->SetDefaultCellBackgroundColour(GetParent()->GetBackgroundColour());
   m_gridCtrl->SetGridLineColour(*wxBLACK);
   // No selection: it isn't drawn anyway, and a selected cursor cell
-  // gets its border in the (white) selection colour
+  // gets its border in the selection colour
   m_gridCtrl->SetSelectionMode(wxGrid::wxGridSelectNone);
+
+  // Enable d&d of cells
+  m_gridCtrl->EnableDragCell();
+  // Matches can be dragged to other cells, see OnCellBeginDrag
+  m_gridCtrl->GetGridWindow()->SetDropTarget(new OvItemDropTarget(this));
 
   // Kann ein wxGrid kein wxEVT_CONTEXT_MENU?
   m_gridCtrl->GetGridCornerLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
@@ -659,7 +832,6 @@ void COvList::OnInitialUpdate()
   Connect(IDC_REFRESH, wxCommandEventHandler(COvList::OnCommand));
   Connect(wxID_PRINT, wxCommandEventHandler(COvList::OnCommand));
   Connect(wxEVT_CHAR, wxKeyEventHandler(COvList::OnChar));
-
 }
 
 
@@ -1522,6 +1694,39 @@ void  COvList::EditCell(int row, int col)
 }
 
 
+void COvList::OnCellBeginDrag(wxGridEvent &)
+{
+  // Left down already started the tooltip timer
+  if (m_popupTimer.IsRunning())
+    m_popupTimer.Stop();
+
+  // Left down made the clicked cell current; evt.GetRow/Col() is the cell
+  // under the mouse after it moved, which can already be the neighbour
+  OvItem *itemPtr = 
+      m_gridCtrl->GetItem(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+  if (!itemPtr || !itemPtr->mt.mtID)
+    return;   // handled: no drag for empty cells or "n Mts." cells
+
+  m_dragFrom = 
+      wxGridCellCoords(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
+
+  OvItemDataObject data(itemPtr->mt.mtID);
+  wxDropSource source(data, m_gridCtrl->GetGridWindow());
+  source.DoDragDrop(wxDrag_DefaultMove);   // blocks until dropped or cancelled
+
+  m_dragFrom = wxGridNoCellCoords;
+}
+
+
+void COvList::OnDropMatch(long mtID, int row, int col)
+{
+  short fromTable = m_dragFrom.GetCol() + m_fromTable;
+  short toTable = col + m_fromTable;
+
+  SwapTable(row, fromTable, toTable);
+}
+
+
 void COvList::OnContextMenuGrid(wxMouseEvent &evt)
 {
   static wxString emptyCellMenu[] = 
@@ -1701,73 +1906,8 @@ void COvList::OnContextMenuGrid(wxMouseEvent &evt)
                 _("Swap Table"), _("Enter new table no."), _("Swap Table"), 
                 oldTable, m_fromTable, m_toTable, this, popupPos);
 
-          if (newTable >= 0 && newTable != oldTable)
-          {
-            // Zu tauschendes Spiel ermitteln
-            OvItem *newItemPtr = m_gridCtrl->GetItem(row, newTable - m_fromTable);
 
-            // Neuen Tisch setzen und printed Flag zuruecksetzen
-            itemPtr->mt.mtPlace.mtTable = newTable;
-            itemPtr->mt.mtScorePrinted = 0;
-
-            // Combined haben Runde auf 0 gesetzt (s.o.)
-            if (itemPtr->mt.mtEvent.mtRound == 0)
-              MtStore().UpdateScheduleGroup(itemPtr->mt.mtEvent, itemPtr->mt.mtPlace, itemPtr->mt.mtUmpire, itemPtr->mt.mtUmpire2);
-            else
-              MtStore().UpdateScheduleMatch(itemPtr->mt.mtEvent, itemPtr->mt.mtPlace, itemPtr->mt.mtUmpire, itemPtr->mt.mtUmpire2);
-
-            if (newItemPtr)
-            {
-              // Anderes Spiel existiert, setzen. Und printed flag loeschen
-              newItemPtr->mt.mtPlace.mtTable = oldTable;
-              newItemPtr->mt.mtScorePrinted = 0;
-
-              // Combined haben Runde auf 0 gesetzt (s.o.)
-              if (newItemPtr->mt.mtEvent.mtRound == 0)
-                MtStore().UpdateScheduleGroup(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
-              else
-                MtStore().UpdateScheduleMatch(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
-
-              // Spiel tauschen
-              MtListRec oldMt = itemPtr->mt;
-              MtListRec newMt = newItemPtr->mt;
-
-              itemPtr->SetValue(newMt);
-              newItemPtr->SetValue(oldMt);
-
-              // Spieler / Team tauschen
-              TmEntry oldTm, newTm;
-            
-              oldTm = itemPtr->tmA;
-              newTm = newItemPtr->tmA;
-              itemPtr->tmA = newTm;
-              newItemPtr->tmA = oldTm;
-
-              oldTm = itemPtr->tmX;
-              newTm = newItemPtr->tmX;
-              itemPtr->tmX = newTm;
-              newItemPtr->tmX = oldTm;
-            }
-            else
-            {
-              // Anderes Spiel existiert nicht, das heisst, es ist nur eine Spielverlegung
-              OvItem *newItemPtr = new OvItem(itemPtr->mt, itemPtr->GetOvType() == OvItem::OVPRINTED ? OvItem::OVNOTPRINTED : itemPtr->GetOvType());              
-              newItemPtr->SetShowUmpire(&m_showUmpire);
-
-              newItemPtr->tmA = itemPtr->tmA;
-              newItemPtr->tmX = itemPtr->tmX;
-
-              m_gridCtrl->SetItem(row, newTable - m_fromTable, newItemPtr);
-              m_gridCtrl->SetItem(row, col, NULL);
-            }
-
-            // Wenn das neue Spiel innerhalb des angezeigten Rasters liegt, reicht ein redraw
-            // Ansonsten muss ich das Grid neu aufbauen
-            if (newTable < m_fromTable + m_gridCtrl->GetNumberCols())
-              m_gridCtrl->Refresh();
-            else
-              OnRefresh();
-          }
+          SwapTable(row, oldTable, newTable);
 
           break;
         }

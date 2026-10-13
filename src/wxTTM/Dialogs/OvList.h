@@ -21,6 +21,7 @@ struct MtListRec;
 class COvList : public CFormViewEx
 {
   friend COvGridCtrl;
+  friend class OvItemDropTarget;
 
   public:
 	  COvList();           
@@ -60,6 +61,11 @@ class COvList : public CFormViewEx
     // Open the edit view for the match in this cell, if there is one
     void EditCell(int row, int col);
 
+    // Called by OvItemDropTarget when a match was dropped on a cell
+    void OnDropMatch(long mtID, int row, int col);
+
+    void SwapTable(short row, short oldTable, short newTable);
+
   private:
     void OnShowUmpire(wxCommandEvent &);
     void OnCellLeftClick(wxGridEvent &);
@@ -70,6 +76,7 @@ class COvList : public CFormViewEx
     void OnMotion(wxMouseEvent &);
     void OnGridSizeChanged(wxCommandEvent &);
     void OnCommand(wxCommandEvent &);
+    void OnCellBeginDrag(wxGridEvent&);
 
   private:
     // Grid-Ctrl
@@ -82,6 +89,8 @@ class COvList : public CFormViewEx
     wxTimer      m_updateTimer;
 
     timestamp    m_lastUpdateTime;
+
+    wxGridCellCoords m_dragFrom = wxGridNoCellCoords;
 
     // Einstellungen
     timestamp    m_fromTime;
