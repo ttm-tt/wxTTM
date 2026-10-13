@@ -619,7 +619,10 @@ void COvList::OnInitialUpdate()
   m_gridCtrl->SetScrollRate(cellSize, cellSize);
   m_gridCtrl->SetDefaultCellBackgroundColour(GetParent()->GetBackgroundColour());
   m_gridCtrl->SetGridLineColour(*wxBLACK);
-  
+  // No selection: it isn't drawn anyway, and a selected cursor cell
+  // gets its border in the (white) selection colour
+  m_gridCtrl->SetSelectionMode(wxGrid::wxGridSelectNone);
+
   // Kann ein wxGrid kein wxEVT_CONTEXT_MENU?
   m_gridCtrl->GetGridCornerLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
   m_gridCtrl->GetGridRowLabelWindow()->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(COvList::OnContextMenuGrid), NULL, this);
@@ -1486,7 +1489,7 @@ void  COvList::OnCellDoubleClick(wxGridEvent &evt)
 
 void  COvList::OnEdit()
 {
-  if (!m_gridCtrl)
+  if (!m_gridCtrl || !m_gridCtrl->HasFocus())
     return;
 
   EditCell(m_gridCtrl->GetGridCursorRow(), m_gridCtrl->GetGridCursorCol());
