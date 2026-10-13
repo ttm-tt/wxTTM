@@ -450,7 +450,7 @@ END_EVENT_TABLE()
 
 
 
-COvList::COvList() : CFormViewEx(), m_popupTimer(this), m_updateTimer(this)
+COvList::COvList() : CFormViewEx(), m_popupTimer(this), m_updateTimer(this), m_dragScrollTimer(this)
 {
   m_showUmpire = false;
   m_initialized = false;
@@ -1442,6 +1442,8 @@ void COvList::OnTimer(wxTimerEvent &evt)
     OnUpdateTimer(evt);
   else if (evt.GetTimer().GetId() == m_popupTimer.GetId())
     OnPopupTimer(evt);
+  else if (evt.GetTimer().GetId() == m_dragScrollTimer.GetId())
+    OnDragScrollTimer(evt);
 }
 
 
@@ -1654,6 +1656,7 @@ void COvList::OnCellBeginDrag(wxGridEvent &)
   hotspot.y = std::max(0, std::min(hotspot.y, cellRect.GetHeight() - 1));
 
   m_dragFrom = from;
+  m_dragPos = m_dragStart;
   m_dragImage = new wxDragImage(bmp);
 
   m_dragImage->BeginDrag(hotspot, gridWin);   // captures the mouse
@@ -1674,12 +1677,32 @@ void COvList::OnDragMotion(wxMouseEvent &evt)
   if (!m_dragImage)
     return;
 
+  m_dragPos = evt.GetPosition();
+
+  DragTo(m_dragPos);
+
+  // At the edge (or beyond, we have the mouse) scroll until the mouse
+  // moves back or the grid can't scroll any further
+  if (GetDragScrollDir(m_dragPos.x) == 0)
+    m_dragScrollTimer.Stop();
+  else if (!m_dragScrollTimer.IsRunning())
+    m_dragScrollTimer.Start(100);
+}
+
+
+// Move the picture to the mouse position and the thick border to the target cell
+void COvList::DragTo(const wxPoint &mousePos)
+{
   // For now horizontal only, i.e. same time, other table:
   // the picture stays in its row
-  wxPoint pt(evt.GetPosition().x, m_dragStart.y);
+  wxPoint pt(mousePos.x, m_dragStart.y);
 
-  // Thick border on the target cell
-  int col = m_gridCtrl->XToCol(m_gridCtrl->CalcUnscrolledPosition(pt).x);
+  // Target is the column under the mouse, or the outermost visible one
+  // if the mouse is beyond the edge
+  int width = m_gridCtrl->GetGridWindow()->GetClientSize().GetWidth();
+  int x = std::max(0, std::min(pt.x, width - 1));
+  int col = m_gridCtrl->XToCol(m_gridCtrl->CalcUnscrolledPosition(wxPoint(x, 0)).x);
+
   if (col != wxNOT_FOUND && col != m_gridCtrl->GetGridCursorCol())
   {
     // The picture must be hidden while the grid repaints (and maybe scrolls)
@@ -1693,6 +1716,48 @@ void COvList::OnDragMotion(wxMouseEvent &evt)
   {
     m_dragImage->Move(pt);
   }
+}
+
+
+// -1 / +1 if the mouse is in the left / right margin of the grid window or beyond
+int COvList::GetDragScrollDir(int x) const
+{
+  int width = m_gridCtrl->GetGridWindow()->GetClientSize().GetWidth();
+  int margin = std::max(10, std::min(m_gridCtrl->GetDefaultColSize() / 3, width / 4));
+
+  if (x < margin)
+    return -1;
+  if (x >= width - margin)
+    return +1;
+
+  return 0;
+}
+
+
+void COvList::OnDragScrollTimer(wxTimerEvent &)
+{
+  int dir = m_dragImage ? GetDragScrollDir(m_dragPos.x) : 0;
+  if (dir == 0)
+  {
+    m_dragScrollTimer.Stop();
+    return;
+  }
+
+  // Scroll units are columns (SetScrollRate with the cell size)
+  int oldX, oldY, newX, newY;
+  m_gridCtrl->GetViewStart(&oldX, &oldY);
+
+  m_dragImage->Hide();
+  m_gridCtrl->Scroll(oldX + dir, oldY);
+  m_gridCtrl->Update();
+  m_dragImage->Show();
+
+  m_gridCtrl->GetViewStart(&newX, &newY);
+  if (newX == oldX)
+    m_dragScrollTimer.Stop();   // already at the start or end
+
+  // The grid moved under the mouse: new target
+  DragTo(m_dragPos);
 }
 
 
@@ -1732,6 +1797,8 @@ void COvList::EndDrag(bool drop)
   gridWin->Unbind(wxEVT_LEFT_UP, &COvList::OnDragLeftUp, this);
   gridWin->Unbind(wxEVT_KEY_DOWN, &COvList::OnDragKeyDown, this);
   gridWin->Unbind(wxEVT_MOUSE_CAPTURE_CHANGED, &COvList::OnDragCaptureChanged, this);
+
+  m_dragScrollTimer.Stop();
 
   m_dragImage->Hide();
   m_dragImage->EndDrag();   // releases the mouse

@@ -80,6 +80,9 @@ class COvList : public CFormViewEx
     void OnDragMotion(wxMouseEvent &);
     void OnDragLeftUp(wxMouseEvent &);
     void OnDragKeyDown(wxKeyEvent &);
+    void OnDragScrollTimer(wxTimerEvent &);
+    void DragTo(const wxPoint &);
+    int  GetDragScrollDir(int x) const;
     void OnDragCaptureChanged(wxMouseCaptureChangedEvent &);
     void EndDrag(bool drop);
 
@@ -100,6 +103,8 @@ class COvList : public CFormViewEx
     wxGridCellCoords m_dragFrom = wxGridNoCellCoords;
     wxDragImage *    m_dragImage = nullptr;
     wxPoint          m_dragStart;
+    wxPoint          m_dragPos;           // last mouse position while dragging
+    wxTimer          m_dragScrollTimer;   // scrolls while the mouse is at the edge
 
     // Einstellungen
     timestamp    m_fromTime;
