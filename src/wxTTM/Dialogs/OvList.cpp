@@ -628,69 +628,30 @@ void COvList::SwapTable(short row, short oldTable, short newTable)
   if (newTable < 0 || newTable == oldTable)
     return;
 
+  int oldCol = oldTable - m_fromTable;
+  int newCol = newTable - m_fromTable;
+
   // Zu tauschendes Spiel ermitteln
-  OvItem* newItemPtr = m_gridCtrl->GetItem(row, newTable - m_fromTable);
-  OvItem* oldItemPtr = m_gridCtrl->GetItem(row, oldTable - m_fromTable);
+  OvItem* newItemPtr = m_gridCtrl->GetItem(row, newCol);
+  OvItem* oldItemPtr = m_gridCtrl->GetItem(row, oldCol);
+
+  if (!oldItemPtr)
+    return;
 
   // Neuen Tisch setzen und printed Flag zuruecksetzen
-  oldItemPtr->mt.mtPlace.mtTable = newTable;
-  oldItemPtr->mt.mtScorePrinted = 0;
-
-  // Combined haben Runde auf 0 gesetzt (s.o.)
-  if (oldItemPtr->mt.mtEvent.mtRound == 0)
-    MtStore().UpdateScheduleGroup(oldItemPtr->mt.mtEvent, oldItemPtr->mt.mtPlace, oldItemPtr->mt.mtUmpire, oldItemPtr->mt.mtUmpire2);
-  else
-    MtStore().UpdateScheduleMatch(oldItemPtr->mt.mtEvent, oldItemPtr->mt.mtPlace, oldItemPtr->mt.mtUmpire, oldItemPtr->mt.mtUmpire2);
+  SetTable(oldItemPtr, newTable);
 
   if (newItemPtr)
   {
     // Anderes Spiel existiert, setzen. Und printed flag loeschen
-    newItemPtr->mt.mtPlace.mtTable = oldTable;
-    newItemPtr->mt.mtScorePrinted = 0;
-
-    // Combined haben Runde auf 0 gesetzt (s.o.)
-    if (newItemPtr->mt.mtEvent.mtRound == 0)
-      MtStore().UpdateScheduleGroup(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
-    else
-      MtStore().UpdateScheduleMatch(newItemPtr->mt.mtEvent, newItemPtr->mt.mtPlace, newItemPtr->mt.mtUmpire, newItemPtr->mt.mtUmpire2);
-
-    // Spiel tauschen
-    MtListRec oldMt = oldItemPtr->mt;
-    MtListRec newMt = newItemPtr->mt;
-
-    oldItemPtr->SetValue(newMt);
-    newItemPtr->SetValue(oldMt);
-
-    // Spieler / Team tauschen
-    TmEntry oldTm, newTm;
-
-    oldTm = oldItemPtr->tmA;
-    newTm = newItemPtr->tmA;
-    oldItemPtr->tmA = newTm;
-    newItemPtr->tmA = oldTm;
-
-    oldTm = oldItemPtr->tmX;
-    newTm = newItemPtr->tmX;
-    oldItemPtr->tmX = newTm;
-    newItemPtr->tmX = oldTm;
+    SetTable(newItemPtr, oldTable);
   }
-  else
-  {
-    // Anderes Spiel existiert nicht, das heisst, es ist nur eine Spielverlegung
-    OvItem::OvType newOvType = 
-        oldItemPtr->GetOvType() == OvItem::OVPRINTED ? 
-          OvItem::OVNOTPRINTED : oldItemPtr->GetOvType();
-    OvItem * newItemPtr = 
-        new OvItem(oldItemPtr->mt, newOvType);
 
-    newItemPtr->SetShowUmpire(&m_showUmpire);
-
-    newItemPtr->tmA = oldItemPtr->tmA;
-    newItemPtr->tmX = oldItemPtr->tmX;
-
-    m_gridCtrl->SetItem(row, newTable - m_fromTable, newItemPtr);
-    m_gridCtrl->SetItem(row, oldTable - m_fromTable, nullptr);
-  }
+  // Die Items selbst tauschen, nicht ihren Inhalt: so wandern ID (mit der
+  // OnUpdateMt das Item sucht), Spieler / Teams und Tooltip mit.
+  // Ist der andere Tisch leer, ist es nur eine Spielverlegung.
+  m_gridCtrl->SetItem(row, newCol, oldItemPtr);
+  m_gridCtrl->SetItem(row, oldCol, newItemPtr);
 
   // Wenn das neue Spiel innerhalb des angezeigten Rasters liegt, reicht ein redraw
   // Ansonsten muss ich das Grid neu aufbauen
@@ -698,6 +659,24 @@ void COvList::SwapTable(short row, short oldTable, short newTable)
     m_gridCtrl->Refresh();
   else
     OnRefresh();
+}
+
+
+// Neuen Tisch eines Spiels speichern und printed Flag zuruecksetzen
+void COvList::SetTable(OvItem *itemPtr, short table)
+{
+  itemPtr->mt.mtPlace.mtTable = table;
+  itemPtr->mt.mtScorePrinted = 0;
+
+  // Combined haben Runde auf 0 gesetzt (s.o.)
+  if (itemPtr->mt.mtEvent.mtRound == 0)
+    MtStore().UpdateScheduleGroup(itemPtr->mt.mtEvent, itemPtr->mt.mtPlace, itemPtr->mt.mtUmpire, itemPtr->mt.mtUmpire2);
+  else
+    MtStore().UpdateScheduleMatch(itemPtr->mt.mtEvent, itemPtr->mt.mtPlace, itemPtr->mt.mtUmpire, itemPtr->mt.mtUmpire2);
+
+  // Nicht mehr gedruckt
+  if (itemPtr->GetOvType() == OvItem::OVPRINTED || itemPtr->GetOvType() == OvItem::OVMISSING)
+    itemPtr->SetOvType(OvItem::OVNOTPRINTED);
 }
 
 

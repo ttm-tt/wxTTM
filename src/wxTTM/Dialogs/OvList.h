@@ -16,6 +16,7 @@
 class Connection;
 class wxDragImage;
 class COvGridCtrl;
+class OvItem;
 
 struct MtListRec;
 
@@ -65,6 +66,7 @@ class COvList : public CFormViewEx
     void OnDropMatch(long mtID, int row, int col);
 
     void SwapTable(short row, short oldTable, short newTable);
+    void SetTable(OvItem *itemPtr, short table);
 
     // Move the match in fromCol to toCol, everything in between moves one table towards fromCol
     void InsertMatch(int row, int fromCol, int toCol);
