@@ -2,7 +2,7 @@
 
 #pragma once
 #include <stdafx.h>
-#include  "ListItem.h"
+#include "ListItem.h"
 
 // =======================================================================
 class DateItem : public ListItem

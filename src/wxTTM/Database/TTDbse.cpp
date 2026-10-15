@@ -863,7 +863,8 @@ std::list<wxString> TTDbse::ListDatabases(const wxString &server, const wxString
   std::list<wxString>  result;
   
   wxString  masterStr = connStr.IsEmpty() ?
-      "DRIVER=SQL Server;SERVER="+server+";Trusted_Connection=Yes;" : connStr;
+      "DRIVER=SQL Server;SERVER="+server+";Trusted_Connection=Yes;TrustServerCertificate=Yes;" :
+      connStr;
       
   Connection *masterConnection = 0;
   Statement  *stmtPtr = 0;

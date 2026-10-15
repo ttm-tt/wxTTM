@@ -4,6 +4,8 @@
 
 #include "DatabaseLogin.h"
 
+#include "TTDbse.h"
+
 
 IMPLEMENT_DYNAMIC_CLASS(CDatabaseLogin, wxDialog)
 
@@ -36,8 +38,10 @@ void CDatabaseLogin::OnInitDialog(wxInitDialogEvent &)
   FindWindow("Username")->SetValidator(wxGenericValidator(&user));
   FindWindow("Password")->SetValidator(wxGenericValidator(&pwd));
 
-  FindWindow("Username")->Enable(false);
-  FindWindow("Password")->Enable(false);
+  bool isLocal = TTDbse::IsLocalAddress(server);
+  FindWindow("Username")->Enable(!isLocal);
+  FindWindow("Password")->Enable(!isLocal);
+  windowsAuth = isLocal;
 
   TransferDataToWindow();
 }
@@ -70,14 +74,14 @@ wxString CDatabaseLogin::GetConnectionString() const
   if (windowsAuth)
   {
     connStr = wxString::Format(
-        "DRIVER=SQL Server;SERVER=%s;Trusted_Connection=Yes;", 
+        "DRIVER=SQL Server;SERVER=%s;Trusted_Connection=Yes;TrustServerCertificate=Yes;", 
         server.wx_str()
     );
   }
   else if (!user.IsEmpty() && !pwd.IsEmpty())
   {
     connStr = wxString::Format(
-        "DRIVER=SQL Server;SERVER=%s;Trusted_Connection=No;UID=%s;PWD=%s;", 
+        "DRIVER=SQL Server;SERVER=%s;Trusted_Connection=No;UID=%s;PWD=%s;TrustServerCertificate=Yes;", 
         server.wx_str(), user.wx_str(), pwd.wx_str()
     );
   }

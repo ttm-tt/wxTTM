@@ -1498,6 +1498,12 @@ bool  CTT32App::OpenTournament(const wxString &name)
 
   m_pMainWnd->SetTitle(wxT("TTM - ") + name);
 
+  // Connection string might have changed, write it again if necessary
+  if (connStr.CompareTo(TTDbse::instance()->GetConnectionString()))
+  {
+    connStr = TTDbse::instance()->GetConnectionString();
+    ttProfile.AddString(PRF_TURNIER, name.data(), connStr.data());
+  }
   ttProfile.AddString(PRF_OPEN, PRF_LAST, name);
 
   tournament = name;

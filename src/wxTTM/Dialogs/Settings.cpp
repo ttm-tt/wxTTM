@@ -280,7 +280,7 @@ void CSettings::OnKillFocus(wxFocusEvent &evt)
     {
       CDatabaseLogin *dlg = (CDatabaseLogin *)wxXmlResource::Get()->LoadDialog(CTT32App::instance()->GetTopWindow(), "DatabaseLogin");
       dlg->SetServer(m_server);
-      dlg->SetDatabase("");
+      dlg->SetDatabase(m_dbName);
 
       if (dlg->ShowModal() != wxID_OK)
       {
@@ -288,7 +288,7 @@ void CSettings::OnKillFocus(wxFocusEvent &evt)
         return;
       }
 
-      wxString connStr = dlg->GetConnectionString();
+      connStr = dlg->GetConnectionString();
 
       m_useWindowsAuthentication = dlg->GetWindowsAuthentication();
       if (m_useWindowsAuthentication)
