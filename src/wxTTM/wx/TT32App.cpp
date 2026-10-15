@@ -1381,7 +1381,7 @@ bool  CTT32App::CreateTournament(
 #if 0
   if (expire.IsEmpty())
   {
-    if (server.IsEmpty() || TTDbse::IsLocalAddress(server))
+    if (server.IsEmpty() || Connection::IsLocalAddress(server))
     {
       infoSystem.Error(_("No valid license found"));
       return false;
@@ -1440,14 +1440,14 @@ bool  CTT32App::CreateTournament(
   SetMenuBar("ITTFMenuBar");
   
   // Nur in lokaler DB auch in DB schreiben, sonst nur in ini file
-  SetType(type, TTDbse::IsLocalAddress(server));
-  SetTable(table, TTDbse::IsLocalAddress(server));
+  SetType(type, Connection::IsLocalAddress(server));
+  SetTable(table, Connection::IsLocalAddress(server));
   
   ((CMainFrame *) m_pMainWnd)->SetDefaultCP(GetDefaultCP());
   ((CMainFrame *) m_pMainWnd)->SetDefaultGR(GetDefaultGR());
   ((CMainFrame *) m_pMainWnd)->SetDefaultNA(GetDefaultNA());
   
-  if (TTDbse::IsLocalAddress(server))
+  if (Connection::IsLocalAddress(server))
   {
     Connect(wxEVT_TIMER, wxTimerEventHandler(CTT32App::OnTimer), NULL, this);
     m_backupTimer.Start(GetBackupTime() * 60 * 1000, false);
@@ -1469,7 +1469,7 @@ bool  CTT32App::OpenTournament(const wxString &name)
   wxString server = TTDbse::GetServer(connStr);
   wxString database = TTDbse::GetDatabase(connStr);
 
-  bool throwError = !TTDbse::IsLocalAddress(server);
+  bool throwError = !Connection::IsLocalAddress(server);
   throwError |= database.IsEmpty();
   throwError |= _taccess(ttProfile.GetString(name, PRF_PATH).t_str(), 00) != 0;
 
@@ -1635,7 +1635,7 @@ bool  CTT32App::DetachTournament(const wxString &name, bool deleteDir)
   wxString connStr = tmp;
 
   // Wenn es eine lokale DB ist, im Server austragen.
-  if (TTDbse::IsLocalAddress(TTDbse::GetServer(connStr)))
+  if (Connection::IsLocalAddress(TTDbse::GetServer(connStr)))
   {
     // In case of error and when not deleting the directory, keep the ini file to be able to retry
     if (!TTDbse::instance()->DetachDatabase(connStr) && !deleteDir)

@@ -26,6 +26,9 @@ class  Connection
 
   // public interface
   public:
+    // Ist es eine lokale Adresse
+    static bool  IsLocalAddress(const wxString &addr);
+
     // Constructor, opens connection
     Connection(SQLHENV hEnv_, SQLHDBC hDbc_, const wxString &str);    // throws SQLException
 

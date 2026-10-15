@@ -130,8 +130,13 @@ bool  InfoSystem::Exception(const wxString &sql, const SQLException &e)
 
   title = wxString::Format("SQL Error [%s]", e.GetSQLState());
 
+  // Don't show passwords, e.g. from a connection string
+  static wxRegEx pwdRegEx("(PWD|Password)=[^;]*", wxRE_EXTENDED | wxRE_ICASE);
+  wxString  stmt = sql;
+  pwdRegEx.Replace(&stmt, "\\1=***");
+
   if (wxSnprintf(wxStringBuffer(message, 1024), 1024-4, "%s\nLocation: %s %d\nStatement: %s", 
-                 e.GetMessage(), e.GetFileName(), e.GetLineNr(), sql.data()) < 0)
+                 e.GetMessage(), e.GetFileName(), e.GetLineNr(), stmt.data()) < 0)
     message.Append("...");
 
   return DisplayMessageBox(title, message, wxOK | wxICON_EXCLAMATION | wxCENTER);

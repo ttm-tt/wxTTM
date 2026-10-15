@@ -38,7 +38,7 @@ void CDatabaseLogin::OnInitDialog(wxInitDialogEvent &)
   FindWindow("Username")->SetValidator(wxGenericValidator(&user));
   FindWindow("Password")->SetValidator(wxGenericValidator(&pwd));
 
-  bool isLocal = TTDbse::IsLocalAddress(server);
+  bool isLocal = Connection::IsLocalAddress(server);
   FindWindow("Username")->Enable(!isLocal);
   FindWindow("Password")->Enable(!isLocal);
   windowsAuth = isLocal;

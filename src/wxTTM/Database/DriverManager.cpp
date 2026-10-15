@@ -73,14 +73,27 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
 
   // Test, ob SQL Server Native Client installiert ist und den stattdessen verwenden.
   // Der normale SQL Server ODBC-Treiber kann sehr langsam sein.
- static  wxRegEx driverRegEx("DRIVER=[^;]+;");
- static  wxRegEx serverRegEx("SERVER=\\(local\\);");
+  static  wxRegEx driverRegEx("DRIVER=[^;]+;");
+  static  wxRegEx serverRegEx("SERVER=\\(local\\);");
+  static  wxRegEx noProtocolRegEx("SERVER=([^;:]+);");
 
   wxString tmp = connStr;
   HKEY hkResult;
 
   // Replace (local) with localhost
   serverRegEx.Replace(&tmp, "SERVER=localhost;");
+
+  // Force TCP for remote servers without an explicit protocol prefix (no ':' in the name).
+  // Otherwise the client falls back to Named Pipes (SMB) if TCP fails, which does not
+  // honor SQL_LOGIN_TIMEOUT and blocks for about 2 minutes on an unreachable server.
+  // Local servers are left alone, they may rely on Shared Memory with TCP disabled.
+  bool forcedTcp = false;
+  if (noProtocolRegEx.Matches(tmp))
+  {
+    wxString host = noProtocolRegEx.GetMatch(tmp, 1).BeforeFirst('\\');
+    if (host != "." && !Connection::IsLocalAddress(host))
+      forcedTcp = noProtocolRegEx.Replace(&tmp, "SERVER=tcp:\\1;", 1) > 0;
+  }
 
   // No UID and PWD allowed if this is a trusted connection
   if (tmp.Contains("Trusted_Connection=Yes;"))
@@ -121,9 +134,11 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
 	  driverRegEx.Replace(&tmp, "DRIVER=SQL Server Native Client 10.0;");
   }
 
+  // No driver login dialog: wxTTM asks for credentials itself, and the dialog would pop up
+  // on any failure (e.g. server unreachable) and its own retry blocks again for a long time.
   ret = SQLDriverConnect(
-    hDbc, (SQLHWND) (wxTheApp ? wxTheApp->GetTopWindow()->GetHWND() : NULL),
-    (SQLTCHAR *) tmp.wx_str(), SQL_NTS, (SQLTCHAR *) connStrOut, 1023, &connStrOutLen, SQL_DRIVER_COMPLETE_REQUIRED);
+    hDbc, (SQLHWND) NULL,
+    (SQLTCHAR *) tmp.wx_str(), SQL_NTS, (SQLTCHAR *) connStrOut, 1023, &connStrOutLen, SQL_DRIVER_NOPROMPT);
 
   // Cancel beim Loginfenster
   if (ret == SQL_NO_DATA)
@@ -134,6 +149,10 @@ Connection * DriverManager::GetConnection(const wxString &connStr)
 
   tmp = connStrOut;
   driverRegEx.Replace(&tmp, "DRIVER=SQL Server;");
+
+  // Don't leak the forced "tcp:" into the stored connection string (ini file, settings dialog)
+  if (forcedTcp)
+    tmp.Replace("SERVER=tcp:", "SERVER=", false);
   return new Connection(hEnv, hDbc, tmp);
 }
 

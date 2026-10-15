@@ -29,9 +29,6 @@ class  TTDbse
     static unsigned DbVersion;
 
  // Some helpers
-    // Ist es eine lokale Adresse
-    static bool  IsLocalAddress(const wxString &addr);
-
     // Connection string parsen
     static bool GetWindowsAuthentication(const wxString &connStr);
     static wxString GetServer(const wxString &connStr);
@@ -84,7 +81,7 @@ class  TTDbse
     std::list<wxString> ListDatabases(const wxString &server, const wxString &connStr = wxEmptyString) const;
 
     // Check if the touornament is on a local server
-    bool IsLocal() const {return IsLocalAddress(GetServer());}
+    bool IsLocal() const {return Connection::IsLocalAddress(GetServer());}
 
     // Test if tournament has schedule
     bool IsScheduled() const;

@@ -11,6 +11,17 @@
 #include  "SQLException.h"
 
 
+// Ist es eine lokale Adresse
+bool  Connection::IsLocalAddress(const wxString &addr)
+{
+  return 
+    addr == "(local)" ||
+    addr == "localhost" ||
+    addr == "127.0.0.1"
+  ;
+}
+
+
 // Constructor, argument is the connection string
 Connection::Connection(SQLHENV hEnv_, SQLHDBC hDbc_, const wxString &str)
 {

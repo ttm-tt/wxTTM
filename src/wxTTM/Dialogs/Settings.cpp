@@ -273,7 +273,7 @@ void CSettings::OnKillFocus(wxFocusEvent &evt)
 
   if (tmp != m_server)
   {
-    wxString connStr = TTDbse::IsLocalAddress(m_server) ? TTDbse::instance()->GetConnectionString().c_str() : wxEmptyString;
+    wxString connStr = Connection::IsLocalAddress(m_server) ? TTDbse::instance()->GetConnectionString().c_str() : wxEmptyString;
     XRCCTRL(*this, "Database", wxComboBox)->Clear();
 
     if (m_server != "localhost")
@@ -322,8 +322,8 @@ void CSettings::OnKillFocus(wxFocusEvent &evt)
 
     SetCursor(wxNullCursor);    
 
-    FindWindow("BackupPathLabel")->Show(TTDbse::IsLocalAddress(tmp));
-    FindWindow("BackupPath")->Show(TTDbse::IsLocalAddress(tmp));
+    FindWindow("BackupPathLabel")->Show(Connection::IsLocalAddress(tmp));
+    FindWindow("BackupPath")->Show(Connection::IsLocalAddress(tmp));
   } 
 
   TransferDataToWindow();

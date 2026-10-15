@@ -82,15 +82,6 @@ unsigned TTDbse::DbVersion = DB_VERSION;
 TTDbse * TTDbse::selfPtr = 0;
 
 
-bool  TTDbse::IsLocalAddress(const wxString &addr)
-{
-  return 
-    addr == "(local)" ||
-    addr == "localhost" ||
-    addr == "127.0.0.1"
-  ;
-}
-
 bool  TTDbse::GetWindowsAuthentication(const wxString &connStr)
 {
   static wxRegEx authRegEx("Trusted_Connection=([^;]+);");
@@ -140,7 +131,7 @@ bool  TTDbse::CreateDatabase(const wxString &database, const wxString &server,
           database.wx_str(), server.wx_str(), user.wx_str(), pwd.wx_str())
   ;
 
-  if ( OpenDatabase(connStr, TTDbse::IsLocalAddress(server) ? false : true) )
+  if ( OpenDatabase(connStr, Connection::IsLocalAddress(server) ? false : true) )
   {
     type  = IdStore::GetType();
     table = IdStore::GetTable();
@@ -148,7 +139,7 @@ bool  TTDbse::CreateDatabase(const wxString &database, const wxString &server,
   }
     
   // Entfernte DB muessen existieren
-  if ( !TTDbse::IsLocalAddress(server) )
+  if ( !Connection::IsLocalAddress(server) )
     return false;
     
   bool exists = false;
@@ -305,7 +296,7 @@ bool  TTDbse::DetachDatabase(const wxString &connStr, bool throwError)
 
   // Keine lokale Datenbank, also auch kein wirkliches Detach machen
   // "Loeschen" ist aber erfolgreich, das Turnier wird aus dem Ini-File geworfen
-  if ( !TTDbse::IsLocalAddress(server) )
+  if ( !Connection::IsLocalAddress(server) )
     return true;
   
   // Kein DB konnte ermittelt werden? Also kann sie auch nicht geloescht werden

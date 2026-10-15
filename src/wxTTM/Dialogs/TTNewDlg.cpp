@@ -105,7 +105,7 @@ void CTTNewDlg::OnKillFocus(wxFocusEvent &evt)
 
     XRCCTRL(*this, "Database", wxComboBox)->Clear();
     
-    if (!TTDbse::IsLocalAddress(m_server))
+    if (!Connection::IsLocalAddress(m_server))
     {
       SetCursor(*wxHOURGLASS_CURSOR);
 
@@ -123,7 +123,7 @@ void CTTNewDlg::OnKillFocus(wxFocusEvent &evt)
     // "Create" Button erstmal wieder freigeben
     XRCCTRL(*this, "wxID_OK", wxButton)->Enable(true);
 
-    if (TTDbse::IsLocalAddress(m_server))
+    if (Connection::IsLocalAddress(m_server))
     {
       // Turniereinstellungen zeigen
       FindWindow("Type")->Show(true);
