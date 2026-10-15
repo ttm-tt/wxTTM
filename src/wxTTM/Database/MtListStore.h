@@ -83,7 +83,7 @@ class  MtListStore : public StoreObj, public MtListRec
     timestamp GetLastUpdateTime();
 
     // Return tuples of grID and mtRound, and mtDateTime
-    std::list<std::tuple<long, short, timestamp>> GetFinishedRounds(Finished what);
+    std::list<std::tuple<long, short, timestamp>> GetFinishedRounds(Finished what, const timestamp &date = timestamp{});
 
     // Count scheduled matches
     long CountScheduledMatches();

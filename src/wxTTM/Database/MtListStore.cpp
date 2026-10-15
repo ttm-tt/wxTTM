@@ -592,7 +592,7 @@ timestamp MtListStore::GetLastUpdateTime()
 
 
 // -----------------------------------------------------------------------
-std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Finished what)
+std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Finished what, const timestamp &date)
 {
   std::list<std::tuple<long, short, timestamp>> ret;
   PreparedStatement *stmtPtr = 0;
@@ -602,10 +602,14 @@ std::list<std::tuple<long, short, timestamp>> MtListStore::GetFinishedRounds(Fin
     " FROM MtList mt INNER JOIN GrList gr on mt.grID = gr.grID "
     "      INNER JOIN CpList cp ON gr.cpID = cp.cpID ";
 
+  if (date.year > 0)
+    sql += "WHERE CAST(mtDateTime AS DATE) = '" + tstostr(date) + "' ";
+  else
+    sql += "WHERE CAST(mtDateTime AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE)  ";
+
   // Select all checked (finished) matches where no corresponding match today is not checked (finished) and no bye involved
   sql += 
-    "WHERE CAST(mtDateTime AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE) "
-    "  AND mt.mtChecked <> 0 "
+    "AND mt.mtChecked <> 0 "
     "AND NOT EXISTS ("
     "  SELECT * FROM MtList INNER JOIN GrList ON MtList.grID = GrList.grID INNER JOIN CpList ON GrList.cpID = CpList.cpID " 
     "   WHERE MtList.mtID IS NOT NULL "

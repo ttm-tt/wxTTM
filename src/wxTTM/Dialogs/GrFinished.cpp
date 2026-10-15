@@ -7,6 +7,8 @@
 #include "GrFinished.h"
 
 #include "GrItem.h"
+#include "MtListStore.h"
+#include "DateItem.h"
 
 #include "InfoSystem.h"
 #include "Printer.h"
@@ -19,6 +21,7 @@
 IMPLEMENT_DYNAMIC_CLASS(CGrFinished, CGrPrintBase)
 
 BEGIN_EVENT_TABLE(CGrFinished, CGrPrintBase)
+  EVT_COMBOBOX(XRCID("Date"), CGrFinished::OnTypeChange)
   EVT_COMBOBOX(XRCID("Type"), CGrFinished::OnTypeChange)
   EVT_BUTTON(IDC_REFRESH, CFormViewEx::OnCommand)
 END_EVENT_TABLE()
@@ -151,7 +154,29 @@ void  GrFinishedItem::DrawColumn(wxDC *pDC, int col, wxRect &rect)
 // -----------------------------------------------------------------------
 void CGrFinished::OnInitialUpdate()
 {
+  CComboBoxEx *cbDates = XRCCTRL(*this, "Date", CComboBoxEx);
+
   CGrPrintBase::OnInitialUpdate();
+  timestamp ct{};
+  struct tm tm;
+  time_t now = time(nullptr);
+  localtime_s(&tm, &now);
+  ct.year = tm.tm_year + 1900;
+  ct.month = tm.tm_mon + 1;
+  ct.day = tm.tm_mday;
+
+  std::list<timestamp> days = MtListStore().ListVenueDays();
+  days.sort();
+
+  for (auto it = days.rbegin(); it != days.rend(); ++it)
+  {
+    if (it->year && *it > ct)
+      continue;
+
+    cbDates->AddListItem(new DateItem(*it));
+  }
+
+  cbDates->SetCurrentItem((int) 0);
 
   FindWindow("Refresh")->SetId(IDC_REFRESH);
 
@@ -367,6 +392,9 @@ void  CGrFinished::OnPrint()
 // -----------------------------------------------------------------------
 void CGrFinished::OnTypeChange(wxCommandEvent &)
 {
+  const DateItem * date = (const DateItem *) XRCCTRL(*this, "Date", CComboBoxEx)->GetCurrentItem(); 
+  timestamp day = date->GetTimestamp();
+
   wxString type = XRCCTRL(*this, "Type", wxComboBox)->GetValue();
 
   m_grList->Freeze();
@@ -384,7 +412,7 @@ void CGrFinished::OnTypeChange(wxCommandEvent &)
   else if (type == "Round")
     what = MtListStore::Finished::Round;
 
-  std::list <std::tuple<long, short, timestamp>> list = MtListStore().GetFinishedRounds(what);
+  std::list <std::tuple<long, short, timestamp>> list = MtListStore().GetFinishedRounds(what, day);
 
   std::set<long> grIDs;
   std::set<long> cpIDs;
