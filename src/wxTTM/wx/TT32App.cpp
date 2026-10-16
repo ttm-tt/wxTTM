@@ -1756,20 +1756,35 @@ void CTT32App::BackupDatabase()
   tmpName.Normalize();
   dbPath.Normalize();
 
-  // dbPath ist ein Verzeichnis, GetFullPath also der komplette Name
-  // tmpName ist ein Dateiname, GetPath also das Verzeichnis ohne Dateiname und -erweiterung
-  // And the extenstion should be .bak
-  if ((tmpName.GetPath() != dbPath.GetFullPath()) || 
-      (tmpName.GetExt() != "bak"))
-  {
-    tmpName = wxFileName(GetPath(), wxString("tmp-") + fileDlg.GetFilename()).GetFullPath();
-    tmpName.Normalize();
-    // Just in case
-    tmpName.SetExt("bak");
-  }
+  bool local = TTDbse::instance()->IsLocal();
+  bool res;
 
-  m_pMainWnd->SetCursor(wxCURSOR_WAIT);
-  bool res = TTDbse::instance()->BackupDatabase(tmpName.GetFullPath());
+  if (local)
+  {
+    // dbPath ist ein Verzeichnis, GetFullPath also der komplette Name
+    // tmpName ist ein Dateiname, GetPath also das Verzeichnis ohne Dateiname und -erweiterung
+    // And the extenstion should be .bak
+    if ((tmpName.GetPath() != dbPath.GetFullPath()) || 
+        (tmpName.GetExt() != "bak"))
+    {
+      tmpName = wxFileName(GetPath(), wxString("tmp-") + fileDlg.GetFilename()).GetFullPath();
+      tmpName.Normalize();
+      // Just in case
+      tmpName.SetExt("bak");
+    }
+
+    m_pMainWnd->SetCursor(wxCURSOR_WAIT);
+    res = TTDbse::instance()->BackupDatabase(tmpName.GetFullPath());
+  }
+  else
+  {
+    // Remote: Backup am Server, Uebertragung per SQL in eine temp. Datei
+    // neben dem Ziel, danach wie lokal umbenennen bzw. zippen
+    tmpName = wxFileName(saveName.GetPath(), wxString("tmp-") + saveName.GetName() + ".bak");
+
+    m_pMainWnd->SetCursor(wxCURSOR_WAIT);
+    res = TTDbse::instance()->BackupRemoteDatabase(tmpName.GetFullPath());
+  }
 
   if (res && saveName.GetExt() == "zip")
   {
@@ -1787,11 +1802,16 @@ void CTT32App::BackupDatabase()
   }
   else if (res && tmpName != saveName)
   {
-    // Falls eine temp. Kopie im DB-Verzeichnis gemacht wurde
-    wxCopyFile(tmpName.GetFullPath(), saveName.GetFullPath());
+    // Lokal: temp. Kopie im DB-Verzeichnis (gehoert dem SQL-Server-Dienst),
+    // daher kopieren, damit die Zieldatei die Rechte des Zielverzeichnisses bekommt.
+    // Remote: die temp. Datei liegt schon neben dem Ziel, also umbenennen.
+    if (local)
+      wxCopyFile(tmpName.GetFullPath(), saveName.GetFullPath());
+    else
+      wxRenameFile(tmpName.GetFullPath(), saveName.GetFullPath(), true);
   }
 
-  if (tmpName != saveName)
+  if (tmpName != saveName && tmpName.FileExists())
     wxRemoveFile(tmpName.GetFullPath());
 
   // Ebenfalls Kopie im alternativen Verzeichnis

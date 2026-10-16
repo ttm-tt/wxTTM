@@ -11,6 +11,8 @@
 
 #pragma warning(disable:4786)
 
+class wxOutputStream;
+
 
 class  ResultSet
 {
@@ -29,6 +31,7 @@ class  ResultSet
     bool  GetData(int nr, wxChar * data, int len);
     bool  GetData(int nr, TIMESTAMP_STRUCT &data);
     bool  GetData(int nr, void * &data, size_t &len);
+    bool  GetData(int nr, wxOutputStream &out);  // BLOB in Bloecken in einen Stream
 
     // Abfrage, ob der letzt Zugriff NULL war
     bool  WasNull();

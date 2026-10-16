@@ -21,6 +21,8 @@
 # include  "Statement.h"
 # include  "SQLException.h"
 
+#include  <wx/wfstream.h>
+
 #include  "IdStore.h"
 #include  "CpStore.h"
 #include  "NaStore.h"
@@ -966,6 +968,105 @@ bool  TTDbse::BackupDatabase(const wxString &fileName)
     
   delete stmt;
   return true;
+}
+
+
+// -----------------------------------------------------------------------
+// Backup einer Datenbank auf einem entfernten Server:
+// Das Backup wird am Server im Verzeichnis der DB-Datei als <db>-<Rechner>.bak
+// erstellt und dann per OPENROWSET ueber die Verbindung nach localFile kopiert.
+// Der Rechnername vermeidet Kollisionen mit dem regelmaessigen Backup am Server
+// (<db>.bak, <db>.<n>.bak) und mit anderen Clients und zeigt, wer eine evtl.
+// uebrig gebliebene Datei erstellt hat.
+// Benoetigt: BACKUP DATABASE und ADMINISTER BULK OPERATIONS (bulkadmin),
+// zum Loeschen am Server sysadmin (sonst bleibt die Datei liegen).
+bool  TTDbse::BackupRemoteDatabase(const wxString &localFile)
+{
+  if (!defaultConnection)
+    return false;
+
+  wxString name = GetDatabase();
+  if (name.IsEmpty() || !IsBackupAllowed(name))
+    return false;
+
+  Statement *stmtPtr = NULL;
+  ResultSet *resPtr  = NULL;
+  wxString   str;
+  wxString   serverFile;
+  bool       ok = false;
+
+  try
+  {
+    // 1) Verzeichnis der DB-Datei am Server
+    stmtPtr = defaultConnection->CreateStatement();
+    str = "SELECT physical_name FROM sys.database_files WHERE type = 0";
+    resPtr = stmtPtr->ExecuteQuery(str);
+
+    wxChar mdf[MAX_PATH + 1] = {0};
+    if (resPtr->Next() && resPtr->GetData(1, mdf, sizeof(mdf)) && !resPtr->WasNull())
+    {
+      wxString host = wxGetHostName();
+      if (host.IsEmpty())
+        host = "REMOTE";
+      host.Replace("'", "");   // wird in SQL-String eingesetzt
+
+      // Server-Pfad ist immer Windows-Syntax
+      wxFileName fn(mdf, wxPATH_WIN);
+      fn.SetFullName(name + "-" + host.Upper() + ".bak");
+      serverFile = fn.GetFullPath(wxPATH_WIN);
+    }
+
+    delete resPtr;
+    resPtr = NULL;
+    delete stmtPtr;
+    stmtPtr = NULL;
+
+    if (!serverFile.IsEmpty())
+    {
+      // 2) Backup am Server
+      stmtPtr = defaultConnection->CreateStatement();
+      str = "BACKUP DATABASE [" + name + "] TO DISK = N'" + serverFile + "' WITH COPY_ONLY, INIT, SKIP";
+      stmtPtr->ExecuteUpdate(str);
+      delete stmtPtr;
+      stmtPtr = NULL;
+
+      // 3) Datei ueber die Verbindung lesen und lokal schreiben
+      stmtPtr = defaultConnection->CreateStatement();
+      str = "SELECT BulkColumn FROM OPENROWSET(BULK N'" + serverFile + "', SINGLE_BLOB) AS b";
+      resPtr = stmtPtr->ExecuteQuery(str);
+
+      wxFFileOutputStream out(localFile);
+      ok = out.IsOk() && resPtr->Next() && resPtr->GetData(1, out);
+      ok = out.Close() && ok;
+    }
+  }
+  catch (SQLException &e)
+  {
+    infoSystem.Exception(str, e);
+    ok = false;
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  // 4) Aufraeumen am Server (braucht sysadmin; Fehler ignorieren)
+  if (!serverFile.IsEmpty())
+  {
+    stmtPtr = defaultConnection->CreateStatement();
+    try
+    {
+      stmtPtr->ExecuteUpdate("EXEC master.sys.xp_delete_file 0, N'" + serverFile + "'");
+    }
+    catch (SQLException &)
+    {
+    }
+    delete stmtPtr;
+  }
+
+  if (!ok && wxFileExists(localFile))
+    wxRemoveFile(localFile);
+
+  return ok;
 }
 
 

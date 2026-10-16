@@ -7,6 +7,8 @@
 # include  "ResultSet.h"
 # include  "SQLException.h"
 
+# include  <wx/stream.h>
+
 
 ResultSet::ResultSet(SQLHSTMT stmt)
 {
@@ -115,6 +117,34 @@ bool  ResultSet::GetData(int nr, void *&data, size_t &len)
   if (SQL_FAILED(ret))
     throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
   
+  return true;
+}
+
+
+// Liest einen (grossen) BLOB in Bloecken und schreibt ihn in einen Stream.
+// SQL_NO_TOTAL als Laenge (varbinary(max)) ist damit kein Problem.
+bool  ResultSet::GetData(int nr, wxOutputStream &out)
+{
+  char buf[64 * 1024];
+  SQLRETURN ret;
+
+  while ((ret = SQLGetData(hStmt, nr, SQL_C_BINARY, buf, sizeof(buf), &(nullData[0]))) != SQL_NO_DATA)
+  {
+    if (SQL_FAILED(ret))
+      throw SQLException(__TFILE__, __LINE__, hStmt, SQL_NULL_HDBC, SQL_NULL_HENV);
+
+    if (nullData[0] == SQL_NULL_DATA)
+      return false;
+
+    size_t n = sizeof(buf);
+    if (ret == SQL_SUCCESS && nullData[0] != SQL_NO_TOTAL && nullData[0] < (SQLLEN) sizeof(buf))
+      n = (size_t) nullData[0];
+
+    out.Write(buf, n);
+    if (!out.IsOk())
+      return false;
+  }
+
   return true;
 }
 

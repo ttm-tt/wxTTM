@@ -56,6 +56,7 @@ class  TTDbse
     bool CloseDatabase();
     
     bool BackupDatabase(const wxString &fileName);
+    bool BackupRemoteDatabase(const wxString &localFile);
     
     bool RestoreDatabase(const wxString &fileName, const wxString &dir);
 
