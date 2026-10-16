@@ -34,14 +34,22 @@ void CDatabaseLogin::OnInitDialog(wxInitDialogEvent &)
   XRCCTRL(*this, "Server", wxTextCtrl)->SetValue(server);
   XRCCTRL(*this, "Database", wxTextCtrl)->SetValue(database);
 
+  if (serverEditable)
+  {
+    XRCCTRL(*this, "Server", wxTextCtrl)->SetEditable(true);
+    FindWindow("Server")->SetValidator(wxGenericValidator(&server));
+  }
+
   FindWindow("WindowsAuthentication")->SetValidator(wxGenericValidator(&windowsAuth));
   FindWindow("Username")->SetValidator(wxGenericValidator(&user));
   FindWindow("Password")->SetValidator(wxGenericValidator(&pwd));
 
-  bool isLocal = Connection::IsLocalAddress(server);
-  FindWindow("Username")->Enable(!isLocal);
-  FindWindow("Password")->Enable(!isLocal);
-  windowsAuth = isLocal;
+  // Default: Windows authentication for local servers, unless the caller preset it
+  if (!authPreset)
+    windowsAuth = Connection::IsLocalAddress(server);
+
+  FindWindow("Username")->Enable(!windowsAuth);
+  FindWindow("Password")->Enable(!windowsAuth);
 
   TransferDataToWindow();
 }

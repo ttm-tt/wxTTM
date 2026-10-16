@@ -11,6 +11,11 @@ class CDatabaseLogin : public wxDialog
   public:
     void SetServer(const wxString &s);
     void SetDatabase(const wxString &d);
+    void SetServerEditable(bool e) {serverEditable = e;}
+    void SetWindowsAuthentication(bool a) {windowsAuth = a; authPreset = true;}
+    void SetUser(const wxString &u) {user = u;}
+
+    const wxString & GetServer() const {return server;}
 
     bool GetWindowsAuthentication() const {return windowsAuth;}
     const wxString & GetUser() const {return user;}
@@ -26,6 +31,8 @@ class CDatabaseLogin : public wxDialog
     wxString server;
     wxString database;
     bool     windowsAuth;
+    bool     authPreset = false;
+    bool     serverEditable = false;
     wxString user;
     wxString pwd;
 

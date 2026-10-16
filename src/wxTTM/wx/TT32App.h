@@ -198,6 +198,12 @@ class CTT32App : public wxApp
                            const wxString &user, const wxString &passwd,
                            short type, short table);
     bool  OpenTournament(const wxString &tour);
+
+    // Show CDatabaseLogin after a failed open / create, so server and credentials can be corrected.
+    // Returns false if the user cancelled.
+    bool  AskDatabaseLogin(wxString &server, const wxString &database,
+                           bool &windowsAuthentication, wxString &user, wxString &passwd,
+                           wxString &connStr);
     bool  OpenLastTournament();
     bool  CloseTournament();
     bool  DetachTournament(const wxString &tour, bool deleteDir);

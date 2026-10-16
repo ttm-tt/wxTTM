@@ -17,6 +17,7 @@
 
 #include "Profile.h"
 #include "InfoSystem.h"
+#include "DatabaseLogin.h"
 
 #include "CpListStore.h"
 #include "PlListStore.h"
@@ -1374,8 +1375,8 @@ wxColor CTT32App::GetOvBkColor(const wxString &which) const
 // -----------------------------------------------------------------------
 bool  CTT32App::CreateTournament(
     const wxString &name, 
-    const wxString &database, const wxString &server,
-    bool windowsAuthentication, const wxString &user, const wxString &passwd,
+    const wxString &database, const wxString &server_,
+    bool windowsAuthentication_, const wxString &user_, const wxString &passwd_,
     short type, short table)
 {
 #if 0
@@ -1414,8 +1415,18 @@ bool  CTT32App::CreateTournament(
   
   CloseTournament();
   
-  if (!TTDbse::instance()->CreateDatabase(database, server, windowsAuthentication, user, passwd, type, table))
-    return false;
+  // Copies, the user may correct them if the database can't be created / opened
+  wxString server = server_;
+  bool windowsAuthentication = windowsAuthentication_;
+  wxString user = user_;
+  wxString passwd = passwd_;
+
+  while (!TTDbse::instance()->CreateDatabase(database, server, windowsAuthentication, user, passwd, type, table))
+  {
+    wxString connStr;
+    if (!AskDatabaseLogin(server, database, windowsAuthentication, user, passwd, connStr))
+      return false;
+  }
 
   char *tmp = _getcwd(NULL, _MAX_PATH); 
   wxString dir = wxString(tmp) + "\\" + database;
@@ -1457,6 +1468,44 @@ bool  CTT32App::CreateTournament(
 }
 
 
+bool  CTT32App::AskDatabaseLogin(
+    wxString &server, const wxString &database,
+    bool &windowsAuthentication, wxString &user, wxString &passwd,
+    wxString &connStr)
+{
+  for (;;)
+  {
+    CDatabaseLogin *dlg = (CDatabaseLogin *)wxXmlResource::Get()->LoadDialog(GetTopWindow(), "DatabaseLogin");
+    if (!dlg)
+      return false;
+
+    dlg->SetServer(server);
+    dlg->SetDatabase(database);
+    dlg->SetServerEditable(true);
+    dlg->SetWindowsAuthentication(windowsAuthentication);
+    dlg->SetUser(user);
+
+    if (dlg->ShowModal() != wxID_OK)
+    {
+      delete dlg;
+      return false;
+    }
+
+    server = dlg->GetServer().Strip(wxString::both);
+    windowsAuthentication = dlg->GetWindowsAuthentication();
+    user = windowsAuthentication ? wxString() : dlg->GetUser();
+    passwd = windowsAuthentication ? wxString() : dlg->GetPassword();
+    connStr = dlg->GetConnectionString();
+
+    delete dlg;
+
+    // Empty if SQL Server authentication without user or password: ask again
+    if (!server.IsEmpty() && !connStr.IsEmpty())
+      return true;
+  }
+}
+
+
 bool  CTT32App::OpenTournament(const wxString &name)
 {
   CloseTournament();
@@ -1479,21 +1528,34 @@ bool  CTT32App::OpenTournament(const wxString &name)
   if (!TTDbse::instance()->OpenDatabase(connStr, throwError))
   {
     if (throwError)
-      return false;
-      
-    // Nochmals lesen, tmp ist eine statische Variable in ttProfile
-    tmp = ttProfile.GetString(PRF_TURNIER, name);
+    {
+      // Let the user correct server or credentials and try again
+      bool windowsAuth = TTDbse::GetWindowsAuthentication(connStr);
+      wxString user = windowsAuth ? wxString() : TTDbse::GetUser(connStr);
+      wxString pwd;
 
-    type = ttProfile.GetInt(name, PRF_SETTINGS_TYPE);
-    table = ttProfile.GetInt(name, PRF_SETTINGS_TABLE);
+      do
+      {
+        if (!AskDatabaseLogin(server, database, windowsAuth, user, pwd, connStr))
+          return false;
+      } while (!TTDbse::instance()->OpenDatabase(connStr, true));
+    }
+    else
+    {
+      // Nochmals lesen, tmp ist eine statische Variable in ttProfile
+      tmp = ttProfile.GetString(PRF_TURNIER, name);
 
-    bool trustedConn = TTDbse::GetWindowsAuthentication(connStr);
-    wxString user = trustedConn ? TTDbse::GetUser(connStr).c_str() : wxEmptyString;
-    wxString pwd = trustedConn ? TTDbse::GetPassword(connStr).c_str() : wxEmptyString;
+      type = ttProfile.GetInt(name, PRF_SETTINGS_TYPE);
+      table = ttProfile.GetInt(name, PRF_SETTINGS_TABLE);
 
-    TTDbse::instance()->DetachDatabase(connStr, false);
-    if (!TTDbse::instance()->CreateDatabase(database, server, trustedConn, user, pwd, type, table))
-      return false;
+      bool trustedConn = TTDbse::GetWindowsAuthentication(connStr);
+      wxString user = trustedConn ? TTDbse::GetUser(connStr).c_str() : wxEmptyString;
+      wxString pwd = trustedConn ? TTDbse::GetPassword(connStr).c_str() : wxEmptyString;
+
+      TTDbse::instance()->DetachDatabase(connStr, false);
+      if (!TTDbse::instance()->CreateDatabase(database, server, trustedConn, user, pwd, type, table))
+        return false;
+    }
   }
 
   m_pMainWnd->SetTitle(wxT("TTM - ") + name);
