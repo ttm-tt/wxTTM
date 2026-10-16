@@ -467,7 +467,6 @@ void  CMtUnscheduled::OnEdit()
 
 void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
 {
-  // return;
   // Paranoia
   if (!reqPtr)
     return;
@@ -480,8 +479,39 @@ void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
   if (!reqPtr->id)
     return;
 
-  if (reqPtr->type != CRequest::UPDATE_SCHEDULE)
+  CpItem* cpItemPtr = (CpItem*)m_cbCp->GetCurrentItem();
+
+  if (!cpItemPtr)
     return;
+
+  CpRec cp = cpItemPtr->cp;
+
+  wxString stage = m_cbStage->GetValue();
+
+  GrItem* grItemPtr = (GrItem*)m_cbGr->GetCurrentItem();
+
+  if (!grItemPtr)
+    return;
+
+  GrRec gr = grItemPtr->gr;
+
+  timestamp date;
+  memset(&date, 0, sizeof(date));
+  date.year = -1;
+  DateItem* dateItemPtr = (DateItem*)m_cbDate->GetCurrentItem();
+  if (dateItemPtr)
+    date = dateItemPtr->m_ts;
+
+  timestamp time;
+  memset(&time, 0, sizeof(time));
+  time.year = -1;
+  TimeItem* timeItemPtr = (TimeItem*)m_cbTime->GetCurrentItem();
+  if (timeItemPtr)
+    time = timeItemPtr->m_ts;
+
+  timestamp dt = date;
+  dt.hour = time.hour;
+  dt.minute = time.minute;
 
   MtListStore mtList;
   mtList.SelectById(reqPtr->id);
@@ -490,10 +520,37 @@ void CMtUnscheduled::OnUpdate(CRequest *reqPtr)
   mtList.Close();
 
   MtEntryStore mt;
-  mt.SelectById(reqPtr->id, mtList.cpType);
-  if (!mt.Next())
+
+  if (reqPtr->type == CRequest::UPDATE_RESULT)
+  {
+    // Only checked results are considred
+    if (!mtList.mtScoreChecked)
+      return;
+
+    mt.SelectUnscheduled(
+        mtList.cpType, dt, mtList.cpID, gr.grID, stage, reqPtr->ts);
+
+    while (mt.Next())
+    {
+      MtUnscheduledItem *itemPtr = (MtUnscheduledItem *) m_listCtrl->FindListItem(mt.mt.mtID);
+      if (itemPtr)
+        itemPtr->SetValue(mt);
+    }
+
+    mt.Close();
+
+    m_listCtrl->Refresh();
+
     return;
-  mt.Close();
+  }
+
+  if (reqPtr->type != CRequest::UPDATE_SCHEDULE)
+    return;
+
+  mt.SelectById(reqPtr->id, mtList.cpType);
+  if (!mtList.Next())
+    return;
+  mtList.Close();
 
   MtUnscheduledItem *itemPtr = (MtUnscheduledItem *) m_listCtrl->FindListItem(reqPtr->id);
   if (itemPtr)

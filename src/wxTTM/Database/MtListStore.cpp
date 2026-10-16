@@ -766,7 +766,7 @@ wxString  MtListStore::SelectString() const
   wxString  str;
 
   str = "SELECT mtID, mtNr, mtRound, mtMatch, mtChance, mtMS, mtSet,  "
-        "       mtDateTime, mtTable, stA, stX, mt.grID,               "
+        "       mtDateTime, mtTable, stA, stX, mt.cpID, mt.grID,      "
         "       mtResA, mtResX, mtSetsA, mtSetsX, mtBallsA, mtBallsX, "
         "       mtReverse, mtWalkOverA, mtWalkOverX,                  "
         "       mtInjuredA, mtInjuredX, mtDisqualifiedA, mtDisqualifiedX, "
@@ -789,7 +789,8 @@ wxString  MtListStore::SelectString() const
         "       ) AS nm) + "
         // plus missing entire nominations (there must be 2 per match)
         "       2 - (SELECT COUNT(*) FROM NmRec nm WHERE nm.mtID = mt.mtID) "
-        " AS mtMissing                                 "
+        "       AS mtMissing,                                "
+        "       mtTimestamp "
         "FROM   MtList mt                                    "
         "       LEFT OUTER JOIN XxRec xxA ON stA = xxA.stID  "
         "       LEFT OUTER JOIN XxRec xxX ON stX = xxX.stID  ";  
@@ -815,6 +816,7 @@ bool  MtListStore::BindRec()
   BindCol(++col, &stA);
   BindCol(++col, &stX);
 
+  BindCol(++col, &cpID);
   BindCol(++col, &mtEvent.grID);
 
   BindCol(++col, &mtResA);
@@ -859,6 +861,7 @@ bool  MtListStore::BindRec()
   BindCol(++col, &mtScoreChecked);
 
   BindCol(++col, &mtMissing);
+  BindCol(++col, &mtTimestamp);
 
   return true;
 }

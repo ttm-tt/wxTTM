@@ -186,7 +186,8 @@ struct  MtRec
   long   xxXstID;
 
   // Should play all matches in team event (copy of syComplete)
-  bool   mtComplete;  
+  bool   mtComplete; 
+  timestamp  mtTimestamp;  // Last update timestamp
 
   MtRec();
   MtRec(const MtRec &rec);

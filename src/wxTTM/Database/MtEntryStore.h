@@ -76,7 +76,9 @@ class  MtEntryStore : public StoreObj, public MtEntry
                           toEvent.mtDateTime, toEvent.mtTable, cpType); 
     }
 
-    bool  SelectUnscheduled(short cpType, timestamp &ts, long cpID = 0, long grID = 0, const wxString &grStage = wxEmptyString);
+    bool  SelectUnscheduled(
+        short cpType, const timestamp &dt, long cpID = 0, long grID = 0, 
+        const wxString &grStage = wxEmptyString, const timestamp &fromTs = timestamp{});
 
   private:
       // temp fields to setup TmEntry

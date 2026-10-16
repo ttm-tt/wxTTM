@@ -21,6 +21,7 @@ struct  MtListRec : public MtRec
   // Count missing nominations, e.g. doubles in cadet teams
   short    mtMissing;
 
+  long     cpID;
   short    cpType;
   short    grModus;
   short    grSize;

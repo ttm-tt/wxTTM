@@ -50,6 +50,9 @@ class  StoreObj
     // Liefert entweder m_conn oder TTDbse::defaultConnection
     Connection * GetConnectionPtr();
 
+    // Current server time in UTC, all 0 if not available
+    timestamp  GetUTCDate();
+
   protected:
     StoreObj(Connection *connPtr);
     StoreObj(StoreObj *refPtr = 0);

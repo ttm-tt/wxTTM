@@ -448,7 +448,9 @@ bool  MtEntryStore::SelectByTime(const timestamp &fromTime, short fromTable,
 }
 
 // -----------------------------------------------------------------------
-bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, long grID, const wxString &grStage)
+bool MtEntryStore::SelectUnscheduled(
+    short cpType, const timestamp &dt, long cpID, long grID, 
+    const wxString &grStage, const timestamp &ts)
 {
   mt.cpType = cpType;
 
@@ -464,18 +466,18 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
     "   AND cp.cpType = " + ltostr(cpType)
   ;
 
-  if (ts.year == 0)
+  if (dt.year == 0)
     sql += " AND mtDateTime IS NULL ";
-  else if (ts.year < 0)
+  else if (dt.year < 0)
     ;
-  else if (ts.hour == 0 && ts.minute == 0)
+  else if (dt.hour == 0 && dt.minute == 0)
   {
-    wxString tmp = wxString::Format("%04d-%02d-%02d", ts.year, ts.month, ts.day);
+    wxString tmp = wxString::Format("%04d-%02d-%02d", dt.year, dt.month, dt.day);
     sql += " AND CAST(mtDateTime AS DATE) = '" + tmp + "' ";
   }
   else
   {
-    wxString tmp = wxString::Format("%04d-%02d-%02d %02d:%02d", ts.year, ts.month, ts.day, ts.hour, ts.minute);
+    wxString tmp = wxString::Format("%04d-%02d-%02d %02d:%02d", dt.year, dt.month, dt.day, dt.hour, dt.minute);
     sql += " AND FORMAT(CAST(mtDateTime AS DATETIME), 'yyyy-MM-dd HH\\:mm') = '" + tmp + "' ";
   }
 
@@ -486,7 +488,11 @@ bool MtEntryStore::SelectUnscheduled(short cpType, timestamp &ts, long cpID, lon
     sql += " AND gr.grID = " + ltostr(grID);
 
   if (!grStage.IsEmpty())
-  sql += " AND gr.grStage = '" + TransformString(grStage) + "' ";
+    sql += " AND gr.grStage = '" + TransformString(grStage) + "' ";
+
+  // timestamp not empty
+  if (ts.year)
+    sql += " AND mtTimestamp >= CONVERT(DATETIME, '" + tstostr(ts) + "', 126) ";
 
   try
   {

@@ -24,6 +24,40 @@ Connection * StoreObj::GetConnectionPtr()
 }
 
 
+timestamp StoreObj::GetUTCDate()
+{
+  timestamp ts;
+  memset(&ts, 0, sizeof(ts));
+
+  Connection *connPtr = 
+    (m_conn ? m_conn : TTDbse::instance()->GetDefaultConnection());
+
+  if (!connPtr)
+    return ts;
+
+  // Own statement, so an open cursor of this object and its record data stay untouched
+  Statement *stmtPtr = 0;
+  ResultSet *resPtr  = 0;
+
+  try
+  {
+    stmtPtr = connPtr->CreateStatement();
+    resPtr  = stmtPtr->ExecuteQuery("SELECT GETUTCDATE()");
+
+    if (resPtr && resPtr->Next())
+      resPtr->GetData(1, ts);
+  }
+  catch (SQLException &)
+  {
+  }
+
+  delete resPtr;
+  delete stmtPtr;
+
+  return ts;
+}
+
+
 bool  StoreObj::ExecuteQuery(const wxString &sql)
 {
   Connection *connPtr = GetConnectionPtr();

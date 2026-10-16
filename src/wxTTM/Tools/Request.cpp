@@ -16,7 +16,7 @@ CRequest::CRequest()
 
 
 CRequest::CRequest(const CRequest &req)
-    : type(req.type), rec(req.rec), id(req.id), tid(req.tid) 
+    : type(req.type), rec(req.rec), id(req.id), tid(req.tid), ts(req.ts)
 {
 }
 

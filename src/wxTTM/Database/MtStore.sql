@@ -269,9 +269,15 @@
         "                        mtChance = @mtChance); \n"
         
         "    IF @ax > 0 \n"
-        "      UPDATE MtRec SET stA = @id WHERE mtNr = @mtNr AND ISNULL(stA, 0) <> ISNULL(@id, 0); \n"
+        "      UPDATE MtRec SET stA = @id, \n"
+        "             mtTimestamp = GETUTCDATE(), \n"
+        "             mtPrintScoreTime = IIF(mtResA = 0 AND mtResX = 0, NULL, mtPrintScoreTime) \n"
+        "       WHERE mtNr = @mtNr AND ISNULL(stA, 0) <> ISNULL(@id, 0); \n"
         "    ELSE \n"
-        "      UPDATE MtRec SET stX = @id WHERE mtNr = @mtNr AND ISNULL(stX, 0) <> ISNULL(@id, 0); \n"
+        "      UPDATE MtRec SET stX = @id, \n"
+        "             mtTimestamp = GETUTCDATE(), \n"
+        "             mtPrintScoreTime = IIF(mtResA = 0 AND mtResX = 0, NULL, mtPrintScoreTime) \n"
+        "       WHERE mtNr = @mtNr AND ISNULL(stX, 0) <> ISNULL(@id, 0); \n"
         
         " --- Continue with next match \n"
         "    EXEC mtUpdateRasterProc @mtNr, 1; \n"

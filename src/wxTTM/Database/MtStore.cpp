@@ -1701,6 +1701,13 @@ bool MtStore::UpdateResult(
   short disqualifiedA, short disqualifiedX
 )
 {
+  // Setup notification first, its timestamp must be before any change
+  CRequest update;
+  update.type = CRequest::UPDATE_RESULT;
+  update.rec = CRequest::MTREC;
+  update.id = mtID;
+  update.ts = GetUTCDate();
+
   // Change BestOf, it isn't done in the stored proc anymore
   if (!SetBestOf(bestOf))
     return false;
@@ -1737,11 +1744,6 @@ bool MtStore::UpdateResult(
   }
 
   // Notify Views
-  CRequest update;
-  update.type = CRequest::UPDATE_RESULT;
-  update.rec = CRequest::MTREC;
-  update.id = mtID;
-
   CTT32App::NotifyChange(update);
 
   return true;

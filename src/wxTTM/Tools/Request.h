@@ -48,9 +48,10 @@ class CRequest
       MPREC = 17
     } rec;
 
-    long    id;
+    long      id;
+    timestamp ts = {};
 
-    HANDLE  tid;  // Thread-ID
+    HANDLE    tid;  // Thread-ID
 };
 
 
